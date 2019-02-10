@@ -27,6 +27,9 @@ public class UserService {
     private TokenAuthenticationService tokenAuthenticationService;
 
     public User createUser(User user) {
+    	
+    	BCryptPasswordEncoder passwordEncrypt = new BCryptPasswordEncoder();
+        user.setPassword(passwordEncrypt.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
@@ -58,13 +61,14 @@ public class UserService {
         BCryptPasswordEncoder passwordDecrypt = new BCryptPasswordEncoder();
         String passwordFromDatabase = userFromDatabase.getPassword();
         boolean isPasswordCorrectFromEncryptDatabase = passwordDecrypt.matches(passwordFromInput, passwordFromDatabase);
-        
-        if (usernameFromInput.equals((usernameFromDatabase)) && isPasswordCorrectFromEncryptDatabase) {
-            System.out.println("hi Login successful");
+      
+        if (usernameFromInput.equals((usernameFromDatabase)) && isPasswordCorrectFromEncryptDatabase ) {
+        	return tokenAuthenticationService.createTokenUser(userFromDatabase);
+        	
         }else{
-            System.out.println("Sorry ");
+           return "Sorry Login fail!!!!!!!";
         }
-        return null;
+        
     }
 
 }

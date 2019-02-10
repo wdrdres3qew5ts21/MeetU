@@ -1,0 +1,1 @@
+mvnw clean package -D DB_URL= -D DB_USERNAME= -D DB_PASSWORD= -D SECRET_KEY=
