@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 import javax.validation.constraints.Email;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,7 +24,7 @@ public class User {
 
     @Id
     private String id;
-
+    @Indexed(unique=true)
     private String username;
 
     private String password;
@@ -38,6 +39,8 @@ public class User {
     private String lastName;
 
     private Date birthDay;
+    
+    private String gender; 
 
     private String userImage;
 
@@ -45,7 +48,7 @@ public class User {
 
     private String province;
 
-    private String counry;
+    private String country;
 
     public User() {
 
@@ -62,7 +65,7 @@ public class User {
         this.birthDay = birthDay;
         this.userImage = userImage;
         this.province = province;
-        this.counry = counry;
+        this.country = country;
     }
 
     public String getId() {
@@ -87,7 +90,8 @@ public class User {
 
     public void setPassword(String password) {
         BCryptPasswordEncoder passwordEncrypt = new BCryptPasswordEncoder();
-        this.password = passwordEncrypt.encode(password);
+        //this.password = passwordEncrypt.encode(password);
+        this.password = password;
     }
 
     public String getRole() {
@@ -154,17 +158,30 @@ public class User {
         this.province = province;
     }
 
-    public String getCounry() {
-        return counry;
+    public String getCountry() {
+        return country;
     }
 
     public void setCounry(String counry) {
-        this.counry = counry;
+        this.country = counry;
     }
 
-    @Override
-    public String toString() {
-        return "User{" + "id=" + id + ", username=" + username + ", password=" + password + ", email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + ", birthDay=" + birthDay + ", userImage=" + userImage + ", interest=" + interest + ", province=" + province + ", counry=" + counry + '}';
-    }
+   
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", username=" + username + ", password=" + password + ", role=" + role + ", email="
+				+ email + ", firstName=" + firstName + ", lastName=" + lastName + ", birthDay=" + birthDay + ", gender="
+				+ gender + ", userImage=" + userImage + ", interest=" + interest + ", province=" + province
+				+ ", country=" + country + "]";
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
 
 }

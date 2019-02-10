@@ -26,9 +26,15 @@ public class TokenAuthenticationService {
         HashMap<String, Object> userJson = new HashMap<>();
         userJson.put("userId", user.getId());
         userJson.put("userImg", user.getUserImage());
-        userJson.put("userName", user.getFirstName());
+        userJson.put("userName", user.getUsername());
         userJson.put("role", user.getRole());
-
+        userJson.put("email", user.getEmail());
+        userJson.put("firstName", user.getFirstName());
+        userJson.put("lastName", user.getLastName());
+        userJson.put("province", user.getProvince());
+        userJson.put("country", user.getCountry());
+        userJson.put("gender", user.getGender());
+        
         String token = Jwts.builder()
                 .claim("user", userJson)
                 .setIssuedAt(now)

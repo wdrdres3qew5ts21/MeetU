@@ -1,0 +1,8 @@
+applications:
+- name: your route for ibm bluemix
+  memory: (Memory that you want in MB)
+  path: target/UserService-0.0.1-Demo.jar
+  env:
+    DB_URL: (Your DB URL)
+    DB_USER: (Your DB User)
+    DB_PASSWORD: (Your DB PASSWORD)
