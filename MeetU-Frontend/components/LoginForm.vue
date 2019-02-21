@@ -2,7 +2,7 @@
   <v-layout>
     <v-flex text-xs-center xs12 sm6 offset-sm3>
       <h2 class="title">Sign In with Google</h2>
-      <h1>{{ getUser }}</h1>
+      <h1>jwt {{ activeUser }}</h1>
       <v-btn class="signIn mb-2" primary @click.native="googleSignUp()">Google Sign In</v-btn>
       <v-btn class="signIn mb-2" primary @click.native="facebookSignUp()">Facebook Sign In</v-btn>
       <v-btn class="signIn mb-2" primary @click.native="twitterSignUp()">Twitter Sign In</v-btn>
@@ -22,7 +22,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getUser'])
+    ...mapGetters(['activeUser'])
   },
   methods: {
     ...mapActions([
@@ -62,6 +62,13 @@ export default {
         console.log('inside then statement on login');
       }).catch((e) => {
         console.log(e.message);
+      })
+    },
+    signOut(){
+      this.$store.dispatch('signOut').then(()=>{
+
+      }).catch((e)=>{
+        
       })
     }
   }

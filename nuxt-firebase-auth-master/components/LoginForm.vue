@@ -6,8 +6,8 @@
       <v-btn class="signIn mb-2" primary @click.native="facebookSignUp()">Facebook Sign In</v-btn>
       <v-btn class="signIn mb-2" primary @click.native="twitterSignUp()">Twitter Sign In</v-btn>
     </v-flex>
+    <v-progress-linear :indeterminate="true"></v-progress-linear>
   </v-layout>
-
 </template>
 
 <script>

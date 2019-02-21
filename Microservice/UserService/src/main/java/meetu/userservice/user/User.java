@@ -23,8 +23,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class User {
 
     @Id
-    private String id;
-    @Indexed(unique=true)
+    private String userId;
+
+    @Indexed(unique = true)
     private String username;
 
     private String password;
@@ -39,8 +40,8 @@ public class User {
     private String lastName;
 
     private Date birthDay;
-    
-    private String gender; 
+
+    private String gender;
 
     private String userImage;
 
@@ -50,12 +51,14 @@ public class User {
 
     private String country;
 
+    private List<Badge> badgeList = new ArrayList<Badge>();
+
     public User() {
 
     }
 
     public User(String id, String username, String password, String role, String email, String firstName, String lastName, Date birthDay, String userImage, String province, String counry) {
-        this.id = id;
+        this.userId = id;
         this.username = username;
         this.password = password;
         this.role = role;
@@ -68,12 +71,12 @@ public class User {
         this.country = country;
     }
 
-    public String getId() {
-        return id;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {
@@ -166,22 +169,29 @@ public class User {
         this.country = counry;
     }
 
-   
+    public String getGender() {
+        return gender;
+    }
 
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", password=" + password + ", role=" + role + ", email="
-				+ email + ", firstName=" + firstName + ", lastName=" + lastName + ", birthDay=" + birthDay + ", gender="
-				+ gender + ", userImage=" + userImage + ", interest=" + interest + ", province=" + province
-				+ ", country=" + country + "]";
-	}
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 
-	public String getGender() {
-		return gender;
-	}
+    public List<Badge> getBadgeList() {
+        return badgeList;
+    }
 
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
+    public void setBadgeList(List<Badge> badgeList) {
+        this.badgeList = badgeList;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" + "id=" + userId + ", username=" + username + ", password=" + password + ", role=" + role + ", email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + ", birthDay=" + birthDay + ", gender=" + gender + ", userImage=" + userImage + ", interest=" + interest + ", province=" + province + ", country=" + country + ", badgeList=" + badgeList + '}';
+    }
+    
+    
+    
+    
 
 }

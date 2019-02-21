@@ -9,9 +9,6 @@ const createStore = () => {
     getters: {
       activeUser: (state, getters) => {
         return state.user
-      },
-      getUser(state) {
-        return state
       }
     },
     mutations: {
@@ -23,15 +20,12 @@ const createStore = () => {
       autoSignIn ({ commit }, payload) {
         commit('setUser', payload)
       },
+
       signInWithGoogle ({ commit }) {
-          console.log('fuq')
+        return new Promise((resolve, reject) => {
           auth.signInWithRedirect(GoogleProvider)
-          .then((result) => {
-            console.log(result)
-          })
-          .catch((err) => {
-            console.log(err)
-          })
+          resolve()
+        })
       },
       signInWithFacebook ({ commit }) {
         console.log(FacebookProvider)
@@ -54,6 +48,7 @@ const createStore = () => {
           })
       },
       signOut ({ commit }) {
+        console.log('logout vuex')
         auth.signOut().then(() => {
           commit('setUser', null)
         }).catch(err => console.log(error))

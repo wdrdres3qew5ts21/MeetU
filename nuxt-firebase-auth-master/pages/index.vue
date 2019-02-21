@@ -1,6 +1,7 @@
 <template>
   <v-layout justify-center align-center>
     <v-flex xs12 sm8>
+      <h1 style="color: black"> {{$store.state.user}} </h1>
         <div class="mt-5">
           <div v-if="!$store.state.user">
             <login-form></login-form>
