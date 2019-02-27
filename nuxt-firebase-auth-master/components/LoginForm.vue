@@ -5,20 +5,38 @@
       <v-btn class="signIn mb-2" primary @click.native="googleSignUp()">Google Sign In</v-btn>
       <v-btn class="signIn mb-2" primary @click.native="facebookSignUp()">Facebook Sign In</v-btn>
       <v-btn class="signIn mb-2" primary @click.native="twitterSignUp()">Twitter Sign In</v-btn>
+      <v-btn class="signIn mb-2" primary @click.native="qrCodeGenerate()"> QR Code Generate</v-btn>
     </v-flex>
-    <v-progress-linear :indeterminate="true"></v-progress-linear>
+    <img src="http://localhost:3002/events/qrcode" alt="" srcset="" width="300">
+    <no-ssr placeholder="loading...">
+      <!-- <qrcode-stream @decode="onDecode"></qrcode-stream> -->
+     <qrcode-stream @decode="onDecode"></qrcode-stream>
+    </no-ssr>
   </v-layout>
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
+  components: {
+  },
   data () {
     return {
       formEmail: '',
-      formPassword: ''
+      formPassword: '',
+      qrCode: '',
     }
   },
   methods: {
+    onDecode (decodedString) {
+      console.log('QR Code is Decoding...')
+    },
+    async qrCodeGenerate (){
+      let qrCode = await axios.get('http://localhost:3002/events/qrcode')
+      console.log(qrCode)
+      this.qrCode = qrCode.data
+    },
     emailLogin () {
       this.$store.dispatch('signInWithEmail', {
         email: this.formEmail,

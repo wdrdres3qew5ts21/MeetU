@@ -37,7 +37,9 @@ module.exports = {
   },
   plugins: [
     { src: '~/plugins/vuetify.js' },
-    '~/plugins/fireauth.js'
+    { src: '~/plugins/fireauth.js' },
+    { src: '~/plugins/fireinit.js' },
+    { src: '~/plugins/vue-qrcode-reader.js', ssr: false }
   ],
   css: [
     { src: '~/assets/css/main.css', lang: 'css' },
@@ -45,6 +47,7 @@ module.exports = {
   ],
   vendor: [
     'firebase',
-    'vuetify'
+    'vuetify',
+    'vue-qrcode-reader'
   ]
 }
