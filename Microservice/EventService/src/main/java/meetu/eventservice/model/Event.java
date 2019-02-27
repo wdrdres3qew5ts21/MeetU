@@ -29,6 +29,14 @@ public class Event {
     
     private String eventDetail;
     
+    private String eventPictureCover;
+    
+    private List<String> eventPictureLists;
+    
+    private String location;
+    
+    private List<Post> postLists;
+    
     private Date createEventDate;
     
     private Date endRegisterDate;
@@ -103,6 +111,30 @@ public class Event {
         this.eventStartDate = eventStartDate;
     }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public List<String> getEventPictureLists() {
+        return eventPictureLists;
+    }
+
+    public void setEventPictureLists(List<String> eventPictureLists) {
+        this.eventPictureLists = eventPictureLists;
+    }
+
+    public String getEventPictureCover() {
+        return eventPictureCover;
+    }
+
+    public void setEventPictureCover(String eventPictureCover) {
+        this.eventPictureCover = eventPictureCover;
+    }
+    
     public Organize getOrganize() {
         return organize;
     }
@@ -111,9 +143,5 @@ public class Event {
         this.organize = organize;
     }
 
-    @Override
-    public String toString() {
-        return "Event{" + "eventId=" + eventId + ", eventName=" + eventName + ", eventTags=" + eventTags + ", eventDetail=" + eventDetail + ", createEventDate=" + createEventDate + ", endRegisterDate=" + endRegisterDate + ", eventEndDate=" + eventEndDate + ", eventStartDate=" + eventStartDate + ", organize=" + organize + '}';
-    }
-     
+    
 }
