@@ -1,6 +1,6 @@
-# MeetU
+# meetu-frontend
 
-> My ultimate Nuxt.js project
+> My splendid Nuxt.js project
 
 ## Build Setup
 

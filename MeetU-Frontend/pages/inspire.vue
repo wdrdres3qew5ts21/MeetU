@@ -1,15 +1,19 @@
 <template>
-  <section class="section">
-    <h2 class="title is-3 has-text-grey">
-      "Just start  <b-icon
-        icon="rocket"
-        size="is-large"
-      />"
-    </h2>
-    <h3 class="subtitle is-6 has-text-grey">
-      Author: <a href="https://github.com/anteriovieira">
-        Antério Vieira
-      </a>
-    </h3>
-  </section>
+  <v-layout>
+    <v-flex text-xs-center>
+      <img
+        src="/v.png"
+        alt="Vuetify.js"
+        class="mb-5"
+      >
+      <blockquote class="blockquote">
+        &#8220;First, solve the problem. Then, write the code.&#8221;
+        <footer>
+          <small>
+            <em>&mdash;John Johnson</em>
+          </small>
+        </footer>
+      </blockquote>
+    </v-flex>
+  </v-layout>
 </template>

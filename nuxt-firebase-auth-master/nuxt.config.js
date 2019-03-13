@@ -1,0 +1,53 @@
+module.exports = {
+  head: {
+    title: 'Nuxt Firebase Auth',
+    meta: [
+      { charset: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { hid: 'description', name: 'description', content: 'Nuxt.js project' }
+    ],
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' }
+    ]
+  },
+  mode: 'universal',
+  loading: { color: '#3f51b5' },
+  build: {
+    extend (config, ctx) {
+      if (ctx.isDev && ctx.isClient) {
+        // config.module.rules.push({
+        //   enforce: 'pre',
+        //   test: /\.(js|vue)$/,
+        //   loader: 'eslint-loader',
+        //   exclude: /(node_modules)/
+        // })
+      }
+    },
+    extractCSS: true,
+    analyze: {
+      analyzerMode: 'static'
+    }
+  },
+  modules: [
+    '@nuxtjs/pwa'
+  ],
+  router: {
+    middleware: 'router-auth'
+  },
+  plugins: [
+    { src: '~/plugins/vuetify.js' },
+    { src: '~/plugins/fireauth.js' },
+    { src: '~/plugins/fireinit.js' },
+    { src: '~/plugins/vue-qrcode-reader.js', ssr: false }
+  ],
+  css: [
+    { src: '~/assets/css/main.css', lang: 'css' },
+    { src: '~/assets/css/app.styl', lang: 'styl' }
+  ],
+  vendor: [
+    'firebase',
+    'vuetify',
+    'vue-qrcode-reader'
+  ]
+}

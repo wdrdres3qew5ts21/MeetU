@@ -1,0 +1,38 @@
+{
+  "name": "nuxt-firebase-auth",
+  "version": "0.0.3",
+  "description": "Nuxt.js with Firebase Auth project",
+  "author": "David Royer <droyer01@gmail.com>",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt --port 3333",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "precommit": "npm run lint",
+    "fdeploy": "yarn build && firebase deploy"
+  },
+  "dependencies": {
+    "@nuxtjs/pwa": "^2.4.0",
+    "axios": "^0.18.0",
+    "firebase": "5.4.2",
+    "jsqr": "^1.2.0",
+    "nuxt": "^1.4.2",
+    "vue-qrcode-reader": "^1.4.0",
+    "vuetify": "^1.2.1"
+  },
+  "devDependencies": {
+    "babel-eslint": "^9.0.0",
+    "eslint": "^5.5.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-loader": "^2.1.0",
+    "eslint-plugin-html": "^4.0.5",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-node": "^7.0.1",
+    "eslint-plugin-promise": "^4.0.0",
+    "eslint-plugin-standard": "^4.0.0",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.1"
+  }
+}

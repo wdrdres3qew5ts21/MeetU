@@ -1,0 +1,17 @@
+# dependencies
+node_modules
+
+# logs
+npm-debug.log
+
+# Nuxt build
+.nuxt
+
+# Nuxt generate
+dist
+
+plugins/firebase-auth.js
+middleware/check-auth.js
+backups
+nuxt-firebase-auth-key.json
+serviceAccountKey.json

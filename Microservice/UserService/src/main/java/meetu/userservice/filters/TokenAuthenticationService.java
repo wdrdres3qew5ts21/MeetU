@@ -24,7 +24,7 @@ public class TokenAuthenticationService {
     public String createTokenUser(User user) {
         Date now = new Date();
         HashMap<String, Object> userJson = new HashMap<>();
-        userJson.put("userId", user.getId());
+        userJson.put("userId", user.getUserId());
         userJson.put("userImg", user.getUserImage());
         userJson.put("userName", user.getUsername());
         userJson.put("role", user.getRole());
