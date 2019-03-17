@@ -24,6 +24,8 @@ HELP.md
 /nbdist/
 /.nb-gradle/
 /build/
+nbactions-release-profile.xml
+nbactions.xml
 
 
 # Created by https://www.gitignore.io/api/vue,java,nuxt,nuxtjs,netbeans,visualstudiocode
