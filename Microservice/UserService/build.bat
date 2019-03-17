@@ -1,0 +1,1 @@
+mvn clean package -D spring.datasource.url="jdbc:mysql://db.phornlert.me:3306/sealuser?useUnicode=yes&characterEncoding=UTF-8"  -D spring.datasource.username="sealuser"  -D spring.datasource.password="w0domLx9wwZptZeL"  -D authenservice.jwt.secret="sealeiei"
