@@ -11,7 +11,7 @@
     <groupId>com.meetu</groupId>
     <artifactId>eurekaserver</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>eurekaserver</name>
+    <name>EurekaServer</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>

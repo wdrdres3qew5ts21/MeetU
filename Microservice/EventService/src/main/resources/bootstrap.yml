@@ -5,11 +5,23 @@ spring:
     name: eventservice
   profiles:
     active: dev
+  data:
+      mongodb:
+          host: localhost
+          port: 27017
+          local: local
   cloud:
     config:
-      uri: http://localhost:8585  
+      uri: http://localhost:8585
       retry:
-        max-attempts: 6
+        max-attempts: 8
         max-interval: 2000
-        initial-interval: 5000
+        initial-interval: 10000
       request-read-timeout: 10000
+#eureka:
+#  instance:
+#    appname: eventservice
+#  client:
+#    service-url.defaultZone: http://localhost:8761/eureka
+#    
+

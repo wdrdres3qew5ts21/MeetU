@@ -39,7 +39,7 @@ public class UserController {
         return new ResponseEntity<User>(userService.createUser(user), HttpStatus.CREATED);
     }
 
-    @Value("${server.message.greeting}")
+    //@Value("${server.message.greeting}")
     private String testMessage;
 
     @GetMapping("/test")
