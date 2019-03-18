@@ -28,18 +28,17 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @CrossOrigin(origins = "*")
 @RestController
-@RefreshScope
 public class EventController {
 
-    //@Value("${server.message.greeting}")
+   //@Value("${server.message.greeting}")
    private String eurekaMessage;
     
-   //@Value("${spring.profiles.active}")
+   @Value("${spring.profiles.active}")
    List<String> profiles;
    
     @GetMapping("/test")
     public ResponseEntity<String> testMessage() {
-        return new ResponseEntity<String>(profiles.get(0)+eurekaMessage, HttpStatus.OK);
+        return new ResponseEntity<String>(profiles.get(0)+" : "+eurekaMessage, HttpStatus.OK);
     }
 
     @Autowired

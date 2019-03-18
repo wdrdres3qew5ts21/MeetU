@@ -24,6 +24,7 @@ HELP.md
 /nbdist/
 /.nb-gradle/
 /build/
+/Microservice/ConfigServer/manifest.yml
 
 
 # Created by https://www.gitignore.io/api/vue,java,nuxt,nuxtjs,netbeans,visualstudiocode

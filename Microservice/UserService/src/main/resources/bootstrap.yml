@@ -1,8 +1,8 @@
 server:
-  port: 3002
+  port: 3001
 spring:
   application:
-    name: eventservice
+    name: userservice
   profiles:
     active: dev
   data:
@@ -12,16 +12,14 @@ spring:
           local: local
   cloud:
     config:
-      uri: http://localhost:8585
+      request-read-timeout: 10000
+      uri: http://localhost:8585  
       retry:
         max-attempts: 8
         max-interval: 2000
         initial-interval: 10000
-      request-read-timeout: 10000
-#eureka:
-#  instance:
-#    appname: eventservice
-#  client:
-#    service-url.defaultZone: http://localhost:8761/eureka
-#    
-
+eureka:
+  instance:
+    appname: userservice
+  client:
+    service-url.defaultZone: http://localhost:8761/eureka

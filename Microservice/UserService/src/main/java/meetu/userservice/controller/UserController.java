@@ -12,6 +12,7 @@ import meetu.userservice.service.UserService;
 import meetu.userservice.user.Badge;
 import meetu.userservice.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,6 +37,14 @@ public class UserController {
     @PostMapping("/users")
     public ResponseEntity<User> createUser(@RequestBody User user) {
         return new ResponseEntity<User>(userService.createUser(user), HttpStatus.CREATED);
+    }
+
+    //@Value("${server.message.greeting}")
+    private String testMessage;
+
+    @GetMapping("/test")
+    public ResponseEntity<String> getTestMessage() {
+        return new ResponseEntity<String>(testMessage, HttpStatus.OK);
     }
 
     @GetMapping("/users")
