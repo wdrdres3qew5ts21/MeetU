@@ -1,7 +1,7 @@
 HELP.md
 /target/
 !.mvn/wrapper/maven-wrapper.jar
-
+*.yml
 ### STS ###
 .apt_generated
 .classpath
@@ -24,7 +24,7 @@ HELP.md
 /nbdist/
 /.nb-gradle/
 /build/
-manifest.yml
+*.yml
 nbactions-release-profile.xml
 nbactions.xml
 
