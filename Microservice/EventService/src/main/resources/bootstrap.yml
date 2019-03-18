@@ -1,0 +1,13 @@
+server:
+  port: 9010
+spring:
+  application:
+    name: eventservice
+  cloud:
+    config:
+      uri: http://localhost:8585  
+      retry:
+        max-attempts: 6
+        max-interval: 2000
+        initial-interval: 5000
+      request-read-timeout: 10000

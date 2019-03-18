@@ -12,6 +12,8 @@ import meetu.eventservice.model.Event;
 import meetu.eventservice.service.QRCodeService;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -26,7 +28,19 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @CrossOrigin(origins = "*")
 @RestController
+@RefreshScope
 public class EventController {
+
+    //@Value("${server.message.greeting}")
+   private String eurekaMessage;
+    
+   //@Value("${spring.profiles.active}")
+   List<String> profiles;
+   
+    @GetMapping("/test")
+    public ResponseEntity<String> testMessage() {
+        return new ResponseEntity<String>(profiles.get(0)+eurekaMessage, HttpStatus.OK);
+    }
 
     @Autowired
     private EventService eventService;

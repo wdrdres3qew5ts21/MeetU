@@ -1,0 +1,9 @@
+applications:
+- name: userservice-seal-son
+  memory: 256MB
+  path: target/UserService-0.0.1-Demo.jar
+  env:
+    spring.datasource.url: jdbc:mysql://db.phornlert.me:3306/sealuser 
+    spring.datasource.username: sealuser  
+    spring.datasource.password: w0domLx9wwZptZeL  
+    authenservice.jwt.secret: sealeiei
