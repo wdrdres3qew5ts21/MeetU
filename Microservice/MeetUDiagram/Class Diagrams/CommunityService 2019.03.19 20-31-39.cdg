@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="CommunityService">
+  <ClassDiagramComponents>
+    <Class name="CommunityServiceApplication" package="com.meetu.communityservice" visibility="public" xPosition="20.0" yPosition="20.0">
+      <Fields/>
+      <Constructors/>
+      <Methods>
+        <Method name="main" returnType="void" visibility="public" isStatic="true">
+          <Argument type="String[]" name="args"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="CommunityController" package="com.meetu.communityservice.controller" visibility="public" xPosition="320.0" yPosition="20.0">
+      <Fields>
+        <Field name="communityService" type="CommunityService" visibility="private"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="findAllCommunityList" returnType="List&lt;Community&gt;" visibility="public">
+          <Argument type="String" name="communityName"/>
+        </Method>
+        <Method name="createCommunity" returnType="ResponseEntity&lt;Community&gt;" visibility="public">
+          <Argument type="Community" name="community"/>
+        </Method>
+        <Method name="getPostFromCommunityById" returnType="ResponseEntity&lt;Post&gt;" visibility="public">
+          <Argument type="String" name="communityId"/>
+          <Argument type="String" name="postId"/>
+        </Method>
+        <Method name="createPostToCommunity" returnType="ResponseEntity&lt;Post&gt;" visibility="public">
+          <Argument type="String" name="communityId"/>
+          <Argument type="Post" name="newPostOfCommunity"/>
+        </Method>
+        <Method name="addCommentToPostOfCommunity" returnType="ResponseEntity&lt;Post&gt;" visibility="public">
+          <Argument type="String" name="communityId"/>
+          <Argument type="String" name="postId"/>
+          <Argument type="CommentOfPost" name="commentOfPost"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="CommentOfPost" package="com.meetu.communityservice.model" visibility="public" xPosition="620.0" yPosition="20.0">
+      <Fields>
+        <Field name="commentOfPostId" type="String" visibility="private"/>
+        <Field name="userId" type="String" visibility="private"/>
+        <Field name="userName" type="String" visibility="private"/>
+        <Field name="commentOfPostDetail" type="String" visibility="private"/>
+        <Field name="commentOfPostDate" type="Date" visibility="private"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="getCommentOfPostId" returnType="String" visibility="public"/>
+        <Method name="setCommentOfPostId" returnType="void" visibility="public">
+          <Argument type="String" name="commentOfPostId"/>
+        </Method>
+        <Method name="getUserId" returnType="String" visibility="public"/>
+        <Method name="setUserId" returnType="void" visibility="public">
+          <Argument type="String" name="userId"/>
+        </Method>
+        <Method name="getUserName" returnType="String" visibility="public"/>
+        <Method name="setUserName" returnType="void" visibility="public">
+          <Argument type="String" name="userName"/>
+        </Method>
+        <Method name="getCommentOfPostDetail" returnType="String" visibility="public"/>
+        <Method name="setCommentOfPostDetail" returnType="void" visibility="public">
+          <Argument type="String" name="commentOfPostDetail"/>
+        </Method>
+        <Method name="getCommentOfPostDate" returnType="Date" visibility="public"/>
+        <Method name="setCommentOfPostDate" returnType="void" visibility="public">
+          <Argument type="Date" name="commentOfPostDate"/>
+        </Method>
+        <Method name="toString" returnType="String" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Community" package="com.meetu.communityservice.model" visibility="public" xPosition="920.0" yPosition="20.0">
+      <Fields>
+        <Field name="communityId" type="String" visibility="private"/>
+        <Field name="communityName" type="String" visibility="private"/>
+        <Field name="communityDescription" type="String" visibility="private"/>
+        <Field name="communityImageCover" type="String" visibility="private"/>
+        <Field name="interestTags" type="List&lt;String&gt;" visibility="private"/>
+        <Field name="userLists" type="List&lt;User&gt;" visibility="private"/>
+        <Field name="postLists" type="List&lt;Post&gt;" visibility="private"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="getCommunityId" returnType="String" visibility="public"/>
+        <Method name="setCommunityId" returnType="void" visibility="public">
+          <Argument type="String" name="communityId"/>
+        </Method>
+        <Method name="getCommunityName" returnType="String" visibility="public"/>
+        <Method name="setCommunityName" returnType="void" visibility="public">
+          <Argument type="String" name="communityName"/>
+        </Method>
+        <Method name="getCommunityDescription" returnType="String" visibility="public"/>
+        <Method name="setCommunityDescription" returnType="void" visibility="public">
+          <Argument type="String" name="communityDescription"/>
+        </Method>
+        <Method name="getCommunityImageCover" returnType="String" visibility="public"/>
+        <Method name="setCommunityImageCover" returnType="void" visibility="public">
+          <Argument type="String" name="communityImageCover"/>
+        </Method>
+        <Method name="getInterestTags" returnType="List&lt;String&gt;" visibility="public"/>
+        <Method name="setInterestTags" returnType="void" visibility="public">
+          <Argument type="List&lt;String&gt;" name="interestTags"/>
+        </Method>
+        <Method name="getUserLists" returnType="List&lt;User&gt;" visibility="public"/>
+        <Method name="setUserLists" returnType="void" visibility="public">
+          <Argument type="List&lt;User&gt;" name="userLists"/>
+        </Method>
+        <Method name="getPostLists" returnType="List&lt;Post&gt;" visibility="public"/>
+        <Method name="setPostLists" returnType="void" visibility="public">
+          <Argument type="List&lt;Post&gt;" name="postLists"/>
+        </Method>
+        <Method name="toString" returnType="String" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="PollChoices" package="com.meetu.communityservice.model" visibility="public" xPosition="1220.0" yPosition="20.0">
+      <Fields>
+        <Field name="totalVote" type="int" visibility="private"/>
+        <Field name="pollChoiceDetail" type="HashMap&lt;String, Integer&gt;" visibility="private"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="getTotalVote" returnType="int" visibility="public"/>
+        <Method name="setTotalVote" returnType="void" visibility="public">
+          <Argument type="int" name="totalVote"/>
+        </Method>
+        <Method name="createNewChoice" returnType="HashMap&lt;String, Integer&gt;" visibility="public">
+          <Argument type="String" name="choiceTopic"/>
+        </Method>
+        <Method name="voteToChoice" returnType="void" visibility="public">
+          <Argument type="String" name="choiceKey"/>
+        </Method>
+        <Method name="getPollChoiceDetail" returnType="HashMap&lt;String, Integer&gt;" visibility="public"/>
+        <Method name="setPollChoiceDetail" returnType="void" visibility="public">
+          <Argument type="HashMap&lt;String, Integer&gt;" name="pollChoiceDetail"/>
+        </Method>
+        <Method name="toString" returnType="String" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Post" package="com.meetu.communityservice.model" visibility="public" xPosition="1520.0" yPosition="20.0">
+      <Fields>
+        <Field name="postId" type="String" visibility="private"/>
+        <Field name="userId" type="String" visibility="private"/>
+        <Field name="userName" type="String" visibility="private"/>
+        <Field name="postDetail" type="String" visibility="private"/>
+        <Field name="pollVoteChoices" type="PollChoices" visibility="private"/>
+        <Field name="commentOfPost" type="List&lt;CommentOfPost&gt;" visibility="private"/>
+        <Field name="postOfDate" type="Date" visibility="private"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="getPostId" returnType="String" visibility="public"/>
+        <Method name="setPostId" returnType="void" visibility="public">
+          <Argument type="String" name="postId"/>
+        </Method>
+        <Method name="getPostDetail" returnType="String" visibility="public"/>
+        <Method name="setPostDetail" returnType="void" visibility="public">
+          <Argument type="String" name="postDetail"/>
+        </Method>
+        <Method name="getCommentOfPost" returnType="List&lt;CommentOfPost&gt;" visibility="public"/>
+        <Method name="setCommentOfPost" returnType="void" visibility="public">
+          <Argument type="List&lt;CommentOfPost&gt;" name="commentOfPost"/>
+        </Method>
+        <Method name="getUserId" returnType="String" visibility="public"/>
+        <Method name="setUserId" returnType="void" visibility="public">
+          <Argument type="String" name="userId"/>
+        </Method>
+        <Method name="getUserName" returnType="String" visibility="public"/>
+        <Method name="setUserName" returnType="void" visibility="public">
+          <Argument type="String" name="userName"/>
+        </Method>
+        <Method name="getPollVoteChoices" returnType="PollChoices" visibility="public"/>
+        <Method name="setPollVoteChoices" returnType="void" visibility="public">
+          <Argument type="PollChoices" name="pollVoteChoices"/>
+        </Method>
+        <Method name="getPostOfDate" returnType="Date" visibility="public"/>
+        <Method name="setPostOfDate" returnType="void" visibility="public">
+          <Argument type="Date" name="postOfDate"/>
+        </Method>
+        <Method name="toString" returnType="String" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="User" package="com.meetu.communityservice.model" visibility="public" xPosition="1820.0" yPosition="20.0">
+      <Fields>
+        <Field name="userId" type="String" visibility="private"/>
+        <Field name="username" type="String" visibility="private"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="getUserId" returnType="String" visibility="public"/>
+        <Method name="setUserId" returnType="void" visibility="public">
+          <Argument type="String" name="userId"/>
+        </Method>
+        <Method name="getUsername" returnType="String" visibility="public"/>
+        <Method name="setUsername" returnType="void" visibility="public">
+          <Argument type="String" name="username"/>
+        </Method>
+        <Method name="toString" returnType="String" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="CommunityService" package="com.meetu.communityservice.service" visibility="public" xPosition="876.0" yPosition="607.0">
+      <Fields>
+        <Field name="communityRepository" type="CommunityRepository" visibility="private"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="findAllCommunityList" returnType="List&lt;Community&gt;" visibility="public"/>
+        <Method name="findByCommunityNameLike" returnType="List&lt;Community&gt;" visibility="public">
+          <Argument type="String" name="communityName"/>
+        </Method>
+        <Method name="createCommunity" returnType="Community" visibility="public">
+          <Argument type="Community" name="community"/>
+        </Method>
+        <Method name="createPostToCommunity" returnType="Post" visibility="public">
+          <Argument type="String" name="communityId"/>
+          <Argument type="Post" name="newPostOfCommunity"/>
+        </Method>
+        <Method name="addCommentToPostOfCommunity" returnType="Post" visibility="public">
+          <Argument type="String" name="communityId"/>
+          <Argument type="String" name="postId"/>
+          <Argument type="CommentOfPost" name="commentOfPost"/>
+        </Method>
+        <Method name="getPostFromCommunityById" returnType="Post" visibility="public">
+          <Argument type="String" name="communityId"/>
+          <Argument type="String" name="postId"/>
+        </Method>
+        <Method name="findPostFromComunityByPostId" returnType="Post" visibility="public">
+          <Argument type="Community" name="community"/>
+          <Argument type="String" name="postId"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Interface name="CommunityRepository" package="com.meetu.communityservice.repository" visibility="public" xPosition="2120.0" yPosition="20.0">
+      <Methods>
+        <Method name="findByCommunityNameIgnoreCaseLike" returnType="List&lt;Community&gt;" visibility="public">
+          <Argument type="String" name="communityName"/>
+        </Method>
+        <Method name="findByCommunityIdAndPostListsPostId" returnType="Community" visibility="public">
+          <Argument type="String" name="communityId"/>
+          <Argument type="String" name="post"/>
+        </Method>
+      </Methods>
+    </Interface>
+    <Interface name="PostRepository" package="com.meetu.communityservice.repository" visibility="public" xPosition="20.0" yPosition="420.0">
+      <Methods/>
+    </Interface>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations>
+    <UseRelation source="com.meetu.communityservice.model.Community" target="com.meetu.communityservice.model.User" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="com.meetu.communityservice.model.Post" target="com.meetu.communityservice.model.PollChoices" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="communityService" source="com.meetu.communityservice.controller.CommunityController" target="com.meetu.communityservice.service.CommunityService" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="pollVoteChoices" source="com.meetu.communityservice.model.Post" target="com.meetu.communityservice.model.PollChoices" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="com.meetu.communityservice.controller.CommunityController" target="com.meetu.communityservice.model.Post" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="com.meetu.communityservice.model.Community" target="com.meetu.communityservice.model.Post" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="com.meetu.communityservice.service.CommunityService" target="com.meetu.communityservice.model.Community" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="com.meetu.communityservice.controller.CommunityController" target="com.meetu.communityservice.model.Community" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="commentOfPost" source="com.meetu.communityservice.model.Post" target="com.meetu.communityservice.model.CommentOfPost" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="List&lt;CommentOfPost&gt;"/>
+    <HasRelation name="communityRepository" source="com.meetu.communityservice.service.CommunityService" target="com.meetu.communityservice.repository.CommunityRepository" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="com.meetu.communityservice.repository.CommunityRepository" target="com.meetu.communityservice.model.Community" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="com.meetu.communityservice.model.Post" target="com.meetu.communityservice.model.Post" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="userLists" source="com.meetu.communityservice.model.Community" target="com.meetu.communityservice.model.User" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="List&lt;User&gt;"/>
+    <HasRelation name="postLists" source="com.meetu.communityservice.model.Community" target="com.meetu.communityservice.model.Post" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="List&lt;Post&gt;"/>
+    <UseRelation source="com.meetu.communityservice.service.CommunityService" target="com.meetu.communityservice.model.Post" sourceCardinality="1..1" targetCardinality="1..1"/>
+  </ClassDiagramRelations>
+</ClassDiagram>
