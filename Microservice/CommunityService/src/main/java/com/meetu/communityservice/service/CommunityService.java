@@ -9,6 +9,7 @@ import com.meetu.communityservice.model.CommentOfPost;
 import com.meetu.communityservice.model.Community;
 import com.meetu.communityservice.model.Post;
 import com.meetu.communityservice.repository.CommunityRepository;
+import java.util.Date;
 import java.util.List;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,8 @@ public class CommunityService {
     
     public Post createPostToCommunity(String communityId, Post newPostOfCommunity) {
         Community community = communityRepository.findById(communityId).get();
+        newPostOfCommunity.setPostId(new ObjectId().toString());
+        newPostOfCommunity.setPostOfDate(new Date());
         community.getPostLists().add(newPostOfCommunity);
         communityRepository.save(community);
         return newPostOfCommunity;
@@ -48,6 +51,7 @@ public class CommunityService {
         Community community = communityRepository.findById(communityId).get();
         Post postForAddComment = findPostFromComunityByPostId(community, postId);
         commentOfPost.setCommentOfPostId(new ObjectId().toString());
+        commentOfPost.setCommentOfPostDate(new Date());
         postForAddComment.getCommentOfPost().add(commentOfPost);
         communityRepository.save(community);
         return postForAddComment;

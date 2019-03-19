@@ -49,14 +49,14 @@ public class CommunityController {
         return new ResponseEntity<Post>(communityService.getPostFromCommunityById(communityId, postId), HttpStatus.OK);
     }
 
+    @PostMapping("/community/{communityId}/post")
+    public ResponseEntity<Post> createPostToCommunity(@PathVariable String communityId, @RequestBody Post newPostOfCommunity) {
+        return new ResponseEntity<Post>(communityService.createPostToCommunity(communityId, newPostOfCommunity), HttpStatus.CREATED);
+    }
+
     @PostMapping("/community/{communityId}/post/{postId}")
     public ResponseEntity<Post> addCommentToPostOfCommunity(@PathVariable String communityId, @PathVariable String postId, @RequestBody CommentOfPost commentOfPost) {
         return new ResponseEntity<Post>(communityService.addCommentToPostOfCommunity(communityId, postId, commentOfPost), HttpStatus.CREATED);
-    }
-
-    @PostMapping("/community/{communityId}")
-    public ResponseEntity<Post> createPostToCommunity(@RequestParam String communityId, @RequestBody Post newPostOfCommunity) {
-        return new ResponseEntity<Post>(communityService.createPostToCommunity(communityId, newPostOfCommunity), HttpStatus.CREATED);
     }
 
 }

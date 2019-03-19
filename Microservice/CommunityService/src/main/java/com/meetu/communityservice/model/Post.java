@@ -7,6 +7,7 @@ package com.meetu.communityservice.model;
 
 import com.fasterxml.jackson.databind.ser.Serializers;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.Generated;
@@ -56,6 +57,9 @@ public class Post {
     }
 
     public List<CommentOfPost> getCommentOfPost() {
+        if(commentOfPost == null){
+            commentOfPost = new ArrayList<>();
+        }
         return commentOfPost;
     }
 

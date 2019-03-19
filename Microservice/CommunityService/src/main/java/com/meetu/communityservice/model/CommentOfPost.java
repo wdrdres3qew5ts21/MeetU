@@ -5,6 +5,7 @@
  */
 package com.meetu.communityservice.model;
 
+import java.util.Date;
 import org.bson.types.ObjectId;
 
 /**
@@ -20,6 +21,8 @@ public class CommentOfPost {
     private String userName;
 
     private String commentOfPostDetail;
+    
+    private Date commentOfPostDate;
 
     public String getCommentOfPostId() {
         return commentOfPostId;
@@ -53,9 +56,18 @@ public class CommentOfPost {
         this.commentOfPostDetail = commentOfPostDetail;
     }
 
+    public Date getCommentOfPostDate() {
+        return commentOfPostDate;
+    }
+
+    public void setCommentOfPostDate(Date commentOfPostDate) {
+        this.commentOfPostDate = commentOfPostDate;
+    }
+
     @Override
     public String toString() {
-        return "CommentOfPost{" + "commentOfPostId=" + commentOfPostId + ", userId=" + userId + ", userName=" + userName + ", commentOfPostDetail=" + commentOfPostDetail + '}';
+        return "CommentOfPost{" + "commentOfPostId=" + commentOfPostId + ", userId=" + userId + ", userName=" + userName + ", commentOfPostDetail=" + commentOfPostDetail + ", commentOfPostDate=" + commentOfPostDate + '}';
     }
+    
 
 }
