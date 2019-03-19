@@ -5,17 +5,29 @@
  */
 package com.meetu.communityservice.model;
 
+import org.bson.types.ObjectId;
+
 /**
  *
  * @author wdrdr
  */
 public class CommentOfPost {
-    
+
+    private String commentOfPostId;
+
     private String userId;
-    
+
     private String userName;
-    
+
     private String commentOfPostDetail;
+
+    public String getCommentOfPostId() {
+        return commentOfPostId;
+    }
+
+    public void setCommentOfPostId(String commentOfPostId) {
+        this.commentOfPostId = commentOfPostId;
+    }
 
     public String getUserId() {
         return userId;
@@ -43,9 +55,7 @@ public class CommentOfPost {
 
     @Override
     public String toString() {
-        return "CommentOfPost{" + "userId=" + userId + ", userName=" + userName + ", commentOfPostDetail=" + commentOfPostDetail + '}';
+        return "CommentOfPost{" + "commentOfPostId=" + commentOfPostId + ", userId=" + userId + ", userName=" + userName + ", commentOfPostDetail=" + commentOfPostDetail + '}';
     }
-    
-    
-    
+
 }

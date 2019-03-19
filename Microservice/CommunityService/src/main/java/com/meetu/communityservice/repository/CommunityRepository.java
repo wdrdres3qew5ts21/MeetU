@@ -6,6 +6,7 @@
 package com.meetu.communityservice.repository;
 
 import com.meetu.communityservice.model.Community;
+import com.meetu.communityservice.model.Post;
 import java.util.List;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
@@ -16,5 +17,9 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 public interface CommunityRepository extends MongoRepository<Community, String>{
 
     public List<Community> findByCommunityNameIgnoreCaseLike(String communityName);
+
+//    public Post findByCommunityIdAndPostListsPostId(String communityId, String post);
+    
+    public Community findByCommunityIdAndPostListsPostId(String communityId, String post);
     
 }

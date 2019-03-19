@@ -42,10 +42,39 @@ public class CommunityService {
         return newPostOfCommunity;
     }
 
-//    public Post addCommentToPostOfCommunity(String communityId, String postId, Post newPostOfCommunity) {
-//        Community community = communityRepository.findByCommunityIdAndPost(communityId).get();
-//        community.getPostLists().add(newPostOfCommunity);
-//        communityRepository.save(community);
-//    }
+    public Post addCommentToPostOfCommunity(String communityId, String postId, Post newPostOfCommunity) {
+        Community community = communityRepository.findById(communityId).get();
+
+        return null;
+    }
+
+    public Post findPostFromPostId(String postId) {
+        return null;
+    }
+
+    public Post getPostFromCommunityById(Community community, String postId) {
+        System.out.println(community);
+        Post postOfCommunity = null;
+        for (int i = 0; i < community.getPostLists().size(); i++) {
+            Post postOfEachLoop = community.getPostLists().get(i);
+            if (postOfEachLoop.getPostId().equals(postId)) {
+                postOfCommunity = postOfEachLoop;
+            }
+        }
+        return postOfCommunity;
+    }
+
+    public Post getPostFromCommunityById(String communityId, String postId) {
+        Community community = communityRepository.findById(communityId).get();
+        System.out.println(community);
+        Post postOfCommunity = null;
+        for (int i = 0; i < community.getPostLists().size(); i++) {
+            Post postOfEachLoop = community.getPostLists().get(i);
+            if (postOfEachLoop.getPostId().equals(postId)) {
+                postOfCommunity = postOfEachLoop;
+            }
+        }
+        return postOfCommunity;
+    }
 
 }
