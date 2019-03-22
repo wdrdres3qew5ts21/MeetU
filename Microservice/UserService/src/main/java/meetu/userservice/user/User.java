@@ -43,8 +43,6 @@ public class User {
     
     private String gender; 
 
-    private String gender;
-
     private String userImage;
 
     private List<Integer> interest = new ArrayList();

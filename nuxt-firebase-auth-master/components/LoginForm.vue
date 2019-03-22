@@ -6,11 +6,16 @@
       <v-btn class="signIn mb-2" primary @click.native="facebookSignUp()">Facebook Sign In</v-btn>
       <v-btn class="signIn mb-2" primary @click.native="twitterSignUp()">Twitter Sign In</v-btn>
       <v-btn class="signIn mb-2" primary @click.native="qrCodeGenerate()"> QR Code Generate</v-btn>
+     <img src="http://localhost:3002/events/qrcode" alt="" srcset="" width="200"> 
+   
     </v-flex>
-    <img src="http://localhost:3002/events/qrcode" alt="" srcset="" width="300">
+        {{qrCodeGenerate()}}
     <no-ssr placeholder="loading...">
-      <!-- <qrcode-stream @decode="onDecode"></qrcode-stream> -->
-     <qrcode-stream @decode="onDecode"></qrcode-stream>
+  
+       <qrcode-stream @decode="onDecode"></qrcode-stream> 
+    
+     <!--<qrcode-stream @decode="onDecode"></qrcode-stream> -->
+     
     </no-ssr>
   </v-layout>
 </template>
@@ -32,7 +37,7 @@ export default {
     onDecode (decodedString) {
       console.log('QR Code is Decoding...')
     },
-    async qrCodeGenerate (){
+    async qrCodeGenerate () {
       let qrCode = await axios.get('http://localhost:3002/events/qrcode')
       console.log(qrCode)
       this.qrCode = qrCode.data
