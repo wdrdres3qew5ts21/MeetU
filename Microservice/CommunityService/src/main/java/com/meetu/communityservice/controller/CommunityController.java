@@ -5,6 +5,7 @@
  */
 package com.meetu.communityservice.controller;
 
+import com.meetu.communityservice.model.CommentOfPost;
 import com.meetu.communityservice.service.CommunityService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import com.meetu.communityservice.model.Post;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,14 +44,19 @@ public class CommunityController {
         return new ResponseEntity<Community>(communityService.createCommunity(community), HttpStatus.CREATED);
     }
 
-    @PostMapping("/community/{communityId}")
-    public ResponseEntity<Post> createPostToCommunity(@RequestParam String communityId, @RequestBody Post newPostOfCommunity) {
+    @GetMapping("/community/{communityId}/post/{postId}")
+    public ResponseEntity<Post> getPostFromCommunityById(@PathVariable String communityId, @PathVariable String postId) {
+        return new ResponseEntity<Post>(communityService.getPostFromCommunityById(communityId, postId), HttpStatus.OK);
+    }
+
+    @PostMapping("/community/{communityId}/post")
+    public ResponseEntity<Post> createPostToCommunity(@PathVariable String communityId, @RequestBody Post newPostOfCommunity) {
         return new ResponseEntity<Post>(communityService.createPostToCommunity(communityId, newPostOfCommunity), HttpStatus.CREATED);
     }
 
     @PostMapping("/community/{communityId}/post/{postId}")
-    public ResponseEntity<Post> addCommentToPostOfCommunity(@RequestParam String communityId, @RequestParam String postId, @RequestBody Post newCommentOfPost) {
-        return new ResponseEntity<Post>(communityService.addCommentToPostOfCommunity(communityId, postId, newCommentOfPost), HttpStatus.CREATED);
+    public ResponseEntity<Post> addCommentToPostOfCommunity(@PathVariable String communityId, @PathVariable String postId, @RequestBody CommentOfPost commentOfPost) {
+        return new ResponseEntity<Post>(communityService.addCommentToPostOfCommunity(communityId, postId, commentOfPost), HttpStatus.CREATED);
     }
 
 }
