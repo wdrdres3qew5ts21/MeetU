@@ -1,0 +1,38 @@
+{
+	"info": {
+		"_postman_id": "60a69b3d-0e80-4c01-b96e-9c766e9f21b0",
+		"name": "MeetU-Event",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:3002/events",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"eventName\": \"Fate Grand Order MeetUp\",\n\t\"eventDetail\": \"รวมพลคนเกลือจากเฟตเพื่อชามชาบูและขายไต อิ_อิ\",\n\t\"eventTags\": [\n\t\t\"anime\", \"movies\", \"crossplay\"\t\n\t],\n\t\"createEventDate\": \"2030-01-18T22:44:19.804+0000\",\n\t\"organize\": {\n\t\t\"organizeName\": \"KMUTT Japanese Club\",\n\t\t\"organizeDetail\": \"พวกเราคือติ่งโอตาคุ ที่หลงไหลในอนิเมะ มั่กๆ !!!\",\n\t\t\"organizeImageProfile\": \"https://scontent.fbkk9-2.fna.fbcdn.net/v/t1.0-9/21370876_10155437158971013_2896790551203599213_n.jpg?_nc_cat=109&_nc_eui2=AeGe5LxckT47jWQUbBro43pN4eavFDocCIUP8EHAm9JkFB5OS6rfYPrwIO0r8DRMJEE1RfEgt-zTTlH4AXPDR4I2th_YVyGne7ryPDxaunLg-w&_nc_ht=scontent.fbkk9-2.fna&oh=7024ac98d5119e450866f5eb4ccddd5c&oe=5CE7C4FD\"\n\t}\n\t\n}"
+				},
+				"url": {
+					"raw": "localhost:3002/events",
+					"host": [
+						"localhost"
+					],
+					"port": "3002",
+					"path": [
+						"events"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
