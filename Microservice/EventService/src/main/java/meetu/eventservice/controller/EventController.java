@@ -61,6 +61,8 @@ public class EventController {
     public ResponseEntity<byte[]> qrCodeGenerator(HttpServletResponse response) {
         // 
         response.setContentType("image/png");
-        return new ResponseEntity<byte[]>(qRCodeService.getQRCodeImage("Fate Stay Night Heven's Feel 2", 300, 300), HttpStatus.OK);
+       // return new ResponseEntity<byte[]>(qRCodeService.getQRCodeImage(), HttpStatus.OK);
+        return new ResponseEntity<byte[]>(qRCodeService.getQRCodeImage("https://trello.com/b/OutSJrmK/project",1000 , 1000), HttpStatus.OK);
+        
     }
 }
