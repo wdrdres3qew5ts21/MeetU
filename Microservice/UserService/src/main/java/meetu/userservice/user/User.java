@@ -194,20 +194,6 @@ public class User {
     
     
 
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", password=" + password + ", role=" + role + ", email="
-				+ email + ", firstName=" + firstName + ", lastName=" + lastName + ", birthDay=" + birthDay + ", gender="
-				+ gender + ", userImage=" + userImage + ", interest=" + interest + ", province=" + province
-				+ ", country=" + country + "]";
-	}
-
-	public String getGender() {
-		return gender;
-	}
-
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
+	
 
 }
