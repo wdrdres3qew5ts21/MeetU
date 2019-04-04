@@ -1,11 +1,11 @@
 <template>
   <v-app>
-    <v-navigation-drawer v-model="drawer" fixed app>
+    <v-navigation-drawer v-model="drawer" fixed app style="background-color: #341646">
       <v-list>
-        <nuxt-link class="link" to="/event">
+        <nuxt-link class="link" to="/">
           <v-list-tile>
             <v-list-tile>
-              <v-icon>home</v-icon>
+              <v-icon class="icon">home</v-icon>
             </v-list-tile>
             <v-list-tile-content>
                 Meet U
@@ -14,27 +14,36 @@
         </nuxt-link>
 
              <v-list-group>
-              <v-list-tile slot="activator">
-                <v-list-tile>
-                  <v-icon>category</v-icon>
+              <v-list-tile slot="activator" >
+                <v-list-tile >
+                  <v-icon class="icon">category</v-icon>
                 </v-list-tile>
-                <v-list-tile-content>
+                <v-list-tile-content style="color:#fff;">
                   Category
                 </v-list-tile-content>
               </v-list-tile>       
-              <v-list-tile v-for="(category, i) in categoryList" :key="i" ripple @click="close">
-                <v-list-tile-action>
+              <v-list-tile  v-for="(category, i) in categoryList" :key="i" ripple @click="close">
+                <v-list-tile-action >
                 </v-list-tile-action>
                 <v-list-tile-content>
-                  <nuxt-link :to='`/event?${category}`'>
+                  <nuxt-link  class="categoryLink"  :to='`/event?${category}`'>
                   <v-list-tile-title>{{ category }}</v-list-tile-title>
                   </nuxt-link>
                 </v-list-tile-content>
               </v-list-tile>
             </v-list-group>
 
+      <nuxt-link class="link" to="/about">
+        <v-list-tile>
+            <v-list-tile>
+              <v-icon class="icon">info</v-icon>
+            </v-list-tile>
+            <v-list-tile-content>
+                About
+            </v-list-tile-content>
+          </v-list-tile>
+      </nuxt-link>
 
-            
         <!-- </nuxt-link> -->
 
 
@@ -57,8 +66,10 @@
           <v-icon>search</v-icon>
         </v-btn>
 
+        
+
         <v-btn icon href="/admin">
-          <v-icon>person</v-icon>
+          <v-icon>account_circle</v-icon>
         </v-btn>
 
       <div v-if="user" id="user" class="text-xs-center">
@@ -104,14 +115,14 @@
       <router-view></router-view>
     </v-container>
   </v-content>
-    <v-content>
+    <!-- <v-content>
      <v-container fluid>
       <nuxt />
      </v-container>
-   </v-content>
-    <v-footer app :fixed="fixed" class="justify-center px-4">
+   </v-content> -->
+    <!-- <v-footer app :fixed="fixed" class="justify-center px-4">
       <span>&copy; 2019</span>
-    </v-footer>
+    </v-footer> -->
   </v-app>
 </template>
 
@@ -164,27 +175,67 @@ export default {
 .v-navigation-drawer > .list:not(.list--dense) .list__tile {
   font-size: 17px;
 }
+
+.v-icon.icon{
+  color: #fff;
+}
+
+
+
 .avatar {
   max-width: 75px;
 }
 
-.link {
-  text-decoration: none;
+a.link{
+  color: #fff;
 }
+.categoryLink{
+  text-decoration-line: none;
+  text-decoration: none;
+  color: #fff;
+}
+
+
+
+
+
+a:hover {
+  text-decoration-line: none;
+  text-decoration: none;
+  color: #FC5577;
+  /* background: yellowgreen; */
+  
+
+}
+
+
+
+.link {
+  color: #fff;
+  text-decoration: none;
+  
+}
+
+
 
 /* .list__tile--active.list__tile.list__tile--link {
 
 } */
 
-a.nuxt-link-exact-active.list__tile--active.list__tile.list__tile--link {
+/* a.nuxt-link-exact-active.list__tile--active.list__tile.list__tile--link { */
   /* font-weight: 900 !important;
   color: #3f51b5 !important; */
-}
+/* } */
+
+/* .v-navigation-drawer{
+  background-color: #341646;
+} */
 .v-list__tile--link {
   border-left: 10px solid transparent;
 }
 .v-list__tile--link.v-list__tile--active {
-  color: rgba(0, 0, 0, 0.87);
-  border-left: 10px solid gray;
+  /* color: rgba(0, 0, 0, 0.87); */
+  color: #fff;
+  border-left: 10px solid gnray;
 }
 </style>

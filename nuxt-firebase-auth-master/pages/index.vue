@@ -8,7 +8,7 @@
             </div>
         </div> -->
       
-        <v-subheader>Test</v-subheader>
+        <!-- <v-subheader>Test</v-subheader> -->
         <!-- <v-container fluid grid-list-sm>
           <v-layout row wrap>
             <v-flex v-for="i in 6" :key="i" xs4>
@@ -17,19 +17,19 @@
           </v-layout>
         </v-container> -->
         <div class="flex-container">
-        <nuxt-link v-for="event in popularEventList" :key="event.eventId" 
+        <nuxt-link class="linkEvent" v-for="event in popularEventList" :key="event.eventId" 
                 :to="{path:'/event',query:{eventId:event.eventId}}">       
 
           <v-flex xs12 >
               <h1 style="color: black"> {{$store.state.user}} </h1>
               
-                  <div class="mt-5"><div class="flex-item">
+                  <div class="mt-5">
+                    <div class="flex-item">
                       <img v-bind:src="event.eventPhoto" alt="" height="100px">
-                      <p>{{event.eventName}}</p>
-                      <p>{{event.eventDate.getDate()}}/{{event.eventDate.getMonth()}}/{{event.eventDate.getYear()}}</p>
-          
+                        <p class="eventName">{{event.eventName}}</p>
+                        <p class="eventDate">{{event.eventDate.getDate()}}/{{event.eventDate.getMonth()}}/{{event.eventDate.getYear()}}</p>
+                    </div>
                   </div>
-              </div>
           </v-flex>
         </nuxt-link>
         </div>
@@ -179,7 +179,23 @@ export default {
   order: 1;
 }
 
+.linkEvent{
+  text-decoration-line: none;
+}
 
+
+
+.eventName{
+  color: #000;
+  
+}
+.eventName:hover{
+  color: #FC5577
+}
+
+.eventDate{
+  color: #000;
+}
 
 .wrapper{
   position: absolute;
