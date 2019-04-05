@@ -5,7 +5,6 @@
     lazy-validation
   >
 
-
     <v-text-field
       v-model="email"
       :rules="emailRules"
@@ -13,7 +12,7 @@
       required
     ></v-text-field>
 
-        <v-text-field
+    <v-text-field
       v-model="password"
       type="password"
       :rules="passwordRules"
@@ -22,20 +21,12 @@
     ></v-text-field>
 
     <!-- <v-text-field
-      v-model="name"
-      :counter="10"
-      :rules="nameRules"
-      label="Name"
+      v-model="password"
+      type="confirmPassword"
+      :rules="passwordRules"
+      label="confirmPassword"
       required
-    ></v-text-field>
-
-    <v-select
-      v-model="select"
-      :items="items"
-      :rules="[v => !!v || 'Item is required']"
-      label="Item"
-      required
-    ></v-select> -->
+    ></v-text-field> -->
 
     <v-checkbox
       v-model="checkbox"
@@ -59,34 +50,9 @@
         <br>
 
 
-        <center><h3>Not a member ?<a class="linkSignup" href="">
+        <center><h3>Not a member ?<a class="linkSignup" href="/signup">
                 Sign Up
         </a></h3></center>
-
-    <!-- <v-btn
-      :disabled="!valid"
-      color="success"
-      @click="validate"
-    >
-      Validate
-    </v-btn> -->
-
-    <!-- <v-btn
-      color="error"
-      @click="reset"
-    >
-      Reset Form
-    </v-btn>
-
-    <v-btn
-      color="warning"
-      @click="resetValidation"
-    >
-      Reset Validation
-    </v-btn> -->
-
-        
-        
 
 
        
@@ -115,14 +81,14 @@
         v => !!v || 'Password is required',
         v => /.+@.+/.test(v) || 'Password must be valid'
       ],
-      
-    //   select: null,
-    //   items: [
-    //     'Item 1',
-    //     'Item 2',
-    //     'Item 3',
-    //     'Item 4'
+
+    //   confirmPassword: '',
+    //   passwordRules: [
+    //     v => !!v || 'Password is required',
+    //     v => /.+@.+/.test(v) || 'Password must be valid'
     //   ],
+      
+
       checkbox: false
     }),
 
