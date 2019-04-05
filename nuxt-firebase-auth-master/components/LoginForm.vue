@@ -15,14 +15,14 @@
 
 
         <!-- {{qrCodeGenerate()}} -->
-      <!-- <no-ssr placeholder="loading..."> -->
+      <!-- <no-ssr placeholder="loading...">
   
-       <!-- <qrcode-stream @decode="onDecode"></qrcode-stream>  -->
+       <qrcode-stream @decode="onDecode"></qrcode-stream> 
     
    
-     <!--<qrcode-stream @decode="onDecode"></qrcode-stream> -->
+     <qrcode-stream @decode="onDecode"></qrcode-stream>
      
-      <!-- </no-ssr> -->
+      </no-ssr> -->
     </v-flex>
   
   </v-layout>
