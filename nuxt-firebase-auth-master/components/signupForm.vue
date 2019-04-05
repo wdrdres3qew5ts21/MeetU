@@ -90,27 +90,50 @@
       <!-- <v-radio label="Unspecific" value="radio-3"></v-radio> -->
     </v-radio-group>
 
-<v-container>
-      <v-flex xs12 sm3 d-flex >
+
+<!-- <v-container> -->
+
+      <v-flex xs12 sm5 d-flex >
         <v-select
           :items="location"
           label="Location"
+          prepend-icon="place"
         ></v-select>
       </v-flex>
-</v-container>
 
- <!-- <v-flex xs12 sm3 d-flex >
-    <v-text-field
-    
-      v-model="phone"
-      :rules="phoneRules"
-      label="Phone"
-      required
-    ></v-text-field>
- </v-flex> -->
+<v-spacer></v-spacer>
+
+
+    <v-layout row wrap>
+      
+      <v-flex xs3 >
+        <v-select
+          :items="phone"
+          label="TH"
+          prepend-icon="phone"
+        ></v-select>
+
+        
+      </v-flex>
+      <v-flex xs6 sm6 md6>
+          <v-text-field
+            label="Phone"
+          ></v-text-field>
+        </v-flex>
+    </v-layout>
+
+
   </v-layout>
 
-    <br>
+      <v-checkbox
+      v-model="checkbox"
+      
+      label="By continuing, you agree to MeetU's 
+            Terms of Service & Privacy Policy"
+      required
+    >
+    </v-checkbox>
+
       <v-btn block round="16px;" color="#341646" class="signIn mb-2 white--text" @click="Login"> 
           Sign Up
       </v-btn>
@@ -172,7 +195,15 @@
       menu: false,
 
 
-      // location:['Bangkok','Udon']
+      location:['Bangkok','Amnat Charoen','Ang Thong','Bueng Kan','Buriram','Chachoengsao','Chai Nat',
+                'Chaiyaphum','Chanthaburi','Chiang Mai','Chiang Rai','Chonburi','Chumphon','Kalasin','Kamphaeng Phet',
+                'Kanchanaburi','Khon Kaen','Krabi','Lampang','Lamphun','Loei','Lopburi','Mae Hong Son','Maha Sarakham',
+                'Mukdahan','Nakhon Nayok','Nakhon Pathom','Nakhon Phanom','Nakhon Ratchasima','Nakhon Sawan','Nakhon Si Thammarat',
+                'Nan','Narathiwat','Nong Bua Lam Phu','Nong Khai','Nonthaburi','Pathum Thani','Pattani','Phang Nga','Phatthalung','Phayao',
+                'Phetchabun','Phetchaburi','Phichit','Phitsanulok','Phra Nakhon Si Ayutthaya','Phrae','Phuket','Prachinburi','Prachuap Khiri Khan',
+                'Ranong','Ratchaburi','Rayong','Roi Et','Sa Kaeo','Sakon Nakhon','Samut Prakan','Samut Sakhon','Samut Songkhram','Saraburi','Satun',
+                'Sing Buri','Sisaket','Songkhla','Sukhothai','Suphan Buri','Surat Thani','Surin','Tak','Trang','Trat','Ubon Ratchathani','Udon Thani',
+                'Uthai Thani','Uttaradit','Yala','Yasothon']
 
 
       
