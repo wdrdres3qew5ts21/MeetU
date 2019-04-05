@@ -1,23 +1,34 @@
 <template>
+
   <v-layout>
-    <v-flex text-xs-center xs12 sm6 offset-sm3>
-      <h2 class="title">Sign In with Google</h2>
-      <v-btn class="signIn mb-2" primary @click.native="googleSignUp()">Google Sign In</v-btn>
-      <v-btn class="signIn mb-2" primary @click.native="facebookSignUp()">Facebook Sign In</v-btn>
-      <v-btn class="signIn mb-2" primary @click.native="twitterSignUp()">Twitter Sign In</v-btn>
-      <v-btn class="signIn mb-2" primary @click.native="qrCodeGenerate()"> QR Code Generate</v-btn>
-     <img src="http://localhost:3002/events/qrcode" alt="" srcset="" width="200"> 
-   
-    </v-flex>
-        {{qrCodeGenerate()}}
-    <no-ssr placeholder="loading...">
-  
-       <qrcode-stream @decode="onDecode"></qrcode-stream> 
+
     
+    <v-flex text-xs-center xs12 sm6 offset-sm3>
+      <h1 class="title">Log In</h1>
+      <br>
+      <v-btn block round="16px;" color="#DC4B3F" class="signIn mb-2 white--text" primary @click.native="googleSignUp()">Google</v-btn>
+      <v-btn block round="16px;" color="#3B5998" class="signIn mb-2 white--text" primary @click.native="facebookSignUp()">Facebook</v-btn>
+      <!-- <v-btn round="16px;" class="signIn mb-2" primary @click.native="twitterSignUp()">Twitter Sign In</v-btn> -->
+      <v-btn block round="16px;" class="signIn mb-2" primary @click.native="qrCodeGenerate()"> QR Code Generate</v-btn>
+     <img src="http://localhost:3002/events/qrcode" alt="" srcset="" width="200"> 
+          <p>Or</p>
+
+
+        <!-- {{qrCodeGenerate()}} -->
+      <!-- <no-ssr placeholder="loading..."> -->
+  
+       <!-- <qrcode-stream @decode="onDecode"></qrcode-stream>  -->
+    
+   
      <!--<qrcode-stream @decode="onDecode"></qrcode-stream> -->
      
-    </no-ssr>
+      <!-- </no-ssr> -->
+    </v-flex>
+  
   </v-layout>
+
+
+
 </template>
 
 <script>
@@ -31,6 +42,7 @@ export default {
       formEmail: '',
       formPassword: '',
       qrCode: '',
+      
     }
   },
   methods: {
@@ -80,7 +92,5 @@ export default {
 </script>
 
 <style lang="css">
-.signIn {
 
-}
 </style>
