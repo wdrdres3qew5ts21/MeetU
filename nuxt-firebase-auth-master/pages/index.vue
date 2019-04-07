@@ -29,12 +29,16 @@
 <v-layout row justify-start align-start >
 
           <v-layout>
-            <v-flex text-xs-center v-for="event in popularEventList" :key="event.eventId" xs6 :to="{path:'/event',query:{eventId:event.eventId}}">
+            <v-flex text-xs-center v-for="event in popularEventList" 
+            :key="event.eventId" xs6 
+            :to="{path:'/event',
+            query:{eventId:event.eventId}}">
+            
               <img v-bind:src="event.eventPhoto" alt="" height="150px">
               <p class="eventName">{{event.eventName}}</p>
               <p class="eventDate">{{event.eventDate.getDate()}}/{{event.eventDate.getMonth()}}/{{event.eventDate.getYear()}}</p>
             
-                <v-btn class="joinButton" depressed color="success">
+                <v-btn href="/login" class="joinButton" depressed color="success">
                   JOIN
                   
                 </v-btn>
@@ -54,12 +58,17 @@
 <v-layout row justify-start align-start >
 
           <v-layout>
-            <v-flex text-xs-center v-for="event in recentlyAdded" :key="event.eventId" xs6 :to="{path:'/event',query:{eventId:event.eventId}}">
+            <v-flex text-xs-center v-for="event in recentlyAdded" 
+            :key="event.eventId" xs6 
+            :to="{path:'/event',
+            query:{eventId:event.eventId}}">
+              
+              
               <img v-bind:src="event.eventPhoto" alt="" height="150px">
               <p class="eventName">{{event.eventName}}</p>
               <p class="eventDate">{{event.eventDate.getDate()}}/{{event.eventDate.getMonth()}}/{{event.eventDate.getYear()}}</p>
             
-                <v-btn class="joinButton" depressed color="success">
+                <v-btn href="/login" class="joinButton" depressed color="success">
                   JOIN
                   
                 </v-btn>
@@ -84,7 +93,7 @@
                       <p class="eventName">{{event.eventName}}</p>
                       <p class="eventDate">{{event.eventDate.getDate()}}/{{event.eventDate.getMonth()}}/{{event.eventDate.getYear()}}</p>
             
-                <v-btn class="joinButton" depressed color="success">
+                <v-btn href="/login" class="joinButton" depressed color="success">
                   JOIN
                   
                 </v-btn>
@@ -107,7 +116,7 @@
                       <p class="eventName">{{event.eventName}}</p>
                       <p class="eventDate">{{event.eventDate.getDate()}}/{{event.eventDate.getMonth()}}/{{event.eventDate.getYear()}}</p>
             
-                <v-btn class="joinButton" depressed color="success">
+                <v-btn href="/login" class="joinButton" depressed color="success">
                   JOIN
                   
                 </v-btn>
