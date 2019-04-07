@@ -62,7 +62,7 @@
       <v-toolbar-title v-text="title"></v-toolbar-title>
       
       <v-spacer></v-spacer>
-        <v-btn icon>
+        <v-btn href="/search" icon>
           <v-icon>search</v-icon>
         </v-btn>
 
