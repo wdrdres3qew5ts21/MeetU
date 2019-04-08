@@ -134,9 +134,69 @@
     >
     </v-checkbox>
 
-      <v-btn block round="16px;" color="#341646" class="signIn mb-2 white--text" @click="Login"> 
+      <v-btn block round="16px;" color="#341646" class="signIn mb-2 white--text" 
+      @click.stop="dialog = true"> 
           Sign Up
       </v-btn>
+
+    <v-dialog
+      v-model="dialog"
+      max-width="280"
+    >
+
+      <v-card>
+        
+       <v-card-title class="headline">
+         <v-container bg fill-height grid-list-md text-xs-center>
+            <v-layout row wrap align-center>
+              <v-flex xs12>
+                  Sign up Success !
+              </v-flex>
+
+
+            <v-flex>
+ 
+                <v-icon size="60px" color="green" dark>check_circle</v-icon>
+            </v-flex>
+ 
+            </v-layout>
+          </v-container>
+      </v-card-title>
+        
+
+        <v-card-actions>
+          
+          <v-container bg fill-height grid-list-md text-xs-center>
+            <v-layout row wrap align-center>
+          <v-btn
+            href="/signup"
+            color="red darken-1"
+            flat="flat"
+            @click="dialog = false"
+          >
+            Cancel
+          </v-btn>
+          </v-layout>
+          </v-container>
+
+            <v-container bg fill-height grid-list-md text-xs-center>
+              <v-layout row wrap align-center>
+          <v-btn
+            href="/"
+            color="green darken-1"
+            flat="flat"
+            @click="dialog = false"
+          >
+            OK
+          </v-btn>
+            </v-layout>
+          </v-container>
+        </v-card-actions>
+
+        
+      </v-card>
+    </v-dialog>
+    
     <br>
             
     <center>
@@ -159,7 +219,7 @@
 
 <script>
   export default {
-      name:'LoginEmailForm',
+      name:'signupForm',
     data: () => ({
      
         email: '',
@@ -204,6 +264,10 @@
                 'Ranong','Ratchaburi','Rayong','Roi Et','Sa Kaeo','Sakon Nakhon','Samut Prakan','Samut Sakhon','Samut Songkhram','Saraburi','Satun',
                 'Sing Buri','Sisaket','Songkhla','Sukhothai','Suphan Buri','Surat Thani','Surin','Tak','Trang','Trat','Ubon Ratchathani','Udon Thani',
                 'Uthai Thani','Uttaradit','Yala','Yasothon']
+
+
+                ,
+        dialog:false
 
 
       

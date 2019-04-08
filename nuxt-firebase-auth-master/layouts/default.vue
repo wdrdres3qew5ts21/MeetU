@@ -3,7 +3,7 @@
     <v-navigation-drawer v-model="drawer" fixed app style="background-color: #341646">
       <v-list>
         <nuxt-link class="link" to="/">
-          <v-list-tile>
+          <v-list-tile> 
             <v-list-tile>
               <v-icon class="icon">home</v-icon>
             </v-list-tile>
@@ -18,7 +18,7 @@
                 <v-list-tile >
                   <v-icon class="icon">category</v-icon>
                 </v-list-tile>
-                <v-list-tile-content style="color:#fff;">
+                <v-list-tile-content class="categoryIcon" style="color:#fff;">
                   Category
                 </v-list-tile-content>
               </v-list-tile>       
@@ -53,23 +53,23 @@
 
 
   
-    <v-toolbar app >
+    <v-toolbar color="#341646" app style="color:#fff;" >
       <v-btn
         icon
         @click.native.stop="drawer = !drawer">
-        <v-icon>menu</v-icon>
+        <v-icon class="menuButton" color="#fff;">menu</v-icon>
       </v-btn>
       <v-toolbar-title v-text="title"></v-toolbar-title>
       
       <v-spacer></v-spacer>
-        <v-btn icon>
-          <v-icon>search</v-icon>
+        <v-btn href="/search" icon>
+          <v-icon class="searchButton" color="#fff;">search</v-icon>
         </v-btn>
 
         
 
-        <v-btn icon href="/admin">
-          <v-icon>account_circle</v-icon>
+        <v-btn icon href="/login">
+          <v-icon class="accountButton" color="#fff;">account_circle</v-icon>
         </v-btn>
 
       <div v-if="user" id="user" class="text-xs-center">
@@ -194,6 +194,15 @@ a.link{
   text-decoration: none;
   color: #fff;
 }
+
+.v-btn:hover{
+  background-color: #FC5577;
+
+}
+
+
+
+
 
 
 

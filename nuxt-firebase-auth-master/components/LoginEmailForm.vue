@@ -38,9 +38,72 @@
     
     <v-btn block round="16px;" color="#341646" class="signIn mb-2 white--text"
       @click="Login"
+      @click.stop="dialog = true"
+      
     >
       Log In
     </v-btn>
+
+
+    
+
+    <v-dialog
+      v-model="dialog"
+      max-width="280"
+    >
+
+    
+      <v-card>
+        
+       <v-card-title class="headline">
+         <v-container bg fill-height grid-list-md text-xs-center>
+            <v-layout row wrap align-center>
+              <v-flex xs12>
+                  Log in Success !
+              </v-flex>
+
+
+            <v-flex>
+        <v-icon size="60px" color="green" dark>check_circle</v-icon>
+            </v-flex>
+ 
+            </v-layout>
+          </v-container>
+      </v-card-title>
+        
+
+        <v-card-actions>
+          
+          <v-container bg fill-height grid-list-md text-xs-center>
+            <v-layout row wrap align-center>
+          <v-btn
+            color="red darken-1"
+            flat="flat"
+            @click="dialog = false"
+          >
+            Cancel
+          </v-btn>
+          </v-layout>
+          </v-container>
+
+            <v-container bg fill-height grid-list-md text-xs-center>
+              <v-layout row wrap align-center>
+          <v-btn
+            color="green darken-1"
+            flat="flat"
+            @click="dialog = false"
+          >
+            OK
+          </v-btn>
+            </v-layout>
+          </v-container>
+        </v-card-actions>
+
+        
+      </v-card>
+    </v-dialog>
+    
+
 
         <center><a class="linkForgotPassword" href="">
                 Forgot your password
@@ -81,6 +144,8 @@
         v => !!v || 'Password is required',
         v => /.+@.+/.test(v) || 'Password must be valid'
       ],
+
+      dialog:false,
 
     //   confirmPassword: '',
     //   passwordRules: [
@@ -132,5 +197,11 @@
     color: #FC5577;
     font-weight: bold;
     text-decoration-line: none;
+}
+
+
+.headline{
+  /* position: center; */
+  font-weight: bold;
 }
 </style>
