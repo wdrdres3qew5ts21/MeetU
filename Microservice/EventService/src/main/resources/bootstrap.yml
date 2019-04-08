@@ -9,7 +9,7 @@ spring:
       mongodb:
           host: localhost
           port: 27017
-          local: local
+          database: meetu
   cloud:
     config:
       uri: http://localhost:8585
