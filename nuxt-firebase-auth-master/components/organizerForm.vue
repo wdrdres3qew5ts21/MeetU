@@ -25,7 +25,7 @@
                 right
                 top
               >
-                  <v-icon>edit</v-icon>
+                  <v-icon>add_a_photo</v-icon>
               </v-btn> 
           </v-card-text>
     </v-card>
@@ -44,7 +44,6 @@
         <v-select
           :items="location"
           label="Location"
-          prepend-icon="place"
         ></v-select>
       </v-flex>
 
