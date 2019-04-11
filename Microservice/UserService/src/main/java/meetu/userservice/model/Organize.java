@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package meetu.userservice.user;
+package meetu.userservice.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -28,6 +29,8 @@ public class Organize {
     private String organizeImageProfile;
 
     private String organizeImageCover;
+    
+    private Admin organizeOwner;
 
     private List<Admin> adminList;
 
@@ -48,6 +51,9 @@ public class Organize {
     }
 
     public List<Admin> getAdminList() {
+        if(adminList == null){
+            return new ArrayList<Admin>();
+        }
         return adminList;
     }
 
@@ -87,9 +93,17 @@ public class Organize {
         this.organizeImageCover = organizeImageCover;
     }
 
-    @Override
-    public String toString() {
-        return "Organize{" + "organizeId=" + organizeId + ", organizeName=" + organizeName + ", organizeDetail=" + organizeDetail + ", organizeTags=" + organizeTags + ", organizeImageProfile=" + organizeImageProfile + ", organizeImageCover=" + organizeImageCover + ", adminList=" + adminList + '}';
+    public Admin getOrganizeOwner() {
+        return organizeOwner;
     }
 
+    public void setOrganizeOwner(Admin organizeOwner) {
+        this.organizeOwner = organizeOwner;
+    }
+
+    @Override
+    public String toString() {
+        return "Organize{" + "organizeId=" + organizeId + ", organizeName=" + organizeName + ", organizeDetail=" + organizeDetail + ", organizeTags=" + organizeTags + ", organizeImageProfile=" + organizeImageProfile + ", organizeImageCover=" + organizeImageCover + ", organizeOwner=" + organizeOwner + ", adminList=" + adminList + '}';
+    }
+    
 }

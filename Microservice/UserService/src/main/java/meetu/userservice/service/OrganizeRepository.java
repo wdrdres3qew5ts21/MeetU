@@ -6,7 +6,7 @@
 package meetu.userservice.service;
 
 import java.util.List;
-import meetu.userservice.user.Organize;
+import meetu.userservice.model.Organize;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 import meetu.service.exceptions.BadRequestException;
 import static meetu.userservice.filters.GlobalValue.EXPIRATION_TIME;
 import static meetu.userservice.filters.GlobalValue.secretKey;
-import meetu.userservice.user.User;
+import meetu.userservice.model.User;
 
 @Service
 public class TokenAuthenticationService {
