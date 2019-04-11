@@ -8,7 +8,7 @@ package meetu.userservice.service;
 import java.util.List;
 import meetu.userservice.filters.TokenAuthenticationService;
 import meetu.userservice.repository.UserRepository;
-import meetu.userservice.user.User;
+import meetu.userservice.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package meetu.userservice.user;
+package meetu.userservice.model;
 
 import java.util.Date;
 import org.springframework.data.mongodb.core.mapping.Document;
