@@ -173,6 +173,7 @@
             color="red darken-1"
             flat="flat"
             @click="dialog = false"
+            class="popupSingupSuccess"
           >
             Cancel
           </v-btn>
@@ -186,6 +187,7 @@
             color="green darken-1"
             flat="flat"
             @click="dialog = false"
+            class="popupSingupSuccess"
           >
             OK
           </v-btn>
@@ -320,5 +322,9 @@
     color: #FC5577;
     font-weight: bold;
     text-decoration-line: none;
+}
+
+.popupSingupSuccess:hover{
+  background-color: #fff;
 }
 </style>
