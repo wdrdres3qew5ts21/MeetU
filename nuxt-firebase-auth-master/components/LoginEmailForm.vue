@@ -59,7 +59,8 @@
          <v-container bg fill-height grid-list-md text-xs-center>
             <v-layout row wrap align-center>
               <v-flex xs12 >
-                  Log in Success !
+                  <h3 class="h3">Complete</h3>
+                  <p class="p">Login Success!</p>
               </v-flex>
 
 
@@ -202,12 +203,20 @@
 }
 
 
-.headline{
-  /* position: center; */
-  font-weight: bold;
-}
+
 
 .popupLoginSuccess:hover{
   background-color: #fff;
+}
+
+.h3{
+  font-family: 'Roboto';
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 5%;
+}
+
+.p{
+  font-size: 16px;
 }
 </style>

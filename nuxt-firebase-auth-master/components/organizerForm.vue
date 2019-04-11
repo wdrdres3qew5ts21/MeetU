@@ -59,8 +59,8 @@
       </v-flex>
 
 
-      <v-btn block round="16px;" color="#341646" class="signIn mb-2 white--text"
-      @click.stop="dialog = true"
+      <v-btn block round="16px;" color="#341646" class="mb-2 white--text"
+      @click.stop="dialog1 = true"
       
     >
       Upgrade Account
@@ -70,7 +70,7 @@
     
 
     <v-dialog
-      v-model="dialog"
+      v-model="dialog1"
       max-width="280"
     >
 
@@ -80,8 +80,9 @@
        <v-card-title class="headline">
          <v-container bg fill-height grid-list-md text-xs-center>
             <v-layout row wrap align-center>
-              <v-flex xs12 class="upgradeSuccessTextPopup">
-                  Upgrade Account Success!
+              <v-flex xs12 >
+                  <h3 class="h3">Complete</h3>
+                  <p class="p">Upgrade Account Success!</p>
               </v-flex>
 
 
@@ -101,7 +102,7 @@
           <v-btn
             color="red darken-1"
             flat="flat"
-            @click="dialog = false"
+            @click="dialog1 = false"
             class="popupUpgrade"
           >
             Cancel
@@ -114,7 +115,7 @@
           <v-btn
             color="green darken-1"
             flat="flat"
-            @click="dialog = false"
+            @click="dialog1 = false"
             class="popupUpgrade"
           >
             OK
@@ -126,6 +127,78 @@
         
       </v-card>
     </v-dialog>
+
+
+
+    
+    <v-btn block round="16px;" color="red" class="white--text"
+    @click.stop="dialog2=true"
+      
+    >
+      Cancel
+    </v-btn>
+
+
+        <v-dialog
+      v-model="dialog2"
+      max-width="280"
+        >
+
+    
+      <v-card>
+        
+       <v-card-title class="headline">
+         <v-container bg fill-height grid-list-md text-xs-center>
+            <v-layout row wrap align-center>
+              <v-flex xs12 >
+                  <h3 class="h3">Confirmation</h3>
+                  <p class="p">Cancel Success!</p>
+              </v-flex>
+
+
+            <v-flex>
+        <v-icon size="60px" color="green" dark>check_circle</v-icon>
+            </v-flex>
+ 
+            </v-layout>
+          </v-container>
+      </v-card-title>
+        
+
+        <v-card-actions> 
+          
+          <v-container bg fill-height grid-list-md text-xs-center>
+            <v-layout row wrap align-center>
+          <v-btn
+            color="red darken-1"
+            flat="flat"
+            @click="dialog2 = false"
+            class="popupUpgrade"
+          >
+            Cancel
+          </v-btn>
+          </v-layout>
+          </v-container>
+
+            <v-container bg fill-height grid-list-md text-xs-center>
+              <v-layout row wrap align-center>
+          <v-btn
+            color="green darken-1"
+            flat="flat"
+            @click="dialog2 = false"
+            class="popupUpgrade"
+          >
+            OK
+          </v-btn>
+            </v-layout>
+          </v-container>
+        </v-card-actions>
+
+        
+      </v-card>
+    </v-dialog>
+
+
 
 
         
@@ -159,7 +232,8 @@ data() {
 
                 ,
       socialLink:['Instagram','Twitter','Line','Youtube','Twitter','Skype','GitHub'],
-      dialog: false,
+      dialog1: false,
+      dialog2: false,
       
     
   }
@@ -194,10 +268,26 @@ methods: {
 
 
 .upgradeSuccessTextPopup{
+  font-weight: bold;
   font-size: 18px;
 }
 
 .popupUpgrade:hover{
   background-color: white
 }
+
+.h3{
+  font-family: 'Roboto';
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 5%;
+}
+
+.p{
+  font-size: 16px;
+}
+
+
+
+
 </style>
