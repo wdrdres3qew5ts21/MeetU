@@ -6,6 +6,7 @@
 package meetu.userservice.controller;
 
 import java.util.List;
+import meetu.userservice.model.Admin;
 import meetu.userservice.service.OrganizeService;
 import meetu.userservice.model.Organize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +34,10 @@ public class OrganizeController {
         return new ResponseEntity<Organize>(organizeService.createOrganize(userId, organize), HttpStatus.CREATED);
     }
     
-    @PostMapping("/organize/{organizeId}")
-    public ResponseEntity<Organize> addAdminToOrganize(@PathVariable String userId[], @RequestBody Organize organize) {
-        return new ResponseEntity<Organize>(organizeService.createOrganize(userId, organize), HttpStatus.CREATED);
+    @PostMapping("/organize/{userId}")
+    public ResponseEntity<Organize> addAdminOrganize(@PathVariable Admin adminList[], @RequestBody Organize organize) {
+        return new ResponseEntity<Organize>(organizeService.addAdminOrganize(adminList, organize), HttpStatus.CREATED);
     }
-    
-    
 
     @GetMapping("/organizes")
     public ResponseEntity<List<Organize>> findAllOrganizes(@RequestParam(required = false) String organizeName) {
