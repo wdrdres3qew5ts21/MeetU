@@ -144,7 +144,7 @@
                 </v-btn> -->
 
 
-                </h2> <v-btn class="upgradeToOrganizerButton white--text" round="16" depressed large color="#341646">Become an Organizer</v-btn>
+                </h2> <v-btn href="/organizer" class="upgradeToOrganizerButton white--text" round="16" depressed large color="#341646">Become an Organizer</v-btn>
    
 
 

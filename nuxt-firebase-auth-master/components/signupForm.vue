@@ -1,5 +1,37 @@
 
 <template>
+
+<div>
+    <v-card class="elevation-0 mx-auto" 
+      color="white"     
+      max-width="150"
+    >
+        <v-img
+          :aspect-ratio="1/1"
+          src='https://image.flaticon.com/icons/png/512/64/64572.png'
+        >
+        
+        </v-img> 
+      
+          <v-card-text
+            class="pt-4"
+            style="position: relative;"
+          > 
+              <v-btn
+                absolute
+                color="#341646"
+                class="white--text"
+                fab
+                normal
+                right
+                top
+              >
+                  <v-icon>add_a_photo</v-icon>
+              </v-btn> 
+          </v-card-text>
+    </v-card>
+
+
   <v-form
     ref="form"
     v-model="valid"
@@ -149,8 +181,9 @@
        <v-card-title class="headline">
          <v-container bg fill-height grid-list-md text-xs-center>
             <v-layout row wrap align-center>
-              <v-flex xs12>
-                  Sign up Success !
+              <v-flex xs12 >
+                  <h3 class="h3">Complete</h3>
+                  <p class="p">Signup Success!</p>
               </v-flex>
 
 
@@ -173,6 +206,7 @@
             color="red darken-1"
             flat="flat"
             @click="dialog = false"
+            class="popupSingupSuccess"
           >
             Cancel
           </v-btn>
@@ -186,6 +220,7 @@
             color="green darken-1"
             flat="flat"
             @click="dialog = false"
+            class="popupSingupSuccess"
           >
             OK
           </v-btn>
@@ -211,7 +246,7 @@
   
 
   
-
+</div>
 
 
 </template>
@@ -320,5 +355,20 @@
     color: #FC5577;
     font-weight: bold;
     text-decoration-line: none;
+}
+
+.popupSingupSuccess:hover{
+  background-color: #fff;
+}
+
+.h3{
+  font-family: 'Roboto';
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 5%;
+}
+
+.p{
+  font-size: 16px;
 }
 </style>

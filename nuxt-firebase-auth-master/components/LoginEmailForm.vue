@@ -58,8 +58,9 @@
        <v-card-title class="headline">
          <v-container bg fill-height grid-list-md text-xs-center>
             <v-layout row wrap align-center>
-              <v-flex xs12>
-                  Log in Success !
+              <v-flex xs12 >
+                  <h3 class="h3">Complete</h3>
+                  <p class="p">Login Success!</p>
               </v-flex>
 
 
@@ -80,6 +81,7 @@
             color="red darken-1"
             flat="flat"
             @click="dialog = false"
+            class="popupLoginSuccess"
           >
             Cancel
           </v-btn>
@@ -92,6 +94,7 @@
             color="green darken-1"
             flat="flat"
             @click="dialog = false"
+            class="popupLoginSuccess"
           >
             OK
           </v-btn>
@@ -200,8 +203,20 @@
 }
 
 
-.headline{
-  /* position: center; */
+
+
+.popupLoginSuccess:hover{
+  background-color: #fff;
+}
+
+.h3{
+  font-family: 'Roboto';
+  font-size: 30px;
   font-weight: bold;
+  margin-bottom: 5%;
+}
+
+.p{
+  font-size: 16px;
 }
 </style>
