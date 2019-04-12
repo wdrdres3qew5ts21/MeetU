@@ -79,7 +79,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"communityName\": \"Test\",\n\t\"communityDescription\": \"Test\",\n\t\"communityImageCover\": \"https://www.yudana.id/wp-content/uploads/2019/02/Vuejs.jpg\",\n\t\"interestTags\": [\"programming\", \"education\",\"technology\"],\n\t\"userLists\": [{\n\t\t\"userId\": \"5c5ab59aa6fa42042c0d7f23\",\n\t\t\"username\": \"linjingyun12\"\n\t}],\n\t\"postLists\": [{\n\t\t\"userId\": \"5c5ab59aa6fa42042c0d7f23\",\n\t\t\"userName\": \"linjingyun12\",\n\t\t\"postDetail\": \"ยินดีต้อนรับสู่กลุ่ม VueJS Thailand ใครมีเทคนิคอะไรดีก็อย่าลืมแบ่งปันกัน ! \",\n\t\t\"commentOfPost\": [{\n\t\t\t\"userId\": \"5c5ab59aa6fa42042c0d7f23\",\n\t\t\t\"userName\": \"linjingyun12\",\n\t\t\t\"commentOfPostDetail\": \"ฉะนั้นใครถูกใจก็อย่าลืมชวนเพื่อนๆกันมานะ\"\n\t\t}]\n\t}\n\t]\n\t\n}"
+					"raw": "{\n\t\"userId\": \"5c5ab59aa6fa42042c0d7f23\",\n\t\"userName\": \"linjingyun12\",\n\t\"postDetail\": \"New Post of Community With generate Post ID + Date Of Post\"\n}"
 				},
 				"url": {
 					"raw": "http://localhost:3003/community/5c8fc8da06595d49f8fc5d08/post",
@@ -111,7 +111,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "   {\r\n      \"userId\": \"5c5ab59aa6fa42042c0d7f23\",\r\n      \"userName\": \"linjingyun12\",\r\n      \"commentOfPostDetail\": \"Test add comment to post and Also Have Date Time\"\r\n    }"
+					"raw": "   {\r\n      \"userId\": \"5c5ab59aa6fa42042c0d7f23\",\r\n      \"userName\": \"linjingyun12\",\r\n      \"commentOfPostDetail\": \"Hell yeard 3rd comment also free of bug !!!\"\r\n    }"
 				},
 				"url": {
 					"raw": "http://localhost:3003/community/5c8fc8da06595d49f8fc5d08/post/5c90e7bbdba8633f98ff0399",
