@@ -7,7 +7,7 @@ POST /my_index/_mapping
   "properties":{
     "detail":{
       "type": "text",
-      "analyzer": "my_custom_analyzer"
+      "analyzer": "rebuilt_thai"
     }
   }
 }
@@ -16,33 +16,44 @@ PUT /my_index
 {
   "settings": {
     "analysis": {
+      "filter": {
+        "thai_stop": {
+          "type":       "stop",
+          "stopwords":  "_thai_" 
+        }
+      },
       "analyzer": {
-        "my_custom_analyzer": {
-          "type": "custom", 
-          "tokenizer": "thai"
+        "rebuilt_thai": {
+          "tokenizer":  "thai",
+          "filter": [
+            "lowercase",
+            "decimal_digit",
+            "thai_stop"
+          ]
         }
       }
     }
   }
 }
 
+
 GET /my_index/_search
 {
   "query": {
-    "term": {
-      "detail": "สนุก"
+    "match": {
+      "detail": "japan"
     }
   }  
 }
 
 POST /my_index/_doc/1
 {
-  "detail": "กิจกรรมสุดสนุก"
+  "detail": "Japan Expo กิจกรรมสุดสนุกพบกับเหล่า Cosplay ชื่อดัง"
 }
 
 
 POST /my_index/_analyze
 {
-  "analyzer": "my_custom_analyzer", 
-  "text": "กิจกรรมสุดสนุก"
+  "analyzer": "rebuilt_thai", 
+  "text": "Japan Expo กิจกรรมสุดสนุกพบกับเหล่า Cosplay ชื่อดัง"
 }
