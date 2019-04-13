@@ -72,7 +72,7 @@ description: text
         "discount": 4990
     }
 }
-ถ้าหากเป้น dynamic field mapping type ตัว field disocunt ก็จะถูก mapping กับ long ซึ่งเป็น default type นั่นเองก็จะนำคำใน
+ถ้าหากเป็น dynamic field mapping type ตัว field disocunt ก็จะถูก mapping กับ long ซึ่งเป็น default type นั่นเองก็จะนำคำใน
 แต่ในกรณีนี้เราไม่มีโครงตัว mapping ใดๆเลยเพราะเราไม่สร้างทิ้งไว้ก่อนและยังปิด dynamic mapping fields อีกด้วยสิ่งที่เกิดขึ้นก้คือ
 ระบบ Elasticsearch จะนำ field ที่ไม่มีการ mapping เอาไว้ก่อนไปเก้บดองเอาไว้ใน _source ของ meta fields ซึ่งเก็บ raw data
 ของข้อมูลนั่นเองแต่ถ้าหากเราทำการค้นหา fields disocunt แล้วล่ะก็เราก็จะค้นหาไม่เจอนั่นเอง !!!
@@ -86,4 +86,21 @@ description: text
 Meta fields ประเภท Mapping จึงไมไ่ด้ส่งผล Anomaly ต่อข้อมูลอยู่แล้ว (มันแค่เปลี่ยน Type Mapping ไม่ได้เปลีย่นเนื้อข้อมูล) 
 จึงใช้คำสั่งเพิ่ม Query String  เข้าไปต่อนั่นก็คือ ?conflicts=proceed ต่อให้เกิด conflict ก็บังคับอัพเดทไปนัน่เอง !!!
 POST /product/_update_by_query?conflicts=proceed
+
+Analysis Elasticsearch ประกอบไปด้วยกันสามอย่างคือ 
+1.Character Filter ใช้แปลงตัวอักษร Cleaning ต่างๆเช่นการดึงคำ
+ออกมาจาก HTML Format หรือตัวเลขอาราบิกมาเป็นตัวเลขอังกฤษทั่วๆไป จากนั้นขั้นถัดไปคือนำคำที่ clean แล้วมาแยกคำ
+2. Tokenizer คือการตัดแยกคำที่มีความหายในภาษาอังกฤษใช้ spacebar ง่ายมากแต่ในไทยจะต้องพิเศษหน่อยคือเทียบจาก 
+dictionary ก็ต้องกำหนด format เป้นภาษาไทยนั่นเอง
+3.คือการ filter สุดท้ายก่อนข้อมูลจะออกไปว่าอยากให้แสดงกรองได้แบบไหนบ้างเช่นการตัดคำแบบ nGram สไลซ์คำเป็นชิ้นให้หาเจอง่ายขึ้น
+POST _analyze
+{
+  "tokenizer": "thai",
+  "filter": ["lowercase"], 
+  "text": "การที่ได้ต้องแสดงว่างานดี"
+}
+
+
+
+
 
