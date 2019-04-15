@@ -21,6 +21,10 @@ spring:
         max-interval: 2000
         initial-interval: 10000
       request-read-timeout: 10000
+elasticsearch:
+    host: localhost
+    port: 9200
+    
 #eureka:
 #  instance:
 #    appname: eventservice

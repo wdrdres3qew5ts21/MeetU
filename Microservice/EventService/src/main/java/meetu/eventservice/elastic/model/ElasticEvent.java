@@ -5,6 +5,7 @@
  */
 package meetu.eventservice.elastic.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.Date;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import java.util.List;
  *
  * @author wdrdr
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ElasticEvent {
      
     private String id;

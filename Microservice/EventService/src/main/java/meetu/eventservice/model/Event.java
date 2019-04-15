@@ -5,6 +5,8 @@
  */
 package meetu.eventservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 import java.util.List;
 import org.springframework.data.annotation.Id;
@@ -17,34 +19,36 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * @author wdrdr
  */
 @Document(collection = "events")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Event {
-    
+
     @Id
     @Indexed(direction = IndexDirection.ASCENDING)
-     private String eventId;
-    
+    private String eventId;
+
     private String eventName;
-    
+
     private List<String> eventTags;
-    
+
+    @JsonProperty("eventDetail")
     private String eventDetail;
-    
+
     private String eventPictureCover;
-    
+
     private List<String> eventPictureLists;
-    
+
     private String location;
-    
+
     private List<Post> postLists;
-    
+
     private Date createEventDate;
-    
+
     private Date endRegisterDate;
-    
+
     private Date eventEndDate;
-    
+
     private Date eventStartDate;
-    
+
     private Organize organize;
 
     public String getEventId() {
@@ -134,7 +138,7 @@ public class Event {
     public void setEventPictureCover(String eventPictureCover) {
         this.eventPictureCover = eventPictureCover;
     }
-    
+
     public Organize getOrganize() {
         return organize;
     }
@@ -143,5 +147,9 @@ public class Event {
         this.organize = organize;
     }
 
-    
+    @Override
+    public String toString() {
+        return "Event{" + "eventId=" + eventId + ", eventName=" + eventName + ", eventTags=" + eventTags + ", eventDetail=" + eventDetail + ", eventPictureCover=" + eventPictureCover + ", eventPictureLists=" + eventPictureLists + ", location=" + location + ", postLists=" + postLists + ", createEventDate=" + createEventDate + ", endRegisterDate=" + endRegisterDate + ", eventEndDate=" + eventEndDate + ", eventStartDate=" + eventStartDate + ", organize=" + organize + '}';
+    }
+
 }

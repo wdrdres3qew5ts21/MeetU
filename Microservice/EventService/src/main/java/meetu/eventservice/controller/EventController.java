@@ -11,6 +11,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import meetu.eventservice.model.Event;
 import meetu.eventservice.service.QRCodeService;
+import org.elasticsearch.search.SearchHits;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -65,8 +66,8 @@ public class EventController {
     }
     
      @GetMapping("/events/elasticsearch")
-    public ResponseEntity<List<Event>> findAllElastic() throws IOException {
-        return new ResponseEntity<List<Event>>(eventService.findAllElastic(), HttpStatus.OK);
+    public ResponseEntity<SearchHits> findAllElastic() throws IOException {
+        return new ResponseEntity<SearchHits>(eventService.findAllElastic(), HttpStatus.OK);
     }
     
     @GetMapping("/events/qrcode")
