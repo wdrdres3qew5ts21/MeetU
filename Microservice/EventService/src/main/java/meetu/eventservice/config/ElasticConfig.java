@@ -40,7 +40,6 @@ public class ElasticConfig {
         try {
             System.out.println(client.info(RequestOptions.DEFAULT).getNodeName());
             System.out.println(client.info(RequestOptions.DEFAULT).getClusterUuid());
-            System.out.println(client.info(RequestOptions.DEFAULT).isAvailable());
         } catch (IOException ex) {
             Logger.getLogger(ElasticConfig.class.getName()).log(Level.SEVERE, null, ex);
         }

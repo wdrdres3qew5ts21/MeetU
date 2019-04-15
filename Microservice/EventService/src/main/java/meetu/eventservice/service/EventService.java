@@ -66,10 +66,11 @@ public class EventService {
         SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
         System.out.println(searchResponse);
         SearchHits hits = searchResponse.getHits();
+        System.out.println(hits.getHits().length);
         return hits;
     }
 
-      public List<Event> elasticToObject() throws IOException {
+    public List<Event> elasticToObject() throws IOException {
         SearchRequest searchRequest = new SearchRequest();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
 //        MatchQueryBuilder matchQueryBuilder = new MatchQueryBuilder("eventDetail", "กิจกรรม");
@@ -90,8 +91,6 @@ public class EventService {
         return null;
     }
 
-    
-    
     private SearchRequest buildSearchRequest(String index, String type) {
 
         SearchRequest searchRequest = new SearchRequest();
