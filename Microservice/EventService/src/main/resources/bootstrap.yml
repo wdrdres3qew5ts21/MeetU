@@ -7,9 +7,12 @@ spring:
     active: dev
   data:
       mongodb:
-          host: localhost
+          host: 137.116.148.122
           port: 27017
+          authentication-database: admin
           database: meetu
+          username: meetuAdmin
+          password: popsonfonmeetu
   cloud:
     config:
       uri: http://localhost:8585
