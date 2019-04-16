@@ -1,8 +1,8 @@
 {
-  "name": "nuxt-firebase-auth",
+  "name": "meetu-project",
   "version": "0.0.3",
   "description": "Nuxt.js with Firebase Auth project",
-  "author": "David Royer <droyer01@gmail.com>",
+  "author": "milktea.js team",
   "private": true,
   "scripts": {
     "dev": "nuxt --port 3333",

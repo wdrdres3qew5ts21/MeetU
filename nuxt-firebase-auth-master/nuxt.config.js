@@ -1,6 +1,6 @@
 module.exports = {
   head: {
-    title: 'Nuxt Firebase Auth',
+    title: 'MeetU',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
