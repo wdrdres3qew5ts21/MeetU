@@ -79,6 +79,30 @@ GET /events/_search
   }
 }
 
+Filter คือช่วงที่อยู่ในการถามที่เป้นแค่ใช้กับไม่เท่านั้นจึงต้องเป้นพวก range หรือ term queryนั่นเองซึ่งจะมี must_not หรือ should 
+ด้วยเช่นกันใช้ในการเพิ่มแต้มคะแนนเวลาค้นหา
+GET /events/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "eventDetail": "ไทยๆ"
+          }
+        }
+      ],
+      "filter": {
+          "terms": {
+            "eventTags": [
+              "anime"
+            ]
+          }
+      }
+    }
+  }
+}
+
 
 GET /events/_search
 {

@@ -11,11 +11,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import meetu.eventservice.model.Event;
 import meetu.eventservice.service.QRCodeService;
-import org.elasticsearch.search.SearchHits;
-import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -48,9 +45,12 @@ public class EventController {
     }
 
     @GetMapping("/events")
-    public ResponseEntity<List<Event>> findAllEvents(@RequestParam(required = false) String eventDetail) throws IOException {
-        if (eventDetail != null) {
-            return new ResponseEntity<List<Event>>(eventService.findByEventDetailInElastic(eventDetail), HttpStatus.OK);
+    public ResponseEntity<List<Event>> findAllEvents(
+            @RequestParam(required = false) String eventDetail,
+            @RequestParam(required = false) String[] eventTags
+    ) throws IOException {
+        if (eventDetail != null || eventTags != null) {
+            return new ResponseEntity<List<Event>>(eventService.findByEventDetailInElastic(eventTags, eventDetail), HttpStatus.OK);
         }
         return new ResponseEntity<List<Event>>(eventService.findAllEventsInElastic(), HttpStatus.OK);
     }

@@ -5,7 +5,6 @@
  */
 package meetu.eventservice.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,9 +21,10 @@ import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MatchAllQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
-import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,24 +64,44 @@ public class EventService {
         return eventRepository.save(event);
     }
 
-    public List<Event> findByEventDetailInElastic(String eventDetail) {
+    public List<Event> findByEventDetailInElastic(String[] eventTags, String eventDetail) {
         ArrayList<Event> eventList = new ArrayList<Event>();
         SearchRequest searchRequest = new SearchRequest();
         searchRequest.indices(eventsIndex);
-
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        MatchQueryBuilder matchQueryBuilder = new MatchQueryBuilder("eventDetail", eventDetail);
-        searchSourceBuilder.query(matchQueryBuilder);
-        searchRequest.source(searchSourceBuilder);
         SearchResponse searchResponse = null;
-        try {
-            searchResponse = elasticClient.search(searchRequest, RequestOptions.DEFAULT);
-        } catch (IOException ex) {
-            Logger.getLogger(EventService.class.getName()).log(Level.SEVERE, null, ex);
+        System.out.println(eventDetail);
+        System.out.println(eventTags[0]);
+        if (eventTags == null) {
+            System.out.println("no evenTag ! : " + eventTags);
+            System.out.println(eventDetail);
+            MatchQueryBuilder matchQueryBuilder = new MatchQueryBuilder("eventDetail", eventDetail);
+            searchSourceBuilder.query(matchQueryBuilder);
+            searchRequest.source(searchSourceBuilder);
+            try {
+                searchResponse = elasticClient.search(searchRequest, RequestOptions.DEFAULT);
+            } catch (IOException ex) {
+                Logger.getLogger(EventService.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } else {
+            System.out.println("eventTag : " + eventTags);
+            System.out.println(eventDetail);
+            BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
+            boolQueryBuilder.must(
+                    (eventDetail != null) ? QueryBuilders.matchQuery("eventDetail", eventDetail) : QueryBuilders.matchAllQuery()
+            );
+            boolQueryBuilder.filter(QueryBuilders.termsQuery("eventTags", eventTags));
+            searchSourceBuilder.query(boolQueryBuilder);
+            searchRequest.source(searchSourceBuilder);
+            try {
+                searchResponse = elasticClient.search(searchRequest, RequestOptions.DEFAULT);
+            } catch (IOException ex) {
+                Logger.getLogger(EventService.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         SearchHits hits = searchResponse.getHits();
         eventList = ElasticUtil.searchHitsToList(hits, Event.class);
-
         return eventList;
     }
 
