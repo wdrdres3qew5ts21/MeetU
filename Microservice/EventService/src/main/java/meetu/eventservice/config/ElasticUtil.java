@@ -7,6 +7,9 @@ package meetu.eventservice.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 
@@ -25,6 +28,21 @@ public class ElasticUtil {
             elasticParseToPojo.add(objectMapper.convertValue(hit.getSourceAsMap(), type));
         }
         return elasticParseToPojo;
+    }
+
+    public static Map<String, Object> pojoToMap(Object objectParesedToMap) {
+        Map<String, Object> convertValue = objectMapper.convertValue(objectParesedToMap, Map.class);
+        ArrayList<String> removedKeyList = new ArrayList();
+        convertValue.forEach((key, value) -> {
+            if (value == null) {
+                removedKeyList.add((String) key);
+            }
+        });
+        for (String removedKey : removedKeyList) {
+            convertValue.remove(removedKey);
+        }
+
+        return convertValue;
     }
 
 }

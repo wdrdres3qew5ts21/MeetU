@@ -10,9 +10,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import meetu.eventservice.config.ElasticUtil;
 import meetu.eventservice.model.Event;
 import meetu.eventservice.repository.EventRepository;
+import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
@@ -35,17 +40,26 @@ public class EventService {
     private EventRepository eventRepository;
 
     @Autowired
-    private RestHighLevelClient restHighLevelClient;
+    private RestHighLevelClient elasticClient;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private String eventsIndex = "events";
+
+    private String indexType = "_doc";
 
     public Event createEvent(Event event) {
         Date currentDate = new Date();
         event.setCreateEventDate(currentDate);
-//        ElasticEvent elasticEvent = new ElasticEvent();
-//        elasticEvent.setEventStartDate(currentDate);
-//        elasticEvent.setEventName(event.getEventName());
-//        elasticEvent.setEventTags(event.getEventTags());
+        IndexRequest indexRequest = new IndexRequest(eventsIndex);
+        Map<String, Object> pojoToMap = ElasticUtil.pojoToMap(event);
+        pojoToMap.remove("organize");
+        indexRequest.source(pojoToMap);
+        try {
+            IndexResponse indexResponse = elasticClient.index(indexRequest, RequestOptions.DEFAULT);
+            String elasticEventid = indexResponse.getId();
+            event.setElasticEventId(elasticEventid);
+        } catch (IOException ex) {
+            Logger.getLogger(EventService.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return eventRepository.save(event);
     }
 
@@ -66,40 +80,17 @@ public class EventService {
         MatchAllQueryBuilder matchAllQueryBuilder = new MatchAllQueryBuilder();
         searchSourceBuilder.query(matchAllQueryBuilder);
         searchRequest.source(searchSourceBuilder);
-        SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        SearchResponse searchResponse = elasticClient.search(searchRequest, RequestOptions.DEFAULT);
         SearchHits hits = searchResponse.getHits();
-
         eventList = ElasticUtil.searchHitsToList(hits, Event.class);
 
+        System.out.println(ElasticUtil.pojoToMap(eventList.get(0)).get("eventDetail"));
         return eventList;
     }
 
-    public List elasticToObject() throws IOException {
-        SearchRequest searchRequest = new SearchRequest();
-        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-//        MatchQueryBuilder matchQueryBuilder = new MatchQueryBuilder("eventDetail", "กิจกรรม");
-//        searchSourceBuilder.query(matchQueryBuilder);
-        MatchAllQueryBuilder matchAllQueryBuilder = new MatchAllQueryBuilder();
-        searchSourceBuilder.query(matchAllQueryBuilder);
-        searchRequest.source(searchSourceBuilder);
-        searchRequest.types("_doc");
-        searchRequest.indices("events");
-        SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
-        System.out.println(searchResponse);
-        SearchHits hits = searchResponse.getHits();
-
-        for (SearchHit hit : hits) {
-            Event convertValue = objectMapper.convertValue(hit.getSourceAsMap(), Event.class);
-            System.out.println(convertValue);
-        }
-        return null;
-    }
-
     private SearchRequest buildSearchRequest(String index, String type) {
-
         SearchRequest searchRequest = new SearchRequest();
         searchRequest.indices(index);
-        searchRequest.types(type);
         return searchRequest;
     }
 

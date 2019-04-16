@@ -26,6 +26,8 @@ public class Event {
     @Indexed(direction = IndexDirection.ASCENDING)
     private String eventId;
 
+    private String elasticEventId;
+
     private String eventName;
 
     private List<String> eventTags;
@@ -146,9 +148,17 @@ public class Event {
         this.organize = organize;
     }
 
+    public String getElasticEventId() {
+        return elasticEventId;
+    }
+
+    public void setElasticEventId(String elasticEventId) {
+        this.elasticEventId = elasticEventId;
+    }
+
     @Override
     public String toString() {
-        return "Event{" + "eventId=" + eventId + ", eventName=" + eventName + ", eventTags=" + eventTags + ", eventDetail=" + eventDetail + ", eventPictureCover=" + eventPictureCover + ", eventPictureLists=" + eventPictureLists + ", location=" + location + ", postLists=" + postLists + ", createEventDate=" + createEventDate + ", endRegisterDate=" + endRegisterDate + ", eventEndDate=" + eventEndDate + ", eventStartDate=" + eventStartDate + ", organize=" + organize + '}';
+        return "Event{" + "eventId=" + eventId + ", eventElasticId=" + elasticEventId + ", eventName=" + eventName + ", eventTags=" + eventTags + ", eventDetail=" + eventDetail + ", eventPictureCover=" + eventPictureCover + ", eventPictureLists=" + eventPictureLists + ", location=" + location + ", createEventDate=" + createEventDate + ", endRegisterDate=" + endRegisterDate + ", eventEndDate=" + eventEndDate + ", eventStartDate=" + eventStartDate + ", organize=" + organize + '}';
     }
 
 }

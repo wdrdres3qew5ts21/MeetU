@@ -60,13 +60,12 @@ public class EventController {
         if (eventDetail != null) {
             System.out.println("param work !!! " + eventDetail);
             return new ResponseEntity<List<Event>>(eventService.findByEventDetailLike(eventDetail), HttpStatus.OK);
-
         }
         return new ResponseEntity<List<Event>>(eventService.findAllEvents(), HttpStatus.OK);
     }
 
     @GetMapping("/events/elasticsearch")
-    public ResponseEntity<List<Event>> findAllElastic() throws IOException {
+    public ResponseEntity<List<Event>> findAllElastic(@RequestParam(required = false) String eventDetail) throws IOException {
         return new ResponseEntity<List<Event>>(eventService.findAllElastic(), HttpStatus.OK);
     }
 
