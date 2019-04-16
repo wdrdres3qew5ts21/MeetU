@@ -23,6 +23,7 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.MatchAllQueryBuilder;
+import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
@@ -42,9 +43,9 @@ public class EventService {
     @Autowired
     private RestHighLevelClient elasticClient;
 
-    private String eventsIndex = "events";
+    private final String eventsIndex = "events";
 
-    private String indexType = "_doc";
+    private final String indexType = "_doc";
 
     public Event createEvent(Event event) {
         Date currentDate = new Date();
@@ -63,18 +64,31 @@ public class EventService {
         return eventRepository.save(event);
     }
 
-    public List<Event> findAllEvents() {
-        return eventRepository.findAll();
-    }
-
-    public List<Event> findByEventDetailLike(String eventDetail) {
-        return eventRepository.findByEventDetailLike(eventDetail);
-    }
-
-    public List<Event> findAllElastic() throws IOException {
+    public List<Event> findByEventDetailInElastic(String eventDetail) {
         ArrayList<Event> eventList = new ArrayList<Event>();
         SearchRequest searchRequest = new SearchRequest();
-        searchRequest.indices("events");
+        searchRequest.indices(eventsIndex);
+
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        MatchQueryBuilder matchQueryBuilder = new MatchQueryBuilder("eventDetail", eventDetail);
+        searchSourceBuilder.query(matchQueryBuilder);
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse searchResponse = null;
+        try {
+            searchResponse = elasticClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException ex) {
+            Logger.getLogger(EventService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        SearchHits hits = searchResponse.getHits();
+        eventList = ElasticUtil.searchHitsToList(hits, Event.class);
+
+        return eventList;
+    }
+
+    public List<Event> findAllEventsInElastic() throws IOException {
+        ArrayList<Event> eventList = new ArrayList<Event>();
+        SearchRequest searchRequest = new SearchRequest();
+        searchRequest.indices(eventsIndex);
 
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         MatchAllQueryBuilder matchAllQueryBuilder = new MatchAllQueryBuilder();
@@ -84,14 +98,7 @@ public class EventService {
         SearchHits hits = searchResponse.getHits();
         eventList = ElasticUtil.searchHitsToList(hits, Event.class);
 
-        System.out.println(ElasticUtil.pojoToMap(eventList.get(0)).get("eventDetail"));
         return eventList;
-    }
-
-    private SearchRequest buildSearchRequest(String index, String type) {
-        SearchRequest searchRequest = new SearchRequest();
-        searchRequest.indices(index);
-        return searchRequest;
     }
 
 }

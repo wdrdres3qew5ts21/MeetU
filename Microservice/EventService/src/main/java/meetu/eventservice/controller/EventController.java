@@ -33,16 +33,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class EventController {
 
-    //@Value("${server.message.greeting}")
-    private String eurekaMessage;
-
     @Value("${spring.profiles.active}")
     List<String> profiles;
-
-    @GetMapping("/test")
-    public ResponseEntity<String> testMessage() {
-        return new ResponseEntity<String>(profiles.get(0) + " : " + eurekaMessage, HttpStatus.OK);
-    }
 
     @Autowired
     private EventService eventService;
@@ -56,25 +48,18 @@ public class EventController {
     }
 
     @GetMapping("/events")
-    public ResponseEntity<List<Event>> findAllEvents(@RequestParam(required = false) String eventDetail) {
+    public ResponseEntity<List<Event>> findAllEvents(@RequestParam(required = false) String eventDetail) throws IOException {
         if (eventDetail != null) {
-            System.out.println("param work !!! " + eventDetail);
-            return new ResponseEntity<List<Event>>(eventService.findByEventDetailLike(eventDetail), HttpStatus.OK);
+            return new ResponseEntity<List<Event>>(eventService.findByEventDetailInElastic(eventDetail), HttpStatus.OK);
         }
-        return new ResponseEntity<List<Event>>(eventService.findAllEvents(), HttpStatus.OK);
-    }
-
-    @GetMapping("/events/elasticsearch")
-    public ResponseEntity<List<Event>> findAllElastic(@RequestParam(required = false) String eventDetail) throws IOException {
-        return new ResponseEntity<List<Event>>(eventService.findAllElastic(), HttpStatus.OK);
+        return new ResponseEntity<List<Event>>(eventService.findAllEventsInElastic(), HttpStatus.OK);
     }
 
     @GetMapping("/events/qrcode")
     public ResponseEntity<byte[]> qrCodeGenerator(HttpServletResponse response) {
-        // 
         response.setContentType("image/png");
         // return new ResponseEntity<byte[]>(qRCodeService.getQRCodeImage(), HttpStatus.OK);
         return new ResponseEntity<byte[]>(qRCodeService.getQRCodeImage("https://trello.com/b/OutSJrmK/project", 1000, 1000), HttpStatus.OK);
-
     }
+
 }
