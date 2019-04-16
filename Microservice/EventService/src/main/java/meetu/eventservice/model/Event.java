@@ -30,7 +30,6 @@ public class Event {
 
     private List<String> eventTags;
 
-    @JsonProperty("eventDetail")
     private String eventDetail;
 
     private String eventPictureCover;

@@ -58,18 +58,18 @@ public class EventController {
     @GetMapping("/events")
     public ResponseEntity<List<Event>> findAllEvents(@RequestParam(required = false) String eventDetail) {
         if (eventDetail != null) {
-            System.out.println("param work !!! "+eventDetail);
+            System.out.println("param work !!! " + eventDetail);
             return new ResponseEntity<List<Event>>(eventService.findByEventDetailLike(eventDetail), HttpStatus.OK);
 
         }
         return new ResponseEntity<List<Event>>(eventService.findAllEvents(), HttpStatus.OK);
     }
-    
-     @GetMapping("/events/elasticsearch")
-    public ResponseEntity<SearchHits> findAllElastic() throws IOException {
-        return new ResponseEntity<SearchHits>(eventService.findAllElastic(), HttpStatus.OK);
+
+    @GetMapping("/events/elasticsearch")
+    public ResponseEntity<List<Event>> findAllElastic() throws IOException {
+        return new ResponseEntity<List<Event>>(eventService.findAllElastic(), HttpStatus.OK);
     }
-    
+
     @GetMapping("/events/qrcode")
     public ResponseEntity<byte[]> qrCodeGenerator(HttpServletResponse response) {
         // 

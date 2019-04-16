@@ -7,8 +7,10 @@ package meetu.eventservice.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import meetu.eventservice.config.ElasticUtil;
 import meetu.eventservice.model.Event;
 import meetu.eventservice.repository.EventRepository;
 import org.elasticsearch.action.search.SearchRequest;
@@ -55,22 +57,24 @@ public class EventService {
         return eventRepository.findByEventDetailLike(eventDetail);
     }
 
-    public SearchHits findAllElastic() throws IOException {
+    public List<Event> findAllElastic() throws IOException {
+        ArrayList<Event> eventList = new ArrayList<Event>();
         SearchRequest searchRequest = new SearchRequest();
+        searchRequest.indices("events");
+
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         MatchAllQueryBuilder matchAllQueryBuilder = new MatchAllQueryBuilder();
         searchSourceBuilder.query(matchAllQueryBuilder);
         searchRequest.source(searchSourceBuilder);
-        searchRequest.types("_doc");
-        searchRequest.indices("events");
         SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
-        System.out.println(searchResponse);
         SearchHits hits = searchResponse.getHits();
-        System.out.println(hits.getHits().length);
-        return hits;
+
+        eventList = ElasticUtil.searchHitsToList(hits, Event.class);
+
+        return eventList;
     }
 
-    public List<Event> elasticToObject() throws IOException {
+    public List elasticToObject() throws IOException {
         SearchRequest searchRequest = new SearchRequest();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
 //        MatchQueryBuilder matchQueryBuilder = new MatchQueryBuilder("eventDetail", "กิจกรรม");
