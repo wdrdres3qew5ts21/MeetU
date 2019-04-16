@@ -56,6 +56,18 @@ POST /events/_mapping
               "ignore_above" : 256
             }
       }
+    },
+    "createEventDate":{
+      "type": "date"
+    },
+    "endRegisterDate":{
+      "type": "date"
+    },
+    "eventEndDate":{
+      "type": "date"
+    },
+    "eventStartDate":{
+      "type": "date"
     }
   }
 }
@@ -68,7 +80,16 @@ GET /events/_search
 }
 
 
-
+GET /events/_search
+{
+  "query": {
+    "range": {
+      "createEventDate": {
+        "gte": "2015-01-01"
+      }
+    }
+  }
+}
 
 POST /events/_open
 POST /events/_close
