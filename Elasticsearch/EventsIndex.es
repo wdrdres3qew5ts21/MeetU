@@ -115,6 +115,18 @@ GET /events/_search
   }
 }
 
+การค้นหาแบบ multifields และมีการเพิ่มคะแนนให้กับ rank ตัวนั้นๆเช่นการค้นหาว่าสงกรานต์ในเชียงใหม่
+GET /events/_search
+{
+  "query": {
+    "query_string": {
+      "fields" : ["eventDetail^2", "location^5"],
+      "query" : "Songkarn holiday in Chaing Mai"
+    }
+  }
+}
+
+
 POST /events/_open
 POST /events/_close
 

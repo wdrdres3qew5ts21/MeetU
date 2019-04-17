@@ -39,9 +39,9 @@ public class ElasticUtil {
                 removedKeyList.add((String) key);
             }
         });
-        for (String removedKey : removedKeyList) {
+        removedKeyList.forEach((removedKey) -> {
             convertValue.remove(removedKey);
-        }
+        });
 
         return convertValue;
     }

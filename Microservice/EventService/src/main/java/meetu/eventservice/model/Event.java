@@ -38,8 +38,6 @@ public class Event {
 
     private List<String> eventPictureLists;
 
-    private String location;
-
     private List<Post> postLists;
 
     private Date createEventDate;
@@ -49,6 +47,8 @@ public class Event {
     private Date eventEndDate;
 
     private Date eventStartDate;
+    
+    private Location location;
 
     private Organize organize;
 
@@ -116,11 +116,11 @@ public class Event {
         this.eventStartDate = eventStartDate;
     }
 
-    public String getLocation() {
+    public Location getLocation() {
         return location;
     }
 
-    public void setLocation(String location) {
+    public void setLocation(Location location) {
         this.location = location;
     }
 

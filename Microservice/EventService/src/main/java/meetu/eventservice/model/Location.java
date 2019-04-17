@@ -10,19 +10,19 @@ package meetu.eventservice.model;
  * @author wdrdr
  */
 public class Location {
-    
+
     private String detail;
-    
+
     private String subDistrict;
-    
+
     private String district;
-    
+
     private String province;
-    
+
     private String country;
-    
+
     private long lat;
-    
+
     private long lon;
 
     public String getSubDistrict() {
@@ -80,5 +80,5 @@ public class Location {
     public void setDetail(String detail) {
         this.detail = detail;
     }
-            
+
 }

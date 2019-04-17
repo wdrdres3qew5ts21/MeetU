@@ -47,10 +47,13 @@ public class EventController {
     @GetMapping("/events")
     public ResponseEntity<List<Event>> findAllEvents(
             @RequestParam(required = false) String eventDetail,
-            @RequestParam(required = false) String[] eventTags
+            @RequestParam(required = false) String[] eventTags,
+            @RequestParam(required = false, defaultValue = "false") boolean isRecently
     ) throws IOException {
-        if (eventDetail != null || eventTags != null) {
-            return new ResponseEntity<List<Event>>(eventService.findByEventDetailInElastic(eventTags, eventDetail), HttpStatus.OK);
+        System.out.println(isRecently);
+
+        if ((eventDetail != null || eventTags != null) | isRecently != false) {
+            return new ResponseEntity<List<Event>>(eventService.findByEventDetailInElastic(eventTags, isRecently, eventDetail), HttpStatus.OK);
         }
         return new ResponseEntity<List<Event>>(eventService.findAllEventsInElastic(), HttpStatus.OK);
     }
