@@ -31,6 +31,7 @@ import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 /**
@@ -47,8 +48,6 @@ public class EventService {
     private RestHighLevelClient elasticClient;
 
     private final String eventsIndex = "events";
-
-    private final String indexType = "_doc";
 
     public Event createEvent(Event event) {
         Date currentDate = new Date();
@@ -85,105 +84,59 @@ public class EventService {
         return savedEventMongoDB;
     }
 
-    public List<Event> findByEventDetailInElastic(String[] eventTags, boolean isRecently, String eventDetail) {
-        ArrayList<Event> eventList = new ArrayList<Event>();
-        SearchRequest searchRequest = new SearchRequest();
-        searchRequest.indices(eventsIndex);
+    public List<Event> findEventByUsingFilter(String[] eventTags, boolean isRecently, String eventDetail) throws IOException {
+        BoolQueryBuilder queryFilter = new BoolQueryBuilder();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        SearchRequest searchRequest = new SearchRequest(eventsIndex);
         SearchResponse searchResponse = null;
+
+        System.out.println("--- Start Filtering ---");
+        if (eventTags != null) {
+            System.out.println("Event Tag");
+            queryFilter = filterByEventTags(queryFilter, eventTags);
+        }
         if (eventDetail != null) {
-            System.out.println("no evenTag ! : " + eventTags);
-            MatchQueryBuilder matchQueryBuilder = new MatchQueryBuilder("eventDetail", eventDetail);
-            searchSourceBuilder.query(matchQueryBuilder);
-            searchRequest.source(searchSourceBuilder);
-            try {
-                searchResponse = elasticClient.search(searchRequest, RequestOptions.DEFAULT);
-            } catch (IOException ex) {
-                Logger.getLogger(EventService.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-        } else if (eventTags != null) {
-            System.out.println("eventTag : " + eventTags);
-            System.out.println(eventDetail);
-            BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
-            boolQueryBuilder.must(
-                    (eventDetail != null) ? QueryBuilders.matchQuery("eventDetail", eventDetail) : QueryBuilders.matchAllQuery()
-            );
-            boolQueryBuilder.filter(QueryBuilders.termsQuery("eventTags", eventTags));
-            searchSourceBuilder.query(boolQueryBuilder);
-            searchRequest.source(searchSourceBuilder);
-            try {
-                searchResponse = elasticClient.search(searchRequest, RequestOptions.DEFAULT);
-            } catch (IOException ex) {
-                Logger.getLogger(EventService.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            System.out.println("Event Detail");
+            queryFilter.must(filterByEventDetail(eventDetail));
         }
-
         if (isRecently == true) {
-            try {
-                System.out.println("ffdsfsd");
-                MatchAllQueryBuilder matchAllQueryBuilder = new MatchAllQueryBuilder();
-                searchSourceBuilder.query(matchAllQueryBuilder);
-                searchSourceBuilder.sort("createEventDate", SortOrder.DESC);
-                searchRequest.source(searchSourceBuilder);
-                searchRequest.source(searchSourceBuilder);
-                searchResponse = elasticClient.search(searchRequest, RequestOptions.DEFAULT);
-                SearchHits hits = searchResponse.getHits();
-                eventList = ElasticUtil.searchHitsToList(hits, Event.class);
-                return eventList;
-            } catch (IOException ex) {
-                Logger.getLogger(EventService.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            System.out.println("Recently");
+            searchSourceBuilder = filterByRecently(searchSourceBuilder, "createEventDate");
         }
-        SearchHits hits = searchResponse.getHits();
-        eventList = ElasticUtil.searchHitsToList(hits, Event.class);
-        return eventList;
+
+        searchSourceBuilder.query(queryFilter);
+        searchRequest.source(searchSourceBuilder);
+        searchResponse = elasticClient.search(searchRequest, RequestOptions.DEFAULT);
+
+        return ElasticUtil.searchHitsToList(searchResponse.getHits(), Event.class);
     }
 
     public List<Event> findAllEventsInElastic() throws IOException {
-        ArrayList<Event> eventList = new ArrayList<Event>();
+        System.out.println("find all event");
         SearchRequest searchRequest = new SearchRequest();
         searchRequest.indices(eventsIndex);
 
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        MatchAllQueryBuilder matchAllQueryBuilder = new MatchAllQueryBuilder();
-        searchSourceBuilder.query(matchAllQueryBuilder);
+        searchSourceBuilder.query(QueryBuilders.matchAllQuery());
         searchRequest.source(searchSourceBuilder);
         SearchResponse searchResponse = elasticClient.search(searchRequest, RequestOptions.DEFAULT);
-        SearchHits hits = searchResponse.getHits();
-        eventList = ElasticUtil.searchHitsToList(hits, Event.class);
 
-        return eventList;
+        return ElasticUtil.searchHitsToList(searchResponse.getHits(), Event.class);
     }
 
-//    public SearchSourceBuilder filterByEventTags(SearchSourceBuilder searchSourceBuilder, String eventTags[]) {
-//        BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
-//        boolQueryBuilder.must(
-//                (eventDetail != null) ? QueryBuilders.matchQuery("eventDetail", eventDetail) : QueryBuilders.matchAllQuery()
-//        );
-//        boolQueryBuilder.filter(QueryBuilders.termsQuery("eventTags", eventTags));
-//        searchSourceBuilder.query(boolQueryBuilder);
-//        searchRequest.source(searchSourceBuilder);
-//        try {
-//            searchResponse = elasticClient.search(searchRequest, RequestOptions.DEFAULT);
-//        } catch (IOException ex) {
-//            Logger.getLogger(EventService.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
-    public List<Event> findRecentlyEventsInElastic() throws IOException {
-        ArrayList<Event> eventList = new ArrayList<Event>();
-        SearchRequest searchRequest = new SearchRequest();
-        searchRequest.indices(eventsIndex);
+    public BoolQueryBuilder filterByEventTags(BoolQueryBuilder queryFilter, String eventTags[]) {
+        queryFilter.filter(QueryBuilders.termsQuery("eventTags", eventTags));
+        return queryFilter;
+    }
 
-        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        MatchAllQueryBuilder matchAllQueryBuilder = new MatchAllQueryBuilder();
-        searchSourceBuilder.query(matchAllQueryBuilder);
-        searchSourceBuilder.sort("createEventDate", SortOrder.DESC);
-        searchRequest.source(searchSourceBuilder);
-        SearchResponse searchResponse = elasticClient.search(searchRequest, RequestOptions.DEFAULT);
-        SearchHits hits = searchResponse.getHits();
-        eventList = ElasticUtil.searchHitsToList(hits, Event.class);
-        return eventList;
+    public MatchQueryBuilder filterByEventDetail(String eventDetail) {
+        MatchQueryBuilder alreadyFilterByEventDetail = QueryBuilders.matchQuery("eventDetail", eventDetail);
+        return alreadyFilterByEventDetail;
+    }
+
+    public SearchSourceBuilder filterByRecently(SearchSourceBuilder searchSourceBuilder, String sortedField) throws IOException {
+        searchSourceBuilder.sort(sortedField, SortOrder.DESC);
+        return searchSourceBuilder;
     }
 
 }

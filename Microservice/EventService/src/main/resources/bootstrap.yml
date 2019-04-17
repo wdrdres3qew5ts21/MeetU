@@ -9,7 +9,7 @@ spring:
       mongodb:
 #          host: 
 #          port: 
-          uri: mongodb://137.116.148.122:27017/?maxIdleTimeMS=1500000
+          uri: mongodb://137.116.148.122:27017/?maxIdleTimeMS=120000&connectTimeoutMS=10000
           authentication-database: admin
           database: meetu
           username: meetuAdmin
