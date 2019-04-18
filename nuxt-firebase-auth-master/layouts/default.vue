@@ -62,15 +62,18 @@
       <v-toolbar-title v-text="title"></v-toolbar-title>
       
       <v-spacer></v-spacer>
-        <v-btn href="/search" icon>
-          <v-icon class="searchButton" color="#fff;">search</v-icon>
-        </v-btn>
+          <nuxt-link :to='`/search`' style="text-decoration-line:none;">
+            <v-btn icon>
+              <v-icon class="searchButton" color="#fff;">search</v-icon>
+            </v-btn>
+          </nuxt-link>
 
         
-
-        <v-btn icon href="/login">
-          <v-icon class="accountButton" color="#fff;">account_circle</v-icon>
-        </v-btn>
+        <nuxt-link :to='`/login`' style="text-decoration-line:none;">
+            <v-btn icon>
+              <v-icon class="accountButton" color="#fff;">account_circle</v-icon>
+            </v-btn>
+        </nuxt-link>
 
       <div v-if="user" id="user" class="text-xs-center">
         <v-menu
