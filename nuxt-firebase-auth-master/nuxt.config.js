@@ -39,7 +39,8 @@ module.exports = {
     { src: '~/plugins/vuetify.js' },
     { src: '~/plugins/fireauth.js' },
     { src: '~/plugins/fireinit.js' },
-    { src: '~/plugins/vue-qrcode-reader.js', ssr: false }
+    { src: '~/plugins/vue-qrcode-reader.js', ssr: false },
+    { src: '~/plugins/vue2-google-maps.js', ssr: false }
   ],
   css: [
     { src: '~/assets/css/main.css', lang: 'css' },
@@ -48,6 +49,7 @@ module.exports = {
   vendor: [
     'firebase',
     'vuetify',
-    'vue-qrcode-reader'
+    'vue-qrcode-reader',
+    'vue2-google-maps'
   ]
 }

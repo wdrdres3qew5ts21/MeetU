@@ -22,7 +22,7 @@
                   Category
                 </v-list-tile-content>
               </v-list-tile>       
-              <v-list-tile  v-for="(category, i) in categoryList" :key="i" ripple @click="close">
+              <v-list-tile  v-for="(category, i) in categoryList" :key="i" ripple >
                 <v-list-tile-action >
                 </v-list-tile-action>
                 <v-list-tile-content>
@@ -152,6 +152,7 @@ export default {
   computed: {
     user() {
       return this.$store.getters.activeUser;
+      // return 'hj'
     }
   },
   methods: {

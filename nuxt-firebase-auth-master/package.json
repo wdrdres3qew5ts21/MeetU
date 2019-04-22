@@ -20,6 +20,7 @@
     "jsqr": "^1.2.0",
     "nuxt": "^1.4.2",
     "vue-qrcode-reader": "^1.4.0",
+    "vue2-google-maps": "^0.10.6",
     "vuetify": "^1.2.1"
   },
   "devDependencies": {

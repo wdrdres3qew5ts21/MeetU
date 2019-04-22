@@ -14,6 +14,7 @@ export default (context) => {
       //     console.log(error)
       //   })
       console.log('state change login fireauth.js')
+      console.log(store)
       store.commit('setUser', user)
       // console.log(user)
       resolve()
