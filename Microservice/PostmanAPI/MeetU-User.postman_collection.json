@@ -1,0 +1,127 @@
+{
+	"info": {
+		"_postman_id": "faa4299a-a737-4d1a-aab8-d09d3bea2fba",
+		"name": "MeetU-User",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:3001/users/login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\" : \"linjingyun12\",\n\t\"password\" : \"lnwza555\"\n\t\n}"
+				},
+				"url": {
+					"raw": "localhost:3001/users/login",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3001/users",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\" : \"permupop\",\n\t\"password\" : \"mimi59130500086\",\n\t\"role\"     : \"user\",\n\t\"email\"    :  \"ppp@gmail.com\",\n\t\"firstName\": \"Virada\",\n\t\"lastName\" : \"Weerapatsakulchai\",\n\t\"userImage\": \"https://previews.123rf.com/images/hillway/hillway1602/hillway160200067/52822795-vector-illustration-of-red-poppy-flower-on-a-green-stem-.jpg\"\n\t\n\t\n}"
+				},
+				"url": {
+					"raw": "localhost:3001/users",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3001/users",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"linjingyun12\",\n\t\"password\": \"lnwza555\",\n\t\"role\": \"user\",\n\t\"email\": \"wdrdres3qew5ts21@gmail.com\",\n\t\"firstName\": \"Supakorn\",\n\t\"lastName\": \"Trakulmaiphol\"\n}"
+				},
+				"url": {
+					"raw": "localhost:3001/users",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3001/organize/5cade3779aac530fb01a4ce2",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"organizeName\":\"DEPA\",\n\t\"organizeDetail\": \"Department of Electronic and ecommerce support for Thai business\",\n\t\"adminList\": [\n\t\t{\n\t\t\t\"userId\": \"5cade3779aac530fb01a4ce2\",\n\t\t\t\"username\": \"sdsd\"\n\t\t}\n\t\t]\n}"
+				},
+				"url": {
+					"raw": "localhost:3001/organize/5cb03131b2ea082964f5341b",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"organize",
+						"5cb03131b2ea082964f5341b"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

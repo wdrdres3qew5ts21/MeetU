@@ -34,7 +34,6 @@ public class OrganizeController {
         return new ResponseEntity<Organize>(organizeService.createOrganize(userId, organize), HttpStatus.CREATED);
     }
     
-    @PostMapping("/organize/{userId}")
     public ResponseEntity<Organize> addAdminOrganize(@PathVariable Admin adminList[], @RequestBody Organize organize) {
         return new ResponseEntity<Organize>(organizeService.addAdminOrganize(adminList, organize), HttpStatus.CREATED);
     }

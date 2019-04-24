@@ -5,6 +5,8 @@
  */
 package meetu.eventservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 import java.util.List;
 import org.springframework.data.annotation.Id;
@@ -17,34 +19,37 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * @author wdrdr
  */
 @Document(collection = "events")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Event {
-    
+
     @Id
     @Indexed(direction = IndexDirection.ASCENDING)
-     private String eventId;
-    
+    private String eventId;
+
+    private String elasticEventId;
+
     private String eventName;
-    
+
     private List<String> eventTags;
-    
+
     private String eventDetail;
-    
+
     private String eventPictureCover;
-    
+
     private List<String> eventPictureLists;
-    
-    private String location;
-    
+
     private List<Post> postLists;
-    
+
     private Date createEventDate;
-    
+
     private Date endRegisterDate;
-    
+
     private Date eventEndDate;
-    
+
     private Date eventStartDate;
     
+    private Location location;
+
     private Organize organize;
 
     public String getEventId() {
@@ -111,11 +116,11 @@ public class Event {
         this.eventStartDate = eventStartDate;
     }
 
-    public String getLocation() {
+    public Location getLocation() {
         return location;
     }
 
-    public void setLocation(String location) {
+    public void setLocation(Location location) {
         this.location = location;
     }
 
@@ -134,7 +139,7 @@ public class Event {
     public void setEventPictureCover(String eventPictureCover) {
         this.eventPictureCover = eventPictureCover;
     }
-    
+
     public Organize getOrganize() {
         return organize;
     }
@@ -143,5 +148,17 @@ public class Event {
         this.organize = organize;
     }
 
-    
+    public String getElasticEventId() {
+        return elasticEventId;
+    }
+
+    public void setElasticEventId(String elasticEventId) {
+        this.elasticEventId = elasticEventId;
+    }
+
+    @Override
+    public String toString() {
+        return "Event{" + "eventId=" + eventId + ", eventElasticId=" + elasticEventId + ", eventName=" + eventName + ", eventTags=" + eventTags + ", eventDetail=" + eventDetail + ", eventPictureCover=" + eventPictureCover + ", eventPictureLists=" + eventPictureLists + ", location=" + location + ", createEventDate=" + createEventDate + ", endRegisterDate=" + endRegisterDate + ", eventEndDate=" + eventEndDate + ", eventStartDate=" + eventStartDate + ", organize=" + organize + '}';
+    }
+
 }

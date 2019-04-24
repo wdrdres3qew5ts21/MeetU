@@ -7,9 +7,13 @@ spring:
     active: dev
   data:
       mongodb:
-          host: localhost
-          port: 27017
+#          host: 
+#          port: 
+          uri: mongodb://137.116.148.122:27017/?maxIdleTimeMS=120000&connectTimeoutMS=10000
+          authentication-database: admin
           database: meetu
+          username: meetuAdmin
+          password: popsonfonmeetu
   cloud:
     config:
       uri: http://localhost:8585
@@ -18,6 +22,10 @@ spring:
         max-interval: 2000
         initial-interval: 10000
       request-read-timeout: 10000
+elasticsearch:
+    host: localhost
+    port: 9200
+    
 #eureka:
 #  instance:
 #    appname: eventservice
