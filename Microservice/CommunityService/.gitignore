@@ -24,7 +24,6 @@ HELP.md
 /nbdist/
 /.nb-gradle/
 /build/
-*.yml
 nbactions-release-profile.xml
 nbactions.xml
 
