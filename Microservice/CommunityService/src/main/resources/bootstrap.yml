@@ -1,0 +1,29 @@
+server:
+  port: 3003
+spring:
+  application:
+    name: communityservice
+  profiles:
+    active: dev
+  data:
+      mongodb:
+          host: 137.116.148.122
+          port: 27017
+          authentication-database: admin
+          database: meetu
+          username: meetuAdmin
+          password: popsonfonmeetu
+          
+  cloud:
+    config:
+      request-read-timeout: 10000
+      uri: http://localhost:8585  
+      retry:
+        max-attempts: 8
+        max-interval: 2000
+        initial-interval: 10000
+eureka:
+  instance:
+    appname: communityservice
+  client:
+    service-url.defaultZone: http://localhost:8761/eureka
