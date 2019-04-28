@@ -1,4 +1,3 @@
- 
 <template> 
  
 <div> 
@@ -166,71 +165,14 @@
     > 
     </v-checkbox> 
  
-      <v-btn block round="16px;" color="#341646" class="signIn mb-2 white--text"  
-      @click.stop="dialog = true">  
-          Sign Up 
-      </v-btn> 
- 
-    <v-dialog 
-      v-model="dialog" 
-      max-width="280" 
+    <v-btn block round="16px;" color="#341646" class="signIn mb-2 white--text" 
+      @click="signupPopup" 
+       
     > 
+      Sign Up 
+    </v-btn> 
  
-      <v-card> 
-         
-       <v-card-title class="headline"> 
-         <v-container bg fill-height grid-list-md text-xs-center> 
-            <v-layout row wrap align-center> 
-              <v-flex xs12 > 
-                  <h3 class="h3">Complete</h3> 
-                  <p class="p">Signup Success!</p> 
-              </v-flex> 
- 
- 
-            <v-flex> 
-  
-                <v-icon size="60px" color="green" dark>check_circle</v-icon> 
-            </v-flex> 
-  
-            </v-layout> 
-          </v-container> 
-      </v-card-title> 
-         
- 
-        <v-card-actions> 
-           
-          <v-container bg fill-height grid-list-md text-xs-center> 
-            <v-layout row wrap align-center> 
-          <v-btn 
-            href="/signup" 
-            color="red darken-1" 
-            flat="flat" 
-            @click="dialog = false" 
-            class="popupSingupSuccess" 
-          > 
-            Cancel 
-          </v-btn> 
-          </v-layout> 
-          </v-container> 
- 
-            <v-container bg fill-height grid-list-md text-xs-center> 
-              <v-layout row wrap align-center> 
-          <v-btn 
-            href="/" 
-            color="green darken-1" 
-            flat="flat" 
-            @click="dialog = false" 
-            class="popupSingupSuccess" 
-          > 
-            OK 
-          </v-btn> 
-            </v-layout> 
-          </v-container> 
-        </v-card-actions> 
- 
-         
-      </v-card> 
-    </v-dialog> 
+    
      
     <br> 
              
@@ -260,6 +202,7 @@
  
  
 <script> 
+import Swal from 'sweetalert2'
   export default { 
       name:'signupForm', 
     data: () => ({ 
@@ -309,8 +252,7 @@
  
  
                 , 
-        dialog:false 
- 
+
  
        
  
@@ -335,6 +277,21 @@
       }, 
       resetValidation () { 
         this.$refs.form.resetValidation() 
+      },
+      
+      signupPopup:function(e){
+        Swal.fire({
+        title: 'Sign Up Success',
+        type: 'success',
+        confirmButtonColor: '#4BB543',
+        confirmButtonText: 'OK'
+      
+        
+    
+      })
+        
+        
+
       } 
     } 
   } 
