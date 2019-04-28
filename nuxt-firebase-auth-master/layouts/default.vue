@@ -3,81 +3,65 @@
     <v-navigation-drawer v-model="drawer" fixed app style="background-color: #341646">
       <v-list>
         <nuxt-link class="link" to="/">
-          <v-list-tile> 
+          <v-list-tile>
             <v-list-tile>
               <v-icon class="icon">home</v-icon>
             </v-list-tile>
-            <v-list-tile-content>
-                Meet U
-            </v-list-tile-content>
+            <v-list-tile-content>Meet U</v-list-tile-content>
           </v-list-tile>
         </nuxt-link>
 
-             <v-list-group>
-              <v-list-tile slot="activator" >
-                <v-list-tile >
-                  <v-icon class="icon">category</v-icon>
-                </v-list-tile>
-                <v-list-tile-content class="categoryIcon" style="color:#fff;">
-                  Category
-                </v-list-tile-content>
-              </v-list-tile>       
-              <v-list-tile  v-for="(category, i) in categoryList" :key="i" ripple >
-                <v-list-tile-action >
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <nuxt-link  class="categoryLink"  :to='`/event?${category}`'>
-                  <v-list-tile-title>{{ category }}</v-list-tile-title>
-                  </nuxt-link>
-                </v-list-tile-content>
-              </v-list-tile>
-            </v-list-group>
+        <v-list-group>
+          <v-list-tile slot="activator">
+            <v-list-tile>
+              <v-icon class="icon">category</v-icon>
+            </v-list-tile>
+            <v-list-tile-content class="categoryIcon" style="color:#fff;">Category</v-list-tile-content>
+          </v-list-tile>
+          <v-list-tile v-for="(category, i) in categoryList" :key="i" ripple>
+            <v-list-tile-action></v-list-tile-action>
+            <v-list-tile-content>
+              <nuxt-link class="categoryLink" :to="`/event?${category}`">
+                <v-list-tile-title>{{ category }}</v-list-tile-title>
+              </nuxt-link>
+            </v-list-tile-content>
+          </v-list-tile>
+        </v-list-group>
 
-      <nuxt-link class="link" to="/about">
-        <v-list-tile>
+        <nuxt-link class="link" to="/about">
+          <v-list-tile>
             <v-list-tile>
               <v-icon class="icon">info</v-icon>
             </v-list-tile>
-            <v-list-tile-content>
-                About
-            </v-list-tile-content>
+            <v-list-tile-content>About</v-list-tile-content>
           </v-list-tile>
-      </nuxt-link>
+        </nuxt-link>
 
         <!-- </nuxt-link> -->
-
-
       </v-list>
     </v-navigation-drawer>
 
-
-
-  
-    <v-toolbar color="#341646" app style="color:#fff;" >
-      <v-btn
-        icon
-        @click.native.stop="drawer = !drawer">
+    <v-toolbar color="#341646" app style="color:#fff;">
+      <v-btn icon @click.native.stop="drawer = !drawer">
         <v-icon class="menuButton" color="#fff;">menu</v-icon>
       </v-btn>
       <v-toolbar-title v-text="title"></v-toolbar-title>
-      
-      <v-spacer></v-spacer>
-          <nuxt-link :to='`/search`' style="text-decoration-line:none;">
-            <v-btn icon>
-              <v-icon class="searchButton" color="#fff;">search</v-icon>
-            </v-btn>
-          </nuxt-link>
 
-        
-        <nuxt-link :to='`/login`' style="text-decoration-line:none;">
-            <v-btn icon>
-              <v-icon class="accountButton" color="#fff;">account_circle</v-icon>
-            </v-btn>
-        </nuxt-link>
+      <v-spacer></v-spacer>
+
+      <v-btn icon>
+        <v-icon class="searchButton" color="#fff;" @click="searchPopup">search</v-icon>
+      </v-btn>
+
+      <nuxt-link :to="`/login`" style="text-decoration-line:none;">
+        <v-btn icon>
+          <v-icon class="accountButton" color="#fff;">account_circle</v-icon>
+        </v-btn>
+      </nuxt-link>
 
       <div v-if="user" id="user" class="text-xs-center">
         <v-menu
-        v-for="itemsCategory in items"
+          v-for="itemsCategory in items"
           v-model="itemsCategory.active"
           :key="itemsCategory.title"
           :prepend-icon="itemsCategory.action"
@@ -85,51 +69,51 @@
           :close-on-content-click="false"
           :nudge-top="200"
           @input="onItemClick($items,$itemsCategory)"
-          >
-        </v-menu> 
-          
-          <v-btn icon slot="activator"><v-icon medium>settings</v-icon></v-btn> -->
-            <v-card>
-              <v-list>
-                <v-list-tile avatar>
-                  <v-list-tile-avatar>
-                    <img :src="$store.state.user.photoURL" alt="John">
-                  </v-list-tile-avatar>
-                  <v-list-tile-content>
-                    <v-list-tile-title v-if="user.displayName">{{user.displayName}}</v-list-tile-title>
-                  </v-list-tile-content>
-                </v-list-tile>
-                <v-divider></v-divider>
+        ></v-menu>
 
-                <v-list-tile>
-                  <v-spacer></v-spacer>
-                  <v-list-tile-action>
-                    <v-btn primary class="mt-2" color="primary" @click.native="logout">
-                      Logout
-                    </v-btn>
-                  </v-list-tile-action>
-                </v-list-tile>
-              </v-list>
-            </v-card>
+        <v-btn icon slot="activator">
+          <v-icon medium>settings</v-icon>
+        </v-btn>-->
+        <v-card>
+          <v-list>
+            <v-list-tile avatar>
+              <v-list-tile-avatar>
+                <img :src="$store.state.user.photoURL" alt="John">
+              </v-list-tile-avatar>
+              <v-list-tile-content>
+                <v-list-tile-title v-if="user.displayName">{{user.displayName}}</v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+            <v-divider></v-divider>
+
+            <v-list-tile>
+              <v-spacer></v-spacer>
+              <v-list-tile-action>
+                <v-btn primary class="mt-2" color="primary" @click.native="logout">Logout</v-btn>
+              </v-list-tile-action>
+            </v-list-tile>
+          </v-list>
+        </v-card>
       </div>
     </v-toolbar>
-  <v-content>
-    <v-container fluid>
-      <router-view></router-view>
-    </v-container>
-  </v-content>
+    <v-content>
+      <v-container fluid>
+        <router-view></router-view>
+      </v-container>
+    </v-content>
     <!-- <v-content>
      <v-container fluid>
       <nuxt />
      </v-container>
-   </v-content> -->
+    </v-content>-->
     <!-- <v-footer app :fixed="fixed" class="justify-center px-4">
       <span>&copy; 2019</span>
-    </v-footer> -->
+    </v-footer>-->
   </v-app>
 </template>
 
 <script>
+import Swal from "sweetalert2";
 export default {
   data() {
     return {
@@ -170,6 +154,18 @@ export default {
         alert("logged out!");
         this.$router.push("/");
       });
+    },
+    searchPopup: function(e) {
+      Swal.fire({
+        title: "Search for an event",
+        input: "text",
+        confirmButtonColor: '#341646',
+        confirmButtonText: 'Search',
+
+        inputValidator: value => {
+          
+        }
+      });
     }
   }
 };
@@ -180,63 +176,45 @@ export default {
   font-size: 17px;
 }
 
-.v-icon.icon{
+.v-icon.icon {
   color: #fff;
 }
-
-
 
 .avatar {
   max-width: 75px;
 }
 
-a.link{
+a.link {
   color: #fff;
 }
-.categoryLink{
+.categoryLink {
   text-decoration-line: none;
   text-decoration: none;
   color: #fff;
 }
 
-.v-btn:hover{
-  background-color: #FC5577;
-
+.v-btn:hover {
+  background-color: #fc5577;
 }
-
-
-
-
-
-
-
-
 
 a:hover {
   text-decoration-line: none;
   text-decoration: none;
-  color: #FC5577;
+  color: #fc5577;
   /* background: yellowgreen; */
-  
-
 }
-
-
 
 .link {
   color: #fff;
   text-decoration: none;
-  
 }
-
-
 
 /* .list__tile--active.list__tile.list__tile--link {
 
 } */
 
 /* a.nuxt-link-exact-active.list__tile--active.list__tile.list__tile--link { */
-  /* font-weight: 900 !important;
+/* font-weight: 900 !important;
   color: #3f51b5 !important; */
 /* } */
 
