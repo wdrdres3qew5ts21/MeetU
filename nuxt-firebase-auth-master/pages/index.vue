@@ -11,12 +11,7 @@
         :key="i">
     </v-carousel-item>
   </v-carousel>
-<!-- 
-<br><br> -->
 
-  <!-- <div class="wrapper">
-    <div class="ribbon-4 ribbon"></div>
-</div> -->
 
 
 <br><br>
@@ -35,15 +30,16 @@
             query:{eventId:event.eventId}}">
             
               <img v-bind:src="event.eventPhoto" alt="" height="150px">
-              <p class="eventName">{{event.eventName}}</p>
-              <p class="eventDate">{{event.eventDate.getDate()}}/{{event.eventDate.getMonth()}}/{{event.eventDate.getYear()}}</p>
-            
-                <v-btn href="/login" class="joinButton" depressed color="success">
-                  JOIN
-                  
-                </v-btn>
+              <nuxt-link :to='`/eventDetail?${event.eventName}`' style="text-decoration-line:none;">
+                  <p><a class="eventName">{{event.eventName}}</a></p>
+              </nuxt-link>
 
-            
+                  <p class="eventDate">{{event.eventDate.getDate()}}/{{event.eventDate.getMonth()}}/{{event.eventDate.getYear()}}</p>
+                    <nuxt-link :to='`/login?${event.eventId}`' style="text-decoration-line:none;"> 
+                          <v-btn class="joinButton" depressed color="success">
+                                  JOIN
+                          </v-btn>                     
+                    </nuxt-link>
             </v-flex>
 
           </v-layout>
@@ -65,13 +61,17 @@
               
               
               <img v-bind:src="event.eventPhoto" alt="" height="150px">
-              <p class="eventName">{{event.eventName}}</p>
-              <p class="eventDate">{{event.eventDate.getDate()}}/{{event.eventDate.getMonth()}}/{{event.eventDate.getYear()}}</p>
-            
-                <v-btn href="/login" class="joinButton" depressed color="success">
-                  JOIN
-                  
-                </v-btn>
+              <nuxt-link :to='`/eventDetail?${event.eventName}`' style="text-decoration-line:none;">
+                  <p><a class="eventName">{{event.eventName}}</a></p>
+              </nuxt-link>
+
+                  <p class="eventDate">{{event.eventDate.getDate()}}/{{event.eventDate.getMonth()}}/{{event.eventDate.getYear()}}</p>
+                    <nuxt-link :to='`/login?${event.eventId}`' style="text-decoration-line:none;"> 
+                          <v-btn class="joinButton" depressed color="success">
+                                  JOIN
+                          </v-btn>                     
+                    </nuxt-link>
+
 
             
             </v-flex>
@@ -89,14 +89,18 @@
 
                 <v-layout>
                     <v-flex text-xs-center v-for="event in artsEvent" :key="event.eventId" xs6 :to="{path:'/event',query:{eventId:event.eventId}}">
-                      <img v-bind:src="event.eventPhoto" alt="" height="150px">
-                      <p class="eventName">{{event.eventName}}</p>
-                      <p class="eventDate">{{event.eventDate.getDate()}}/{{event.eventDate.getMonth()}}/{{event.eventDate.getYear()}}</p>
-            
-                <v-btn href="/login" class="joinButton" depressed color="success">
-                  JOIN
-                  
-                </v-btn>
+              <img v-bind:src="event.eventPhoto" alt="" height="150px">
+              <nuxt-link :to='`/eventDetail?${event.eventName}`' style="text-decoration-line:none;">
+                  <p><a class="eventName">{{event.eventName}}</a></p>
+              </nuxt-link>
+
+                  <p class="eventDate">{{event.eventDate.getDate()}}/{{event.eventDate.getMonth()}}/{{event.eventDate.getYear()}}</p>
+                    <nuxt-link :to='`/login?${event.eventId}`' style="text-decoration-line:none;"> 
+                          <v-btn class="joinButton" depressed color="success">
+                                  JOIN
+                          </v-btn>                     
+                    </nuxt-link>
+
 
             
                     </v-flex>
@@ -112,16 +116,18 @@
 
                 <v-layout>
                     <v-flex text-xs-center v-for="event in bookEvent" :key="event.eventId" xs6 :to="{path:'/event',query:{eventId:event.eventId}}">
-                      <img v-bind:src="event.eventPhoto" alt="" height="150px">
-                      <p class="eventName">{{event.eventName}}</p>
-                      <p class="eventDate">{{event.eventDate.getDate()}}/{{event.eventDate.getMonth()}}/{{event.eventDate.getYear()}}</p>
-            
-                <v-btn href="/login" class="joinButton" depressed color="success">
-                  JOIN
-                  
-                </v-btn>
+              <img v-bind:src="event.eventPhoto" alt="" height="150px">
+              <nuxt-link :to='`/eventDetail?${event.eventName}`' style="text-decoration-line:none;">
+                  <p><a class="eventName">{{event.eventName}}</a></p>
+              </nuxt-link>
 
-            
+                  <p class="eventDate">{{event.eventDate.getDate()}}/{{event.eventDate.getMonth()}}/{{event.eventDate.getYear()}}</p>
+                    <nuxt-link :to='`/login?${event.eventId}`' style="text-decoration-line:none;"> 
+                          <v-btn class="joinButton" depressed color="success">
+                                  JOIN
+                          </v-btn>                     
+                    </nuxt-link>
+
                     </v-flex>
 
               </v-layout>
@@ -135,18 +141,15 @@
                         Use MeetU for your <br>
                       next events & activities.
 
-                          
-                <!-- <v-btn depressed large class="upgradeToOrganizerButton mb-2 white--text" block round="16px;" color="#341646"
-                  
-                  
-                >
+                </h2> 
+                
+              <nuxt-link :to='`/organizer?`' style="text-decoration-line:none;">
+
+                <v-btn class="upgradeToOrganizerButton white--text" round="16" depressed large color="#341646">
                   Become an Organizer
-                </v-btn> -->
+                </v-btn>
 
-
-                </h2> <v-btn href="/organizer" class="upgradeToOrganizerButton white--text" round="16" depressed large color="#341646">Become an Organizer</v-btn>
-   
-
+              </nuxt-link>
 
               </center>
 
@@ -337,7 +340,7 @@ export default {
       {
         eventId: '11114d',
         eventName: 'Childrens Book',
-        eventPhoto:'https://www.candlelightstories.com/Blog/wp-content/uploads/2009/05/2009-cbw-poster.png',
+        eventPhoto:'https://www.anikadenise.com/wp-content/uploads/2017/09/princeton-poster-art-final2-650x900-1.jpg',
         eventDate: new Date(1554681600),
       },
       {
