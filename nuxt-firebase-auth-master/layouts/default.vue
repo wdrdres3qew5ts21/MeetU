@@ -26,7 +26,7 @@
                 <v-list-tile-action >
                 </v-list-tile-action>
                 <v-list-tile-content>
-                  <nuxt-link  class="categoryLink"  :to='`/event?${category}`'>
+                  <nuxt-link  class="categoryLink"  :to='`/event?category=${category}`'>
                   <v-list-tile-title>{{ category }}</v-list-tile-title>
                   </nuxt-link>
                 </v-list-tile-content>
