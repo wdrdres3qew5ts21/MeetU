@@ -49,9 +49,38 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn icon>
+      <!-- <v-btn icon>
         <v-icon class="searchButton" color="#fff;" @click="searchPopup">search</v-icon>
-      </v-btn>
+      </v-btn>-->
+
+      <!-- <v-btn icon>
+              <v-icon class="searchButton" color="#fff;">search</v-icon>
+      </v-btn>-->
+
+      <!-- <v-autocomplete
+        v-model="model"
+        :items="items"
+        :loading="isLoading"
+        :search-input.sync="search"
+        chips
+        clearable
+        hide-details
+        hide-selected
+        item-text="name"
+        item-value="symbol"
+        label="Search..."
+        solo
+        size="is-small"
+      >
+        <template v-slot:no-data>
+          <v-list-tile>
+            <v-list-tile-title>
+              Search for an
+              <strong>event</strong>
+            </v-list-tile-title>
+          </v-list-tile>
+        </template>
+      </v-autocomplete> -->
 
       <nuxt-link :to="`/login`" style="text-decoration-line:none;">
         <v-btn icon>
@@ -101,14 +130,15 @@
         <router-view></router-view>
       </v-container>
     </v-content>
-    <!-- <v-content>
-     <v-container fluid>
-      <nuxt />
-     </v-container>
-    </v-content>-->
-    <!-- <v-footer app :fixed="fixed" class="justify-center px-4">
-      <span>&copy; 2019</span>
-    </v-footer>-->
+    <v-footer height="auto" color="#341646">
+      <v-layout row wrap justify-center>
+        <v-btn v-for="link in linksFooter" :key="link" color="white" flat>{{ link }}</v-btn>
+        <v-flex xs12 py-3 text-xs-center white--text>
+          &copy;2019 —
+          <strong>Meet U</strong>
+        </v-flex>
+      </v-layout>
+    </v-footer>
   </v-app>
 </template>
 
@@ -117,6 +147,9 @@ import Swal from "sweetalert2";
 export default {
   data() {
     return {
+      height: {
+        height: "10px"
+      },
       drawer: null,
       fixed: false,
       categoryList: [
@@ -133,9 +166,18 @@ export default {
         "Technology"
       ],
       title: "MeetU",
-      menu: false
+      menu: false,
+      linksFooter: [
+        "Home",
+        "About Us",
+        "Team",
+        "Services",
+        "Blog",
+        "Contact Us"
+      ],
     };
   },
+
   computed: {
     user() {
       return this.$store.getters.activeUser;
@@ -157,14 +199,12 @@ export default {
     },
     searchPopup: function(e) {
       Swal.fire({
-        title: "Search for an event",
+        text: "Search for an event",
         input: "text",
-        confirmButtonColor: '#341646',
-        confirmButtonText: 'Search',
+        confirmButtonColor: "#341646",
+        confirmButtonText: "Search",
 
-        inputValidator: value => {
-          
-        }
+        inputValidator: value => {}
       });
     }
   }
@@ -172,6 +212,12 @@ export default {
 </script>
 
 <style>
+.v-autocomplete {
+  width: calc(10% - 30px);
+}
+/* .v-autocomplete-list{
+  height: 10px;
+} */
 .v-navigation-drawer > .list:not(.list--dense) .list__tile {
   font-size: 17px;
 }

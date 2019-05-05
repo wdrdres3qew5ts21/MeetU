@@ -163,10 +163,7 @@ export default {
             type: "success",
             showConfirmButton: true,
             confirmButtonColor: "#4BB543"
-          }
-
-          )
-          
+          });
         }
       });
     }
