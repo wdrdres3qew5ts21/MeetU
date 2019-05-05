@@ -97,17 +97,6 @@
       </nuxt-link>
 
       <div v-if="user" id="user" class="text-xs-center">
-        <v-menu
-          v-for="itemsCategory in items"
-          v-model="itemsCategory.active"
-          :key="itemsCategory.title"
-          :prepend-icon="itemsCategory.action"
-          offset-x
-          :close-on-content-click="false"
-          :nudge-top="200"
-          @input="onItemClick($items,$itemsCategory)"
-        ></v-menu>
-
         <v-btn icon slot="activator">
           <v-icon medium>settings</v-icon>
         </v-btn>
@@ -115,7 +104,7 @@
           <v-list>
             <v-list-tile avatar>
               <v-list-tile-avatar>
-                <img :src="user.photoURL" alt="John">
+                <img :src="user.photoURL" alt="Guest">
               </v-list-tile-avatar>
               <v-list-tile-content>
                 <v-list-tile-title v-if="user.displayName">{{user.displayName}}</v-list-tile-title>
@@ -126,7 +115,7 @@
             <v-list-tile>
               <v-spacer></v-spacer>
               <v-list-tile-action>
-                <v-btn primary class="mt-2" color="primary" @click.native="logout">Logout</v-btn>
+                <v-btn primary class="mt-2" color="primary" @click.native="logout()">Logout</v-btn>
               </v-list-tile-action>
             </v-list-tile>
           </v-list>

@@ -23,7 +23,7 @@
 
       <v-btn
         block
-        round="16px;"
+        :round="true"
         color="#341646"
         class="signIn mb-2 white--text"
         @click="loginPopup"
