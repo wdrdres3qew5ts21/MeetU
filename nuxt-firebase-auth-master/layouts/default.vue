@@ -1,7 +1,7 @@
 <template>
   <v-app  >
     
-    <!-- <v-navigation-drawer v-model="drawer" fixed app style="background-color: #341646" >
+    <v-navigation-drawer v-model="drawer" fixed app style="background-color: #341646" >
       <v-list>
         <nuxt-link class="link" to="/">
           <v-list-tile>
@@ -38,7 +38,7 @@
           </v-list-tile>
         </nuxt-link>
       </v-list>
-    </v-navigation-drawer> -->
+    </v-navigation-drawer>
 
 
     <v-toolbar  color="#341646" app style="color:#fff;">
