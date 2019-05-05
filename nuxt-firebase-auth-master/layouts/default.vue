@@ -1,7 +1,6 @@
 <template>
-  <v-app  >
-    
-    <v-navigation-drawer v-model="drawer" fixed app style="background-color: #341646" >
+  <v-app>
+    <v-navigation-drawer v-model="drawer" fixed app style="background-color: #341646">
       <v-list>
         <nuxt-link class="link" to="/">
           <v-list-tile>
@@ -12,7 +11,7 @@
           </v-list-tile>
         </nuxt-link>
 
-        <v-list-group >
+        <v-list-group>
           <v-list-tile slot="activator">
             <v-list-tile>
               <v-icon class="icon">category</v-icon>
@@ -40,12 +39,11 @@
       </v-list>
     </v-navigation-drawer>
 
-
-    <v-toolbar  color="#341646" app style="color:#fff;">
+    <v-toolbar color="#341646" app style="color:#fff;">
       <v-btn icon @click.native.stop="drawer = !drawer" class="hidden-lg-and-up">
         <v-icon class="menuButton" color="#fff;">menu</v-icon>
       </v-btn>
-      
+
       <v-toolbar-title v-text="title"></v-toolbar-title>
 
       <v-spacer></v-spacer>
@@ -53,16 +51,10 @@
       <!-- <v-btn icon>
         <v-icon class="searchButton" color="#fff;" @click="searchPopup">search</v-icon>
       </v-btn>-->
-        
 
-        
       <v-btn icon>
-              <v-icon class="hidden-lg-only" color="#fff;">search</v-icon>
+        <v-icon class="hidden-lg-only" color="#fff;">search</v-icon>
       </v-btn>
-      
-    
-
-     
 
       <!-- <v-autocomplete
         v-model="model"
@@ -89,16 +81,14 @@
         </template>
       </v-autocomplete>-->
 
-
-  
- <v-text-field class="hidden-xs-only" 
- v-model="search" 
- placeholder="Search..." 
- append-icon="search" 
- :append-icon-cb="() => (openSearch = !openSearch)" 
-  dark
-></v-text-field>
-
+      <v-text-field
+        class="hidden-xs-only"
+        v-model="search"
+        placeholder="Search..."
+        append-icon="search"
+        @click:append="() => (openSearch = !openSearch)"
+        dark
+      ></v-text-field>
 
       <nuxt-link :to="`/login`" style="text-decoration-line:none;">
         <v-btn icon>
@@ -125,7 +115,7 @@
           <v-list>
             <v-list-tile avatar>
               <v-list-tile-avatar>
-                <img :src="$store.state.user.photoURL" alt="John">
+                <img :src="user.photoURL" alt="John">
               </v-list-tile-avatar>
               <v-list-tile-content>
                 <v-list-tile-title v-if="user.displayName">{{user.displayName}}</v-list-tile-title>
@@ -159,8 +149,6 @@
         </v-flex>
       </v-layout>
     </v-footer>
-
-
   </v-app>
 </template>
 
@@ -172,8 +160,9 @@ export default {
       height: {
         height: "10px"
       },
-      drawer: null,
+      drawer: false,
       fixed: false,
+      search: null,
       categoryList: [
         "Arts",
         "Book Clubs",
@@ -196,8 +185,7 @@ export default {
         "Services",
         "Blog",
         "Contact Us"
-      ],
-      
+      ]
     };
   },
 
@@ -213,7 +201,6 @@ export default {
         this.selected = itemsCategory;
       }
     },
-
     logout() {
       this.$store.dispatch("signOut").then(() => {
         alert("logged out!");
@@ -229,16 +216,14 @@ export default {
 
         inputValidator: value => {}
       });
-    },
-    
+    }
   }
 };
 </script>
 
 <style>
-
-.textfield{
-  text-decoration-line: none !important; 
+.textfield {
+  text-decoration-line: none !important;
   text-decoration: none !important;
   border-bottom: 0;
 }
@@ -306,5 +291,4 @@ a:hover {
   color: #fff;
   border-left: 10px solid gnray;
 }
-
 </style>
