@@ -53,10 +53,16 @@
       <!-- <v-btn icon>
         <v-icon class="searchButton" color="#fff;" @click="searchPopup">search</v-icon>
       </v-btn>-->
+        
 
-      <!-- <v-btn icon>
-              <v-icon class="searchButton" color="#fff;">search</v-icon>
-      </v-btn>-->
+        
+      <v-btn icon>
+              <v-icon class="hidden-lg-only" color="#fff;">search</v-icon>
+      </v-btn>
+      
+    
+
+     
 
       <!-- <v-autocomplete
         v-model="model"
@@ -82,6 +88,17 @@
           </v-list-tile>
         </template>
       </v-autocomplete>-->
+
+
+  
+ <v-text-field class="hidden-xs-only" 
+ v-model="search" 
+ placeholder="Search..." 
+ append-icon="search" 
+ :append-icon-cb="() => (openSearch = !openSearch)" 
+  dark
+></v-text-field>
+
 
       <nuxt-link :to="`/login`" style="text-decoration-line:none;">
         <v-btn icon>
@@ -179,7 +196,8 @@ export default {
         "Services",
         "Blog",
         "Contact Us"
-      ]
+      ],
+      
     };
   },
 
@@ -211,12 +229,19 @@ export default {
 
         inputValidator: value => {}
       });
-    }
+    },
+    
   }
 };
 </script>
 
 <style>
+
+.textfield{
+  text-decoration-line: none !important; 
+  text-decoration: none !important;
+  border-bottom: 0;
+}
 .v-autocomplete {
   width: calc(10% - 30px);
 }
@@ -281,4 +306,5 @@ a:hover {
   color: #fff;
   border-left: 10px solid gnray;
 }
+
 </style>

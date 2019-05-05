@@ -7,49 +7,52 @@
     <h1>Popular Event</h1>
     <br>
     <v-layout>
-      <!-- <v-flex
-        text-xs-center
-        v-for="event in popularEventList"
-        :key="event.eventId"
-        xs6
-        xs12
-        offset-sm3
-        :to="{path:'/event',
-            query:{eventId:event.eventId}}"
-      >
-        <v-card flat tile>
-          <img v-bind:src="event.eventPhoto" alt height="150px">
-          <nuxt-link :to="`/eventDetail?${event.eventName}`" style="text-decoration-line:none;">
-            <p>
-              <a class="eventName">{{event.eventName}}</a>
-            </p>
-          </nuxt-link>
+      <v-layout row wrap>
+        <v-flex v-for="event in popularEventList" :key="event.eventId" xs4>
+          <v-card flat tile>
+            <v-img img v-bind:src="event.eventPhoto" max-height="230px"></v-img>
+          </v-card>
+        </v-flex>
+      </v-layout>
+    </v-layout>
 
-          <p
-            class="eventDate"
-          >{{event.eventDate.getDate()}}/{{event.eventDate.getMonth()}}/{{event.eventDate.getYear()}}</p>
-          <nuxt-link :to="`/login?${event.eventId}`" style="text-decoration-line:none;">
-            <v-btn class="joinButton" depressed color="success">JOIN</v-btn>
-          </nuxt-link>
-        </v-card>
-      </v-flex> -->
-       <v-layout row wrap>
-            <v-flex
-              v-for="event in popularEventList"
-              :key="event.eventId"
-              xs24
-            >
-              <v-card flat tile>
-                <v-img
-                  :src="`popularEventList.eventPhoto`"
-                  height="150px"
-                ></v-img>
-              </v-card>
-            </v-flex>
-        </v-layout>
+    <br>
+    <h1>Recently Event</h1>
+    <br>
+    <v-layout>
+      <v-layout row wrap>
+        <v-flex v-for="event in recentlyAdded" :key="event.eventId" xs4>
+          <v-card flat tile>
+            <v-img img v-bind:src="event.eventPhoto" max-height="230px"></v-img>
+          </v-card>
+        </v-flex>
+      </v-layout>
+    </v-layout>
 
+    <br>
+    <h1>Art Event</h1>
+    <br>
+    <v-layout>
+      <v-layout row wrap>
+        <v-flex v-for="event in artsEvent" :key="event.eventId" xs4>
+          <v-card flat tile>
+            <v-img img v-bind:src="event.eventPhoto" max-height="230px"></v-img>
+          </v-card>
+        </v-flex>
+      </v-layout>
+    </v-layout>
 
-
+    <br>
+    <h1>Book Event</h1>
+    <br>
+    <v-layout>
+      <v-layout row wrap>
+        <v-flex v-for="event in bookEvent" :key="event.eventId" xs4>
+          <v-card flat tile>
+            <v-img img v-bind:src="event.eventPhoto" max-height="230px"></v-img>
+          </v-card>
+        </v-flex>
+      </v-layout>
     </v-layout>
 
     <!-- <h1>Recently Added</h1>
@@ -154,7 +157,7 @@
           color="#341646"
         >Become an Organizer</v-btn>
       </nuxt-link>
-    </center> -->
+    </center>-->
 
     <!-- ใช้code จบ -->
 
