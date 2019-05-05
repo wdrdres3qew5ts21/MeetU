@@ -11,8 +11,28 @@
           </v-list-tile>
         </nuxt-link>
 
-        <v-list-group>
-          <v-list-tile slot="activator">
+             <v-list-group>
+              <v-list-tile slot="activator" >
+                <v-list-tile >
+                  <v-icon class="icon">category</v-icon>
+                </v-list-tile>
+                <v-list-tile-content class="categoryIcon" style="color:#fff;">
+                  Category
+                </v-list-tile-content>
+              </v-list-tile>       
+              <v-list-tile  v-for="(category, i) in categoryList" :key="i" ripple >
+                <v-list-tile-action >
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <nuxt-link  class="categoryLink"  :to='`/event?category=${category}`'>
+                  <v-list-tile-title>{{ category }}</v-list-tile-title>
+                  </nuxt-link>
+                </v-list-tile-content>
+              </v-list-tile>
+            </v-list-group>
+
+      <nuxt-link class="link" to="/about">
+        <v-list-tile>
             <v-list-tile>
               <v-icon class="icon">category</v-icon>
             </v-list-tile>
