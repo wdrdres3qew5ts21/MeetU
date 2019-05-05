@@ -1,6 +1,7 @@
 <template>
-  <v-app>
-    <v-navigation-drawer v-model="drawer" fixed app style="background-color: #341646">
+  <v-app  >
+    
+    <!-- <v-navigation-drawer v-model="drawer" fixed app style="background-color: #341646" >
       <v-list>
         <nuxt-link class="link" to="/">
           <v-list-tile>
@@ -11,28 +12,8 @@
           </v-list-tile>
         </nuxt-link>
 
-             <v-list-group>
-              <v-list-tile slot="activator" >
-                <v-list-tile >
-                  <v-icon class="icon">category</v-icon>
-                </v-list-tile>
-                <v-list-tile-content class="categoryIcon" style="color:#fff;">
-                  Category
-                </v-list-tile-content>
-              </v-list-tile>       
-              <v-list-tile  v-for="(category, i) in categoryList" :key="i" ripple >
-                <v-list-tile-action >
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <nuxt-link  class="categoryLink"  :to='`/event?category=${category}`'>
-                  <v-list-tile-title>{{ category }}</v-list-tile-title>
-                  </nuxt-link>
-                </v-list-tile-content>
-              </v-list-tile>
-            </v-list-group>
-
-      <nuxt-link class="link" to="/about">
-        <v-list-tile>
+        <v-list-group >
+          <v-list-tile slot="activator">
             <v-list-tile>
               <v-icon class="icon">category</v-icon>
             </v-list-tile>
@@ -41,7 +22,7 @@
           <v-list-tile v-for="(category, i) in categoryList" :key="i" ripple>
             <v-list-tile-action></v-list-tile-action>
             <v-list-tile-content>
-              <nuxt-link class="categoryLink" :to="`/event?${category}`">
+              <nuxt-link class="categoryLink" :to="`/event?category=${category}`">
                 <v-list-tile-title>{{ category }}</v-list-tile-title>
               </nuxt-link>
             </v-list-tile-content>
@@ -56,15 +37,15 @@
             <v-list-tile-content>About</v-list-tile-content>
           </v-list-tile>
         </nuxt-link>
-
-        <!-- </nuxt-link> -->
       </v-list>
-    </v-navigation-drawer>
+    </v-navigation-drawer> -->
 
-    <v-toolbar color="#341646" app style="color:#fff;">
-      <v-btn icon @click.native.stop="drawer = !drawer">
+
+    <v-toolbar  color="#341646" app style="color:#fff;">
+      <v-btn icon @click.native.stop="drawer = !drawer" class="hidden-lg-and-up">
         <v-icon class="menuButton" color="#fff;">menu</v-icon>
       </v-btn>
+      
       <v-toolbar-title v-text="title"></v-toolbar-title>
 
       <v-spacer></v-spacer>
@@ -100,7 +81,7 @@
             </v-list-tile-title>
           </v-list-tile>
         </template>
-      </v-autocomplete> -->
+      </v-autocomplete>-->
 
       <nuxt-link :to="`/login`" style="text-decoration-line:none;">
         <v-btn icon>
@@ -122,7 +103,7 @@
 
         <v-btn icon slot="activator">
           <v-icon medium>settings</v-icon>
-        </v-btn>-->
+        </v-btn>
         <v-card>
           <v-list>
             <v-list-tile avatar>
@@ -145,11 +126,13 @@
         </v-card>
       </div>
     </v-toolbar>
+
     <v-content>
       <v-container fluid>
         <router-view></router-view>
       </v-container>
     </v-content>
+
     <v-footer height="auto" color="#341646">
       <v-layout row wrap justify-center>
         <v-btn v-for="link in linksFooter" :key="link" color="white" flat>{{ link }}</v-btn>
@@ -159,6 +142,8 @@
         </v-flex>
       </v-layout>
     </v-footer>
+
+
   </v-app>
 </template>
 
@@ -194,7 +179,7 @@ export default {
         "Services",
         "Blog",
         "Contact Us"
-      ],
+      ]
     };
   },
 
@@ -287,6 +272,7 @@ a:hover {
 /* .v-navigation-drawer{
   background-color: #341646;
 } */
+
 .v-list__tile--link {
   border-left: 10px solid transparent;
 }
