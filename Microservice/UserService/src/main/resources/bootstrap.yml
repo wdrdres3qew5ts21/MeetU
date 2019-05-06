@@ -7,7 +7,7 @@ spring:
     active: dev
   data:
       mongodb:
-          host: 137.116.148.122
+          host: 13.229.138.243
           port: 27017
           authentication-database: admin
           database: meetu
