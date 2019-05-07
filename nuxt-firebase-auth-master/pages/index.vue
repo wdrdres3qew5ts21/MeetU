@@ -62,6 +62,26 @@
       </v-layout>
     </v-layout>
 
+    <br>
+    <br>
+    <center>
+      <h2 class="upgradeToOrganizer">
+        Use MeetU for your
+        <br>next events & activities.
+      </h2>
+
+      <br>
+
+      <nuxt-link :to="`/organizer?`" style="text-decoration-line:none;">
+        <v-btn
+          class="upgradeToOrganizerButton white--text"
+          round="16"
+          depressed
+          large
+          color="#341646"
+        >Become an Organizer</v-btn>
+      </nuxt-link>
+    </center>
     <!-- <h1>Recently Added</h1>
 
     <br>
@@ -376,7 +396,8 @@ export default {
         }
       ]
     };
-  }
+  },
+
 };
 </script>
 
@@ -481,6 +502,7 @@ export default {
 
 .v-carousel {
   height: 300px !important;
+
 }
 
 .upgradeToOrganizer {

@@ -53,8 +53,9 @@
       </v-btn>-->
 
       <v-btn icon>
-        <v-icon class="hidden-lg-only" color="#fff;">search</v-icon>
+        <v-icon class="hidden-lg-only" color="#fff;"  @click.stop="searchButton">search</v-icon>
       </v-btn>
+
 
       <!-- <v-autocomplete
         v-model="model"
@@ -190,22 +191,22 @@ export default {
         this.selected = itemsCategory;
       }
     },
-    logout() {
+    logout: function(e) {
       this.$store.dispatch("signOut").then(() => {
         alert("logged out!");
         this.$router.push("/");
       });
     },
-    searchPopup: function(e) {
-      Swal.fire({
-        text: "Search for an event",
-        input: "text",
-        confirmButtonColor: "#341646",
-        confirmButtonText: "Search",
-
-        inputValidator: value => {}
-      });
-    }
+  
+    // searchButton: function(e){
+    //   Swal.fire({
+    //     title: "Are you sure?",
+    //     type: "warning",
+    //     showCancelButton: true,
+    //     confirmButtonColor: "#4BB543",
+    //     cancelButtonColor: "#d33",
+    //     confirmButtonText: "Upgrade account!"})
+    // }
   }
 };
 </script>
