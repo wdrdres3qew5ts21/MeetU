@@ -6,6 +6,7 @@
 package meetu.eventservice.config;
 
 import com.mongodb.MongoClientOptions;
+import com.mongodb.MongoCredential;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,5 +37,24 @@ public class MongoConfig {
 //                .build());
 //        return mongo;
 //    }
+
+    @Value("${spring.data.mongodb.host:localhost}")
+    private String host;
+
+    @Value("${spring.data.mongodb.port:27017}")
+    private int port;
+
+    @Bean
+    public MongoClientFactoryBean mongo() {
+        System.out.println("Host : " + host + " Port : " + port);
+        MongoClientFactoryBean mongo = new MongoClientFactoryBean();
+        mongo.setHost(host);
+        mongo.setPort(port);
+        mongo.setMongoClientOptions(MongoClientOptions.builder()
+                .retryWrites(true)
+                .socketTimeout(10000)
+                .build());
+        return mongo;
+    }
 
 }

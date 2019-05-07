@@ -34,6 +34,7 @@ field หนึ่งปกติของเราเช่น field eventName 
 The eventName field can be used for full text search.
 The eventName.keyword field can be used for sorting and aggregations
 refs: www.elastic.co/guide/en/elasticsearch/reference/current/multi-fields.html
+
 POST /events/_mapping
 {
   "properties":{
@@ -41,21 +42,15 @@ POST /events/_mapping
       "type": "text",
       "analyzer": "thai_analyzer",
       "fields" : {
-            "keyword" : {
-              "type" : "keyword",
-              "ignore_above" : 256
-            }
+        "keyword" : {
+        "type" : "keyword",
+        "ignore_above" : 256
+        }
       }
     },
     "eventDetail":{
       "type": "text",
-      "analyzer": "thai_analyzer",
-      "fields" : {
-            "keyword" : {
-              "type" : "keyword",
-              "ignore_above" : 256
-            }
-      }
+      "analyzer": "thai_analyzer"
     },
     "createEventDate":{
       "type": "date"
@@ -68,8 +63,33 @@ POST /events/_mapping
     },
     "eventStartDate":{
       "type": "date"
+    },
+    "location.geopoint": {
+      "type": "geo_point"
     }
+
   }
+}
+
+
+GET /events/_search
+{
+  "query": {
+        "bool" : {
+            "must" : {
+                "match_all" : {}
+            },
+            "filter" : {
+                "geo_distance": {
+                    "distance" : "200km",
+                    "location.geopoint" : {
+                        "lat" : 12.2,
+                        "lon" : 13.42
+                    }
+                }
+            }
+        }
+    }
 }
 
 GET /events/_search
@@ -139,22 +159,47 @@ GET /events/_search
   }  
 }
 
-POST /events/_doc/1
+GET /events/_search
 {
-  "eventDetail": "Japan Expo กิจกรรมสุดสนุกพบกับเหล่า Cosplay ชื่อดัง",
-  "price": 1490
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "eventDetail": "Songkarn in Bangkok"
+          }
+        }
+      ],
+      "filter": {
+          "terms": {
+            "eventTags": [
+              "Culture"
+            ]
+          }
+      }
+    }
+  }
 }
 
-POST /events/_doc/2
+GET /events/_search
 {
-  "eventDetail": "ร่วมสัมผัสบรรยากาศแบบไทยๆและภูมิปัญญาท้องถิ่นด้วยราคาถูกไม่แพงและย่อมเยา"
+  "query": {
+    "match_all": {}
+  },
+  "sort": [
+    {
+      "createEventDate": {
+        "order": "desc"
+      }
+    }
+  ],
+  "from": 0, "size": 10
 }
-
-
 
 POST /events/_analyze
 {
   "analyzer": "thai_analyzer", 
   "text": "ร่วมสัมผัสบรรยากาศแบบไทยๆและภูมิปัญญาท้องถิ่นด้วยราคาถูกไม่แพงและย่อมเยา"
 }
+
 

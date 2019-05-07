@@ -56,6 +56,7 @@ public class EventService {
         String elasticEventid = null;
         Map<String, Object> pojoToMap = ElasticUtil.pojoToMap(event);
         pojoToMap.remove("organize");
+        System.out.println(pojoToMap);
         indexRequest.source(pojoToMap);
         try {
             IndexResponse indexResponse = elasticClient.index(indexRequest, RequestOptions.DEFAULT);
@@ -84,7 +85,7 @@ public class EventService {
         return savedEventMongoDB;
     }
 
-    public List<Event> findEventByUsingFilter(String[] eventTags, boolean isRecently, String eventDetail) throws IOException {
+    public List<Event> findEventByUsingFilter(String[] eventTags, boolean isRecently, String eventDetail, double longitude, double latitude, String areaOfEvent, int page, int contentPerPage) throws IOException {
         BoolQueryBuilder queryFilter = new BoolQueryBuilder();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         SearchRequest searchRequest = new SearchRequest(eventsIndex);
@@ -103,23 +104,19 @@ public class EventService {
             System.out.println("Recently");
             searchSourceBuilder = filterByRecently(searchSourceBuilder, "createEventDate");
         }
+        if (longitude != 0.0 & latitude != 0.0) {
+            System.out.println("test");
+            queryFilter.filter(QueryBuilders.geoDistanceQuery("position")
+                    .point(latitude, longitude)
+                    .distance(areaOfEvent));
+        }
 
         searchSourceBuilder.query(queryFilter);
+        searchSourceBuilder
+                .from(page)
+                .size(contentPerPage);
         searchRequest.source(searchSourceBuilder);
         searchResponse = elasticClient.search(searchRequest, RequestOptions.DEFAULT);
-
-        return ElasticUtil.searchHitsToList(searchResponse.getHits(), Event.class);
-    }
-
-    public List<Event> findAllEventsInElastic() throws IOException {
-        System.out.println("find all event");
-        SearchRequest searchRequest = new SearchRequest();
-        searchRequest.indices(eventsIndex);
-
-        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(QueryBuilders.matchAllQuery());
-        searchRequest.source(searchSourceBuilder);
-        SearchResponse searchResponse = elasticClient.search(searchRequest, RequestOptions.DEFAULT);
 
         return ElasticUtil.searchHitsToList(searchResponse.getHits(), Event.class);
     }
