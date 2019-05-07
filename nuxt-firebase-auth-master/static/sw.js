@@ -4,67 +4,79 @@ importScripts('/_nuxt/workbox.4c4f5ca6.js')
 
 workbox.precaching.precacheAndRoute([
   {
-    "url": "/_nuxt/app.0958bc043c7c9ace9a1d42f7f1742414.css",
-    "revision": "0958bc043c7c9ace9a1d42f7f1742414"
+    "url": "/_nuxt/app.38d70c2257b07ffbe96105742c96bf17.css",
+    "revision": "38d70c2257b07ffbe96105742c96bf17"
   },
   {
-    "url": "/_nuxt/app.52301ccafc89c6cdf439.js",
-    "revision": "e1449946a7064793fb394507e0270ec2"
+    "url": "/_nuxt/app.c0f07bde4ddaa83cc666.js",
+    "revision": "d8b0ccc4a60cf52a3b38bdd3f3fc66f1"
   },
   {
-    "url": "/_nuxt/layouts_default.14de6b66fc54282d986f.js",
-    "revision": "8afd729e98908f24f46d1485acb88ae3"
+    "url": "/_nuxt/layouts_default.6be7a7709383c4ce6df9.js",
+    "revision": "ae69224a32750ac3745425d60bbd180d"
   },
   {
-    "url": "/_nuxt/manifest.233b686da392571f728a.js",
-    "revision": "c19b8d8bf3427bae25e2b39ed60f8880"
+    "url": "/_nuxt/manifest.89bb7a18ae9401a9d365.js",
+    "revision": "b915686490c909f6f0f9515e3052b68a"
   },
   {
-    "url": "/_nuxt/pages_about.0c8adce74352d795ec90.js",
-    "revision": "e281c2f5779208505a5020776695d8fd"
+    "url": "/_nuxt/pages_about.8568c606fe8947ff64f8.js",
+    "revision": "11207f076456873d076f95a612c46c64"
   },
   {
-    "url": "/_nuxt/pages_admin_index.8eddd42d2f3ca536fbcb.js",
-    "revision": "f2d9095175afa1025c4360b2f35b5665"
+    "url": "/_nuxt/pages_admin_index.984f197b0c197ff8dcfd.js",
+    "revision": "aa52d85d44f2972c76c79836e02008b6"
   },
   {
-    "url": "/_nuxt/pages_admin_items.65840839fab322946a86.js",
-    "revision": "ff2f7a4efb65627f20b13ecb8ab44070"
+    "url": "/_nuxt/pages_admin_items.a062adf85192a399c3f2.js",
+    "revision": "c7edac5eeefa20b9bb53acaacc4aa9a7"
   },
   {
-    "url": "/_nuxt/pages_admin_settings.92a30542cf5e5926051b.js",
-    "revision": "c84d507bd2a3090b61084a7dbe1a11fd"
+    "url": "/_nuxt/pages_admin_settings.05b38e61b3ab84d354c0.js",
+    "revision": "aeb3a57756d0c07dc8415024aad13452"
   },
   {
-    "url": "/_nuxt/pages_admin.80853fc65ec987b87c1d.js",
-    "revision": "0fec36b314f725d4829230f613b3b214"
+    "url": "/_nuxt/pages_admin.392cbc3c995e373c4b4b.js",
+    "revision": "66323f049b1f8c1b19df80ddc177eeb6"
   },
   {
-    "url": "/_nuxt/pages_event.6bede6635af2056ead71.js",
-    "revision": "219c081dcb994ae37d82cec014c8a047"
+    "url": "/_nuxt/pages_event.bf3b6f90ab90b566659d.js",
+    "revision": "067418d2d3584345a31899528e2980b0"
   },
   {
-    "url": "/_nuxt/pages_index.97810a6a30ac315a0485.js",
-    "revision": "1eedf48a0999eeea3ef2a1a5ac959186"
+    "url": "/_nuxt/pages_eventDetail.a0c4616499f043088e8b.js",
+    "revision": "d87ee54bcbb1cbd22195255c18bce9f5"
   },
   {
-    "url": "/_nuxt/pages_login.5c3da672633a66645c50.js",
-    "revision": "7c97eea3710e47c182724103924153c6"
+    "url": "/_nuxt/pages_index.a85f2d877b7b5b8b3206.js",
+    "revision": "aeda05dc032ec4e50df4023da590f43a"
   },
   {
-    "url": "/_nuxt/pages_search.6b2b8db1c988cb073115.js",
-    "revision": "82de9fc9d180aa0cc34c1aa5d2bd2b1b"
+    "url": "/_nuxt/pages_indexLogin.fc83f4fc85e6084a5d27.js",
+    "revision": "821294e08bd9477f6018222cc98bab3d"
   },
   {
-    "url": "/_nuxt/pages_signup.c48c9033706fa31f5a67.js",
-    "revision": "0b4163c6a3667a22605493bfd5fa78b5"
+    "url": "/_nuxt/pages_login.d38c555cb08deafb4ad4.js",
+    "revision": "37b9aea890356ef063a176fced443ce6"
   },
   {
-    "url": "/_nuxt/vendor.2ce119d224a49c53d475.js",
-    "revision": "39c16930b8052c9ae21b539b1af82e33"
+    "url": "/_nuxt/pages_organizer.6873fcc71a22de73536d.js",
+    "revision": "9c74722038b2a0869d8086bfb57b3343"
+  },
+  {
+    "url": "/_nuxt/pages_signup.4dd9837557eee8eea23f.js",
+    "revision": "70fbd6b4fb39091918c467c177817ffd"
+  },
+  {
+    "url": "/_nuxt/pages_userProfile.7cc3c7005211c7f2d86c.js",
+    "revision": "1c9728019e2f07d7d2b3b533a9f5b436"
+  },
+  {
+    "url": "/_nuxt/vendor.c49ad7099d151e934243.js",
+    "revision": "f008e7127aaa9d17a680729bce64fe24"
   }
 ], {
-  "cacheId": "nuxt-firebase-auth",
+  "cacheId": "meetu-project",
   "directoryIndex": "/",
   "cleanUrls": false
 })
