@@ -26,7 +26,10 @@ public class ElasticUtil {
         ArrayList<T> elasticParseToPojo = new ArrayList();
 
         for (SearchHit hit : searchHits) {
-            elasticParseToPojo.add(objectMapper.convertValue(hit.getSourceAsMap(), type));
+            Map<String, Object> sourceAsMap = hit.getSourceAsMap();
+            String elasticEventId = hit.getId();
+            sourceAsMap.put("elasticEventId", elasticEventId);
+            elasticParseToPojo.add(objectMapper.convertValue(sourceAsMap, type));
         }
         return elasticParseToPojo;
     }

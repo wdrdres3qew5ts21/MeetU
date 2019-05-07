@@ -5,6 +5,7 @@
  */
 package meetu.eventservice.model;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
@@ -26,6 +27,7 @@ public class Event {
     @Indexed(direction = IndexDirection.ASCENDING)
     private String eventId;
 
+    @Indexed(direction = IndexDirection.ASCENDING)
     private String elasticEventId;
 
     private String eventName;
