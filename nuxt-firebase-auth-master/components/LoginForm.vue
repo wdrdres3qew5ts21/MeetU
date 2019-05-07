@@ -67,7 +67,7 @@ export default {
       console.log(qrCode);
       this.qrCode = qrCode.data;
     },
-    emailLogin() {
+    emailLogin: function(e)  {
       this.$store
         .dispatch("signInWithEmail", {
           email: this.formEmail,
@@ -81,7 +81,7 @@ export default {
           console.log(e.message);
         });
     },
-    googleSignUp() {
+    googleSignUp: function(e)  {
       this.$store
         .dispatch("signInWithGoogle")
         .then(() => {
@@ -91,7 +91,7 @@ export default {
           console.log(e.message);
         });
     },
-    facebookSignUp() {
+    facebookSignUp: function(e)  {
       this.$store
         .dispatch("signInWithFacebook")
         .then(() => {
@@ -101,7 +101,7 @@ export default {
           console.log(e.message);
         });
     },
-    twitterSignUp() {
+    twitterSignUp: function(e)  {
       this.$store
         .dispatch("signInWithTwitter")
         .then(() => {

@@ -144,7 +144,7 @@ export default {
     onFileChanged(event) {
       this.selectedFile = event.target.files[0];
     },
-    onUpload() {
+    onUpload: function(e)  {
       // upload file, get it from this.selectedFile
     },
 

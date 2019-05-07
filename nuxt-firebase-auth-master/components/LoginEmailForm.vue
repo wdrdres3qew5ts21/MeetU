@@ -83,12 +83,12 @@ export default {
   forgotPassword: "Forgot your password?",
 
   methods: {
-    validate() {
+    validate: function(e)  {
       if (this.$refs.form.validate()) {
         this.snackbar = true;
       }
     },
-    reset() {
+    reset: function(e)  {
       this.$refs.form.reset();
     },
     resetValidation() {
