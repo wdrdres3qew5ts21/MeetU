@@ -46,11 +46,20 @@ public class EventController {
 
     @GetMapping("/events")
     public ResponseEntity<List<Event>> testFilter(
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "20") int contentPerPage,
             @RequestParam(required = false) String eventDetail,
             @RequestParam(required = false) String[] eventTags,
-            @RequestParam(required = false, defaultValue = "false") boolean isRecently
+            @RequestParam(required = false, defaultValue = "false") boolean isRecently,
+            @RequestParam(required = false, defaultValue = "0.0") double longitude,
+            @RequestParam(required = false, defaultValue = "0.0") double latitude,
+            @RequestParam(required = false, defaultValue = "5km") String areaOfEvent
     ) throws IOException {
-        return new ResponseEntity<List<Event>>(eventService.findEventByUsingFilter(eventTags, isRecently, eventDetail), HttpStatus.OK);
+        return new ResponseEntity<List<Event>>(
+                eventService.findEventByUsingFilter(
+                        eventTags, isRecently, eventDetail,
+                        longitude, latitude, areaOfEvent,
+                        page, contentPerPage), HttpStatus.OK);
     }
 
     @GetMapping("/events/qrcode")

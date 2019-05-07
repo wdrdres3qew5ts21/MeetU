@@ -5,6 +5,8 @@
  */
 package meetu.eventservice.model;
 
+import org.elasticsearch.common.geo.GeoPoint;
+
 /**
  *
  * @author wdrdr
@@ -20,10 +22,8 @@ public class Location {
     private String province;
 
     private String country;
-
-    private long lat;
-
-    private long lon;
+    
+    private GeoDetail geopoint;
 
     public String getSubDistrict() {
         return subDistrict;
@@ -57,22 +57,6 @@ public class Location {
         this.country = country;
     }
 
-    public long getLat() {
-        return lat;
-    }
-
-    public void setLat(long lat) {
-        this.lat = lat;
-    }
-
-    public long getLon() {
-        return lon;
-    }
-
-    public void setLon(long lon) {
-        this.lon = lon;
-    }
-
     public String getDetail() {
         return detail;
     }
@@ -80,5 +64,20 @@ public class Location {
     public void setDetail(String detail) {
         this.detail = detail;
     }
+
+    public GeoDetail getGeopoint() {
+        return geopoint;
+    }
+
+    public void setGeopoint(GeoDetail geopoint) {
+        this.geopoint = geopoint;
+    }
+
+    @Override
+    public String toString() {
+        return "Location{" + "detail=" + detail + ", subDistrict=" + subDistrict + ", district=" + district + ", province=" + province + ", country=" + country + ", geopoint=" + geopoint + '}';
+    }
+    
+   
 
 }

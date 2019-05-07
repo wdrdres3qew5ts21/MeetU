@@ -7,13 +7,13 @@ spring:
     active: dev
   data:
       mongodb:
-          host: 13.229.138.243
+          host: localhost
           port: 27017
-          #uri: mongodb://54.255.138.81:27017/?maxIdleTimeMS=120000&connectTimeoutMS=10000
-          authentication-database: admin
+   #       uri: mongodb://localhost:27017/?maxIdleTimeMS=120000&connectTimeoutMS=10000
+   #       authentication-database: admin
           database: meetu
-          username: meetuAdmin
-          password: popsonfonmeetu
+     #     username: meetuAdmin
+       #   password: popsonfonmeetu
   cloud:
     config:
       uri: http://localhost:8585
