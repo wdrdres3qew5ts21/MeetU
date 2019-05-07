@@ -62,12 +62,12 @@
       </v-layout>
     </v-layout>
 
-<br><br>
+    <br>
+    <br>
     <center>
       <h2 class="upgradeToOrganizer">
         Use MeetU for your
-        <br>
-        next events & activities.
+        <br>next events & activities.
       </h2>
 
       <br>
@@ -396,7 +396,8 @@ export default {
         }
       ]
     };
-  }
+  },
+
 };
 </script>
 
@@ -501,6 +502,7 @@ export default {
 
 .v-carousel {
   height: 300px !important;
+
 }
 
 .upgradeToOrganizer {
