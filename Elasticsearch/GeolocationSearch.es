@@ -128,3 +128,38 @@ PUT /my_index_new
     }
   }
 }
+
+
+
+GET /events/_search
+{
+  "query": {
+        "bool" : {
+            "must" : {
+                "match_all" : {}
+            },
+            "filter" : {
+                "geo_distance": {
+                    "distance" : "200km",
+                    "location.geopoint" : {
+                        "lat" : 13.6519739,
+                        "lon" : 100.492686
+                    }
+                }
+            }
+        }
+    },
+    "sort": [
+        {
+          "_geo_distance": {
+            "location.geopoint": { 
+              "lat":  13.6519739,
+              "lon": 100.492686
+            },
+            "order":         "asc",
+            "unit":          "km", 
+            "distance_type": "arc" 
+          }
+        }
+    ]
+}

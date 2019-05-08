@@ -16,7 +16,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,7 +41,7 @@ public class EventController {
     @Autowired
     private QRCodeService qRCodeService;
 
-    @PostMapping("/events")
+    @PostMapping("/event")
     public ResponseEntity<Event> createEvent(@RequestBody Event event) {
         return new ResponseEntity<Event>(eventService.createEvent(event), HttpStatus.CREATED);
     }
@@ -51,10 +53,11 @@ public class EventController {
             @RequestParam(required = false) String eventDetail,
             @RequestParam(required = false) String[] eventTags,
             @RequestParam(required = false, defaultValue = "false") boolean isRecently,
-            @RequestParam(required = false, defaultValue = "0.0") double longitude,
-            @RequestParam(required = false, defaultValue = "0.0") double latitude,
+            @RequestParam(required = false, defaultValue = "0.0", name = "lon") double longitude,
+            @RequestParam(required = false, defaultValue = "0.0", name = "lat") double latitude,
             @RequestParam(required = false, defaultValue = "5km") String areaOfEvent
     ) throws IOException {
+        System.out.println(latitude + " " + longitude);
         return new ResponseEntity<List<Event>>(
                 eventService.findEventByUsingFilter(
                         eventTags, isRecently, eventDetail,
@@ -62,10 +65,14 @@ public class EventController {
                         page, contentPerPage), HttpStatus.OK);
     }
 
+    @DeleteMapping("/event/{eventId}")
+    public ResponseEntity<Event> deleteEventById(@PathVariable String eventId) {
+        return new ResponseEntity<Event>(eventService.deleteEventById(eventId), HttpStatus.OK);
+    }
+
     @GetMapping("/events/qrcode")
     public ResponseEntity<byte[]> qrCodeGenerator(HttpServletResponse response) {
         response.setContentType("image/png");
-        // return new ResponseEntity<byte[]>(qRCodeService.getQRCodeImage(), HttpStatus.OK);
         return new ResponseEntity<byte[]>(qRCodeService.getQRCodeImage("https://trello.com/b/OutSJrmK/project", 1000, 1000), HttpStatus.OK);
     }
 

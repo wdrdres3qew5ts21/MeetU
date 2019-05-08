@@ -12,14 +12,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author wdrdr
  */
 public class GeoDetail {
-    
-        @JsonProperty("lat")
+
+    @JsonProperty("lat")
     private double latitude;
 
     @JsonProperty("lon")
     private double longitude;
-
-  //  private String geohash;
 
     public double getLatitude() {
         return latitude;
@@ -42,5 +40,4 @@ public class GeoDetail {
         return "Position{" + "latitude=" + latitude + ", longitude=" + longitude + '}';
     }
 
-    
 }

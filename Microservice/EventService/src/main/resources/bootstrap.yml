@@ -7,7 +7,7 @@ spring:
     active: dev
   data:
       mongodb:
-          host: localhost
+          host: 13.229.138.243
           port: 27017
    #       uri: mongodb://localhost:27017/?maxIdleTimeMS=120000&connectTimeoutMS=10000
    #       authentication-database: admin
