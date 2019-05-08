@@ -51,11 +51,18 @@
       <!-- <v-btn icon>
         <v-icon class="searchButton" color="#fff;" @click="searchPopup">search</v-icon>
       </v-btn>-->
-
+<!-- <nuxt-link to="searchTest">  -->
+  <div>
+  <router-link to ="search">
       <v-btn icon>
-        <v-icon class="hidden-lg-only" color="#fff;"  @click.stop="searchButton">search</v-icon>
+        <v-icon class="hidden-lg-only" color="#fff;">search</v-icon>
       </v-btn>
+      </router-link>
+      
+      </div>
 
+     
+<!-- </nuxt-link> -->
 
       <!-- <v-autocomplete
         v-model="model"
@@ -212,6 +219,8 @@ export default {
 </script>
 
 <style>
+
+
 .textfield {
   text-decoration-line: none !important;
   text-decoration: none !important;
@@ -281,4 +290,6 @@ a:hover {
   color: #fff;
   border-left: 10px solid gnray;
 }
+
+
 </style>

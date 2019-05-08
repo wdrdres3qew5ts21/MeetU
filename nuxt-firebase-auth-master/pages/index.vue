@@ -1,8 +1,11 @@
 <template>
+<!-- <transition name="router-anim"  leave-active-class="animated slideOutLeft"> -->
   <v-container>
+    
     <v-carousel>
       <v-carousel-item sm6 xs2 v-for="(item,i) in carouselsPhoto" :src="item.src" :key="i"></v-carousel-item>
     </v-carousel>
+    
     <br>
     <h1>Popular Event</h1>
     <br>
@@ -209,7 +212,9 @@
     <!-- </div> -->
 
     <!-- </v-layout> -->
+
   </v-container>
+  <!-- </transition> -->
 </template>
 
 
@@ -404,6 +409,7 @@ export default {
 
 
 <style scoped>
+@import "https://cdn.jsdelivr.net/npm/animate.css@3.5.1";
 /* .fake {
   background: blue;
 }
@@ -512,6 +518,11 @@ export default {
 .upgradeToOrganizerButton {
   font-weight: bold;
   margin-bottom: 10%;
+}
+
+.page{
+  position: fixed;
+  width: inherit;
 }
 </style>
 
