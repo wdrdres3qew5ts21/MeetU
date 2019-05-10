@@ -1,11 +1,10 @@
 <template>
-<!-- <transition name="router-anim"  leave-active-class="animated slideOutLeft"> -->
+  <!-- <transition name="router-anim"  leave-active-class="animated slideOutLeft"> -->
   <v-container>
-    
     <v-carousel>
       <v-carousel-item sm6 xs2 v-for="(item,i) in carouselsPhoto" :src="item.src" :key="i"></v-carousel-item>
     </v-carousel>
-    
+
     <br>
     <h1>Popular Event</h1>
     <br>
@@ -31,9 +30,9 @@
     <br>
     <v-layout>
       <v-layout row wrap>
-        <v-flex v-for="event in recentlyAdded" :key="event.eventId" xs4>
+        <v-flex v-for="event in recentlyEvent" :key="event.eventId" xs4>
           <v-card flat tile>
-            <v-img img v-bind:src="event.eventPhoto" max-height="230px"></v-img>
+            <v-img img v-bind:src="event.eventPictureCover" max-height="230px"></v-img>
           </v-card>
         </v-flex>
       </v-layout>
@@ -46,7 +45,7 @@
       <v-layout row wrap>
         <v-flex v-for="event in artsEvent" :key="event.eventId" xs4>
           <v-card flat tile>
-            <v-img img v-bind:src="event.eventPhoto" max-height="230px"></v-img>
+            <v-img img v-bind:src="event.eventPictureCover" max-height="230px"></v-img>
           </v-card>
         </v-flex>
       </v-layout>
@@ -85,6 +84,10 @@
         >Become an Organizer</v-btn>
       </nuxt-link>
     </center>
+
+    <!-- <v-btn color="information" @click="createArt()">Add Art</v-btn>
+    <v-btn color="information" @click="createBook()">Add Book</v-btn>-->
+
     <!-- <h1>Recently Added</h1>
 
     <br>
@@ -92,7 +95,7 @@
       <v-layout>
         <v-flex
           text-xs-center
-          v-for="event in recentlyAdded"
+          v-for="event in recentlyEvent"
           :key="event.eventId"
           xs6
           :to="{path:'/event',
@@ -192,7 +195,7 @@
     <!-- ใช้code จบ -->
 
     <!-- <div class="flex-container">
-        <nuxt-link v-for="event in recentlyAdded" :key="event.eventId" 
+        <nuxt-link v-for="event in recentlyEvent" :key="event.eventId" 
               :to="{path:'/event',query:{eventId:event.eventId}}">       
 
 
@@ -212,13 +215,13 @@
     <!-- </div> -->
 
     <!-- </v-layout> -->
-
   </v-container>
   <!-- </transition> -->
 </template>
 
 
 <script>
+import axios from "axios";
 export default {
   components: {},
   data() {
@@ -260,7 +263,7 @@ export default {
           eventDate: new Date(1554653418)
         }
       ],
-      recentlyAdded: [
+      recentlyEvent: [
         {
           eventId: "11111b",
           eventName: "Ballon Festival",
@@ -402,7 +405,49 @@ export default {
       ]
     };
   },
-
+  mounted() {
+    this.artsEvent = []
+    this.recentlyEvent = []
+    this.getRecentlyEvent()
+    this.getArtsEvent()
+  },
+  methods: {
+    getRecentlyEvent: async function() {
+      let concentPerPage = 3;
+      let recentlyEvent = await axios(`${process.env.EVENT_SERVICE}/events?isRecently=true
+      &contentPerPage=${concentPerPage}`);
+      recentlyEvent = recentlyEvent.data
+      this.recentlyEvent = recentlyEvent
+    },
+    getArtsEvent: async function() {
+      let concentPerPage = 3;
+      let artsEvent = await axios(`${process.env.EVENT_SERVICE}/events?isRecently=true
+      &contentPerPage=${concentPerPage}
+      &eventTags=art`);
+      artsEvent = artsEvent.data
+      this.artsEvent = artsEvent
+    },
+    createArt: function() {
+      for (let i = 0; i < this.artsEvent.length; i++) {
+        console.log(this.artsEvent[i]);
+        axios.post(`${process.env.EVENT_SERVICE}/event`, {
+          eventPictureCover: this.artsEvent[i].eventPhoto,
+          eventName: this.artsEvent[i].eventName,
+          eventTags: ["Art"]
+        });
+      }
+    },
+    createBook: function() {
+      for (let i = 0; i < this.bookEvent.length; i++) {
+        console.log(this.bookEvent[i]);
+        axios.post(`${process.env.EVENT_SERVICE}/event`, {
+          eventPictureCover: this.bookEvent[i].eventPhoto,
+          eventName: this.bookEvent[i].eventName,
+          eventTags: ["Book"]
+        });
+      }
+    }
+  }
 };
 </script>
 
@@ -508,7 +553,6 @@ export default {
 
 .v-carousel {
   height: 300px !important;
-
 }
 
 .upgradeToOrganizer {
@@ -520,7 +564,7 @@ export default {
   margin-bottom: 10%;
 }
 
-.page{
+.page {
   position: fixed;
   width: inherit;
 }

@@ -43,26 +43,25 @@
       <v-btn icon @click.native.stop="drawer = !drawer" class="hidden-lg-and-up">
         <v-icon class="menuButton" color="#fff;">menu</v-icon>
       </v-btn>
-
-      <v-toolbar-title v-text="title"></v-toolbar-title>
+      <nuxt-link to="/" style="text-decoration-line:none;">
+        <v-toolbar-title v-text="title"></v-toolbar-title>
+      </nuxt-link>
 
       <v-spacer></v-spacer>
 
       <!-- <v-btn icon>
         <v-icon class="searchButton" color="#fff;" @click="searchPopup">search</v-icon>
       </v-btn>-->
-<!-- <nuxt-link to="searchTest">  -->
-  <div>
-  <router-link to ="search">
-      <v-btn icon>
-        <v-icon class="hidden-lg-only" color="#fff;">search</v-icon>
-      </v-btn>
-      </router-link>
-      
+      <!-- <nuxt-link to="searchTest">  -->
+      <div>
+        <router-link to="search">
+          <v-btn icon>
+            <v-icon class="hidden-lg-only" color="#fff;">search</v-icon>
+          </v-btn>
+        </router-link>
       </div>
 
-     
-<!-- </nuxt-link> -->
+      <!-- </nuxt-link> -->
 
       <!-- <v-autocomplete
         v-model="model"
@@ -203,8 +202,8 @@ export default {
         alert("logged out!");
         this.$router.push("/");
       });
-    },
-  
+    }
+
     // searchButton: function(e){
     //   Swal.fire({
     //     title: "Are you sure?",
@@ -219,8 +218,6 @@ export default {
 </script>
 
 <style>
-
-
 .textfield {
   text-decoration-line: none !important;
   text-decoration: none !important;
@@ -290,6 +287,4 @@ a:hover {
   color: #fff;
   border-left: 10px solid gnray;
 }
-
-
 </style>

@@ -48,6 +48,10 @@ POST /events/_mapping
         }
       }
     },
+    "eventTags": { 
+      "type":     "text",
+      "fielddata": true
+    },
     "eventDetail":{
       "type": "text",
       "analyzer": "thai_analyzer"
