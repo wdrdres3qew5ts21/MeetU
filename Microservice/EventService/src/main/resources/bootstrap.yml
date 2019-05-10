@@ -1,5 +1,7 @@
 server:
   port: 3002
+boot:
+    test: ${test:http://localhost1234}
 spring:
   application:
     name: eventservice
@@ -7,29 +9,28 @@ spring:
     active: dev
   data:
       mongodb:
-          host: 13.229.138.243
+          host: ${mongodb_host:http://localhost}
           port: 27017
-   #       uri: mongodb://localhost:27017/?maxIdleTimeMS=120000&connectTimeoutMS=10000
    #       authentication-database: admin
           database: meetu
      #     username: meetuAdmin
        #   password: popsonfonmeetu
   cloud:
     config:
-      uri: http://localhost:8585
+      uri: ${spring_cloud_config:http://localhost:8585}
       retry:
         max-attempts: 8
         max-interval: 2000
         initial-interval: 10000
       request-read-timeout: 10000
 elasticsearch:
-    host: localhost
+    host: ${elastic_host:http://localhost}
     port: 9200
     
 #eureka:
 #  instance:
 #    appname: eventservice
 #  client:
-#    service-url.defaultZone: http://localhost:8761/eureka
+#    service-url.defaultZone: ${eureka_server:http://localhost:8761/eureka}
 #    
 

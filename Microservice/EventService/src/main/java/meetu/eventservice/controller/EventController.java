@@ -35,11 +35,21 @@ public class EventController {
     @Value("${spring.profiles.active}")
     List<String> profiles;
 
+    String envTest = System.getenv("test");
+
+    @Value("${boot.test}")
+    String superDude;
+
     @Autowired
     private EventService eventService;
 
     @Autowired
     private QRCodeService qRCodeService;
+
+    @GetMapping("/test")
+    public ResponseEntity<String> test() {
+        return new ResponseEntity<>(envTest + "\n ----------- " + superDude, HttpStatus.OK);
+    }
 
     @PostMapping("/event")
     public ResponseEntity<Event> createEvent(@RequestBody Event event) {

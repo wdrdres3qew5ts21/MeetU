@@ -6,7 +6,7 @@
 	},
 	"item": [
 		{
-			"name": "localhost:3002/events - fate stay",
+			"name": "localhost:3002/events - siam",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -19,16 +19,43 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"eventName\": \"Fate Grand Order sdasdasd\",\n\t\"eventDetail\": \"รวมพลคนเกลือจากเฟตเพื่อชามชาบูและขายไต อิ_อิ\",\n\t\"eventTags\": [\n\t\t\"anime\", \"movies\", \"crossplay\"\t\n\t],\n\t\"createEventDate\": \"2030-01-18T22:44:19.804+0000\",\n\t\"organize\": {\n\t\t\"organizeName\": \"KMUTT Japanese Club\",\n\t\t\"organizeDetail\": \"พวกเราคือติ่งโอตาคุ ที่หลงไหลในอนิเมะ มั่กๆ !!!\",\n\t\t\"organizeImageProfile\": \"https://scontent.fbkk9-2.fna.fbcdn.net/v/t1.0-9/21370876_10155437158971013_2896790551203599213_n.jpg?_nc_cat=109&_nc_eui2=AeGe5LxckT47jWQUbBro43pN4eavFDocCIUP8EHAm9JkFB5OS6rfYPrwIO0r8DRMJEE1RfEgt-zTTlH4AXPDR4I2th_YVyGne7ryPDxaunLg-w&_nc_ht=scontent.fbkk9-2.fna&oh=7024ac98d5119e450866f5eb4ccddd5c&oe=5CE7C4FD\"\n\t}\n\t\n}"
+					"raw": "{\n\t\"eventName\": \"Songkran Holiday\",\n\t\"eventDetail\": \"The Thai capital celebrates with the Bangkok Songkran Splendours Festival which takes place from April 13th to 15th. The official opening ceremony is held at Wat Pho, one of the most important Buddhist temples in Thailand that’s home to the spectacular gold-plated reclining Buddha. Many other celebrations are held on and around Khao San Road, which is one of the most popular streets in the world for backpackers. Events during the festival include water throwing, the ritual bathing of Buddha images, processions and performances. A tempting array of traditional foods are enjoyed throughout the celebrations.\",\n\t\"eventTags\": [\n\t\t\"Culture\", \"Outdoor\"\t\n\t],\n\t\"organize\": {\n\t\t\"organizeName\": \"Paragon\"\n\t},\n\t\"location\":{\n\t\t\"subDistrict\": \"Prathumwan\",\n\t\t\"distrcit\": \"Prathumwan\",\n\t\t\"province\": \"Bangkok\",\n\t\t\"country\": \"Thailand\",\n\t\t\"geopoint\": {\n\t\t\t\"lat\": 13.7468152,\n\t\t\t\"lon\": 100.5328803\n\t\t}\n\t}\n\t\n}"
 				},
 				"url": {
-					"raw": "localhost:3002/events",
+					"raw": "{{host}}/event",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3002",
 					"path": [
-						"events"
+						"event"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3002/events - chaingmai",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"eventName\": \"Songkran Holiday\",\n\t\"eventDetail\": \"Songkran is Thailand's most important public holiday and celebrates their traditional new year. It takes place from the 13-15th April (the hottest time of the year) throughout the country, but Chiang Mai spreads this out for up to 8 days, making it one of the best places to celebrate the world's biggest water fight. The streets fill with processions, cultural shows, beauty pageants and thousands of locals and tourists armed with water pistols and powder. The moat around the city centre provides the perfect set up for an incredible and unforgettable cultural experience. Wetter equals better, so be warned not to carry any valuables that can't take a soaking.\",\n\t\"eventTags\": [\n\t\t\"Culture\", \"Outdoor\"\t\n\t],\n\t\"organize\": {\n\t\t\"organizeName\": \"Party Festival - Thailand\"\n\t},\n\t\"location\":{\n\t\t\"subDistrict\": \"Huay Kaew\",\n\t\t\"distrcit\": \"Su Thep\",\n\t\t\"province\": \"Chaing Mai\",\n\t\t\"country\": \"Thailand\",\n\t\t\t\"geopoint\": {\n\t\t\t\"lat\": 18.804993,\n\t\t\t\"lon\": 98.9208209\n\t\t}\n\t}\n\t\n}"
+				},
+				"url": {
+					"raw": "{{host}}/event",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"event"
 					]
 				}
 			},
@@ -48,16 +75,37 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"eventName\": \"Japanese Expo 2019\",\n\t\"eventDetail\": \"Exhibition about Japanese\",\n\t\"eventTags\": [\n\t\t\"anime\", \"movies\", \"crossplay\"\t\n\t],\n\t\"createEventDate\": \"2030-01-18T22:44:19.804+0000\",\n\t\"organize\": {\n\t\t\"organizeName\": \"KMUTT Japanese Club\",\n\t\t\"organizeDetail\": \"พวกเราคือติ่งโอตาคุ ที่หลงไหลในอนิเมะ มั่กๆ !!!\",\n\t\t\"organizeImageProfile\": \"https://scontent.fbkk9-2.fna.fbcdn.net/v/t1.0-9/21370876_10155437158971013_2896790551203599213_n.jpg?_nc_cat=109&_nc_eui2=AeGe5LxckT47jWQUbBro43pN4eavFDocCIUP8EHAm9JkFB5OS6rfYPrwIO0r8DRMJEE1RfEgt-zTTlH4AXPDR4I2th_YVyGne7ryPDxaunLg-w&_nc_ht=scontent.fbkk9-2.fna&oh=7024ac98d5119e450866f5eb4ccddd5c&oe=5CE7C4FD\"\n\t}\n\t\n}"
+					"raw": "{\n\t\"eventName\": \"Japanese Expo 2019\",\n\t\"eventDetail\": \"Exhibition about Japanese\",\n\t\"eventTags\": [\n\t\t\"anime\", \"movies\", \"crossplay\"\t\n\t],\n\t\"organize\": {\n\t\t\"organizeName\": \"KMUTT Japanese CLub\"\n\t},\n\t\"location\":{\n\t\t\"subDistrict\": \"Tungkru\",\n\t\t\"distrcit\": \"Tungkru\",\n\t\t\"province\": \"Bangkok\",\n\t\t\"country\": \"Thailand\",\n\t\t\t\"geopoint\": {\n\t\t\t\"lat\": 13.6519739,\n\t\t\t\"lon\":100.492686\n\t\t}\n\t}\n\t\n}"
 				},
 				"url": {
-					"raw": "localhost:3002/events",
+					"raw": "{{host}}/event",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "3002",
 					"path": [
-						"events"
+						"event"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3002/event",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/event/",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"event",
+						""
 					]
 				}
 			},

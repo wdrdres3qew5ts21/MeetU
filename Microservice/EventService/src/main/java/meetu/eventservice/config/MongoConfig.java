@@ -20,23 +20,6 @@ import org.springframework.data.mongodb.core.MongoClientFactoryBean;
  */
 @Configuration
 public class MongoConfig {
-    
-//    @Bean
-//    public MongoClientFactoryBean mongo() {
-//        MongoClientFactoryBean mongo = new MongoClientFactoryBean();
-//        try {
-//            //  mongo.setHost(host);
-//            //  mongo.setPort(port);
-//            mongo.wait(10000);
-//        } catch (InterruptedException ex) {
-//            Logger.getLogger(MongoConfig.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        mongo.setMongoClientOptions(MongoClientOptions.builder()
-//                .retryWrites(true)
-//                .socketTimeout(10000)
-//                .build());
-//        return mongo;
-//    }
 
     @Value("${spring.data.mongodb.host:localhost}")
     private String host;
