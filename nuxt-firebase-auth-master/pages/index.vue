@@ -77,7 +77,7 @@
       <nuxt-link :to="`/organizer?`" style="text-decoration-line:none;">
         <v-btn
           class="upgradeToOrganizerButton white--text"
-          round="16"
+          :round="true"
           depressed
           large
           color="#341646"
@@ -221,9 +221,13 @@
 
 
 <script>
+//import CarouselCard from '../components/CarouselCard.vue';
 import axios from "axios";
+import  {mapActions} from 'vuex';
 export default {
-  components: {},
+  components: {
+    //CarouselCard
+  },
   data() {
     return {
       popularEventList: [
@@ -410,8 +414,11 @@ export default {
     this.recentlyEvent = []
     this.getRecentlyEvent()
     this.getArtsEvent()
+    console.log(this.getEventByTags('art'))
+    console.log(this.getEventByTags('book'))
   },
   methods: {
+    ...mapActions(['getEventByTags']),
     getRecentlyEvent: async function() {
       let concentPerPage = 3;
       let recentlyEvent = await axios(`${process.env.EVENT_SERVICE}/events?isRecently=true

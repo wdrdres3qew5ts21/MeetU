@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import authentication from "./modules/authentication";
 import location from "./modules/location";
+import fetchEvent from './modules/fetchEvent'
 
 Vue.use(Vuex);
 
@@ -10,7 +11,8 @@ const store = () => {
     state: {},
     modules: {
       authentication,
-      location
+      location,
+      fetchEvent
     }
   });
 };

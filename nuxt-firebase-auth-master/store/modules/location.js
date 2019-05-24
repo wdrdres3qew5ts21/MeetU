@@ -1,25 +1,3 @@
-// export const location = {
-//   state: {
-//     currentLocation: {}
-//   },
-//   getters: {
-//     getCurrentLocation: function(state) {
-//       return state.currentLocation;
-//     }
-//   },
-//   mutations: {
-//     setCurrentLocation: function(state, updatedLocation) {
-//       state.currentLocation = updatedLocation;
-//       console.log("location work" + state.currentLocation)
-//     }
-//   },
-//   actions: {
-//     setCurrentLocation: function({ commit }, updatedLocation) {
-//       commit("setCurrentLocation", updatedLocation);
-//     }
-//   }
-// };
-
 const state = () => ({
   currentLocation: {}
 });
