@@ -6,63 +6,22 @@
     </v-carousel>
 
     <br>
-    <h1>Popular Event</h1>
-    <br>
-    <v-layout>
-      <v-layout row wrap>
-        <v-flex v-for="event in popularEventList" :key="event.eventId" xs4>
-          <v-card flat tile>
-            <v-img img v-bind:src="event.eventPhoto" max-height="230px"></v-img>
-          </v-card>
-        </v-flex>
-        <v-flex xs4>
-          <v-card flat tile height="230px">
-            <v-card-title primary-title>
-              <div class="headline">More Event ...</div>
-            </v-card-title>
-          </v-card>
-        </v-flex>
-      </v-layout>
-    </v-layout>
+    <h1>Recommeded</h1>
+    <event-list :eventList="popularEventList"></event-list>
 
     <br>
     <h1>Recently Event</h1>
     <br>
-    <v-layout>
-      <v-layout row wrap>
-        <v-flex v-for="event in recentlyEvent" :key="event.eventId" xs4>
-          <v-card flat tile>
-            <v-img img v-bind:src="event.eventPictureCover" max-height="230px"></v-img>
-          </v-card>
-        </v-flex>
-      </v-layout>
-    </v-layout>
+    <event-list :eventList="recentlyEvent"></event-list>
 
     <br>
     <h1>Art Event</h1>
-    <br>
-    <v-layout>
-      <v-layout row wrap>
-        <v-flex v-for="event in artsEvent" :key="event.eventId" xs4>
-          <v-card flat tile>
-            <v-img img v-bind:src="event.eventPictureCover" max-height="230px"></v-img>
-          </v-card>
-        </v-flex>
-      </v-layout>
-    </v-layout>
+    <event-list :eventList="artsEvent"></event-list>
 
     <br>
     <h1>Book Event</h1>
     <br>
-    <v-layout>
-      <v-layout row wrap>
-        <v-flex v-for="event in bookEvent" :key="event.eventId" xs4>
-          <v-card flat tile>
-            <v-img img v-bind:src="event.eventPhoto" max-height="230px"></v-img>
-          </v-card>
-        </v-flex>
-      </v-layout>
-    </v-layout>
+    <event-list :eventList="bookEvent"></event-list>
 
     <br>
     <br>
@@ -101,7 +60,7 @@
           :to="{path:'/event',
             query:{eventId:event.eventId}}"
         >
-          <img v-bind:src="event.eventPhoto" alt height="150px">
+          <img v-bind:src="event.eventPictureCover" alt height="150px">
           <nuxt-link :to="`/eventDetail?${event.eventName}`" style="text-decoration-line:none;">
             <p>
               <a class="eventName">{{event.eventName}}</a>
@@ -130,7 +89,7 @@
           xs6
           :to="{path:'/event',query:{eventId:event.eventId}}"
         >
-          <img v-bind:src="event.eventPhoto" alt height="150px">
+          <img v-bind:src="event.eventPictureCover" alt height="150px">
           <nuxt-link :to="`/eventDetail?${event.eventName}`" style="text-decoration-line:none;">
             <p>
               <a class="eventName">{{event.eventName}}</a>
@@ -158,7 +117,7 @@
           xs6
           :to="{path:'/event',query:{eventId:event.eventId}}"
         >
-          <img v-bind:src="event.eventPhoto" alt height="150px">
+          <img v-bind:src="event.eventPictureCover" alt height="150px">
           <nuxt-link :to="`/eventDetail?${event.eventName}`" style="text-decoration-line:none;">
             <p>
               <a class="eventName">{{event.eventName}}</a>
@@ -203,7 +162,7 @@
               <h1 style="color: black"> {{$store.state.user}} </h1>
               <div class="flex-item">
                   <div class="mt-5">
-                      <img v-bind:src="event.eventPhoto" alt="" height="100px">
+                      <img v-bind:src="event.eventPictureCover" alt="" height="100px">
                       <p>{{event.eventName}}</p>
                       <p>{{event.eventDate.getDate()}}/{{event.eventDate.getMonth()}}/{{event.eventDate.getYear()}}</p>
                     
@@ -221,11 +180,13 @@
 
 
 <script>
+import EventList from "@/components/EventList";
 //import CarouselCard from '../components/CarouselCard.vue';
 import axios from "axios";
-import  {mapActions} from 'vuex';
+import { mapActions } from "vuex";
 export default {
   components: {
+    EventList
     //CarouselCard
   },
   data() {
@@ -234,152 +195,39 @@ export default {
         {
           eventId: "11111a",
           eventName: "Icecream Social",
-          eventPhoto:
+          eventPictureCover:
             "https://news.cci.fsu.edu/files/2014/03/2014-CCI-SLC-Ice-Cream-Social-Flyer.png",
           eventDate: new Date(1554653418)
         },
         {
           eventId: "11112a",
           eventName: "Charity Auction",
-          eventPhoto:
+          eventPictureCover:
             "http://jenniferhowedesigns.com/wp-content/uploads/2018/06/goodcharityposter.png",
           eventDate: new Date(1554653418)
         },
         {
           eventId: "11113a",
           eventName: "Original Festival",
-          eventPhoto:
+          eventPictureCover:
             "https://i.pinimg.com/originals/0f/04/6f/0f046f654320d387d7608a754f205d1e.png",
           eventDate: new Date(1554653418)
         },
         {
           eventId: "11114a",
           eventName: "Mars Event",
-          eventPhoto:
+          eventPictureCover:
             "https://s3.amazonaws.com/thumbnails.venngage.com/template/70fdebc4-7bb7-49fc-9caf-700f890de92b.png",
           eventDate: new Date(1554653418)
         },
         {
           eventId: "11115a",
           eventName: "Night Market",
-          eventPhoto:
+          eventPictureCover:
             "https://stumbler.co.za/wp-content/uploads/2017/11/26685184_140352653308218_9209494944451264947_o-4.jpg",
           eventDate: new Date(1554653418)
         }
       ],
-      recentlyEvent: [
-        {
-          eventId: "11111b",
-          eventName: "Ballon Festival",
-          eventPhoto:
-            "https://marketplace.canva.com/MADOPmFuuDk/1/0/thumbnail_large/canva-blue-red-balloon-festival-event-poster-MADOPmFuuDk.jpg",
-          eventDate: new Date(1554681600)
-        },
-        {
-          eventId: "11112b",
-          eventName: "Annual Sports Fest",
-          eventPhoto:
-            "https://marketplace.canva.com/MADOPq1rLE0/1/0/thumbnail_large/canva-black-simple-sports-event-poster-MADOPq1rLE0.jpg",
-          eventDate: new Date(1554681600)
-        },
-        {
-          eventId: "11113b",
-          eventName: "Will Draw For Food",
-          eventPhoto:
-            "https://marketplace.canva.com/MADOPkH9JIQ/1/0/thumbnail_large/canva-sketch-food-drawing-event-poster-MADOPkH9JIQ.jpg",
-          eventDate: new Date(1554681600)
-        },
-        {
-          eventId: "11114b",
-          eventName: "SPLASH Art Festival",
-          eventPhoto:
-            "https://marketplace.canva.com/MADOPrc2V5c/1/0/thumbnail_large/canva-blue-green-festival-event-poster-MADOPrc2V5c.jpg",
-          eventDate: new Date(1554681600)
-        },
-        {
-          eventId: "11115b",
-          eventName: "Cady At Home",
-          eventPhoto:
-            "https://marketplace.canva.com/MADI6arDCak/1/0/thumbnail_large/canva-blue-and-red-christmas-event-letter-sized-poster-MADI6arDCak.jpg",
-          eventDate: new Date(1554681600)
-        }
-      ],
-      artsEvent: [
-        {
-          eventId: "11111c",
-          eventName: "Art Rising",
-          eventPhoto:
-            "https://chambermaster.blob.core.windows.net/userfiles/UserFiles/chambers/1397/CMS/ArtRising_Posters6_Final.jpg",
-          eventDate: new Date(1554681600)
-        },
-        {
-          eventId: "11112c",
-          eventName: "Live Art&Music",
-          eventPhoto:
-            "https://s3.amazonaws.com/thumbnails.venngage.com/template/92bd8005-628b-43a5-86fa-106aeadf55e5.png",
-          eventDate: new Date(1554681600)
-        },
-        {
-          eventId: "11113c",
-          eventName: "Wonderland",
-          eventPhoto:
-            "https://www.ticketbooth.com.au/ticketing/wp-content/uploads/2016/03/1.png",
-          eventDate: new Date(1554681600)
-        },
-        {
-          eventId: "11114c",
-          eventName: "Maintenant",
-          eventPhoto:
-            "https://www.ticketbooth.com.au/ticketing/wp-content/uploads/2016/03/3.png",
-          eventDate: new Date(1554681600)
-        },
-        {
-          eventId: "11115c",
-          eventName: "CEST LA Fest",
-          eventPhoto:
-            "https://www.ticketbooth.com.au/ticketing/wp-content/uploads/2016/03/25.png",
-          eventDate: new Date(1554681600)
-        }
-      ],
-
-      bookEvent: [
-        {
-          eventId: "11111d",
-          eventName: "Rock Books",
-          eventPhoto:
-            "https://img-cache.oppcdn.com/img/v1.0/s:10530/t:QkxBTksrVEVYVCtIRVJF/p:12/g:tl/o:2.5/a:50/q:90/1400x720-y8blC3xl.jpg/591x720/cd20a7652eb81337c036685d0651f932.jpg",
-          eventDate: new Date(1554681600)
-        },
-        {
-          eventId: "11112d",
-          eventName: "Book Fair",
-          eventPhoto:
-            "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/book-fair-poster-template-bca4ee73213af679660af906a698446f_screen.jpg",
-          eventDate: new Date(1554681600)
-        },
-        {
-          eventId: "11113d",
-          eventName: "BOOKFAIR",
-          eventPhoto:
-            "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/book-fair-poster-design-template-3757b0dcb9b98249f42205cb8ea89c4b_screen.jpg",
-          eventDate: new Date(1554681600)
-        },
-        {
-          eventId: "11114d",
-          eventName: "Childrens Book",
-          eventPhoto:
-            "https://www.anikadenise.com/wp-content/uploads/2017/09/princeton-poster-art-final2-650x900-1.jpg",
-          eventDate: new Date(1554681600)
-        },
-        {
-          eventId: "11115d",
-          eventName: "CMU Book Fair",
-          eventPhoto:
-            "http://library.cmu.ac.th/prcorner/sites/default/files/img_news/Poster_CMUBookFair25.jpg",
-          eventDate: new Date(1554681600)
-        }
-      ],
-
       linksFooter: [
         "Home",
         "About Us",
@@ -410,35 +258,39 @@ export default {
     };
   },
   mounted() {
-    this.artsEvent = []
-    this.recentlyEvent = []
-    this.getRecentlyEvent()
-    this.getArtsEvent()
-    console.log(this.getEventByTags('art'))
-    console.log(this.getEventByTags('book'))
+    this.artsEvent = [];
+    //this.recentlyEvent = []
+    this.getRecentlyEvent();
+    this.getArtsEvent();
+    console.log(this.getEventByTags("art"));
+    console.log(this.getEventByTags("book"));
   },
   methods: {
-    ...mapActions(['getEventByTags']),
+    ...mapActions(["getEventByTags"]),
     getRecentlyEvent: async function() {
       let concentPerPage = 3;
-      let recentlyEvent = await axios(`${process.env.EVENT_SERVICE}/events?isRecently=true
+      let recentlyEvent = await axios(`${
+        process.env.EVENT_SERVICE
+      }/events?isRecently=true
       &contentPerPage=${concentPerPage}`);
-      recentlyEvent = recentlyEvent.data
-      this.recentlyEvent = recentlyEvent
+      recentlyEvent = recentlyEvent.data;
+      this.recentlyEvent = recentlyEvent;
     },
     getArtsEvent: async function() {
       let concentPerPage = 3;
-      let artsEvent = await axios(`${process.env.EVENT_SERVICE}/events?isRecently=true
+      let artsEvent = await axios(`${
+        process.env.EVENT_SERVICE
+      }/events?isRecently=true
       &contentPerPage=${concentPerPage}
       &eventTags=art`);
-      artsEvent = artsEvent.data
-      this.artsEvent = artsEvent
+      artsEvent = artsEvent.data;
+      this.artsEvent = artsEvent;
     },
     createArt: function() {
       for (let i = 0; i < this.artsEvent.length; i++) {
         console.log(this.artsEvent[i]);
         axios.post(`${process.env.EVENT_SERVICE}/event`, {
-          eventPictureCover: this.artsEvent[i].eventPhoto,
+          eventPictureCover: this.artsEvent[i].eventPictureCover,
           eventName: this.artsEvent[i].eventName,
           eventTags: ["Art"]
         });
@@ -448,7 +300,7 @@ export default {
       for (let i = 0; i < this.bookEvent.length; i++) {
         console.log(this.bookEvent[i]);
         axios.post(`${process.env.EVENT_SERVICE}/event`, {
-          eventPictureCover: this.bookEvent[i].eventPhoto,
+          eventPictureCover: this.bookEvent[i].eventPictureCover,
           eventName: this.bookEvent[i].eventName,
           eventTags: ["Book"]
         });
