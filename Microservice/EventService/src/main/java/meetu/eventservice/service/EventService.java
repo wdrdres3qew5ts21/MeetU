@@ -31,6 +31,7 @@ import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
 import org.elasticsearch.index.query.MatchAllQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.QueryStringQueryBuilder;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
@@ -150,8 +151,12 @@ public class EventService {
         return queryFilter;
     }
 
-    public FuzzyQueryBuilder filterByEventDetail(String eventDetail) {
-        FuzzyQueryBuilder alreadyFilterByEventDetail  = QueryBuilders.fuzzyQuery("eventDetail", eventDetail);
+    public QueryStringQueryBuilder filterByEventDetail(String eventDetail) {
+        QueryStringQueryBuilder alreadyFilterByEventDetail = QueryBuilders.queryStringQuery(eventDetail+"~")
+                .field("eventName").boost(2.0f)
+                .field("eventDetail").boost(2.0f)
+                .field("location.*").boost(5.0f)
+                .fuzzyTranspositions(true);
         return alreadyFilterByEventDetail;
     }
 

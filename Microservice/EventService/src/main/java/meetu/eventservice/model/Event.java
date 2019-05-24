@@ -41,7 +41,9 @@ public class Event {
     private List<String> eventPictureLists;
 
     private List<Post> postLists;
-
+    
+    private int totalView;
+    
     private Date createEventDate;
 
     private Date endRegisterDate;
@@ -86,6 +88,16 @@ public class Event {
         this.eventDetail = eventDetail;
     }
 
+    public int getTotalView() {
+        return totalView;
+    }
+
+    public void setTotalView(int totalView) {
+        this.totalView = totalView;
+    }
+
+    
+    
     public Date getCreateEventDate() {
         return createEventDate;
     }
@@ -160,7 +172,8 @@ public class Event {
 
     @Override
     public String toString() {
-        return "Event{" + "eventId=" + eventId + ", eventElasticId=" + elasticEventId + ", eventName=" + eventName + ", eventTags=" + eventTags + ", eventDetail=" + eventDetail + ", eventPictureCover=" + eventPictureCover + ", eventPictureLists=" + eventPictureLists + ", location=" + location + ", createEventDate=" + createEventDate + ", endRegisterDate=" + endRegisterDate + ", eventEndDate=" + eventEndDate + ", eventStartDate=" + eventStartDate + ", organize=" + organize + '}';
+        return "Event{" + "eventId=" + eventId + ", elasticEventId=" + elasticEventId + ", eventName=" + eventName + ", eventTags=" + eventTags + ", eventDetail=" + eventDetail + ", eventPictureCover=" + eventPictureCover + ", eventPictureLists=" + eventPictureLists + ", postLists=" + postLists + ", totalView=" + totalView + ", createEventDate=" + createEventDate + ", endRegisterDate=" + endRegisterDate + ", eventEndDate=" + eventEndDate + ", eventStartDate=" + eventStartDate + ", location=" + location + ", organize=" + organize + '}';
     }
+
 
 }
