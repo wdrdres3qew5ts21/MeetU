@@ -5,7 +5,7 @@
         <v-text-field placeholder="Search..." v-model="search" @keyup.enter="searchEventByFilter()"></v-text-field>
       </v-flex>
       <v-flex justify-start>
-        <v-btn class="white--text" round="16" depressed color="#341646" ref="searchButton"  @click="searchEventByFilter()">Search</v-btn>
+        <v-btn class="white--text" :round="true" depressed color="#341646" ref="searchButton"  @click="searchEventByFilter()">Search</v-btn>
       </v-flex>
 
       <br>
@@ -14,7 +14,7 @@
         <div class="text-xs-left">
           <v-chip
             color="#fc5577"
-            round="16"
+            :round="true"
             text-color="white"
             @click="isShowEventTag=!isShowEventTag"
           >
