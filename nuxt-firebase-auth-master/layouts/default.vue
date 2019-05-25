@@ -189,6 +189,9 @@ export default {
     user() {
       return this.$store.getters.activeUser;
       // return 'hj'
+    },
+    mockUser() {
+      return this.$store.getters.mockGetUser
     }
   },
   methods: {

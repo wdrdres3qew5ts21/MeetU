@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import authentication from "./modules/authentication";
 import location from "./modules/location";
 import fetchEvent from './modules/fetchEvent'
+import mockLogin from './modules/mockLogin'
 
 Vue.use(Vuex);
 
@@ -12,7 +13,8 @@ const store = () => {
     modules: {
       authentication,
       location,
-      fetchEvent
+      fetchEvent,
+      mockLogin
     }
   });
 };

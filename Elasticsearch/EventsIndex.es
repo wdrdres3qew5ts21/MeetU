@@ -242,4 +242,15 @@ POST /events/_analyze
   "text": "ร่วมสัมผัสบรรยากาศแบบไทยๆและภูมิปัญญาท้องถิ่นด้วยราคาถูกไม่แพงและย่อมเยา"
 }
 
+Dumerau Lavenshtein Distance ทำให้ค้นหาคำโดดแบบพิมพ์ผิดได้เช่น songkarn จากคำว่า songkran
+GET /events/_search
+{
+  "query": {
+    "query_string": {
+      "fields" : ["eventName","eventDetail", "location.*^3"],
+        "query": "songkarn~"
+    }
+  }
+}
+
 

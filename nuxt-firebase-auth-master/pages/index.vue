@@ -6,22 +6,26 @@
     </v-carousel>
 
     <br>
-    <h1>Recommeded</h1>
+    <h1>Recomended for {{$store.getters.mockGetUser.firstname}}</h1>
+    <event-list :eventList="popularEventList"></event-list>
+
+    <br>
+    <h1>Popular Event</h1>
     <event-list :eventList="popularEventList"></event-list>
 
     <br>
     <h1>Recently Event</h1>
     <br>
-    <event-list :eventList="recentlyEvent"></event-list>
+    <event-list :eventList="recentlyEventList"></event-list>
 
     <br>
     <h1>Art Event</h1>
-    <event-list :eventList="artsEvent"></event-list>
+    <event-list :eventList="artsEventList"></event-list>
 
     <br>
     <h1>Book Event</h1>
     <br>
-    <event-list :eventList="bookEvent"></event-list>
+    <event-list :eventList="bookEventList"></event-list>
 
     <br>
     <br>
@@ -191,6 +195,10 @@ export default {
   },
   data() {
     return {
+      recommendedEventList: [],
+      recentlyEventList: [],
+      bookEventList: [],
+      artsEventList: [],
       popularEventList: [
         {
           eventId: "11111a",
@@ -269,22 +277,22 @@ export default {
     ...mapActions(["getEventByTags"]),
     getRecentlyEvent: async function() {
       let concentPerPage = 3;
-      let recentlyEvent = await axios(`${
+      let recentlyEventList = await axios(`${
         process.env.EVENT_SERVICE
       }/events?isRecently=true
       &contentPerPage=${concentPerPage}`);
-      recentlyEvent = recentlyEvent.data;
-      this.recentlyEvent = recentlyEvent;
+      recentlyEventList = recentlyEventList.data;
+      this.recentlyEventList = recentlyEventList;
     },
     getArtsEvent: async function() {
       let concentPerPage = 3;
-      let artsEvent = await axios(`${
+      let artsEventList = await axios(`${
         process.env.EVENT_SERVICE
       }/events?isRecently=true
       &contentPerPage=${concentPerPage}
       &eventTags=art`);
-      artsEvent = artsEvent.data;
-      this.artsEvent = artsEvent;
+      artsEventList = artsEventList.data;
+      this.artsEventList = artsEventList;
     },
     createArt: function() {
       for (let i = 0; i < this.artsEvent.length; i++) {

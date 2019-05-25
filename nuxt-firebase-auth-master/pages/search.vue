@@ -2,10 +2,10 @@
   <transition name="router-anim" enter-active-class="animated slideInRight">
     <div class="text-xs-center">
       <v-flex justify-content: left>
-        <v-text-field placeholder="Search..." v-model="search"></v-text-field>
+        <v-text-field placeholder="Search..." v-model="search" @keyup.enter="searchEventByFilter()"></v-text-field>
       </v-flex>
       <v-flex justify-start>
-        <v-btn class="white--text" round="16" depressed color="#341646" @click="searchEventByFilter()">Search</v-btn>
+        <v-btn class="white--text" round="16" depressed color="#341646" ref="searchButton"  @click="searchEventByFilter()">Search</v-btn>
       </v-flex>
 
       <br>
@@ -57,7 +57,7 @@ export default {
   data() {
     return {
       search: "",
-      isRecently: true,
+      isRecently: false,
       isShowEventTag: false,
       categoryList: [
         "Arts",
