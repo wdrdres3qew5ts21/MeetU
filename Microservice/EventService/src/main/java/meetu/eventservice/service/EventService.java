@@ -26,10 +26,12 @@ import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.FuzzyQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
 import org.elasticsearch.index.query.MatchAllQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.QueryStringQueryBuilder;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
@@ -116,7 +118,7 @@ public class EventService {
             System.out.println("Event Tag Filter");
             queryFilter = filterByEventTags(queryFilter, eventTags);
         }
-        if (eventDetail != null) {
+        if (!eventDetail.isEmpty()) {
             System.out.println("Event DetailvFilter");
             queryFilter.must(filterByEventDetail(eventDetail));
         }
@@ -149,8 +151,12 @@ public class EventService {
         return queryFilter;
     }
 
-    public MatchQueryBuilder filterByEventDetail(String eventDetail) {
-        MatchQueryBuilder alreadyFilterByEventDetail = QueryBuilders.matchQuery("eventDetail", eventDetail);
+    public QueryStringQueryBuilder filterByEventDetail(String eventDetail) {
+        QueryStringQueryBuilder alreadyFilterByEventDetail = QueryBuilders.queryStringQuery(eventDetail+"~")
+                .field("eventName").boost(2.0f)
+                .field("eventDetail").boost(2.0f)
+                .field("location.*").boost(5.0f)
+                .fuzzyTranspositions(true);
         return alreadyFilterByEventDetail;
     }
 

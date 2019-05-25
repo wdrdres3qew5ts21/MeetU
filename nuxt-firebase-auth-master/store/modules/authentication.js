@@ -10,28 +10,28 @@ const state = () => ({
 });
 
 const getters = {
-  activeUser(state, getters) {
+  activeUser: function(state, getters) {
     return state.user;
   }
 };
 
 const mutations = {
-  setUser(state, payload) {
+  setUser: function(state, payload) {
     state.user = payload;
   }
 };
 
 const actions = {
-  autoSignIn({ commit }, payload) {
+  autoSignIn: function({ commit }, payload) {
     commit("setUser", payload);
   },
-  signInWithGoogle({ commit }) {
+  signInWithGoogle: function({ commit }) {
     return new Promise((resolve, reject) => {
       auth.signInWithRedirect(GoogleProvider);
       resolve();
     });
   },
-  signInWithFacebook({ commit }) {
+  signInWithFacebook: function({ commit }) {
     console.log(FacebookProvider);
     auth
       .signInWithRedirect(FacebookProvider)
@@ -42,7 +42,7 @@ const actions = {
         console.log(err);
       });
   },
-  signInWithTwitter({ commit }) {
+  signInWithTwitter: function({ commit }) {
     console.log(TwitterProvider);
     auth
       .signInWithRedirect(TwitterProvider)
@@ -53,7 +53,7 @@ const actions = {
         console.log(err);
       });
   },
-  signOut({ commit }) {
+  signOut: function({ commit }) {
     auth
       .signOut()
       .then(() => {

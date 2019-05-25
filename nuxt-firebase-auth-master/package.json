@@ -20,6 +20,7 @@
     "firebase": "5.4.2",
     "jsqr": "^1.2.0",
     "nuxt": "^1.4.2",
+    "vue-flickity": "^1.1.2",
     "vue-qrcode-reader": "^1.4.0",
     "vue-sweetalert2": "^1.6.4",
     "vue2-google-maps": "^0.10.6",

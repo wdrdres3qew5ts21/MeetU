@@ -16,6 +16,17 @@ module.exports = {
   },
   mode: 'universal',
   loading: { color: '#3f51b5' },
+  manifest: {
+    "name": "meetu",
+    "display": "fullscreen",
+    "icons": [
+      {
+        "src": "~/assets/meetu.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      }
+    ]
+  },
   build: {
     extend (config, ctx) {
       if (ctx.isDev && ctx.isClient) {
@@ -25,6 +36,9 @@ module.exports = {
         //   loader: 'eslint-loader',
         //   exclude: /(node_modules)/
         // })
+      }
+      if (process.client) {
+        require('vue-flickity')
       }
     },
     extractCSS: true,
@@ -53,6 +67,7 @@ module.exports = {
     'firebase',
     'vuetify',
     'vue-qrcode-reader',
-    'vue2-google-maps'
+    'vue2-google-maps',
+    'vue-flickity'
   ]
 }

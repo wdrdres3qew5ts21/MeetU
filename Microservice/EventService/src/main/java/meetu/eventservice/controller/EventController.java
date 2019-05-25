@@ -60,19 +60,26 @@ public class EventController {
     public ResponseEntity<List<Event>> testFilter(
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "20") int contentPerPage,
-            @RequestParam(required = false) String eventDetail,
+            @RequestParam(required = false, defaultValue = "") String eventDetail,
             @RequestParam(required = false) String[] eventTags,
             @RequestParam(required = false, defaultValue = "false") boolean isRecently,
             @RequestParam(required = false, defaultValue = "0.0", name = "lon") double longitude,
             @RequestParam(required = false, defaultValue = "0.0", name = "lat") double latitude,
             @RequestParam(required = false, defaultValue = "5km") String areaOfEvent
     ) throws IOException {
-        System.out.println(latitude + " " + longitude);
+        areaOfEvent = areaOfEvent.toLowerCase();
+        eventDetail = eventDetail.toLowerCase();
+        if (eventTags != null) {
+            for (int i = 0; i < eventTags.length; i++) {
+                eventTags[i] = eventTags[i].toLowerCase();
+            }
+        }
         return new ResponseEntity<List<Event>>(
                 eventService.findEventByUsingFilter(
                         eventTags, isRecently, eventDetail,
                         longitude, latitude, areaOfEvent,
-                        page, contentPerPage), HttpStatus.OK);
+                        page, contentPerPage), HttpStatus.OK
+        );
     }
 
     @DeleteMapping("/event/{eventId}")
