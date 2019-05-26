@@ -1,19 +1,19 @@
 <template>
   <div>
     <v-carousel hide-delimiters hide-controls xs6 sm12 height="200px;">
-      <v-carousel-item v-for="(item,i) in items" :key="i" :src="item.src"></v-carousel-item>
+      <v-carousel-item v-for="(pic,i) in eventPictureCover" :key="i" :src="pic.src"></v-carousel-item>
     </v-carousel>
     <br>
-    <h3>Event name:</h3>
+    <h3>Event name: {{eventName}}</h3>
     <br>
-    <p>Date & Time:</p>
-    <p>Location:</p>
+    <p>Date & Time: {{createEventDate}}</p>
+    <p>Location: {{location}}</p>
     <center>
       <v-container>
         <v-layout row wrap>
           <no-ssr>
             <GmapMap
-              :center="getCurrentLocation"
+              :center="markers[0].position"
               :zoom="14"
               map-type-id="terrain"
               style="width: 500px; height: 300px"
@@ -40,13 +40,12 @@
             </GmapMap>
           </no-ssr>
 
-          <p>{{getCurrentLocation}}</p>
           <input type="text" v-model="areaOfEvent" placeholder="input area">
         </v-layout>
       </v-container>
 
       <img
-        src="https://maspalomaspride.es/wp-content/uploads/2018/11/ice_cream_web_2-696x1024.jpg"
+        :src="eventPictureCover[0].src"
         alt="ice cream event"
         width="250px;"
         height="350px;"
@@ -66,6 +65,9 @@ import { mapMutations, mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
+      eventName: "",
+      createEventDate: "",
+      location: "",
       position: {},
       infoTitle: "",
       infoDetail: "",
@@ -92,7 +94,7 @@ export default {
           }
         }
       ],
-      items: [
+      eventPictureCover: [
         {
           src:
             "https://res.cloudinary.com/xceed-me/image/upload/f_auto/v1553892848/events/cover/freedom-party-ice-cream-closing-pool-party-official-event-maspalomas-pride-2019-1553892847.jpeg.jpg"
@@ -100,9 +102,24 @@ export default {
       ]
     };
   },
-  mounted() {
+  async mounted() {
     this.getLocation();
-    console.log(this.$route.params.eventId)
+    let eventElasticId = this.$route.params.eventElasticId;
+    console.log(this.$route.params.eventElasticId);
+    let event = await axios.get(`${process.env.EVENT_SERVICE}/event/${eventElasticId}`);
+    console.log(event.data)
+    event = event.data
+    this.eventName = event.eventName
+    this.createEventDate = event.createEventDate 
+    this.location = event.location
+    this.markers[0].title = event.eventName
+    this.markers[0].detail = event.eventDetail
+    this.markers[0].position.lat = event.location.geopoint.lat
+    this.markers[0].position.lng = event.location.geopoint.lon
+    this.eventPictureCover[0].src = event.eventPictureCover
+    
+
+    
   },
   computed: {
     ...mapGetters(["getCurrentLocation"])

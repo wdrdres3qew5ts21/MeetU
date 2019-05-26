@@ -43,11 +43,13 @@
       <br>
       <v-layout>
         <v-layout row wrap>
-          <v-flex v-for="event in searchedEventList" :key="event.eventId" xs4>
+          <v-flex v-for="event in searchedEventList" :key="event.elasticEventId" xs4>
+            <nuxt-link :to="`/event/${event.elasticEventId}`">
             <v-card flat tile>
               <v-img img v-bind:src="event.eventPictureCover" max-height="230px"></v-img>
               <v-card-text>{{event.eventName}}</v-card-text>
             </v-card>
+            </nuxt-link>
           </v-flex>
         </v-layout>
       </v-layout>
