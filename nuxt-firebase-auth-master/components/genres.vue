@@ -6,7 +6,7 @@
           <div class="position-relative">
             <input type="checkbox" id="cb1" >
             <label for="cb1">
-              <v-img :src="require('@/assets/genresPhoto/art.png')" width="85px"></v-img>
+              <v-img @click="$store.dispatch('setInterestIdea','art')" :src="require('@/assets/genresPhoto/art.png')" width="85px"></v-img>
               <center>
                 <h3>Arts</h3>
               </center>
@@ -18,7 +18,7 @@
           <div class="position-relative">
             <input type="checkbox" id="cb2">
             <label for="cb2">
-              <v-img :src="require('@/assets/genresPhoto/beauty.png')" width="85px"></v-img>
+              <v-img @click="$store.dispatch('setInterestIdea','beauty')" :src="require('@/assets/genresPhoto/beauty.png')" width="85px"></v-img>
               <center>
                 <h3>Beauty</h3>
               </center>
@@ -29,7 +29,7 @@
           <div class="position-relative">
             <input type="checkbox" id="cb3">
             <label for="cb3">
-              <v-img :src="require('@/assets/genresPhoto/books.png')" width="85px"></v-img>
+              <v-img @click="$store.dispatch('setInterestIdea','book')" :src="require('@/assets/genresPhoto/books.png')" width="85px"></v-img>
               <center>
                 <h3>Books</h3>
               </center>
@@ -44,7 +44,7 @@
           <div class="position-relative">
             <input type="checkbox" id="cb4">
             <label for="cb4">
-              <v-img :src="require('@/assets/genresPhoto/business.png')" width="85px"></v-img>
+              <v-img @click="$store.dispatch('setInterestIdea','business')" :src="require('@/assets/genresPhoto/business.png')" width="85px"></v-img>
               <center>
                 <h3>Business</h3>
               </center>
@@ -52,10 +52,10 @@
           </div>
           <v-spacer></v-spacer>
 
-          <div class="position-relative">
+          <div class="position-relative" >
             <input type="checkbox" id="cb5">
             <label for="cb5">
-              <v-img :src="require('@/assets/genresPhoto/family.png')" width="85px"></v-img>
+              <v-img @click="$store.dispatch('setInterestIdea','family')" :src="require('@/assets/genresPhoto/family.png')" width="85px"></v-img>
               <center>
                 <h3>Family</h3>
               </center>
@@ -66,7 +66,7 @@
           <div class="position-relative">
             <input type="checkbox" id="cb6">
             <label for="cb6">
-              <v-img :src="require('@/assets/genresPhoto/food.png')" width="85px"></v-img>
+              <v-img @click="$store.dispatch('setInterestIdea','food')" :src="require('@/assets/genresPhoto/food.png')" width="85px"></v-img>
               <center>
                 <h3>Food</h3>
               </center>
@@ -80,7 +80,7 @@
           <div class="position-relative">
             <input type="checkbox" id="cb7">
             <label for="cb7">
-              <v-img :src="require('@/assets/genresPhoto/games.png')" width="85px"></v-img>
+              <v-img @click="$store.dispatch('setInterestIdea','game')" :src="require('@/assets/genresPhoto/games.png')" width="85px"></v-img>
               <center>
                 <h3>Games</h3>
               </center>
@@ -90,7 +90,7 @@
           <div class="position-relative">
             <input type="checkbox" id="cb8">
             <label for="cb8">
-              <v-img :src="require('@/assets/genresPhoto/films.png')" width="85px"></v-img>
+              <v-img @click="$store.dispatch('setInterestIdea','flim')" :src="require('@/assets/genresPhoto/films.png')" width="85px"></v-img>
               <center>
                 <h3>Films</h3>
               </center>
@@ -100,7 +100,7 @@
           <div class="position-relative">
             <input type="checkbox" id="cb9">
             <label for="cb9">
-              <v-img :src="require('@/assets/genresPhoto/music.png')" width="85px"></v-img>
+              <v-img @click="$store.dispatch('setInterestIdea','music')" :src="require('@/assets/genresPhoto/music.png')" width="85px"></v-img>
               <center>
                 <h3>Music</h3>
               </center>
@@ -116,7 +116,7 @@
           <div class="position-relative">
             <input type="checkbox" id="cb10">
             <label for="cb10">
-              <v-img :src="require('@/assets/genresPhoto/social.png')" width="85px"></v-img>
+              <v-img @click="$store.dispatch('setInterestIdea','social')" :src="require('@/assets/genresPhoto/social.png')" width="85px"></v-img>
               <center>
                 <h3>Social</h3>
               </center>
@@ -127,7 +127,7 @@
           <div class="position-relative">
             <input type="checkbox" id="cb11">
             <label for="cb11">
-              <v-img :src="require('@/assets/genresPhoto/sport.png')" width="85px"></v-img>
+              <v-img @click="$store.dispatch('setInterestIdea','sport')" :src="require('@/assets/genresPhoto/sport.png')" width="85px"></v-img>
               <center>
                 <h3>Sport</h3>
               </center>
@@ -138,7 +138,7 @@
           <div class="position-relative">
             <input type="checkbox" id="cb12">
             <label for="cb12">
-              <v-img :src="require('@/assets/genresPhoto/technology.png')" width="85px"></v-img>
+              <v-img @click="$store.dispatch('setInterestIdea','tech')" :src="require('@/assets/genresPhoto/technology.png')" width="85px"></v-img>
               <center>
                 <h3>Tech</h3>
               </center>
@@ -164,13 +164,13 @@
             </v-fab-transition>
 
         <!-- <v-layout row wrap>
-          <v-img :src="require('@/assets/genresPhoto/social.png')" width="85px"></v-img>
+          <v-img @click="$store.dispatch('setInterestIdea','business')" :src="require('@/assets/genresPhoto/social.png')" width="85px"></v-img>
           <v-spacer></v-spacer>
 
-          <v-img :src="require('@/assets/genresPhoto/sport.png')" width="85px"></v-img>
+          <v-img @click="$store.dispatch('setInterestIdea','business')" :src="require('@/assets/genresPhoto/sport.png')" width="85px"></v-img>
           <v-spacer></v-spacer>
 
-          <v-img :src="require('@/assets/genresPhoto/t.png')" width="85px"></v-img>
+          <v-img @click="$store.dispatch('setInterestIdea','business')" :src="require('@/assets/genresPhoto/t.png')" width="85px"></v-img>
         </v-layout>-->
       </v-flex>
     </v-layout>
@@ -182,10 +182,11 @@ export default {
   data: () => ({
     
   }),
+  methods: {
 
-
-
-  methods: {}
+  },
+  mounted() {
+  }
 };
 </script>
 

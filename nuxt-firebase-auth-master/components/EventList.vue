@@ -2,9 +2,11 @@
   <v-layout>
     <v-layout row wrap>
       <v-flex v-for="event in eventList" :key="event.eventId" xs4>
-        <v-card flat tile>
-          <v-img img v-bind:src="event.eventPictureCover" max-height="230px"></v-img>
-        </v-card>
+        <nuxt-link :to="`/event/${event.elasticEventId}`">
+          <v-card flat tile>
+            <v-img img v-bind:src="event.eventPictureCover" max-height="230px"></v-img>
+          </v-card>
+        </nuxt-link>
       </v-flex>
       <v-flex xs4>
         <v-card flat tile height="230px">
@@ -20,7 +22,7 @@
 export default {
   name: "EventList",
   props: {
-      eventList: Array
+    eventList: Array
   },
   data() {
     return {

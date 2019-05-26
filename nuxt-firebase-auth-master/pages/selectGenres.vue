@@ -3,6 +3,7 @@
     <center>
       <h3>Choose genres you like</h3>
       <h3>so we can suggest to follow</h3>
+      <h3>{{$store.getters.mockGetUser.persona.interestIdea}}</h3>
     </center>
     <v-container>
       <genres></genres>

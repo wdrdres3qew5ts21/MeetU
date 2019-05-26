@@ -289,6 +289,8 @@ export default {
       &contentPerPage=${concentPerPage}`);
       recentlyEventList = recentlyEventList.data;
       this.recentlyEventList = recentlyEventList;
+      console.log('----')
+      console.log(this.recentlyEventList)
     },
     getArtsEvent: async function() {
       let concentPerPage = 3;
