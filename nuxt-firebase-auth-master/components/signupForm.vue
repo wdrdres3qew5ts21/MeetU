@@ -62,8 +62,7 @@
               <v-btn flat color="primary" @click="$refs.menu.save(date)">OK</v-btn>
             </v-date-picker>
           </v-menu>
-        </v-flex>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </v-flex>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <v-radio-group v-model="row" row>
           Gender: &nbsp;&nbsp;&nbsp;
           <v-radio label="Male" value="radio-1"></v-radio>
@@ -240,15 +239,15 @@ export default {
   // forgotPassword:'Forgot your password?',
 
   methods: {
-    validate: function(e)  {
+    validate: function(e) {
       if (this.$refs.form.validate()) {
         this.snackbar = true;
       }
     },
-    reset: function(e)  {
+    reset: function(e) {
       this.$refs.form.reset();
     },
-    resetValidation: function(e)  {
+    resetValidation: function(e) {
       this.$refs.form.resetValidation();
     },
 
@@ -258,6 +257,8 @@ export default {
         type: "success",
         confirmButtonColor: "#4BB543",
         confirmButtonText: "OK"
+      }).then(function(result) {
+        window.location = "/selectGenres";
       });
     }
   }

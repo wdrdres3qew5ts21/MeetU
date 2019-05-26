@@ -5,7 +5,14 @@
         <v-text-field placeholder="Search..." v-model="search" @keyup.enter="searchEventByFilter()"></v-text-field>
       </v-flex>
       <v-flex justify-start>
-        <v-btn class="white--text" :round="true" depressed color="#341646" ref="searchButton"  @click="searchEventByFilter()">Search</v-btn>
+        <v-btn
+          class="white--text"
+          :round="true"
+          depressed
+          color="#341646"
+          ref="searchButton"
+          @click="searchEventByFilter()"
+        >Search</v-btn>
       </v-flex>
 
       <br>
@@ -39,13 +46,21 @@
           <v-flex v-for="event in searchedEventList" :key="event.eventId" xs4>
             <v-card flat tile>
               <v-img img v-bind:src="event.eventPictureCover" max-height="230px"></v-img>
-              <v-card-text>
-                {{event.eventName}}
-              </v-card-text>
+              <v-card-text>{{event.eventName}}</v-card-text>
             </v-card>
           </v-flex>
         </v-layout>
       </v-layout>
+
+      <!-- <v-btn
+            color="#fc5577"
+            
+            :round="true"
+            text-color="white"
+            @click="findEventInArea()">
+            Click to search nearby event for {{areaOfEvent}}
+            
+      </v-btn>-->
     </div>
   </transition>
 </template>
@@ -78,10 +93,14 @@ export default {
   },
   methods: {
     searchEventByFilter: async function() {
-      let searchedEventList = await axios(`${process.env.EVENT_SERVICE}/events?isRecently=${this.isRecently}&eventDetail=${this.search.toLowerCase()}`);
+      let searchedEventList = await axios(
+        `${process.env.EVENT_SERVICE}/events?isRecently=${
+          this.isRecently
+        }&eventDetail=${this.search.toLowerCase()}`
+      );
       searchedEventList = searchedEventList.data;
       this.searchedEventList = searchedEventList;
-      console.log(this.searchedEventList)
+      console.log(this.searchedEventList);
     }
   }
 };

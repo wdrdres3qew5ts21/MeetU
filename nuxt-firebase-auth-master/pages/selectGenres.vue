@@ -15,7 +15,7 @@ import genres from "~/components/genres";
 
 export default {
   components: {
-    genres
+    genres  
   }
 };
 </script>
