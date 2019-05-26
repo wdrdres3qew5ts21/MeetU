@@ -1,7 +1,10 @@
 <template>
   <div>
-    <v-card class="elevation-0 mx-auto" color="white" max-width="150">
-      <v-img :aspect-ratio="1/1" src="https://image.flaticon.com/icons/png/512/64/64572.png"></v-img>
+    <v-card class="elevation-0 mx-auto" color="transparent" max-width="150">
+      <v-img :aspect-ratio="1/1" 
+      src="https://image.flaticon.com/icons/png/512/64/64572.png"
+      background-color="info"      
+      ></v-img>
 
       <v-card-text class="pt-4" style="position: relative;">
         <v-btn absolute color="#341646" class="white--text" fab normal right top>

@@ -1,59 +1,61 @@
 <template>
-  <!-- <transition name="router-anim"  leave-active-class="animated slideOutLeft"> -->
-  <v-container>
-    <v-carousel>
-      <v-carousel-item sm6 xs2 v-for="(item,i) in carouselsPhoto" :src="item.src" :key="i"></v-carousel-item>
-    </v-carousel>
-
-    <br><br>
-    <h1>Recomended Event for {{$store.getters.mockGetUser.firstname}}</h1>
-    <br>
-    <event-list :eventList="popularEventList"></event-list>
-
-    <br>
-    <h1>Popular Event</h1>
-    <br>
-    <event-list :eventList="popularEventList"></event-list>
-
-    <br>
-    <h1>Recently Event</h1>
-    <br>
-    <event-list :eventList="recentlyEventList"></event-list>
-
-    <br>
-    <h1>Art Event</h1>
-    <event-list :eventList="artsEventList"></event-list>
-
-    <br>
-    <h1>Book Event</h1>
-    <br>
-    <event-list :eventList="bookEventList"></event-list>
-
-    <br>
-    <br>
-    <center>
-      <h2 class="upgradeToOrganizer">
-        Use MeetU for your
-        <br>next events & activities.
-      </h2>
+  <div>
+    <!-- <transition name="router-anim"  leave-active-class="animated slideOutLeft"> -->
+    <v-container class="bg">
+      <v-carousel>
+        <v-carousel-item sm6 xs2 v-for="(item,i) in carouselsPhoto" :src="item.src" :key="i"></v-carousel-item>
+      </v-carousel>
 
       <br>
+      <br>
+      <h1>Recomended Event for {{$store.getters.mockGetUser.firstname}}</h1>
+      <br>
+      <event-list :eventList="popularEventList"></event-list>
 
-      <nuxt-link :to="`/organizer?`" style="text-decoration-line:none;">
-        <v-btn
-          class="upgradeToOrganizerButton white--text"
-          :round="true"
-          depressed
-          large
-          color="#341646"
-        >Become an Organizer</v-btn>
-      </nuxt-link>
-    </center>
+      <br>
+      <h1>Popular Event</h1>
+      <br>
+      <event-list :eventList="popularEventList"></event-list>
 
-    <!-- <v-btn color="information" @click="createArt()">Add Art</v-btn>
-    <v-btn color="information" @click="createBook()">Add Book</v-btn>-->
+      <br>
+      <h1>Recently Event</h1>
+      <br>
+      <event-list :eventList="recentlyEventList"></event-list>
 
-    <!-- <h1>Recently Added</h1>
+      <br>
+      <h1>Art Event</h1>
+      <event-list :eventList="artsEventList"></event-list>
+
+      <br>
+      <h1>Book Event</h1>
+      <br>
+      <event-list :eventList="bookEventList"></event-list>
+
+      <br>
+      <br>
+      <center>
+        <h2 class="upgradeToOrganizer">
+          Use MeetU for your
+          <br>next events & activities.
+        </h2>
+
+        <br>
+
+        <nuxt-link :to="`/organizer?`" style="text-decoration-line:none;">
+          <v-btn
+            class="upgradeToOrganizerButton white--text"
+            :round="true"
+            depressed
+            large
+            color="#341646"
+          >Become an Organizer</v-btn>
+        </nuxt-link>
+      </center>
+
+      <!-- <v-btn color="information" @click="createArt()">Add Art</v-btn>
+      <v-btn color="information" @click="createBook()">Add Book</v-btn>-->
+
+      <!-- <h1>Recently Added</h1>
 
     <br>
     <v-layout row justify-start align-start>
@@ -155,11 +157,11 @@
           color="#341646"
         >Become an Organizer</v-btn>
       </nuxt-link>
-    </center>-->
+      </center>-->
 
-    <!-- ใช้code จบ -->
+      <!-- ใช้code จบ -->
 
-    <!-- <div class="flex-container">
+      <!-- <div class="flex-container">
         <nuxt-link v-for="event in recentlyEvent" :key="event.eventId" 
               :to="{path:'/event',query:{eventId:event.eventId}}">       
 
@@ -176,11 +178,13 @@
               </div>
 
           </v-flex>
-    </nuxt-link>-->
-    <!-- </div> -->
+      </nuxt-link>-->
+      <!-- </div> -->
 
-    <!-- </v-layout> -->
-  </v-container>
+      <!-- </v-layout> -->
+    </v-container>
+  </div>
+
   <!-- </transition> -->
 </template>
 
@@ -320,9 +324,7 @@ export default {
 };
 </script>
 
-
-
-<style scoped>
+<style lang="css" >
 @import "https://cdn.jsdelivr.net/npm/animate.css@3.5.1";
 /* .fake {
   background: blue;
@@ -334,7 +336,7 @@ export default {
   display: flex;
   justify-content: center;
   flex-flow: row wrap;
- 
+
 }
 /* .container {
   height: calc(100vh - 100px);
@@ -343,6 +345,17 @@ export default {
   display: flex;
   justify-content: center;
 } */
+
+.v-content {
+  max-width: 100%;
+  background-image: url(../assets/bg.png) !important;
+  /* background-repeat: repeat; */
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background: transparent;
+}
 
 .flex-container {
   display: flex;

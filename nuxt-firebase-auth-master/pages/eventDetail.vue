@@ -9,7 +9,6 @@
     <p>Date & Time:</p>
     <p>Location:</p>
     <center>
-
       <v-container>
         <v-layout row wrap>
           <no-ssr>
@@ -43,7 +42,6 @@
 
           <p>{{getCurrentLocation}}</p>
           <input type="text" v-model="areaOfEvent" placeholder="input area">
-          
         </v-layout>
       </v-container>
 
@@ -161,6 +159,17 @@ export default {
  
  
  
-<style>
-</style> 
+<style lang="css">
+.v-content {
+  max-width: 100%;
+  background-image: url(../assets/bg.png) !important;
+  /* background-repeat: repeat; */
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background: transparent;
+}
+</style>
+
  
