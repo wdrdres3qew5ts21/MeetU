@@ -10,6 +10,7 @@ import meetu.eventservice.service.EventService;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import meetu.eventservice.model.Event;
+import meetu.eventservice.model.User;
 import meetu.eventservice.service.QRCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -57,7 +58,7 @@ public class EventController {
     }
 
     @GetMapping("/events")
-    public ResponseEntity<List<Event>> testFilter(
+    public ResponseEntity<List<Event>> searchWithFilter(
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "20") int contentPerPage,
             @RequestParam(required = false, defaultValue = "") String eventDetail,
@@ -80,6 +81,15 @@ public class EventController {
                         longitude, latitude, areaOfEvent,
                         page, contentPerPage), HttpStatus.OK
         );
+    }
+
+    @PostMapping("/events/recomend")
+    public ResponseEntity<List<Event>> searchWithPersonalize(
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "20") int contentPerPage,
+            @RequestBody User user
+    ) {
+        return new ResponseEntity<List<Event>>(eventService.findEventByPersonalize(user), HttpStatus.OK);
     }
 
     @DeleteMapping("/event/{eventId}")
