@@ -5,12 +5,14 @@
       <v-carousel-item sm6 xs2 v-for="(item,i) in carouselsPhoto" :src="item.src" :key="i"></v-carousel-item>
     </v-carousel>
 
+    <br><br>
+    <h1>Recomended Event for {{$store.getters.mockGetUser.firstname}}</h1>
     <br>
-    <h1>Recomended for {{$store.getters.mockGetUser.firstname}}</h1>
     <event-list :eventList="popularEventList"></event-list>
 
     <br>
     <h1>Popular Event</h1>
+    <br>
     <event-list :eventList="popularEventList"></event-list>
 
     <br>
