@@ -90,11 +90,12 @@ export default {
       let eventLocation = {
         areaOfEvent: this.areaOfEvent,
         geolocation
-      }
-      console.log(process.env.USER_SERVICE)
-      let searchEventLocation = await axios.get(`${process.env.EVENT_SERVICE}/events`)
-      console.log(searchEventLocation.data)
-
+      };
+      console.log(process.env.USER_SERVICE);
+      let searchEventLocation = await axios.get(
+        `${process.env.EVENT_SERVICE}/events`
+      );
+      console.log(searchEventLocation.data);
     },
     toggleInfoWindow: function(marker, idx) {
       console.log("fuq click marker");
@@ -127,3 +128,17 @@ export default {
   }
 };
 </script>
+
+ <style lang="css">
+.container.fluid {
+  max-width: 100%;
+  background-image: url(../assets/bg.png) !important;
+  /* background-repeat: repeat; */
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background: transparent;
+}
+</style>
+

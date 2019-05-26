@@ -205,7 +205,7 @@ input[type="checkbox"][id^="cb"] {
 }
 
 label {
-  border: 1px solid #fff;
+  border: 1px solid none;
   display: block;
 
   cursor: pointer;

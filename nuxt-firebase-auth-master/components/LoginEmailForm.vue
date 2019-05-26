@@ -108,6 +108,8 @@ export default {
  
  
 <style>
+
+
 .linkForgotPassword {
   color: #341646;
   text-decoration-line: none;
