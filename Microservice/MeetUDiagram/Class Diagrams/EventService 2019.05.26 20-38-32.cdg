@@ -1,0 +1,585 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="EventService">
+  <ClassDiagramComponents>
+    <Class name="ElasticConfig" package="meetu.eventservice.config" visibility="public" xPosition="20.0" yPosition="20.0">
+      <Fields>
+        <Field name="host" type="String" visibility="private"/>
+        <Field name="port" type="int" visibility="private"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="restHighLevelClient" returnType="RestHighLevelClient" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="ElasticUtil" package="meetu.eventservice.config" visibility="public" xPosition="20.0" yPosition="191.0">
+      <Fields>
+        <Field name="objectMapper" type="ObjectMapper" visibility="private" isStatic="true" isFinal="true"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="searchHitsToList" returnType="ArrayList&lt;T&gt;" visibility="public" isStatic="true">
+          <Argument type="SearchHits" name="searchHits"/>
+          <Argument type="Class&lt;T&gt;" name="type"/>
+        </Method>
+        <Method name="pojoToMap" returnType="Map&lt;String, Object&gt;" visibility="public" isStatic="true">
+          <Argument type="Object" name="objectParesedToMap"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="MongoConfig" package="meetu.eventservice.config" visibility="public" xPosition="529.0" yPosition="51.0">
+      <Fields>
+        <Field name="host" type="String" visibility="private"/>
+        <Field name="port" type="int" visibility="private"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="mongo" returnType="MongoClientFactoryBean" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="EventController" package="meetu.eventservice.controller" visibility="public" xPosition="1554.0" yPosition="77.0">
+      <Fields>
+        <Field name="profiles" type="List&lt;String&gt;" visibility="package"/>
+        <Field name="envTest" type="String" visibility="package"/>
+        <Field name="superDude" type="String" visibility="package"/>
+        <Field name="eventService" type="EventService" visibility="private"/>
+        <Field name="qRCodeService" type="QRCodeService" visibility="private"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="createEvent" returnType="ResponseEntity&lt;Event&gt;" visibility="public">
+          <Argument type="Event" name="event"/>
+        </Method>
+        <Method name="searchWithFilter" returnType="ResponseEntity&lt;List&lt;Event&gt;&gt;" visibility="public">
+          <Argument type="int" name="page"/>
+          <Argument type="int" name="contentPerPage"/>
+          <Argument type="String" name="eventDetail"/>
+          <Argument type="String[]" name="eventTags"/>
+          <Argument type="boolean" name="isRecently"/>
+          <Argument type="double" name="longitude"/>
+          <Argument type="double" name="latitude"/>
+          <Argument type="String" name="areaOfEvent"/>
+        </Method>
+        <Method name="searchWithPersonalize" returnType="ResponseEntity&lt;List&lt;Event&gt;&gt;" visibility="public">
+          <Argument type="int" name="page"/>
+          <Argument type="int" name="contentPerPage"/>
+          <Argument type="User" name="user"/>
+        </Method>
+        <Method name="deleteEventById" returnType="ResponseEntity&lt;Event&gt;" visibility="public">
+          <Argument type="String" name="eventId"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="ElasticEvent" package="meetu.eventservice.elastic.model" visibility="public" xPosition="2873.0" yPosition="51.0">
+      <Fields>
+        <Field name="id" type="String" visibility="private"/>
+        <Field name="eventName" type="String" visibility="private"/>
+        <Field name="eventTags" type="List&lt;String&gt;" visibility="private"/>
+        <Field name="eventDetail" type="String" visibility="private"/>
+        <Field name="location" type="String" visibility="private"/>
+        <Field name="createEventDate" type="Date" visibility="private"/>
+        <Field name="endRegisterDate" type="Date" visibility="private"/>
+        <Field name="eventEndDate" type="Date" visibility="private"/>
+        <Field name="eventStartDate" type="Date" visibility="private"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="getId" returnType="String" visibility="public"/>
+        <Method name="setId" returnType="void" visibility="public">
+          <Argument type="String" name="id"/>
+        </Method>
+        <Method name="getEventName" returnType="String" visibility="public"/>
+        <Method name="setEventName" returnType="void" visibility="public">
+          <Argument type="String" name="eventName"/>
+        </Method>
+        <Method name="getEventTags" returnType="List&lt;String&gt;" visibility="public"/>
+        <Method name="setEventTags" returnType="void" visibility="public">
+          <Argument type="List&lt;String&gt;" name="eventTags"/>
+        </Method>
+        <Method name="getEventDetail" returnType="String" visibility="public"/>
+        <Method name="setEventDetail" returnType="void" visibility="public">
+          <Argument type="String" name="eventDetail"/>
+        </Method>
+        <Method name="getLocation" returnType="String" visibility="public"/>
+        <Method name="setLocation" returnType="void" visibility="public">
+          <Argument type="String" name="location"/>
+        </Method>
+        <Method name="getCreateEventDate" returnType="Date" visibility="public"/>
+        <Method name="setCreateEventDate" returnType="void" visibility="public">
+          <Argument type="Date" name="createEventDate"/>
+        </Method>
+        <Method name="getEndRegisterDate" returnType="Date" visibility="public"/>
+        <Method name="setEndRegisterDate" returnType="void" visibility="public">
+          <Argument type="Date" name="endRegisterDate"/>
+        </Method>
+        <Method name="getEventEndDate" returnType="Date" visibility="public"/>
+        <Method name="setEventEndDate" returnType="void" visibility="public">
+          <Argument type="Date" name="eventEndDate"/>
+        </Method>
+        <Method name="getEventStartDate" returnType="Date" visibility="public"/>
+        <Method name="setEventStartDate" returnType="void" visibility="public">
+          <Argument type="Date" name="eventStartDate"/>
+        </Method>
+        <Method name="toString" returnType="String" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="EventApplication" package="meetu.eventservice" visibility="public" xPosition="805.0" yPosition="70.0">
+      <Fields/>
+      <Constructors/>
+      <Methods>
+        <Method name="main" returnType="void" visibility="public" isStatic="true">
+          <Argument type="String[]" name="args"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Event" package="meetu.eventservice.model" visibility="public" xPosition="1858.0" yPosition="437.0">
+      <Fields>
+        <Field name="eventId" type="String" visibility="private"/>
+        <Field name="elasticEventId" type="String" visibility="private"/>
+        <Field name="eventName" type="String" visibility="private"/>
+        <Field name="eventTags" type="List&lt;String&gt;" visibility="private"/>
+        <Field name="eventDetail" type="String" visibility="private"/>
+        <Field name="eventPictureCover" type="String" visibility="private"/>
+        <Field name="eventPictureLists" type="List&lt;String&gt;" visibility="private"/>
+        <Field name="postLists" type="List&lt;Post&gt;" visibility="private"/>
+        <Field name="totalView" type="int" visibility="private"/>
+        <Field name="createEventDate" type="Date" visibility="private"/>
+        <Field name="endRegisterDate" type="Date" visibility="private"/>
+        <Field name="eventEndDate" type="Date" visibility="private"/>
+        <Field name="eventStartDate" type="Date" visibility="private"/>
+        <Field name="location" type="Location" visibility="private"/>
+        <Field name="organize" type="Organize" visibility="private"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="getEventId" returnType="String" visibility="public"/>
+        <Method name="setEventId" returnType="void" visibility="public">
+          <Argument type="String" name="eventId"/>
+        </Method>
+        <Method name="getEventName" returnType="String" visibility="public"/>
+        <Method name="setEventName" returnType="void" visibility="public">
+          <Argument type="String" name="eventName"/>
+        </Method>
+        <Method name="getEventTags" returnType="List&lt;String&gt;" visibility="public"/>
+        <Method name="setEventTags" returnType="void" visibility="public">
+          <Argument type="List&lt;String&gt;" name="eventTags"/>
+        </Method>
+        <Method name="getEventDetail" returnType="String" visibility="public"/>
+        <Method name="setEventDetail" returnType="void" visibility="public">
+          <Argument type="String" name="eventDetail"/>
+        </Method>
+        <Method name="getTotalView" returnType="int" visibility="public"/>
+        <Method name="setTotalView" returnType="void" visibility="public">
+          <Argument type="int" name="totalView"/>
+        </Method>
+        <Method name="getCreateEventDate" returnType="Date" visibility="public"/>
+        <Method name="setCreateEventDate" returnType="void" visibility="public">
+          <Argument type="Date" name="createEventDate"/>
+        </Method>
+        <Method name="getEndRegisterDate" returnType="Date" visibility="public"/>
+        <Method name="setEndRegisterDate" returnType="void" visibility="public">
+          <Argument type="Date" name="endRegisterDate"/>
+        </Method>
+        <Method name="getEventEndDate" returnType="Date" visibility="public"/>
+        <Method name="setEventEndDate" returnType="void" visibility="public">
+          <Argument type="Date" name="eventEndDate"/>
+        </Method>
+        <Method name="getEventStartDate" returnType="Date" visibility="public"/>
+        <Method name="setEventStartDate" returnType="void" visibility="public">
+          <Argument type="Date" name="eventStartDate"/>
+        </Method>
+        <Method name="getLocation" returnType="Location" visibility="public"/>
+        <Method name="setLocation" returnType="void" visibility="public">
+          <Argument type="Location" name="location"/>
+        </Method>
+        <Method name="getEventPictureLists" returnType="List&lt;String&gt;" visibility="public"/>
+        <Method name="setEventPictureLists" returnType="void" visibility="public">
+          <Argument type="List&lt;String&gt;" name="eventPictureLists"/>
+        </Method>
+        <Method name="getEventPictureCover" returnType="String" visibility="public"/>
+        <Method name="setEventPictureCover" returnType="void" visibility="public">
+          <Argument type="String" name="eventPictureCover"/>
+        </Method>
+        <Method name="getOrganize" returnType="Organize" visibility="public"/>
+        <Method name="setOrganize" returnType="void" visibility="public">
+          <Argument type="Organize" name="organize"/>
+        </Method>
+        <Method name="getElasticEventId" returnType="String" visibility="public"/>
+        <Method name="setElasticEventId" returnType="void" visibility="public">
+          <Argument type="String" name="elasticEventId"/>
+        </Method>
+        <Method name="toString" returnType="String" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="GeoDetail" package="meetu.eventservice.model" visibility="public" xPosition="647.0" yPosition="950.0">
+      <Fields>
+        <Field name="latitude" type="double" visibility="private"/>
+        <Field name="longitude" type="double" visibility="private"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="getLatitude" returnType="double" visibility="public"/>
+        <Method name="setLatitude" returnType="void" visibility="public">
+          <Argument type="double" name="latitude"/>
+        </Method>
+        <Method name="getLongitude" returnType="double" visibility="public"/>
+        <Method name="setLongitude" returnType="void" visibility="public">
+          <Argument type="double" name="longitude"/>
+        </Method>
+        <Method name="toString" returnType="String" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="InterestGenreBehavior" package="meetu.eventservice.model" visibility="public" xPosition="214.0" yPosition="459.0">
+      <Fields>
+        <Field name="genre" type="String" visibility="private"/>
+        <Field name="totalView" type="int" visibility="private"/>
+        <Field name="totalParticipate" type="short" visibility="private"/>
+        <Field name="absent" type="byte" visibility="private"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="getGenre" returnType="String" visibility="public"/>
+        <Method name="setGenre" returnType="void" visibility="public">
+          <Argument type="String" name="genre"/>
+        </Method>
+        <Method name="getTotalView" returnType="int" visibility="public"/>
+        <Method name="setTotalView" returnType="void" visibility="public">
+          <Argument type="int" name="totalView"/>
+        </Method>
+        <Method name="getTotalParticipate" returnType="short" visibility="public"/>
+        <Method name="setTotalParticipate" returnType="void" visibility="public">
+          <Argument type="short" name="totalParticipate"/>
+        </Method>
+        <Method name="getAbsent" returnType="byte" visibility="public"/>
+        <Method name="setAbsent" returnType="void" visibility="public">
+          <Argument type="byte" name="absent"/>
+        </Method>
+        <Method name="toString" returnType="String" visibility="public"/>
+        <Method name="compareTo" returnType="int" visibility="public">
+          <Argument type="InterestGenreBehavior" name="o"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Location" package="meetu.eventservice.model" visibility="public" xPosition="638.0" yPosition="364.0">
+      <Fields>
+        <Field name="detail" type="String" visibility="private"/>
+        <Field name="subDistrict" type="String" visibility="private"/>
+        <Field name="district" type="String" visibility="private"/>
+        <Field name="province" type="String" visibility="private"/>
+        <Field name="country" type="String" visibility="private"/>
+        <Field name="geopoint" type="GeoDetail" visibility="private"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="getSubDistrict" returnType="String" visibility="public"/>
+        <Method name="setSubDistrict" returnType="void" visibility="public">
+          <Argument type="String" name="subDistrict"/>
+        </Method>
+        <Method name="getDistrict" returnType="String" visibility="public"/>
+        <Method name="setDistrict" returnType="void" visibility="public">
+          <Argument type="String" name="district"/>
+        </Method>
+        <Method name="getProvince" returnType="String" visibility="public"/>
+        <Method name="setProvince" returnType="void" visibility="public">
+          <Argument type="String" name="province"/>
+        </Method>
+        <Method name="getCountry" returnType="String" visibility="public"/>
+        <Method name="setCountry" returnType="void" visibility="public">
+          <Argument type="String" name="country"/>
+        </Method>
+        <Method name="getDetail" returnType="String" visibility="public"/>
+        <Method name="setDetail" returnType="void" visibility="public">
+          <Argument type="String" name="detail"/>
+        </Method>
+        <Method name="getGeopoint" returnType="GeoDetail" visibility="public"/>
+        <Method name="setGeopoint" returnType="void" visibility="public">
+          <Argument type="GeoDetail" name="geopoint"/>
+        </Method>
+        <Method name="toString" returnType="String" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Organize" package="meetu.eventservice.model" visibility="public" xPosition="1362.0" yPosition="437.0">
+      <Fields>
+        <Field name="organizeId" type="String" visibility="private"/>
+        <Field name="organizeName" type="String" visibility="private"/>
+        <Field name="organizeDetail" type="String" visibility="private"/>
+        <Field name="organizeTags" type="String" visibility="private"/>
+        <Field name="organizeImageProfile" type="String" visibility="private"/>
+        <Field name="organizeImageCover" type="String" visibility="private"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="getOrganizeId" returnType="String" visibility="public"/>
+        <Method name="setOrganizeId" returnType="void" visibility="public">
+          <Argument type="String" name="organizeId"/>
+        </Method>
+        <Method name="getOrganizeName" returnType="String" visibility="public"/>
+        <Method name="setOrganizeName" returnType="void" visibility="public">
+          <Argument type="String" name="organizeName"/>
+        </Method>
+        <Method name="getOrganizeDetail" returnType="String" visibility="public"/>
+        <Method name="setOrganizeDetail" returnType="void" visibility="public">
+          <Argument type="String" name="organizeDetail"/>
+        </Method>
+        <Method name="getOrganizeTags" returnType="String" visibility="public"/>
+        <Method name="setOrganizeTags" returnType="void" visibility="public">
+          <Argument type="String" name="organizeTags"/>
+        </Method>
+        <Method name="getOrganizeImageProfile" returnType="String" visibility="public"/>
+        <Method name="setOrganizeImageProfile" returnType="void" visibility="public">
+          <Argument type="String" name="organizeImageProfile"/>
+        </Method>
+        <Method name="getOrganizeImageCover" returnType="String" visibility="public"/>
+        <Method name="setOrganizeImageCover" returnType="void" visibility="public">
+          <Argument type="String" name="organizeImageCover"/>
+        </Method>
+        <Method name="toString" returnType="String" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Persona" package="meetu.eventservice.model" visibility="public" xPosition="196.0" yPosition="1231.0">
+      <Fields>
+        <Field name="probationDuration" type="byte" visibility="private"/>
+        <Field name="absentInRow" type="byte" visibility="private"/>
+        <Field name="interestIdea" type="List&lt;String&gt;" visibility="private"/>
+        <Field name="sumAllOfParticipateEvent" type="short" visibility="private"/>
+        <Field name="interestBehaviorList" type="List&lt;InterestGenreBehavior&gt;" visibility="private"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="getProbationDuration" returnType="byte" visibility="public"/>
+        <Method name="setProbationDuration" returnType="void" visibility="public">
+          <Argument type="byte" name="probationDuration"/>
+        </Method>
+        <Method name="getAbsentInRow" returnType="byte" visibility="public"/>
+        <Method name="setAbsentInRow" returnType="void" visibility="public">
+          <Argument type="byte" name="absentInRow"/>
+        </Method>
+        <Method name="getInterestIdea" returnType="List&lt;String&gt;" visibility="public"/>
+        <Method name="setInterestIdea" returnType="void" visibility="public">
+          <Argument type="List&lt;String&gt;" name="interestIdea"/>
+        </Method>
+        <Method name="getSumAllOfParticipateEvent" returnType="short" visibility="public"/>
+        <Method name="setSumAllOfParticipateEvent" returnType="void" visibility="public">
+          <Argument type="short" name="sumAllOfParticipateEvent"/>
+        </Method>
+        <Method name="getInterestBehaviorList" returnType="List&lt;InterestGenreBehavior&gt;" visibility="public"/>
+        <Method name="setInterestBehaviorList" returnType="void" visibility="public">
+          <Argument type="List&lt;InterestGenreBehavior&gt;" name="interestBehaviorList"/>
+        </Method>
+        <Method name="toString" returnType="String" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Post" package="meetu.eventservice.model" visibility="public" xPosition="1372.0" yPosition="1025.0">
+      <Fields>
+        <Field name="postId" type="String" visibility="private"/>
+        <Field name="userId" type="String" visibility="private"/>
+        <Field name="userName" type="String" visibility="private"/>
+        <Field name="postDetail" type="String" visibility="private"/>
+        <Field name="commentOfPost" type="List&lt;String&gt;" visibility="private"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="getPostId" returnType="String" visibility="public"/>
+        <Method name="setPostId" returnType="void" visibility="public">
+          <Argument type="String" name="postId"/>
+        </Method>
+        <Method name="getPostDetail" returnType="String" visibility="public"/>
+        <Method name="setPostDetail" returnType="void" visibility="public">
+          <Argument type="String" name="postDetail"/>
+        </Method>
+        <Method name="getUserId" returnType="String" visibility="public"/>
+        <Method name="setUserId" returnType="void" visibility="public">
+          <Argument type="String" name="userId"/>
+        </Method>
+        <Method name="getUserName" returnType="String" visibility="public"/>
+        <Method name="setUserName" returnType="void" visibility="public">
+          <Argument type="String" name="userName"/>
+        </Method>
+        <Method name="getCommentOfPost" returnType="List&lt;String&gt;" visibility="public"/>
+        <Method name="setCommentOfPost" returnType="void" visibility="public">
+          <Argument type="List&lt;String&gt;" name="commentOfPost"/>
+        </Method>
+        <Method name="toString" returnType="String" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="User" package="meetu.eventservice.model" visibility="public" xPosition="967.0" yPosition="950.0">
+      <Fields>
+        <Field name="userId" type="String" visibility="private"/>
+        <Field name="username" type="String" visibility="private"/>
+        <Field name="role" type="String" visibility="private"/>
+        <Field name="email" type="String" visibility="private"/>
+        <Field name="firstName" type="String" visibility="private"/>
+        <Field name="lastName" type="String" visibility="private"/>
+        <Field name="persona" type="Persona" visibility="private"/>
+        <Field name="birthDay" type="Date" visibility="private"/>
+        <Field name="gender" type="String" visibility="private"/>
+        <Field name="userImage" type="String" visibility="private"/>
+        <Field name="province" type="String" visibility="private"/>
+        <Field name="country" type="String" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="getUserId" returnType="String" visibility="public"/>
+        <Method name="setUserId" returnType="void" visibility="public">
+          <Argument type="String" name="userId"/>
+        </Method>
+        <Method name="getUsername" returnType="String" visibility="public"/>
+        <Method name="setUsername" returnType="void" visibility="public">
+          <Argument type="String" name="username"/>
+        </Method>
+        <Method name="getRole" returnType="String" visibility="public"/>
+        <Method name="setRole" returnType="void" visibility="public">
+          <Argument type="String" name="role"/>
+        </Method>
+        <Method name="getEmail" returnType="String" visibility="public"/>
+        <Method name="setEmail" returnType="void" visibility="public">
+          <Argument type="String" name="email"/>
+        </Method>
+        <Method name="getFirstName" returnType="String" visibility="public"/>
+        <Method name="setFirstName" returnType="void" visibility="public">
+          <Argument type="String" name="firstName"/>
+        </Method>
+        <Method name="getLastName" returnType="String" visibility="public"/>
+        <Method name="setLastName" returnType="void" visibility="public">
+          <Argument type="String" name="lastName"/>
+        </Method>
+        <Method name="getBirthDay" returnType="Date" visibility="public"/>
+        <Method name="setBirthDay" returnType="void" visibility="public">
+          <Argument type="Date" name="birthDay"/>
+        </Method>
+        <Method name="getUserImage" returnType="String" visibility="public"/>
+        <Method name="setUserImage" returnType="void" visibility="public">
+          <Argument type="String" name="userImage"/>
+        </Method>
+        <Method name="getPersona" returnType="Persona" visibility="public"/>
+        <Method name="setPersona" returnType="void" visibility="public">
+          <Argument type="Persona" name="persona"/>
+        </Method>
+        <Method name="getProvince" returnType="String" visibility="public"/>
+        <Method name="setProvince" returnType="void" visibility="public">
+          <Argument type="String" name="province"/>
+        </Method>
+        <Method name="getCountry" returnType="String" visibility="public"/>
+        <Method name="setCounry" returnType="void" visibility="public">
+          <Argument type="String" name="counry"/>
+        </Method>
+        <Method name="getGender" returnType="String" visibility="public"/>
+        <Method name="setGender" returnType="void" visibility="public">
+          <Argument type="String" name="gender"/>
+        </Method>
+        <Method name="toString" returnType="String" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="EventService" package="meetu.eventservice.service" visibility="public" xPosition="2237.0" yPosition="1356.0">
+      <Fields>
+        <Field name="eventRepository" type="EventRepository" visibility="private"/>
+        <Field name="elasticClient" type="RestHighLevelClient" visibility="private"/>
+        <Field name="eventsIndex" type="String" visibility="private" isFinal="true"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="createEvent" returnType="Event" visibility="public">
+          <Argument type="Event" name="event"/>
+        </Method>
+        <Method name="deleteEventById" returnType="Event" visibility="public">
+          <Argument type="String" name="eventId"/>
+        </Method>
+        <Method name="findEventByUsingFilter" returnType="List&lt;Event&gt;" visibility="public">
+          <Argument type="String[]" name="eventTags"/>
+          <Argument type="boolean" name="isRecently"/>
+          <Argument type="String" name="eventDetail"/>
+          <Argument type="double" name="longitude"/>
+          <Argument type="double" name="latitude"/>
+          <Argument type="String" name="areaOfEvent"/>
+          <Argument type="int" name="page"/>
+          <Argument type="int" name="contentPerPage"/>
+        </Method>
+        <Method name="findEventByPersonalize" returnType="List&lt;Event&gt;" visibility="public">
+          <Argument type="User" name="user"/>
+        </Method>
+        <Method name="filterByEventTags" returnType="BoolQueryBuilder" visibility="public">
+          <Argument type="BoolQueryBuilder" name="queryFilter"/>
+          <Argument type="String" name="eventTags"/>
+        </Method>
+        <Method name="filterByEventDetail" returnType="QueryStringQueryBuilder" visibility="public">
+          <Argument type="String" name="eventDetail"/>
+        </Method>
+        <Method name="filterByGeolocation" returnType="GeoDistanceQueryBuilder" visibility="public">
+          <Argument type="double" name="latitude"/>
+          <Argument type="double" name="longitude"/>
+          <Argument type="String" name="areaOfEvent"/>
+        </Method>
+        <Method name="filterByRecently" returnType="SearchSourceBuilder" visibility="public">
+          <Argument type="SearchSourceBuilder" name="searchSourceBuilder"/>
+          <Argument type="String" name="sortedField"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="QRCodeService" package="meetu.eventservice.service" visibility="public" xPosition="1103.0" yPosition="53.0">
+      <Fields>
+        <Field name="LOGO" type="String" visibility="private" isFinal="true"/>
+        <Field name="DIR" type="String" visibility="private" isFinal="true"/>
+        <Field name="ext" type="String" visibility="private" isFinal="true"/>
+        <Field name="CONTENT" type="String" visibility="private" isFinal="true"/>
+        <Field name="WIDTH" type="int" visibility="private" isFinal="true"/>
+        <Field name="HEIGHT" type="int" visibility="private" isFinal="true"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="getQRCodeImage" returnType="byte[]" visibility="public">
+          <Argument type="String" name="text"/>
+          <Argument type="int" name="width"/>
+          <Argument type="int" name="height"/>
+        </Method>
+        <Method name="getOverly" returnType="BufferedImage" visibility="private">
+          <Argument type="String" name="LOGO"/>
+        </Method>
+        <Method name="initDirectory" returnType="void" visibility="private">
+          <Argument type="String" name="DIR"/>
+        </Method>
+        <Method name="cleanDirectory" returnType="void" visibility="private">
+          <Argument type="String" name="DIR"/>
+        </Method>
+        <Method name="getMatrixConfig" returnType="MatrixToImageConfig" visibility="private"/>
+        <Method name="generateRandoTitle" returnType="String" visibility="private">
+          <Argument type="Random" name="random"/>
+          <Argument type="int" name="length"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Interface name="EventRepository" package="meetu.eventservice.repository" visibility="public" xPosition="2476.0" yPosition="578.0">
+      <Methods>
+        <Method name="findByEventDetailLike" returnType="List&lt;Event&gt;" visibility="public">
+          <Argument type="String" name="eventDetail"/>
+        </Method>
+        <Method name="deleteByElasticEventId" returnType="Event" visibility="public">
+          <Argument type="String" name="eventId"/>
+        </Method>
+      </Methods>
+    </Interface>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations>
+    <UseRelation source="meetu.eventservice.repository.EventRepository" target="meetu.eventservice.model.Event" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="qRCodeService" source="meetu.eventservice.controller.EventController" target="meetu.eventservice.service.QRCodeService" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="geopoint" source="meetu.eventservice.model.Location" target="meetu.eventservice.model.GeoDetail" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="meetu.eventservice.model.Event" target="meetu.eventservice.model.Location" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="meetu.eventservice.model.Event" target="meetu.eventservice.model.Organize" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="interestBehaviorList" source="meetu.eventservice.model.Persona" target="meetu.eventservice.model.InterestGenreBehavior" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="List&lt;InterestGenreBehavior&gt;"/>
+    <UseRelation source="meetu.eventservice.model.Persona" target="meetu.eventservice.model.InterestGenreBehavior" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="meetu.eventservice.service.EventService" target="meetu.eventservice.model.User" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="meetu.eventservice.model.User" target="meetu.eventservice.model.Persona" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="persona" source="meetu.eventservice.model.User" target="meetu.eventservice.model.Persona" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="organize" source="meetu.eventservice.model.Event" target="meetu.eventservice.model.Organize" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="meetu.eventservice.model.InterestGenreBehavior" target="meetu.eventservice.model.InterestGenreBehavior" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="meetu.eventservice.service.EventService" target="meetu.eventservice.model.Event" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="meetu.eventservice.controller.EventController" target="meetu.eventservice.model.User" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="meetu.eventservice.model.Location" target="meetu.eventservice.model.GeoDetail" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="eventService" source="meetu.eventservice.controller.EventController" target="meetu.eventservice.service.EventService" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="postLists" source="meetu.eventservice.model.Event" target="meetu.eventservice.model.Post" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="List&lt;Post&gt;"/>
+    <UseRelation source="meetu.eventservice.controller.EventController" target="meetu.eventservice.model.Event" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="eventRepository" source="meetu.eventservice.service.EventService" target="meetu.eventservice.repository.EventRepository" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="location" source="meetu.eventservice.model.Event" target="meetu.eventservice.model.Location" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+  </ClassDiagramRelations>
+</ClassDiagram>

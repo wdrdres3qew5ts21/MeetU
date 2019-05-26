@@ -47,10 +47,6 @@ public class EventController {
     @Autowired
     private QRCodeService qRCodeService;
 
-    @GetMapping("/test")
-    public ResponseEntity<String> test() {
-        return new ResponseEntity<>(envTest + "\n ----------- " + superDude, HttpStatus.OK);
-    }
 
     @PostMapping("/event")
     public ResponseEntity<Event> createEvent(@RequestBody Event event) {
@@ -83,7 +79,7 @@ public class EventController {
         );
     }
 
-    @PostMapping("/events/recomend/persona")
+    @PostMapping("/events/recommend/persona")
     public ResponseEntity<List<Event>> searchWithPersonalize(
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "20") int contentPerPage,
@@ -97,10 +93,10 @@ public class EventController {
         return new ResponseEntity<Event>(eventService.deleteEventById(eventId), HttpStatus.OK);
     }
 
-    @GetMapping("/events/qrcode")
-    public ResponseEntity<byte[]> qrCodeGenerator(HttpServletResponse response) {
-        response.setContentType("image/png");
-        return new ResponseEntity<byte[]>(qRCodeService.getQRCodeImage("https://trello.com/b/OutSJrmK/project", 1000, 1000), HttpStatus.OK);
-    }
+//    @GetMapping("/events/qrcode")
+//    public ResponseEntity<byte[]> qrCodeGenerator(HttpServletResponse response) {
+//        response.setContentType("image/png");
+//        return new ResponseEntity<byte[]>(qRCodeService.getQRCodeImage("https://trello.com/b/OutSJrmK/project", 1000, 1000), HttpStatus.OK);
+//    }
 
 }

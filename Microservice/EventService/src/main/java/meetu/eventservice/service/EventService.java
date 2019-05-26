@@ -151,33 +151,47 @@ public class EventService {
     }
 
     public List<Event> findEventByPersonalize(User user) {
-        System.out.println("------------------------------");
+        Persona persona = user.getPersona();
+        List<String> interestIdeaList = persona.getInterestIdea();
+        List<InterestGenreBehavior> interestBehaviorList = persona.getInterestBehaviorList();
+        byte numberOfRecommendationSize = 3; // จำนวน genre ที่สามารถใช้ recommend ได้เช่นมีทั้งหมด 3 ประเภท, 5 ประเภท
+        int participateBoundedForWeightGenre = 2;// จำนวนขั้นต่ำของจำนวนครั้งที่เข้าร่วมกิจกรรมจึงจะนำมา weight ในการเลือก top N กิจกรรมที่เข้าร่วม
         System.out.println("Find Event By Personalize ! ");
+
+        //Logic Recommendation
+        // ขนาดที่เราจะเก็บจำนวนที่ recommendation ได้คือ numberOfRecommendationSize ถ้าเกิดจากนี้ก็จะเตะตัวที่น้อยสุดสุดออกและนำตัวใหม่เข้ามาแทนนั่นเอง
+        ArrayList<InterestGenreBehavior> topNumberParticipateEvent = new ArrayList(numberOfRecommendationSize);
+        int numberOfGenreThatInsideTopNListParticipate = 0;// ตัวแปรที่ใช้วัดว่าจำนวน top numberOfRecommendationSize ที่เก็บลงไปใน array ของ topNParticipate ถึงแค่ไหนแล้ว
+        for (int i = 0; i < interestBehaviorList.size(); i++) {
+            if (interestBehaviorList.get(i).getTotalParticipate() >= participateBoundedForWeightGenre) {
+                if (numberOfGenreThatInsideTopNListParticipate < numberOfRecommendationSize) {
+                    topNumberParticipateEvent.add(interestBehaviorList.get(i));
+                    numberOfGenreThatInsideTopNListParticipate++;
+                } else {
+                    int indexOfEventThatHaveLowestScoreFromTopNParticipateList = topNumberParticipateEvent.indexOf(Collections.min(topNumberParticipateEvent));
+                    if (interestBehaviorList.get(i).compareTo(topNumberParticipateEvent.get(indexOfEventThatHaveLowestScoreFromTopNParticipateList)) == 1) {
+                        topNumberParticipateEvent.set(indexOfEventThatHaveLowestScoreFromTopNParticipateList, interestBehaviorList.get(i));
+                    }
+                }
+            }
+        }
+        System.out.println("------ top 3 participate event (Reverse Order) -------");
+        topNumberParticipateEvent.sort(Collections.reverseOrder());
+        System.out.println("top3Participate : " + topNumberParticipateEvent);
+
+        // หลังจากที่เราได้จำนวนกิจกรรม top N ที่เข้าร่วมมาแล้ว 
+        // เราจะทำการเช็คการ interestIdea ที่เขาได้ทำการ check เอาไว้ว่าสนใจในด้านใดมา weight ร่วมกับกิจกรรมที่เขาเข้าร่วม
+        // ถ้าเกิด topNumberParticipate นั้นไม่มีเลยสักตัวเราก็ต้องนำตัวที่เขา check คือ ideaInterest ไปใช้แทนแต่ถ้าเป็น genre ที่สนใจตัวเดียวกันอีกก็จะยิ่ง boost เพิ่ม
+        for (int i = 0; i < numberOfGenreThatInsideTopNListParticipate; i++) {
+            if (interestIdeaList.contains(topNumberParticipateEvent.get(i))) {
+                // ถ้า InterestIdea ที่เลือกไว้จาก preference ตรงกับ  TopN ที่เราคัดกรองมาก็จะบวกคะแนน
+                //   queryFilter.should(QueryBuilders.matchQuery(eventsIndex, this))
+            }
+        }
         BoolQueryBuilder queryFilter = new BoolQueryBuilder();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         SearchRequest searchRequest = new SearchRequest(eventsIndex);
         SearchResponse searchResponse = null;
-        Persona persona = user.getPersona();
-        System.out.println("persona : " + persona);
-        List<InterestGenreBehavior> interestBehaviorList = persona.getInterestBehaviorList();
-        int top3ParticipateEventSize = 0;
-        //Logic Recommendation
-        ArrayList<InterestGenreBehavior> top3ParticipateEvent = new ArrayList(10);
-        for (int i = 0; i < interestBehaviorList.size(); i++) {
-            //  System.out.println(" top3ListContainerSize : " + top3ParticipateEvent.size());
-            if (top3ParticipateEventSize < 3) {
-                //  System.out.println("First " + (i + 1));
-                top3ParticipateEvent.add(interestBehaviorList.get(i));
-                top3ParticipateEventSize++;
-            } else {
-                int indexOfEventThatHaveLowestScoreFromTop3 = top3ParticipateEvent.indexOf(Collections.min(top3ParticipateEvent));
-                if (interestBehaviorList.get(i).compareTo(top3ParticipateEvent.get(indexOfEventThatHaveLowestScoreFromTop3)) == 1) {
-                    System.out.println(top3ParticipateEvent.set(indexOfEventThatHaveLowestScoreFromTop3, interestBehaviorList.get(i)));
-                }
-            }
-        }
-        System.out.println("------ top 3 participate event -------");
-        System.out.println("top3Participate : " + top3ParticipateEvent);
 
         return null;
     }
