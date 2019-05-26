@@ -5,6 +5,7 @@
  */
 package meetu.eventservice.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,12 +23,15 @@ import meetu.eventservice.repository.EventRepository;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.delete.DeleteResponse;
+import org.elasticsearch.action.get.GetRequest;
+import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.client.indices.GetIndexRequest;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.FuzzyQueryBuilder;
@@ -43,6 +47,7 @@ import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 /**
@@ -219,6 +224,20 @@ public class EventService {
     public SearchSourceBuilder filterByRecently(SearchSourceBuilder searchSourceBuilder, String sortedField) throws IOException {
         searchSourceBuilder.sort(sortedField, SortOrder.DESC);
         return searchSourceBuilder;
+    }
+
+    public Event findEventByElasticId(String elasticEventId) {
+        GetResponse getResponse = null;
+        GetRequest getRequest = new GetRequest(eventsIndex, elasticEventId);
+        try {
+            getResponse = elasticClient.get(getRequest, RequestOptions.DEFAULT);
+            
+        } catch (IOException ex) {
+            Logger.getLogger(EventService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        ObjectMapper mapper = new ObjectMapper();
+        Event convertValue = mapper.convertValue(getResponse.getSource(), Event.class);
+        return convertValue;
     }
 
 }

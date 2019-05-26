@@ -47,7 +47,6 @@ public class EventController {
     @Autowired
     private QRCodeService qRCodeService;
 
-
     @PostMapping("/event")
     public ResponseEntity<Event> createEvent(@RequestBody Event event) {
         return new ResponseEntity<Event>(eventService.createEvent(event), HttpStatus.CREATED);
@@ -64,6 +63,7 @@ public class EventController {
             @RequestParam(required = false, defaultValue = "0.0", name = "lat") double latitude,
             @RequestParam(required = false, defaultValue = "5km") String areaOfEvent
     ) throws IOException {
+        System.out.println("search with filter");
         areaOfEvent = areaOfEvent.toLowerCase();
         eventDetail = eventDetail.toLowerCase();
         if (eventTags != null) {
@@ -77,6 +77,11 @@ public class EventController {
                         longitude, latitude, areaOfEvent,
                         page, contentPerPage), HttpStatus.OK
         );
+    }
+    
+    @GetMapping("/event/{elasticEventId}")
+    public ResponseEntity<Event> findEventByElasticId(@PathVariable String elasticEventId){
+        return new ResponseEntity<Event>(eventService.findEventByElasticId(elasticEventId), HttpStatus.OK);
     }
 
     @PostMapping("/events/recommend/persona")
@@ -98,5 +103,4 @@ public class EventController {
 //        response.setContentType("image/png");
 //        return new ResponseEntity<byte[]>(qRCodeService.getQRCodeImage("https://trello.com/b/OutSJrmK/project", 1000, 1000), HttpStatus.OK);
 //    }
-
 }
