@@ -7,6 +7,7 @@ package meetu.eventservice.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import meetu.eventservice.config.ElasticUtil;
 import meetu.eventservice.model.Event;
+import meetu.eventservice.model.InterestGenreBehavior;
+import meetu.eventservice.model.Persona;
+import meetu.eventservice.model.User;
 import meetu.eventservice.repository.EventRepository;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.delete.DeleteRequest;
@@ -146,13 +150,34 @@ public class EventService {
         return ElasticUtil.searchHitsToList(searchResponse.getHits(), Event.class);
     }
 
+    public List<Event> findEventByPersonalize(User user) {
+        BoolQueryBuilder queryFilter = new BoolQueryBuilder();
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        SearchRequest searchRequest = new SearchRequest(eventsIndex);
+        SearchResponse searchResponse = null;
+        Persona persona = user.getPersona();
+        List<InterestGenreBehavior> interestBehaviorList = persona.getInterestBehaviorList();
+        //Logic Recommendation
+        ArrayList<InterestGenreBehavior> top3ParticipateEvent = new ArrayList();
+        for (int i = 0; i < interestBehaviorList.size(); i++) {
+            if (top3ParticipateEvent.size() <= 3) {
+                top3ParticipateEvent.set(i, interestBehaviorList.get(i));
+            } else {
+                int replaceLowestIndexFromNewValue = top3ParticipateEvent.indexOf(Collections.min(top3ParticipateEvent));
+                top3ParticipateEvent.set(replaceLowestIndexFromNewValue, interestBehaviorList.get(i));
+            }
+        }
+
+        return null;
+    }
+
     public BoolQueryBuilder filterByEventTags(BoolQueryBuilder queryFilter, String eventTags[]) {
         queryFilter.filter(QueryBuilders.termsQuery("eventTags", eventTags));
         return queryFilter;
     }
 
     public QueryStringQueryBuilder filterByEventDetail(String eventDetail) {
-        QueryStringQueryBuilder alreadyFilterByEventDetail = QueryBuilders.queryStringQuery(eventDetail+"~")
+        QueryStringQueryBuilder alreadyFilterByEventDetail = QueryBuilders.queryStringQuery(eventDetail + "~")
                 .field("eventName").boost(2.0f)
                 .field("eventDetail").boost(2.0f)
                 .field("location.*").boost(5.0f)
