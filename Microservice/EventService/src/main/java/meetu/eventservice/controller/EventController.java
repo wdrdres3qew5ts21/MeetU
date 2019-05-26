@@ -83,7 +83,7 @@ public class EventController {
         );
     }
 
-    @PostMapping("/events/recomend")
+    @PostMapping("/events/recomend/persona")
     public ResponseEntity<List<Event>> searchWithPersonalize(
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "20") int contentPerPage,

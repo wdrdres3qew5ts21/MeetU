@@ -151,22 +151,33 @@ public class EventService {
     }
 
     public List<Event> findEventByPersonalize(User user) {
+        System.out.println("------------------------------");
+        System.out.println("Find Event By Personalize ! ");
         BoolQueryBuilder queryFilter = new BoolQueryBuilder();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         SearchRequest searchRequest = new SearchRequest(eventsIndex);
         SearchResponse searchResponse = null;
         Persona persona = user.getPersona();
+        System.out.println("persona : " + persona);
         List<InterestGenreBehavior> interestBehaviorList = persona.getInterestBehaviorList();
+        int top3ParticipateEventSize = 0;
         //Logic Recommendation
-        ArrayList<InterestGenreBehavior> top3ParticipateEvent = new ArrayList();
+        ArrayList<InterestGenreBehavior> top3ParticipateEvent = new ArrayList(10);
         for (int i = 0; i < interestBehaviorList.size(); i++) {
-            if (top3ParticipateEvent.size() <= 3) {
-                top3ParticipateEvent.set(i, interestBehaviorList.get(i));
+            //  System.out.println(" top3ListContainerSize : " + top3ParticipateEvent.size());
+            if (top3ParticipateEventSize < 3) {
+                //  System.out.println("First " + (i + 1));
+                top3ParticipateEvent.add(interestBehaviorList.get(i));
+                top3ParticipateEventSize++;
             } else {
-                int replaceLowestIndexFromNewValue = top3ParticipateEvent.indexOf(Collections.min(top3ParticipateEvent));
-                top3ParticipateEvent.set(replaceLowestIndexFromNewValue, interestBehaviorList.get(i));
+                int indexOfEventThatHaveLowestScoreFromTop3 = top3ParticipateEvent.indexOf(Collections.min(top3ParticipateEvent));
+                if (interestBehaviorList.get(i).compareTo(top3ParticipateEvent.get(indexOfEventThatHaveLowestScoreFromTop3)) == 1) {
+                    System.out.println(top3ParticipateEvent.set(indexOfEventThatHaveLowestScoreFromTop3, interestBehaviorList.get(i)));
+                }
             }
         }
+        System.out.println("------ top 3 participate event -------");
+        System.out.println("top3Participate : " + top3ParticipateEvent);
 
         return null;
     }
