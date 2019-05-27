@@ -38,8 +38,10 @@ import org.elasticsearch.index.query.FuzzyQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
 import org.elasticsearch.index.query.MatchAllQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.QueryStringQueryBuilder;
+import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
@@ -156,6 +158,10 @@ public class EventService {
     }
 
     public List<Event> findEventByPersonalize(User user) {
+        BoolQueryBuilder queryFilter = new BoolQueryBuilder();
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        SearchRequest searchRequest = new SearchRequest(eventsIndex);
+        SearchResponse searchResponse = null;
         Persona persona = user.getPersona();
         List<String> interestIdeaList = persona.getInterestIdea();
         List<InterestGenreBehavior> interestBehaviorList = persona.getInterestBehaviorList();
@@ -181,24 +187,67 @@ public class EventService {
             }
         }
         System.out.println("------ top 3 participate event (Reverse Order) -------");
+        System.out.println("Total TopRank Slot : " + numberOfGenreThatInsideTopNListParticipate);
         topNumberParticipateEvent.sort(Collections.reverseOrder());
         System.out.println("top3Participate : " + topNumberParticipateEvent);
 
         // หลังจากที่เราได้จำนวนกิจกรรม top N ที่เข้าร่วมมาแล้ว 
         // เราจะทำการเช็คการ interestIdea ที่เขาได้ทำการ check เอาไว้ว่าสนใจในด้านใดมา weight ร่วมกับกิจกรรมที่เขาเข้าร่วม
         // ถ้าเกิด topNumberParticipate นั้นไม่มีเลยสักตัวเราก็ต้องนำตัวที่เขา check คือ ideaInterest ไปใช้แทนแต่ถ้าเป็น genre ที่สนใจตัวเดียวกันอีกก็จะยิ่ง boost เพิ่ม
+        List<QueryBuilder> queryBuilderList = new ArrayList<>();
         for (int i = 0; i < numberOfGenreThatInsideTopNListParticipate; i++) {
             if (interestIdeaList.contains(topNumberParticipateEvent.get(i))) {
                 // ถ้า InterestIdea ที่เลือกไว้จาก preference ตรงกับ  TopN ที่เราคัดกรองมาก็จะบวกคะแนน
-                //   queryFilter.should(QueryBuilders.matchQuery(eventsIndex, this))
+                queryFilter.should().add(
+                        QueryBuilders.termQuery("eventTags", topNumberParticipateEvent.get(i).getGenre().toLowerCase())
+                                .boost(1.2f)
+                );
+            } else {
+                queryFilter.should().add(
+                        QueryBuilders.termQuery("eventTags", topNumberParticipateEvent.get(i).getGenre().toLowerCase()));
             }
         }
-        BoolQueryBuilder queryFilter = new BoolQueryBuilder();
-        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        SearchRequest searchRequest = new SearchRequest(eventsIndex);
-        SearchResponse searchResponse = null;
 
-        return null;
+        for (int i = 0; i < numberOfGenreThatInsideTopNListParticipate; i++) {
+            if (interestBehaviorList.contains(topNumberParticipateEvent.get(i))) {
+                System.out.println("remove ! " + topNumberParticipateEvent.get(i));
+                interestBehaviorList.remove(topNumberParticipateEvent.get(i));
+            }
+        }
+        System.out.println("behavior filtered : " + interestBehaviorList);
+
+        ArrayList<InterestGenreBehavior> slotForFreeSpaceOfTopNRank = new ArrayList<>(10);
+        int numberSlotForFreeSpaceOfTopNRank = 0;
+        for (int i = 0; i < (numberOfRecommendationSize - numberOfGenreThatInsideTopNListParticipate); i++) {
+            int indexOfEventThatHaveHighestScoreFromBehaviorListAfterFilter = interestBehaviorList.indexOf(Collections.max(interestBehaviorList));
+            System.out.println("Test : " + interestBehaviorList.get(indexOfEventThatHaveHighestScoreFromBehaviorListAfterFilter));
+            slotForFreeSpaceOfTopNRank.add(interestBehaviorList.get(indexOfEventThatHaveHighestScoreFromBehaviorListAfterFilter));
+            numberSlotForFreeSpaceOfTopNRank++;
+        }
+
+        System.out.println("--- Slot For Free Space -----");
+        System.out.println("Total Free Slot : " + numberSlotForFreeSpaceOfTopNRank);
+        System.out.println(slotForFreeSpaceOfTopNRank.toString());
+        for (int i = 0; i < numberSlotForFreeSpaceOfTopNRank; i++) {
+            if (interestIdeaList.contains(slotForFreeSpaceOfTopNRank.get(i))) {
+                // ถ้า InterestIdea ที่เลือกไว้จาก preference ตรงกับ  TopN ที่เราคัดกรองมาก็จะบวกคะแนน
+                queryFilter.should().add(
+                        QueryBuilders.termQuery("eventTags", topNumberParticipateEvent.get(i).getGenre().toLowerCase())
+                                .boost(1.2f)
+                );
+            } else {
+                queryFilter.should().add(QueryBuilders.termQuery("eventTags", topNumberParticipateEvent.get(i).getGenre().toLowerCase()));
+            }
+        }
+        searchSourceBuilder.query();
+        searchRequest.source(searchSourceBuilder);
+        try {
+            searchResponse = elasticClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException ex) {
+            Logger.getLogger(EventService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return ElasticUtil.searchHitsToList(searchResponse.getHits(), Event.class);
     }
 
     public BoolQueryBuilder filterByEventTags(BoolQueryBuilder queryFilter, String eventTags[]) {
@@ -231,7 +280,7 @@ public class EventService {
         GetRequest getRequest = new GetRequest(eventsIndex, elasticEventId);
         try {
             getResponse = elasticClient.get(getRequest, RequestOptions.DEFAULT);
-            
+
         } catch (IOException ex) {
             Logger.getLogger(EventService.class.getName()).log(Level.SEVERE, null, ex);
         }

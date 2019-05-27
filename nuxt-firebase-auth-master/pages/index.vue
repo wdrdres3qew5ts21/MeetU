@@ -8,9 +8,10 @@
 
       <br>
       <br>
+      <nuxt-link to="/selectGenres"><h3>Setting Recommedation</h3></nuxt-link>
       <h1>Recomended Event for {{$store.getters.mockGetUser.firstname}}</h1>
       <br>
-      <event-list :eventList="popularEventList"></event-list>
+      <event-list :eventList="recommendedEventList"></event-list>
 
       <br>
       <h1>Popular Event</h1>
@@ -276,11 +277,20 @@ export default {
     //this.recentlyEvent = []
     this.getRecentlyEvent();
     this.getArtsEvent();
+    this.getRecommendEvent();
     console.log(this.getEventByTags("art"));
     console.log(this.getEventByTags("book"));
   },
   methods: {
     ...mapActions(["getEventByTags"]),
+    getRecommendEvent: async function(){
+      let recommendEventList = await axios.post(`${
+        process.env.EVENT_SERVICE
+      }/events/recommend/persona`,this.$store.getters.mockGetUser);
+      console.log('-- rec ---')
+      console.log(recommendEventList.data)
+      this.recommendedEventList = recommendEventList.data
+    },
     getRecentlyEvent: async function() {
       let concentPerPage = 3;
       let recentlyEventList = await axios(`${
@@ -289,8 +299,7 @@ export default {
       &contentPerPage=${concentPerPage}`);
       recentlyEventList = recentlyEventList.data;
       this.recentlyEventList = recentlyEventList;
-      console.log('----')
-      console.log(this.recentlyEventList)
+//      console.log(this.recentlyEventList)
     },
     getArtsEvent: async function() {
       let concentPerPage = 3;

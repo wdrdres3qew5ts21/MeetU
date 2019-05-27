@@ -12,11 +12,15 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex';
 import genres from "~/components/genres";
 
 export default {
   components: {
     genres
+  },
+  computed: {
+    ...mapGetters(['mockGetUser'])
   }
 };
 </script>
