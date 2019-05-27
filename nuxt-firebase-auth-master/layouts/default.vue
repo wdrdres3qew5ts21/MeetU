@@ -2,7 +2,7 @@
   <v-app>
     <v-navigation-drawer v-model="drawer" fixed app style="background-color: #341646">
       <v-list>
-        <nuxt-link class="link" to="/">
+        <nuxt-link to="/">
           <v-list-tile>
             <v-list-tile>
               <v-icon class="icon">home</v-icon>
@@ -54,11 +54,11 @@
       </v-btn>-->
       <!-- <nuxt-link to="searchTest">  -->
       <div>
-        <router-link to="search">
+        <nuxt-link to="/search">
           <v-btn icon>
             <v-icon class="hidden-lg-only" color="#fff;">search</v-icon>
           </v-btn>
-        </router-link>
+        </nuxt-link>
       </div>
 
       <!-- </nuxt-link> -->
@@ -249,6 +249,10 @@ export default {
 a.link {
   color: #fff;
 }
+a{
+  text-decoration-line: none;
+  text-decoration: none;
+}
 .categoryLink {
   text-decoration-line: none;
   text-decoration: none;
@@ -259,30 +263,16 @@ a.link {
   background-color: #fc5577;
 }
 
-a:hover {
+/* a:hover {
   text-decoration-line: none;
   text-decoration: none;
   color: #fc5577;
-  /* background: yellowgreen; */
-}
+} */
 
 .link {
   color: #fff;
   text-decoration: none;
 }
-
-/* .list__tile--active.list__tile.list__tile--link {
-
-} */
-
-/* a.nuxt-link-exact-active.list__tile--active.list__tile.list__tile--link { */
-/* font-weight: 900 !important;
-  color: #3f51b5 !important; */
-/* } */
-
-/* .v-navigation-drawer{
-  background-color: #341646;
-} */
 
 .v-list__tile--link {
   border-left: 10px solid transparent;

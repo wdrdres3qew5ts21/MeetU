@@ -12,15 +12,15 @@ const state = () => ({
       interestBehaviorList: [
         { genre: "art", totalView: 0, totalParticipate: 1, absent: 0 },
         { genre: "business", totalView: 5, totalParticipate: 0, absent: 0 },
-        { genre: "book", totalView: 2, totalParticipate: 2, absent: 0 },
-        { genre: "beauty", totalView: 0, totalParticipate: 3, absent: 0 },
+        { genre: "book", totalView: 2, totalParticipate: 1, absent: 0 },
+        { genre: "beauty", totalView: 8, totalParticipate: 0, absent: 0 },
         { genre: "family", totalView: 0, totalParticipate: 0, absent: 0 },
         { genre: "flim", totalView: 0, totalParticipate: 0, absent: 0 },
         { genre: "game", totalView: 20, totalParticipate: 1, absent: 0 },
         { genre: "photography", totalView: 0, totalParticipate: 0, absent: 0 },
         { genre: "music", totalView: 0, totalParticipate: 0, absent: 0 },
         { genre: "technology", totalView: 13, totalParticipate: 1, absent: 0 },
-        { genre: "social", totalView: 2, totalParticipate: 2, absent: 0 }
+        { genre: "social", totalView: 2, totalParticipate: 1, absent: 0 }
       ],
       badgeList: [
         { badgeName: '# Shadowy Red Hat', level: 0, totalExp: 125, nextLevelExp: 150}

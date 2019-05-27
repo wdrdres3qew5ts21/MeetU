@@ -34,3 +34,14 @@ top3Participate : [InterestBehavior{genre=game, totalView=20, totalParticipate=1
 InterestBehavior{genre=art, totalView=0, totalParticipate=2, absent=0}, 
 InterestBehavior{genre=family, totalView=0, totalParticipate=5, absent=0}]
 
+
+-----
+ [InterestBehavior{genre=business, totalView=5, totalParticipate=0, absent=0},
+  InterestBehavior{genre=beauty, totalView=0, totalParticipate=3, absent=0}, 
+  InterestBehavior{genre=family, totalView=0, totalParticipate=0, absent=0},
+   InterestBehavior{genre=flim, totalView=0, totalParticipate=0, absent=0},
+    InterestBehavior{genre=game, totalView=20, totalParticipate=1, absent=0}, 
+    InterestBehavior{genre=photography, totalView=0, totalParticipate=0, absent=0}, 
+    InterestBehavior{genre=music, totalView=0, totalParticipate=0, absent=0},
+     InterestBehavior{genre=technology, totalView=13, totalParticipate=1, absent=0}, 
+ InterestBehavior{genre=social, totalView=2, totalParticipate=2, absent=0}]

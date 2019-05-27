@@ -220,8 +220,9 @@ public class EventService {
         int numberSlotForFreeSpaceOfTopNRank = 0;
         for (int i = 0; i < (numberOfRecommendationSize - numberOfGenreThatInsideTopNListParticipate); i++) {
             int indexOfEventThatHaveHighestScoreFromBehaviorListAfterFilter = interestBehaviorList.indexOf(Collections.max(interestBehaviorList));
-            System.out.println("Test : " + interestBehaviorList.get(indexOfEventThatHaveHighestScoreFromBehaviorListAfterFilter));
+            System.out.println("Free Slot Seletected : " + interestBehaviorList.get(indexOfEventThatHaveHighestScoreFromBehaviorListAfterFilter));
             slotForFreeSpaceOfTopNRank.add(interestBehaviorList.get(indexOfEventThatHaveHighestScoreFromBehaviorListAfterFilter));
+            interestBehaviorList.remove(interestBehaviorList.get(indexOfEventThatHaveHighestScoreFromBehaviorListAfterFilter));
             numberSlotForFreeSpaceOfTopNRank++;
         }
 
@@ -232,11 +233,11 @@ public class EventService {
             if (interestIdeaList.contains(slotForFreeSpaceOfTopNRank.get(i))) {
                 // ถ้า InterestIdea ที่เลือกไว้จาก preference ตรงกับ  TopN ที่เราคัดกรองมาก็จะบวกคะแนน
                 queryFilter.should().add(
-                        QueryBuilders.termQuery("eventTags", topNumberParticipateEvent.get(i).getGenre().toLowerCase())
+                        QueryBuilders.termQuery("eventTags", slotForFreeSpaceOfTopNRank.get(i).getGenre().toLowerCase())
                                 .boost(1.2f)
                 );
             } else {
-                queryFilter.should().add(QueryBuilders.termQuery("eventTags", topNumberParticipateEvent.get(i).getGenre().toLowerCase()));
+                queryFilter.should().add(QueryBuilders.termQuery("eventTags", slotForFreeSpaceOfTopNRank.get(i).getGenre().toLowerCase()));
             }
         }
         searchSourceBuilder.query();
