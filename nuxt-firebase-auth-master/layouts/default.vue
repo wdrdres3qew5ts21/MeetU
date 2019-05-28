@@ -44,15 +44,11 @@
         <v-icon class="menuButton" color="#fff;">menu</v-icon>
       </v-btn>
       <nuxt-link to="/" style="text-decoration-line:none;">
-        <v-toolbar-title v-text="title"></v-toolbar-title>
+        <v-toolbar-title style="text-decoration-line:none;color: white" v-text="title"></v-toolbar-title>
       </nuxt-link>
 
       <v-spacer></v-spacer>
 
-      <!-- <v-btn icon>
-        <v-icon class="searchButton" color="#fff;" @click="searchPopup">search</v-icon>
-      </v-btn>-->
-      <!-- <nuxt-link to="searchTest">  -->
       <div>
         <nuxt-link to="/search">
           <v-btn icon>
@@ -60,33 +56,6 @@
           </v-btn>
         </nuxt-link>
       </div>
-
-      <!-- </nuxt-link> -->
-
-      <!-- <v-autocomplete
-        v-model="model"
-        :items="items"
-        :loading="isLoading"
-        :search-input.sync="search"
-        chips
-        clearable
-        hide-details
-        hide-selected
-        item-text="name"
-        item-value="symbol"
-        label="Search..."
-        solo
-        size="is-small"
-      >
-        <template v-slot:no-data>
-          <v-list-tile>
-            <v-list-tile-title>
-              Search for an
-              <strong>event</strong>
-            </v-list-tile-title>
-          </v-list-tile>
-        </template>
-      </v-autocomplete>-->
 
       <v-text-field
         class="hidden-xs-only"
@@ -221,8 +190,6 @@ export default {
 </script>
 
 <style>
-
-
 .textfield {
   text-decoration-line: none !important;
   text-decoration: none !important;
@@ -249,7 +216,7 @@ export default {
 a.link {
   color: #fff;
 }
-a{
+a {
   text-decoration-line: none;
   text-decoration: none;
 }

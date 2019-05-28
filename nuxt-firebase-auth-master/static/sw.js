@@ -8,16 +8,16 @@ workbox.precaching.precacheAndRoute([
     "revision": "38d70c2257b07ffbe96105742c96bf17"
   },
   {
-    "url": "/_nuxt/app.6c2580abd5264ade43c5.js",
-    "revision": "0e2e2da304e00afe50e07dc2966e3d11"
+    "url": "/_nuxt/app.e4678b6ca13372da2f81.js",
+    "revision": "45e8cabe06ebac9db48ab02d0feb1d38"
   },
   {
-    "url": "/_nuxt/layouts_default.5e6186487134528a27f0.js",
-    "revision": "c6c5fac7b6a41e3425b9bb4b4bbdccf7"
+    "url": "/_nuxt/layouts_default.9bd20080034143d1dbe0.js",
+    "revision": "a22c598531aea678de7014f79d31283a"
   },
   {
-    "url": "/_nuxt/manifest.756a88b84ce0f7c26a6e.js",
-    "revision": "831e843598a7407d6c4df0adc5eb05bd"
+    "url": "/_nuxt/manifest.dcb302c5ca976abf3e0b.js",
+    "revision": "e76d81d5eed82d2e41a5a9a2c19a458e"
   },
   {
     "url": "/_nuxt/pages_about.0d3009c2542adbfc0076.js",
@@ -48,8 +48,8 @@ workbox.precaching.precacheAndRoute([
     "revision": "3f40cba03aeaa80e91c6f255fe591d8f"
   },
   {
-    "url": "/_nuxt/pages_index.41f26c8511e3c97a9dae.js",
-    "revision": "bd5afe81b1e0e9afa2ea5b97b3cf139f"
+    "url": "/_nuxt/pages_index.d9dc798236aa26010e21.js",
+    "revision": "d4683c8e8f93ebbcbe7985eb3c0a3d28"
   },
   {
     "url": "/_nuxt/pages_indexLogin.06ae239bb27a0b6ad1ef.js",
@@ -64,8 +64,8 @@ workbox.precaching.precacheAndRoute([
     "revision": "0d7005375db574e0257b80c7207c7859"
   },
   {
-    "url": "/_nuxt/pages_search.0f367d1c5f160bf6fb56.js",
-    "revision": "25ca5d1825ef4ef2cf99df3f00c14406"
+    "url": "/_nuxt/pages_search.4b560c09e6def7916912.js",
+    "revision": "45948157f938dacd861f2991823c26ae"
   },
   {
     "url": "/_nuxt/pages_selectGenres.4408f8f4172b5f2e8b5b.js",
@@ -76,8 +76,8 @@ workbox.precaching.precacheAndRoute([
     "revision": "6abb0e1d6befa8c34c577fc086915cd3"
   },
   {
-    "url": "/_nuxt/pages_userProfile.9564a4b7540de9ff037e.js",
-    "revision": "bf8ab1fe4752155c5909468da2cb5eca"
+    "url": "/_nuxt/pages_userProfile.0428ce75210e6a5002ad.js",
+    "revision": "2a3d32ed42fc9db46ddf935352a9f8fd"
   },
   {
     "url": "/_nuxt/vendor.e08c40447449fe1a767b.js",

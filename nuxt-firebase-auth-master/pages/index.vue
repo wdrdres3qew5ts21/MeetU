@@ -9,7 +9,7 @@
       <br>
       <br>
       <nuxt-link to="/selectGenres"><h3>Setting Recommedation</h3></nuxt-link>
-      <h1>Recomended Event for {{$store.getters.mockGetUser.firstname}}</h1>
+      <h1>Recomended Event for {{$store.getters.mockGetUser.firstName}}</h1>
       <br>
       <event-list :eventList="recommendedEventList"></event-list>
 

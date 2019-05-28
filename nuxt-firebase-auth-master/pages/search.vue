@@ -16,7 +16,6 @@
       </v-flex>
 
       <br>
-
       <v-flex justify-space-around>
         <div class="text-xs-left">
           <v-chip
@@ -27,32 +26,35 @@
           >
             <v-icon left color="white">label</v-icon>Tags
           </v-chip>
-          <div v-if="isShowEventTag">
-            <v-chip close v-for="category in categoryList" :key="category">{{category}}</v-chip>
-          </div>
+          {{selectedCategoryList}}
+          <v-combobox
+            v-model="selectedCategoryList"
+            :items="categoryList"
+            label="I use chips"
+            multiple
+            chips
+          ></v-combobox>
+          <!-- <div v-if="isShowEventTag">
+            <v-chip @click="selectedTags[i-1] = !selectedTags[i-1]" :selected="selectedTags[i-1]" v-for="(category, i) in categoryList" :key="category">{{category}}</v-chip>
+          </div>-->
         </div>
-        <!-- <v-chip color="grey" text-color="white">Primary</v-chip>
-
-        <v-chip color="grey" text-color="white">Secondary</v-chip>
-
-        <v-chip color="grey" text-color="white">Colored Chip</v-chip>
-
-        <v-chip color="grey" text-color="white">Colored Chip</v-chip>-->
       </v-flex>
       <h1>Founded Event</h1>
       <br>
-      <v-layout>
-        <v-layout row wrap>
-          <v-flex v-for="event in searchedEventList" :key="event.elasticEventId" xs4>
-            <nuxt-link :to="`/event/${event.elasticEventId}`">
-            <v-card flat tile>
-              <v-img img v-bind:src="event.eventPictureCover" max-height="230px"></v-img>
-              <v-card-text>{{event.eventName}}</v-card-text>
-            </v-card>
-            </nuxt-link>
-          </v-flex>
+      <no-ssr>
+        <v-layout>
+          <v-layout row wrap>
+            <v-flex v-for="event in searchedEventList" :key="event.elasticEventId" xs4>
+              <nuxt-link :to="`/event/${event.elasticEventId}`">
+                <v-card flat tile>
+                  <v-img img v-bind:src="event.eventPictureCover" max-height="230px"></v-img>
+                  <v-card-text>{{event.eventName}}</v-card-text>
+                </v-card>
+              </nuxt-link>
+            </v-flex>
+          </v-layout>
         </v-layout>
-      </v-layout>
+      </no-ssr>
 
       <!-- <v-btn
             color="#fc5577"
@@ -77,29 +79,37 @@ export default {
       isRecently: false,
       isShowEventTag: false,
       categoryList: [
-        "Arts",
-        "Book",
-        "Business",
-        "Beauty",
-        "Family",
-        "Film",
-        "Game",
-        "Music",
-        "Photography",
-        "Social",
-        "Technology"
+        "art",
+        "book",
+        "business",
+        "beauty",
+        "family",
+        "film",
+        "game",
+        "music",
+        "photography",
+        "social",
+        "technology"
       ],
-      selectedTags: [],
-      searchedEventList: []
+      searchedEventList: [],
+      selectedCategoryList: []
     };
   },
   methods: {
+    remove: function(item) {
+      this.chips.splice(this.chips.indexOf(item), 1);
+      this.chips = [...this.chips];
+    },
     searchEventByFilter: async function() {
-      let searchedEventList = await axios(
-        `${process.env.EVENT_SERVICE}/events?isRecently=${
-          this.isRecently
-        }&eventDetail=${this.search.toLowerCase()}`
-      );
+      let query= `${process.env.EVENT_SERVICE}/events?isRecently=${this.isRecently}&eventDetail=${this.search.toLowerCase()}`;
+     if(this.selectedCategoryList.length>0){
+       query +=`&eventTags=`
+        for(let i =0;i<this.selectedCategoryList.length;i++){
+          query +=`${this.selectedCategoryList[i]},`
+        }
+     }
+     console.log(query)
+      let searchedEventList = await axios.get(query);
       searchedEventList = searchedEventList.data;
       this.searchedEventList = searchedEventList;
       console.log(this.searchedEventList);
