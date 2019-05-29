@@ -1,7 +1,11 @@
 <template>
   <div>
-    {{selectedItems}}
     <v-layout row wrap>
+      <v-flex xs12>
+        <center>
+          <h3>{{selectedItems}} : {{selectedItems.length}}/{{limitedSelectNumber}} </h3>
+        </center>
+      </v-flex>
       <v-flex xs4 v-for="(genrePicture, i) in genrePictureList" :key="i+genrePicture">
         <input
           type="checkbox"
@@ -14,7 +18,6 @@
         <label :for="`cb${i+1}`">
           <center>
             <v-img
-              @click="$store.dispatch('setInterestIdea',{genre: `${genrePicture}`, cb: `cb${i+1}`})"
               :src="require(`@/assets/genresPhoto/${genrePicture}.png`)"
               width="85px"
             />
@@ -25,13 +28,14 @@
       <v-spacer></v-spacer>
     </v-layout>
     <v-fab-transition>
-      <v-btn large dark fab fixed bottom right color="#fc5577">
+      <v-btn large dark fab fixed bottom right color="#fc5577" @click="saveInterestIdea()">
         <v-icon>arrow_forward</v-icon>
       </v-btn>
     </v-fab-transition>
   </div>
 </template>
 <script>
+import {mapActions} from 'vuex'
 export default {
   data() {
     return {
@@ -55,7 +59,12 @@ export default {
       limitedSelectNumber: 3
     };
   },
-  methods: {},
+  methods: {
+    ...mapActions(['setInterestIdea']),
+    saveInterestIdea: function() {
+      this.setInterestIdea(this.selectedItems)
+    }
+  },
   mounted() {}
 };
 </script>
