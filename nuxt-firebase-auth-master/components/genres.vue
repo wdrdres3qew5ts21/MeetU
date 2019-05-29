@@ -1,8 +1,16 @@
 <template>
   <div>
+    {{selectedItems}}
     <v-layout row wrap>
       <v-flex xs4 v-for="(genrePicture, i) in genrePictureList" :key="i+genrePicture">
-        <input type="checkbox" :id="`cb${i+1}`">
+        <input
+          type="checkbox"
+          :id="`cb${i+1}`"
+          name="eee"
+          v-model="selectedItems"
+          :value="genrePicture"
+          :disabled="selectedItems.length >= limitedSelectNumber && selectedItems.includes(genrePicture) == false"
+        >
         <label :for="`cb${i+1}`">
           <center>
             <v-img
@@ -41,7 +49,10 @@ export default {
         "social",
         "sport",
         "technology"
-      ]
+      ],
+      checkbox: "cb",
+      selectedItems: [],
+      limitedSelectNumber: 3
     };
   },
   methods: {},
@@ -71,6 +82,12 @@ label {
   cursor: pointer;
 }
 
+:checked + label:before {
+  content: "✓";
+  background-color: green;
+  transform: scale(1);
+}
+
 label:before {
   background-color: white;
   color: white;
@@ -95,19 +112,13 @@ label img {
   transform-origin: 50% 50%;
 }
 
-:checked + label {
+/* :checked + label {
   border-color: none;
-}
+} */
 
-:checked + label:before {
-  content: "✓";
-  background-color: green;
-  transform: scale(1);
-}
-
-:checked + label img {
+/* :checked + label img {
   transform: scale(0.9);
 
   z-index: -1;
-}
+} */
 </style>
