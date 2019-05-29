@@ -1,18 +1,16 @@
 <template>
-  <div>
+  <v-container>
     <center>
       <h3>Choose genres you like</h3>
       <h3>so we can suggest to follow</h3>
       <h3>{{$store.getters.mockGetUser.persona.interestIdea}}</h3>
     </center>
-    <v-container>
-      <genres></genres>
-    </v-container>
-  </div>
+    <genres></genres>
+  </v-container>
 </template>
 
 <script>
-import {mapGetters} from 'vuex';
+import { mapGetters } from "vuex";
 import genres from "~/components/genres";
 
 export default {
@@ -20,7 +18,7 @@ export default {
     genres
   },
   computed: {
-    ...mapGetters(['mockGetUser'])
+    ...mapGetters(["mockGetUser"])
   }
 };
 </script>

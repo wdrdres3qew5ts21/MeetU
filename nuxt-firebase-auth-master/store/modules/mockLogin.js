@@ -47,6 +47,7 @@ const mutations = {
     let interestIdeaList = state.mockUser.persona.interestIdea
     if(interestIdeaList.length >=3){
       interestIdeaList.shift()
+      
     }
     interestIdeaList.push(interestIdea)    
     
