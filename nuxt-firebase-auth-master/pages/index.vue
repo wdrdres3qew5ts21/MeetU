@@ -8,17 +8,101 @@
 
       <br>
       <br>
-      <nuxt-link to="/selectGenres"><h3>Setting Recommedation</h3></nuxt-link>
-      <h1>Recomended Event for {{$store.getters.mockGetUser.firstName}}</h1>
-      <br>
-      <event-list :eventList="recommendedEventList"></event-list>
+      <nuxt-link to="/selectGenres">
+        <h3>Setting Recommedation</h3>
+      </nuxt-link>
+      <!-- <h1>Recomended Event for {{$store.getters.mockGetUser.firstName}}</h1> -->
+
+      <!-- <event-list :eventList="recommendedEventList"></event-list> -->
+      <!-- Test card img -->
+
+      <h1>Recomended Event</h1>
+      <v-container fluid grid-list-md>
+        <v-layout row wrap>
+          <v-flex v-for="card in cards" :key="card.title" v-bind="{ [`xs${card.flex}`]: true }">
+            <v-card>
+              <nuxt-link to="/">
+                <v-img :src="card.src" height="200px">
+                  <v-container fill-height fluid pa-2>
+                    <v-layout fill-height>
+                      <v-flex xs12 align-end flexbox>
+                        <span class="headline white--text" v-text="card.title"></span>
+                      </v-flex>
+                    </v-layout>
+                  </v-container>
+                </v-img>
+              </nuxt-link>
+
+              <v-card-actions>
+                <span class="grey--text">eventName</span>
+                <v-spacer></v-spacer>
+                <!-- <v-btn icon @click="show = !show"> -->
+                <!-- <v-icon>{{ show ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon> -->
+                <!-- </v-btn> -->
+              </v-card-actions>
+              <v-slide-y-transition>
+                <v-card-text>
+                  Date:
+                  <br>Location:
+                </v-card-text>
+              </v-slide-y-transition>
+            </v-card>
+          </v-flex>
+        </v-layout>
+      </v-container>
+      <center>
+        <nuxt-link :to="``" style="text-decoration-line:none;">
+          <v-btn class="black--text" outline color="indigo" depressed large>View more</v-btn>
+        </nuxt-link>
+      </center>
 
       <br>
       <h1>Popular Event</h1>
-      <br>
-      <event-list :eventList="popularEventList"></event-list>
+      <v-container fluid grid-list-md>
+        <v-layout row wrap>
+          <v-flex v-for="card in cards" :key="card.title" v-bind="{ [`xs${card.flex}`]: true }">
+            <v-card>
+              <nuxt-link to="/">
+                <v-img :src="card.src" height="200px">
+                  <v-container fill-height fluid pa-2>
+                    <v-layout fill-height>
+                      <v-flex xs12 align-end flexbox>
+                        <span class="headline white--text" v-text="card.title"></span>
+                      </v-flex>
+                    </v-layout>
+                  </v-container>
+                </v-img>
+              </nuxt-link>
 
+              <v-card-actions>
+                <span class="grey--text">eventName</span>
+                <v-spacer></v-spacer>
+                <!-- <v-btn icon @click="show = !show"> -->
+                <!-- <v-icon>{{ show ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon> -->
+                <!-- </v-btn> -->
+              </v-card-actions>
+              <v-slide-y-transition>
+                <v-card-text>
+                  Date:
+                  <br>Location:
+                </v-card-text>
+              </v-slide-y-transition>
+            </v-card>
+          </v-flex>
+        </v-layout>
+      </v-container>
+      <center>
+        <nuxt-link :to="``" style="text-decoration-line:none;">
+          <v-btn class="black--text" outline color="indigo" depressed large>View more</v-btn>
+        </nuxt-link>
+      </center>
+      <!-- Test card img -->
+
+      <!-- <h1>Popular Event</h1>
       <br>
+      <event-list :eventList="popularEventList"></event-list>-->
+
+      <!-- <br>
       <h1>Recently Event</h1>
       <br>
       <event-list :eventList="recentlyEventList"></event-list>
@@ -30,7 +114,7 @@
       <br>
       <h1>Book Event</h1>
       <br>
-      <event-list :eventList="bookEventList"></event-list>
+      <event-list :eventList="bookEventList"></event-list>-->
 
       <br>
       <br>
@@ -52,7 +136,6 @@
           >Become an Organizer</v-btn>
         </nuxt-link>
       </center>
-  
     </v-container>
   </div>
 
@@ -113,6 +196,34 @@ export default {
           eventDate: new Date(1554653418)
         }
       ],
+
+      cards: [
+        {
+          // title: "Ice-cream social",
+          src:
+            "https://news.cci.fsu.edu/files/2014/03/2014-CCI-SLC-Ice-Cream-Social-Flyer.png",
+          flex: 6
+        },
+        {
+          // title: "Mars event",
+          src:
+            "https://s3.amazonaws.com/thumbnails.venngage.com/template/70fdebc4-7bb7-49fc-9caf-700f890de92b.png",
+          flex: 6
+        },
+        {
+          // title: "Charity auction",
+          src:
+            "http://jenniferhowedesigns.com/wp-content/uploads/2018/06/goodcharityposter.png",
+          flex: 6
+        },
+        {
+          // title: "Ice-cream social",
+          src:
+            "https://i.pinimg.com/originals/0f/04/6f/0f046f654320d387d7608a754f205d1e.png",
+          flex: 6
+        }
+      ],
+
       linksFooter: [
         "Home",
         "About Us",
@@ -153,13 +264,14 @@ export default {
   },
   methods: {
     ...mapActions(["getEventByTags"]),
-    getRecommendEvent: async function(){
-      let recommendEventList = await axios.post(`${
-        process.env.EVENT_SERVICE
-      }/events/recommend/persona`,this.$store.getters.mockGetUser);
-      console.log('-- rec ---')
-      console.log(recommendEventList.data)
-      this.recommendedEventList = recommendEventList.data
+    getRecommendEvent: async function() {
+      let recommendEventList = await axios.post(
+        `${process.env.EVENT_SERVICE}/events/recommend/persona`,
+        this.$store.getters.mockGetUser
+      );
+      console.log("-- rec ---");
+      console.log(recommendEventList.data);
+      this.recommendedEventList = recommendEventList.data;
     },
     getRecentlyEvent: async function() {
       let concentPerPage = 3;
@@ -169,7 +281,7 @@ export default {
       &contentPerPage=${concentPerPage}`);
       recentlyEventList = recentlyEventList.data;
       this.recentlyEventList = recentlyEventList;
-//      console.log(this.recentlyEventList)
+      //      console.log(this.recentlyEventList)
     },
     getArtsEvent: async function() {
       let concentPerPage = 3;
@@ -229,13 +341,13 @@ export default {
 
 .v-content {
   max-width: 100%;
-  background-image: url(../assets/bg.png) !important;
+  /* background-image: url(../assets/bg.png) !important; */
   /* background-repeat: repeat; */
-  background-attachment: fixed;
+  /* background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  background: transparent;
+  background: transparent; */
 }
 
 .flex-container {
@@ -256,15 +368,15 @@ export default {
 }
 
 .eventName {
-  color: #000;
+  color: #341646;
 }
-.eventName:hover {
+/* .eventName:hover {
   color: #fc5577;
-}
+} */
 
 .eventDate {
   margin-top: -10%;
-  color: #000;
+  color: #341646;
 }
 
 .joinButton {

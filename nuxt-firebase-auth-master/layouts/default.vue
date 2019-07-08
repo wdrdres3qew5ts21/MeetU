@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-navigation-drawer v-model="drawer" fixed app style="background-color: #341646">
+    <v-navigation-drawer v-model="drawer" fixed app style="background-color: #fff">
       <v-list>
         <nuxt-link to="/">
           <v-list-tile>
@@ -16,7 +16,7 @@
             <v-list-tile>
               <v-icon class="icon">category</v-icon>
             </v-list-tile>
-            <v-list-tile-content class="categoryIcon" style="color:#fff;">Category</v-list-tile-content>
+            <v-list-tile-content class="categoryIcon" style="color:#341646;">Category</v-list-tile-content>
           </v-list-tile>
           <v-list-tile v-for="(category, i) in categoryList" :key="i" ripple>
             <v-list-tile-action></v-list-tile-action>
@@ -39,38 +39,40 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-toolbar color="#341646" app style="color:#fff;">
+    <v-toolbar color="#fff" app style="color:#fff;">
       <v-btn icon @click.native.stop="drawer = !drawer" class="hidden-lg-and-up">
-        <v-icon class="menuButton" color="#fff;">menu</v-icon>
+        <v-icon class="menuButton" color="#341646;">menu</v-icon>
       </v-btn>
       <nuxt-link to="/" style="text-decoration-line:none;">
-        <v-toolbar-title style="text-decoration-line:none;color: white" v-text="title"></v-toolbar-title>
+        <v-toolbar-title style="text-decoration-line:none;color: #341646" v-text="title"></v-toolbar-title>
       </nuxt-link>
 
       <v-spacer></v-spacer>
 
-      <div>
+      <nuxt-link :to="`/login`" style="text-decoration-line:none;">
+        <v-btn icon>
+          <v-icon class="accountButton" color="#341646;">person</v-icon>
+        </v-btn>
+      </nuxt-link>
+
+
+       <div>
         <nuxt-link to="/search">
           <v-btn icon>
-            <v-icon class="hidden-lg-only" color="#fff;">search</v-icon>
+            <v-icon color="#341646;">search</v-icon>
           </v-btn>
         </nuxt-link>
       </div>
 
-      <v-text-field
+      <!-- <v-text-field
         class="hidden-xs-only"
         v-model="search"
         placeholder="Search..."
         append-icon="search"
+        color="#341646"
         @click:append="() => (openSearch = !openSearch)"
-        dark
-      ></v-text-field>
-
-      <nuxt-link :to="`/login`" style="text-decoration-line:none;">
-        <v-btn icon>
-          <v-icon class="accountButton" color="#fff;">account_circle</v-icon>
-        </v-btn>
-      </nuxt-link>
+        light
+      ></v-text-field> -->
 
       <div v-if="user" id="user" class="text-xs-center">
         <v-btn icon slot="activator">
@@ -107,7 +109,7 @@
 
     <v-footer height="auto" color="#341646">
       <v-layout row wrap justify-center>
-        <v-btn v-for="link in linksFooter" :key="link" color="white" flat>{{ link }}</v-btn>
+        <v-btn v-for="link in linksFooter" :key="link" color="#fff" flat>{{ link }}</v-btn>
         <v-flex xs12 py-3 text-xs-center white--text>
           &copy;2019 —
           <strong>Meet U</strong>
@@ -206,7 +208,7 @@ export default {
 }
 
 .v-icon.icon {
-  color: #fff;
+  color: #341646;
 }
 
 .avatar {
@@ -214,7 +216,7 @@ export default {
 }
 
 a.link {
-  color: #fff;
+  color: #341646;
 }
 a {
   text-decoration-line: none;
@@ -223,12 +225,12 @@ a {
 .categoryLink {
   text-decoration-line: none;
   text-decoration: none;
-  color: #fff;
+  color: #341646;
 }
-
+/* 
 .v-btn:hover {
-  background-color: #fc5577;
-}
+  background-color: #fff;
+} */
 
 /* a:hover {
   text-decoration-line: none;
@@ -237,7 +239,7 @@ a {
 } */
 
 .link {
-  color: #fff;
+  color: #341646;
   text-decoration: none;
 }
 
@@ -246,7 +248,7 @@ a {
 }
 .v-list__tile--link.v-list__tile--active {
   /* color: rgba(0, 0, 0, 0.87); */
-  color: #fff;
+  color: #341646;
   border-left: 10px solid gnray;
 }
 </style>

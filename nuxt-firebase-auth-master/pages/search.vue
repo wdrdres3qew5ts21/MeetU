@@ -19,7 +19,7 @@
       <v-flex justify-space-around>
         <div class="text-xs-left">
           <v-chip
-            color="#fc5577"
+            color="#341646"
             :round="true"
             text-color="white"
             @click="isShowEventTag=!isShowEventTag"
@@ -128,12 +128,12 @@ export default {
 
 .v-content {
   max-width: 100%;
-  background-image: url(../assets/bg.png) !important;
+  /* background-image: url(../assets/bg.png) !important; */
   /* background-repeat: repeat; */
-  background-attachment: fixed;
-  background-position: center;
+  /* background-attachment: fixed; */
+  /* background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  background: transparent;
+  background: transparent; */
 }
 </style>

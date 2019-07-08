@@ -117,7 +117,7 @@ export default {
 
 .linkForgotPassword:hover,
 a.linkForgotPassword:active {
-  color: #fc5577;
+  color: #808080;
   /* text-decoration-line: underline; */
 }
 
@@ -128,7 +128,7 @@ a.linkForgotPassword:active {
 }
 
 .linkSignup:hover {
-  color: #fc5577;
+  color: #808080;
   font-weight: bold;
   text-decoration-line: none;
 }
