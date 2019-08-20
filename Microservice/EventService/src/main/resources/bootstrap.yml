@@ -9,7 +9,7 @@ spring:
     active: dev
   data:
       mongodb:
-          host: ${mongodb_host:http://localhost}
+          host: ${mongodb_host:localhost}
           port: 27017
    #       authentication-database: admin
           database: meetu

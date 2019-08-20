@@ -5,17 +5,18 @@
   "author": "milktea.js team",
   "private": true,
   "scripts": {
-    "dev": "nuxt --port 3333 ",
+    "dev": "cross-env NODE_ENV=production nuxt --port 3333 --mode dev",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "precommit": "npm run lint",
-    "firebase-deploy": "yarn generate && firebase deploy"
+    "deploy": "yarn generate && firebase deploy"
   },
   "dependencies": {
     "@nuxtjs/pwa": "^2.4.0",
     "axios": "^0.18.0",
+    "cross-env": "^5.2.0",
     "dotenv": "^8.0.0",
     "firebase": "5.4.2",
     "jsqr": "^1.2.0",

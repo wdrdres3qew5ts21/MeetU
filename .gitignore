@@ -24,7 +24,12 @@ HELP.md
 /nbdist/
 /.nb-gradle/
 /build/
-/Microservice/ConfigServer/manifest.yml
+/Microservice/APIGateway/manifest.yml
+/Microservice/CommunityService/nbactions.xml
+/Microservice/ConfigServer/nbactions.xml
+/Microservice/EurekaServer/nbactions.xml
+Microservice/EventService/nbactions.xml
+/Microservice/UserService/nbactions.xml
 
 
 # Created by https://www.gitignore.io/api/vue,java,nuxt,nuxtjs,netbeans,visualstudiocode
