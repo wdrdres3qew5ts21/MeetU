@@ -16,8 +16,10 @@ module.exports = {
   },
   mode: 'universal',
   loading: { color: '#3f51b5' },
+  workbox: {
+  },
   manifest: {
-    "name": "meetu",
+    "name": "MeetU",
     "display": "fullscreen",
     "icons": [
       {
@@ -25,7 +27,8 @@ module.exports = {
         "type": "image/png",
         "sizes": "512x512"
       }
-    ]
+    ],
+    "gcm_sender_id": "103953800507"
   },
   build: {
     extend (config, ctx) {
@@ -54,8 +57,8 @@ module.exports = {
   },
   plugins: [
     { src: '~/plugins/vuetify.js' },
-    { src: '~/plugins/fireauth.js' },
     { src: '~/plugins/fireinit.js' },
+    { src: '~/plugins/fireauth.js' },
     { src: '~/plugins/vue-qrcode-reader.js', ssr: false },
     { src: '~/plugins/vue2-google-maps.js', ssr: false }
   ],
@@ -68,6 +71,6 @@ module.exports = {
     'vuetify',
     'vue-qrcode-reader',
     'vue2-google-maps',
-    'vue-flickity'
+    'vue-flickity',
   ]
 }

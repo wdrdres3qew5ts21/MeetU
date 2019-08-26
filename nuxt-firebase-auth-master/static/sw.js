@@ -4,19 +4,19 @@ importScripts('/_nuxt/workbox.4c4f5ca6.js')
 
 workbox.precaching.precacheAndRoute([
   {
-    "url": "/_nuxt/app.ec42e97e624622f4e2a300f9bb5edd9b.css",
-    "revision": "ec42e97e624622f4e2a300f9bb5edd9b"
+    "url": "/_nuxt/app.0b3e19c63d774ebd4f13.js",
+    "revision": "99f7a22ec7cb9e2f32854b8ade499f89"
   },
   {
-    "url": "/_nuxt/app.f20c8b1bdca00cfd016d.js",
-    "revision": "b39b963ba3e0867449caa1aff42502f3"
+    "url": "/_nuxt/app.21a2bdbeaf507fd2f35ab7d878e2d650.css",
+    "revision": "21a2bdbeaf507fd2f35ab7d878e2d650"
   },
   {
     "url": "/_nuxt/layouts_default.b3eec51c2d459d4173ee.js",
     "revision": "22cd765a9d14dd2a6e7e63103ca9406d"
   },
   {
-    "url": "/_nuxt/manifest.da05d001df639e3e2e39.js",
+    "url": "/_nuxt/manifest.6abf803549e1876d836a.js",
     "revision": "f009c3b35af59ebbbf8f9d15137696ce"
   },
   {
@@ -80,8 +80,8 @@ workbox.precaching.precacheAndRoute([
     "revision": "cf38c2425258762cd598e972497d8120"
   },
   {
-    "url": "/_nuxt/vendor.6ac202d0a8ace9190a59.js",
-    "revision": "243820658e3f80b9492268f057525c85"
+    "url": "/_nuxt/vendor.b4a438cbb46623b94586.js",
+    "revision": "758643851ba31a2f0ce3e90f6d43e6cd"
   }
 ], {
   "cacheId": "meetu-project",
