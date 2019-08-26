@@ -120,6 +120,7 @@
 </template>
 
 <script>
+import axios from "axios"
 import { auth } from '@/plugins/fireinit.js'
 import Swal from "sweetalert2";
 import {mapActions} from "vuex";
@@ -160,11 +161,15 @@ export default {
   created(){
     auth.onAuthStateChanged(user => {
       auth.currentUser.getIdToken(/* forceRefresh */ true)
-        .then((idToken) => {
+        .then((jwtToken) => {
         // Send token to your backend via HTTPS
-        // ...s
           console.log("current user !")
-          console.log(idToken)
+          console.log(jwtToken)
+          axios.post(`${process.env.USER_SERVICE}/user/jwt`,{
+            token: jwtToken
+          }).then(res=>{
+            console.log(res)
+          })
         }).catch((error) => {
           console.log(error)
         })
