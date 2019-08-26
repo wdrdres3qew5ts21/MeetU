@@ -6,7 +6,9 @@ import firebase, {
 } from "@/plugins/fireinit.js";
 
 const state = () => ({
-  user: null
+  user: {
+    photoURL: "https://image.flaticon.com/icons/png/512/64/64572.png"
+  }
 });
 
 const getters = {
@@ -35,17 +37,6 @@ const actions = {
     console.log(FacebookProvider);
     auth
       .signInWithRedirect(FacebookProvider)
-      .then(result => {
-        console.log(result);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  },
-  signInWithTwitter: function({ commit }) {
-    console.log(TwitterProvider);
-    auth
-      .signInWithRedirect(TwitterProvider)
       .then(result => {
         console.log(result);
       })

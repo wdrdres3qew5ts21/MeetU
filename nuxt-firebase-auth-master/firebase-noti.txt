@@ -1,7 +1,7 @@
 curl -X POST -H "Authorization: key=AAAA9l1aa3s:APA91bGCs8MgSJkX0srTwVlnbSltjRkTcmxmyxR3uY2ZsxjWuB9pJSErfLEPRWY0n7lMf4BN07BHRkcFUxXjTFOc1SEnMo92cY-ptzVQCu3dcukA_SpV5tCDB72sjf4hR9wFXGwrXdNh" -H "Content-Type: application/json" -d '{
-  "to": "fI7nHZ1HYHI:APA91bH1ShjehhENHgoWR7MQg6lPXBUzO-Vv6b3-DRq6aiikdldPRXHM_VefA4eyxSqKS18sPzZEaz889P1PM9gG0qnw3ZkZMS-bZ2vEmKUSE60XZEftpp9m5E414Bua3MdRdkjoxRve",
+  "to": "dORRDBC_g9s:APA91bFq93M9q__ZOj7kTZUeLqr8bCm5WrimjPfNJVPwggp6H2U43WHEnZN3JlpJA8lN9PX07t9u9_IQ24H8Y46kFQH5SWu4wnZ4IkrRv--P2hSd0_wYgr6iPmLYLHK-5t0Bp-qLAtUB",
   "notification": {
-    "title": "FCM Message",
-    "body": "This is an FCM Message"
+    "title": "fon",
+    "body": "เจ๋งสุดๆไปเลยยย"
   }
 }' https://fcm.googleapis.com/fcm/send

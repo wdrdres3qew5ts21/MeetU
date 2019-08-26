@@ -210,7 +210,7 @@ export default {
           eventId: "11112a",
           eventName: "Charity Auction",
           eventPhoto:
-            "http://jenniferhowedesigns.com/wp-content/uploads/2018/06/goodcharityposter.png",
+            "https://jenniferhowedesigns.com/wp-content/uploads/2018/06/goodcharityposter.png",
           eventDate: new Date(1554653418)
         },
         {

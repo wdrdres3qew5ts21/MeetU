@@ -120,7 +120,9 @@
 </template>
 
 <script>
+import { auth } from '@/plugins/fireinit.js'
 import Swal from "sweetalert2";
+import {mapActions} from "vuex";
 export default {
   data() {
     return {
@@ -155,7 +157,23 @@ export default {
       ]
     };
   },
-
+  created(){
+    auth.onAuthStateChanged(user => {
+      auth.currentUser.getIdToken(/* forceRefresh */ true)
+        .then((idToken) => {
+        // Send token to your backend via HTTPS
+        // ...s
+          console.log("current user !")
+          console.log(idToken)
+        }).catch((error) => {
+          console.log(error)
+        })
+      console.log('state change login fireauth.js')
+      console.log(user)
+      this.autoSignIn(user)
+    }
+    )
+  },
   computed: {
     user() {
       return this.$store.getters.activeUser;
@@ -166,6 +184,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['autoSignIn']),
     onItemClick(event, itemsCategory) {
       if (event) {
         this.selected = itemsCategory;
