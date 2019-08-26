@@ -60,33 +60,8 @@ public class UserController {
 
     @PostMapping("/user/jwt")
     public ResponseEntity<HashMap<String, Object>> verifyJwtToken(@RequestBody HashMap<String, Object> jwtRequestBody) {
-        FileInputStream serviceAccount = null;
-        try {
-            System.out.println("Test JWT Token");
-            System.out.println(jwtRequestBody);
-            FirebaseApp.getInstance().delete();
-            serviceAccount = new FileInputStream("C:\\ProjectCode\\MeetU\\Microservice\\UserService\\meetu-69b29-firebase-adminsdk-qpcwt-535c49f22c.json");
-            FirebaseOptions options = new FirebaseOptions.Builder()
-                    .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                    .setDatabaseUrl("https://meetu-69b29.firebaseio.com")
-                    .build();
-            FirebaseApp.initializeApp(options);
-            String token = jwtRequestBody.get("token").toString();
-            FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
-            String uid = decodedToken.getUid();
-            System.out.println("-------------------------------------------------------------------");
-            System.out.println("Decode UID : " + uid);
-            return new ResponseEntity(jwtRequestBody, HttpStatus.OK);
-        } catch (Exception ex) {
-            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                serviceAccount.close();
-            } catch (IOException ex) {
-                Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        return null;
+        //return new ResponseEntity<HashMap<String, Object>>(this.userService.verifyJwtToken(jwtRequestBody),HttpStatus.OK);
+        return this.userService.verifyJwtToken(jwtRequestBody);
 
     }
 
