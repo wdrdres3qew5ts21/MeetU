@@ -86,6 +86,8 @@ public class EventService {
         Event savedEventMongoDB = null;
         try {
             savedEventMongoDB = eventRepository.save(event);
+            System.out.println("fuq !!!");
+            System.out.println(savedEventMongoDB);
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             savedEventMongoDB = eventRepository.save(event);
@@ -102,6 +104,7 @@ public class EventService {
 
         return savedEventMongoDB;
     }
+    
 
     public Event deleteEventById(String eventId) {
         Event deletedEventMongo = null;

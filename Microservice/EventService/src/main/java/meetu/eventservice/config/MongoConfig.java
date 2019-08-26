@@ -27,17 +27,17 @@ public class MongoConfig {
     @Value("${spring.data.mongodb.port:27017}")
     private int port;
 
-    @Bean
-    public MongoClientFactoryBean mongo() {
-        System.out.println("Host : " + host + " Port : " + port);
-        MongoClientFactoryBean mongo = new MongoClientFactoryBean();
-        mongo.setHost(host);
-        mongo.setPort(port);
-        mongo.setMongoClientOptions(MongoClientOptions.builder()
-                .retryWrites(true)
-                .socketTimeout(10000)
-                .build());
-        return mongo;
-    }
+//    @Bean
+//    public MongoClientFactoryBean mongo() {
+//        System.out.println("Host : " + host + " Port : " + port);
+//        MongoClientFactoryBean mongo = new MongoClientFactoryBean();
+//        mongo.setHost(host);
+//        mongo.setPort(port);
+//        mongo.setMongoClientOptions(MongoClientOptions.builder()
+//                .retryWrites(true)
+//                .socketTimeout(10000)
+//                .build());
+//        return mongo;
+//    }
 
 }

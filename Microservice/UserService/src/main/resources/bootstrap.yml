@@ -7,12 +7,15 @@ spring:
     active: dev
   data:
       mongodb:
-          host: 13.229.138.243
-          port: 27017
-          authentication-database: admin
-          database: meetu
-          username: meetuAdmin
-          password: popsonfonmeetu
+           uri: mongodb+srv://meetuAdmin:popsonfonmeetu@cluster0-uuw7c.mongodb.net/test?retryWrites=true&w=majority
+           authentication-database: admin
+           database: meetu
+#          host: 13.229.138.243
+#          port: 27017
+#          authentication-database: admin
+#          database: meetu
+#          username: meetuAdmin
+#          password: popsonfonmeetu
           
   cloud:
     config:

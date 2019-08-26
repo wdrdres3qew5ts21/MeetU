@@ -52,6 +52,10 @@ public class UserService {
     public boolean isUserMoreThanOne(List<User> users) {
         return users.size() > 1 ? true : false;
     }
+    
+    public String verifyJwtToken(){
+        return null;
+    }
 
     public String login(User userFromInput) {
         User userFromDatabase = userRepository.findByUsername(userFromInput.getUsername());
