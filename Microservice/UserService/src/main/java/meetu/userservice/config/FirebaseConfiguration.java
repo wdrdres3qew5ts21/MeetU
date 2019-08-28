@@ -31,7 +31,7 @@ public class FirebaseConfiguration {
             if (FirebaseApp.DEFAULT_APP_NAME != null) {
                 System.out.println("---------- Firebase Configuration Start ---------------");
                 System.out.println(FirebaseApp.DEFAULT_APP_NAME);
-                serviceAccount = new FileInputStream("C:\\ProjectCode\\MeetU\\Microservice\\UserService\\meetu-69b29-firebase-adminsdk-qpcwt-535c49f22c.json");
+                serviceAccount = new FileInputStream("C:\\ProjectCode\\MeetU\\Microservice\\UserService\\meetu-firebase-key.json");
                 FirebaseOptions options = new FirebaseOptions.Builder()
                         .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                         .setDatabaseUrl("https://meetu-69b29.firebaseio.com")
