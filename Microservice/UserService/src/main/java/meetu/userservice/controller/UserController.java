@@ -63,7 +63,7 @@ public class UserController {
     }
 
     //@Value("${server.message.greeting}")
-    private String testMessage;
+    private String testMessage="Test Had Work !!!";
 
     @GetMapping("/test")
     public ResponseEntity<String> getTestMessage() {
