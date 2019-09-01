@@ -1,7 +1,14 @@
+import firebase, {
+  auth,
+  GoogleProvider,
+  FacebookProvider,
+  TwitterProvider
+} from "@/plugins/fireinit.js";
+
 const state = () => ({
   user: {
     photoURL: "https://image.flaticon.com/icons/png/512/64/64572.png",
-    userId: "fdsfs531ffsr",
+    uid: null,
     username: "linjingyun12",
     firstName: "Supakorn",
     lastName: "Trakulmaiphol",
@@ -106,7 +113,7 @@ const actions = {
     auth
       .signOut()
       .then(() => {
-        commit("setUser", null);
+        commit("setUser", {});
       })
       .catch(err => console.log(error));
   }

@@ -5278,6 +5278,13 @@ number-is-nan@^1.0.0:
   resolved "https://registry.yarnpkg.com/number-is-nan/-/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
   integrity sha1-CXtgK1NCKlIsGvuHkDGDNpQaAR0=
 
+nuxt-sweetalert2@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/nuxt-sweetalert2/-/nuxt-sweetalert2-1.0.0.tgz#cbfd10d6ca7c4a2b6e11e79a1987fb4849c749b4"
+  integrity sha512-1BZlV2ddCj2LROmPcgkRV/K9O8+pVD/Z5sisbvhSiBDl6ynepfKDfWypo2P5EOirxst1H40EfkxyFuIKuqAY9g==
+  dependencies:
+    sweetalert2 "7.x"
+
 nuxt@^1.4.2:
   version "1.4.5"
   resolved "https://registry.yarnpkg.com/nuxt/-/nuxt-1.4.5.tgz#cf199939e6a77069920f5f0e751068d017fcf891"

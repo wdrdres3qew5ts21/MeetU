@@ -20,8 +20,6 @@
         @click.native="facebookSignUp()"
       >Facebook</v-btn>
      
-     
-     
       <!-- <v-btn round="16px;" class="signIn mb-2" primary @click.native="twitterSignUp()">Twitter Sign In</v-btn> -->
       <!-- <v-btn
         block
@@ -94,16 +92,6 @@ export default {
     facebookSignUp: function(e)  {
       this.$store
         .dispatch("signInWithFacebook")
-        .then(() => {
-          console.log("inside then statement on login");
-        })
-        .catch(e => {
-          console.log(e.message);
-        });
-    },
-    twitterSignUp: function(e)  {
-      this.$store
-        .dispatch("signInWithTwitter")
         .then(() => {
           console.log("inside then statement on login");
         })

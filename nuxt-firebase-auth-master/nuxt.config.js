@@ -50,7 +50,8 @@ module.exports = {
     }
   },
   modules: [
-    '@nuxtjs/pwa'
+    '@nuxtjs/pwa',
+    'nuxt-sweetalert2'
   ],
   router: {
     middleware: 'router-auth'

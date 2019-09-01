@@ -13,6 +13,9 @@
       </center>
     </v-flex>
     <v-flex xs12>
+      <v-btn color="success" @click="logout()">Logout</v-btn>
+    </v-flex>
+    <v-flex xs12>
       <h2>Your Group</h2>
     </v-flex>
     <v-flex xs12>
@@ -48,6 +51,12 @@ export default {
     },
     onUpload: function(e) {
       // upload file, get it from this.selectedFile
+    },
+    logout: function() {
+      this.$store.dispatch("signOut").then(() => {
+        alert("logged out!");
+        this.$router.push("/");
+      });
     }
   }
 };

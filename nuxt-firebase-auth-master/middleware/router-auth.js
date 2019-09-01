@@ -1,12 +1,11 @@
 export default function ({ store, redirect, route }) {
-  store.state.user != null && route.name == 'login' ? redirect('/userProfile') : ''
-  store.state.user == null && isAdminRoute(route) ? redirect('/login') : ''
+  store.getters.getUser.uid != null && route.name == 'login' ? redirect('/userProfile') : ''
+  store.getters.getUser.uid == null && isAdminRoute(route) ? redirect('/login') : ''
 
 }
 
 function isUserProfileRoute (route) {
   if (route.matched.some(record => record.path == '/userProfile')) {
-    console.log("fuq user profile")
     return true
   }
 }
