@@ -40,9 +40,7 @@
     </v-navigation-drawer>
 
     <v-toolbar color="#fff" app style="color:#fff;">
-      <v-btn icon @click.native.stop="drawer = !drawer" class="hidden-lg-and-up">
-        <v-icon class="menuButton" color="#341646;">menu</v-icon>
-      </v-btn>
+      
       <nuxt-link to="/" style="text-decoration-line:none;">
         <v-toolbar-title style="text-decoration-line:none;color: #341646" v-text="title"></v-toolbar-title>
       </nuxt-link>
@@ -64,6 +62,10 @@
         </nuxt-link>
       </div>
 
+      <v-btn icon @click.native.stop="drawer = !drawer" class="hidden-lg-and-up">
+        <v-icon class="menuButton" color="#341646;">menu</v-icon>
+      </v-btn>
+
       <!-- <v-text-field
         class="hidden-xs-only"
         v-model="search"
@@ -74,7 +76,7 @@
         light
       ></v-text-field> -->
 
-      <div v-if="user" id="user" class="text-xs-center">
+      <!-- <div v-if="user" id="user" class="text-xs-center">
         <v-btn icon slot="activator">
           <v-icon medium>settings</v-icon>
         </v-btn>
@@ -98,7 +100,8 @@
             </v-list-tile>
           </v-list>
         </v-card>
-      </div>
+      </div> -->
+
     </v-toolbar>
 
     <v-content>
@@ -159,30 +162,30 @@ export default {
     };
   },
   created(){
-    auth.onAuthStateChanged(user => {
-      auth.currentUser.getIdToken(/* forceRefresh */ true)
-        .then((jwtToken) => {
-        // Send token to your backend via HTTPS
-          console.log("current user !")
-          console.log(jwtToken)
-          axios.post(`${process.env.USER_SERVICE}/user/jwt`,{
-            token: jwtToken
-          }).then(res=>{
-            console.log(res)
-          })
-        }).catch((error) => {
-          console.log(error)
-        })
-      console.log('state change login fireauth.js')
-      console.log(user)
-      this.autoSignIn(user)
-    }
-    )
+    // auth.onAuthStateChanged(user => {
+    //   auth.currentUser.getIdToken(/* forceRefresh */ true)
+    //     .then((jwtToken) => {
+    //     // Send token to your backend via HTTPS
+    //     localStorage.setItem("jwtToken", jwtToken)
+    //       console.log("current user !")
+    //       console.log(jwtToken)
+    //       axios.post(`${process.env.USER_SERVICE}/user/jwt`,{
+    //         token: jwtToken
+    //       }).then(res=>{
+    //         console.log(res)
+    //       })
+    //     }).catch((error) => {
+    //       console.log(error)
+    //     })
+    //   console.log('state change login fireauth.js')
+    //   console.log(user)
+    //   this.autoSignIn(user)
+    // }
+    // )
   },
   computed: {
     user() {
-      return this.$store.getters.activeUser;
-      // return 'hj'
+      return this.$store.getters.getUser;
     },
     mockUser() {
       return this.$store.getters.mockGetUser;

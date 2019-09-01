@@ -40,6 +40,10 @@ public class AuthenticationFilter extends ZuulFilter {
 
     @Override
     public boolean shouldFilter() {
+//        RequestContext ctx = RequestContext.getCurrentContext();
+//        if ((ctx.get("proxy") != null) && ctx.get("proxy").equals("foo")) {
+//            return true;
+//        }
         return SHOULD_FILTER;
     }
 
@@ -47,7 +51,8 @@ public class AuthenticationFilter extends ZuulFilter {
     public Object run() throws ZuulException {
         RequestContext ctx = RequestContext.getCurrentContext();
         HttpServletRequest request = ctx.getRequest();
-        System.out.println("fuq");
+        System.out.println("---------------  Authentication Filter --------------- ");
+        System.out.println(ctx.get("proxy"));
         log.info(String.format("%s RequetTo: %s RemoteIP: %s RemotePort: %s", request.getMethod(), request.getRequestURL().toString(), request.getRemoteAddr(), request.getRemotePort()));
         return null;
     }

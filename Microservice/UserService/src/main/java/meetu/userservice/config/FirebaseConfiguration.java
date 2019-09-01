@@ -21,10 +21,10 @@ import org.springframework.context.annotation.Configuration;
  *
  * @author Test
  */
-@Configuration
+//@Configuration
 public class FirebaseConfiguration {
 
-    @Bean
+//    @Bean
     public void initFirebaseApp() {
         FileInputStream serviceAccount = null;
         FirebaseApp.getInstance().delete();

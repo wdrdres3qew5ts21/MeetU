@@ -1,5 +1,6 @@
 const state = () => ({
   user: {
+    photoURL: "https://image.flaticon.com/icons/png/512/64/64572.png",
     userId: "fdsfs531ffsr",
     username: "linjingyun12",
     firstName: "Supakorn",
@@ -52,16 +53,16 @@ const state = () => ({
 
 const getters = {
   getUser: function(state) {
-    return state.User;
+    return state.user;
   }
 };
 
 const mutations = {
-  setUser: function(state, User) {
-    state.User = User;
+  setUser: function(state, user) {
+    state.user = user;
   },
   addInterestIdea: function(state, interestIdea) {
-    let interestIdeaList = state.User.persona.interestIdea;
+    let interestIdeaList = state.user.persona.interestIdea;
     if (interestIdeaList.length >= 3) {
       interestIdeaList.shift();
     }
@@ -74,17 +75,46 @@ const mutations = {
 };
 
 const actions = {
-  login: function({ commit }, User) {
+  login: function({ commit }, user) {
     console.log("action work for  login");
-    commit("SetLogin", User);
+    commit("SetLogin", user);
   },
   setInterestIdea: function({ commit }, idea) {
     commit("setInterestIdea", idea);
+  },
+  autoSignIn: function({ commit }, payload) {
+    commit("setUser", payload);
+  },
+  signInWithGoogle: function({ commit }) {
+    return new Promise((resolve, reject) => {
+      auth.signInWithRedirect(GoogleProvider);
+      resolve();
+    });
+  },
+  signInWithFacebook: function({ commit }) {
+    console.log(FacebookProvider);
+    auth
+      .signInWithRedirect(FacebookProvider)
+      .then(result => {
+        console.log(result);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  },
+  signOut: function({ commit }) {
+    auth
+      .signOut()
+      .then(() => {
+        commit("setUser", null);
+      })
+      .catch(err => console.log(error));
   }
 };
-// export default {
-//   state,
-//   mutations,
-//   actions,
-//   getters
-// };
+
+export default {
+  state,
+  mutations,
+  actions,
+  getters
+};

@@ -4,6 +4,7 @@ import authentication from "./modules/authentication";
 import location from "./modules/location";
 import fetchEvent from './modules/fetchEvent'
 import mockLogin from './modules/mockLogin'
+import user from './modules/user'
 
 Vue.use(Vuex);
 
@@ -11,10 +12,10 @@ const store = () => {
   return new Vuex.Store({
     state: {},
     modules: {
-      authentication,
+      //authentication,
       location,
       fetchEvent,
-      mockLogin
+      user
     }
   });
 };
