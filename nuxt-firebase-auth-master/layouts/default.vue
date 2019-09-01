@@ -2,14 +2,16 @@
   <v-app>
     <v-navigation-drawer v-model="drawer" fixed app style="background-color: #fff">
       <v-list>
-        <nuxt-link to="/">
-          <v-list-tile>
-            <v-list-tile>
-              <v-icon class="icon">home</v-icon>
-            </v-list-tile>
-            <v-list-tile-content>Meet U</v-list-tile-content>
-          </v-list-tile>
-        </nuxt-link>
+        <v-list-tile>
+          <v-spacer></v-spacer>
+          <v-list-tile-content>
+            <nuxt-link to="/login">Log In</nuxt-link>
+          </v-list-tile-content>
+          <v-list-tile-content>|</v-list-tile-content>
+          <v-list-tile-content>
+            <nuxt-link to="/signup">Sign Up</nuxt-link>
+          </v-list-tile-content>
+        </v-list-tile>
 
         <v-list-group>
           <v-list-tile slot="activator">
@@ -28,19 +30,78 @@
           </v-list-tile>
         </v-list-group>
 
-        <nuxt-link class="link" to="/about">
-          <v-list-tile>
+        <v-list-group>
+          <v-list-tile slot="activator">
             <v-list-tile>
-              <v-icon class="icon">info</v-icon>
+              <v-icon class="icon">category</v-icon>
             </v-list-tile>
-            <v-list-tile-content>About</v-list-tile-content>
+            <v-list-tile-content class="categoryIcon" style="color:#341646;">Community</v-list-tile-content>
           </v-list-tile>
-        </nuxt-link>
+          <v-list-tile v-for="(category, i) in categoryList" :key="i" ripple>
+            <v-list-tile-action></v-list-tile-action>
+            <v-list-tile-content>
+              <nuxt-link class="categoryLink" :to="`/event?category=${category}`">
+                <v-list-tile-title>{{ category }}</v-list-tile-title>
+              </nuxt-link>
+            </v-list-tile-content>
+          </v-list-tile>
+        </v-list-group>
+
+        <v-list-group>
+          <v-list-tile slot="activator">
+            <v-list-tile>
+              <v-icon class="icon">category</v-icon>
+            </v-list-tile>
+            <v-list-tile-content class="categoryIcon" style="color:#341646;">About Us</v-list-tile-content>
+          </v-list-tile>
+          <v-list-tile v-for="(category, i) in categoryList" :key="i" ripple>
+            <v-list-tile-action></v-list-tile-action>
+            <v-list-tile-content>
+              <nuxt-link class="categoryLink" :to="`/event?category=${category}`">
+                <v-list-tile-title>{{ category }}</v-list-tile-title>
+              </nuxt-link>
+            </v-list-tile-content>
+          </v-list-tile>
+        </v-list-group>
+
+        <v-list-group>
+          <v-list-tile slot="activator">
+            <v-list-tile>
+              <v-icon class="icon">category</v-icon>
+            </v-list-tile>
+            <v-list-tile-content class="categoryIcon" style="color:#341646;">For Organizer</v-list-tile-content>
+          </v-list-tile>
+          <v-list-tile v-for="(category, i) in categoryList" :key="i" ripple>
+            <v-list-tile-action></v-list-tile-action>
+            <v-list-tile-content>
+              <nuxt-link class="categoryLink" :to="`/event?category=${category}`">
+                <v-list-tile-title>{{ category }}</v-list-tile-title>
+              </nuxt-link>
+            </v-list-tile-content>
+          </v-list-tile>
+        </v-list-group>
+
+        <v-list-group>
+          <v-list-tile slot="activator">
+            <v-list-tile>
+              <v-icon class="icon">category</v-icon>
+            </v-list-tile>
+            <v-list-tile-content class="categoryIcon" style="color:#341646;">Services</v-list-tile-content>
+          </v-list-tile>
+          <v-list-tile v-for="(category, i) in categoryList" :key="i" ripple>
+            <v-list-tile-action></v-list-tile-action>
+            <v-list-tile-content>
+              <nuxt-link class="categoryLink" :to="`/event?category=${category}`">
+                <v-list-tile-title>{{ category }}</v-list-tile-title>
+              </nuxt-link>
+            </v-list-tile-content>
+          </v-list-tile>
+        </v-list-group>
+        <v-divider inset="true"></v-divider>
       </v-list>
     </v-navigation-drawer>
 
     <v-toolbar color="#fff" app style="color:#fff;">
-      
       <nuxt-link to="/" style="text-decoration-line:none;">
         <v-toolbar-title style="text-decoration-line:none;color: #341646" v-text="title"></v-toolbar-title>
       </nuxt-link>
@@ -53,8 +114,7 @@
         </v-btn>
       </nuxt-link>
 
-
-       <div>
+      <div>
         <nuxt-link to="/search">
           <v-btn icon>
             <v-icon color="#341646;">search</v-icon>
@@ -74,7 +134,7 @@
         color="#341646"
         @click:append="() => (openSearch = !openSearch)"
         light
-      ></v-text-field> -->
+      ></v-text-field>-->
 
       <!-- <div v-if="user" id="user" class="text-xs-center">
         <v-btn icon slot="activator">
@@ -100,8 +160,7 @@
             </v-list-tile>
           </v-list>
         </v-card>
-      </div> -->
-
+      </div>-->
     </v-toolbar>
 
     <v-content>
@@ -123,10 +182,10 @@
 </template>
 
 <script>
-import axios from "axios"
-import { auth } from '@/plugins/fireinit.js'
+import axios from "axios";
+import { auth } from "@/plugins/fireinit.js";
 import Swal from "sweetalert2";
-import {mapActions} from "vuex";
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -161,7 +220,7 @@ export default {
       ]
     };
   },
-  created(){
+  created() {
     // auth.onAuthStateChanged(user => {
     //   auth.currentUser.getIdToken(/* forceRefresh */ true)
     //     .then((jwtToken) => {
@@ -192,7 +251,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['autoSignIn']),
+    ...mapActions(["autoSignIn"]),
     onItemClick(event, itemsCategory) {
       if (event) {
         this.selected = itemsCategory;
