@@ -2,7 +2,7 @@
   <v-layout>
     <v-flex text-xs-center xs12 sm6 offset-sm3>
       <h1 class="title">Log In</h1>
-      <br>
+      <br />
       <v-btn
         block
         :round="true"
@@ -19,7 +19,7 @@
         primary
         @click.native="facebookSignUp()"
       >Facebook</v-btn>
-     
+
       <!-- <v-btn round="16px;" class="signIn mb-2" primary @click.native="twitterSignUp()">Twitter Sign In</v-btn> -->
       <!-- <v-btn
         block
@@ -29,7 +29,7 @@
         @click.native="qrCodeGenerate()"
       >QR Code Generate</v-btn>
       <img src="http://localhost:3002/events/qrcode" alt srcset width="200" />
-      <p>Or</p> -->
+      <p>Or</p>-->
 
       <!-- {{qrCodeGenerate()}} -->
       <!-- <no-ssr placeholder="loading...">
@@ -65,7 +65,7 @@ export default {
       console.log(qrCode);
       this.qrCode = qrCode.data;
     },
-    emailLogin: function(e)  {
+    emailLogin: function(e) {
       this.$store
         .dispatch("signInWithEmail", {
           email: this.formEmail,
@@ -75,35 +75,46 @@ export default {
           this.formEmail = "";
           this.formPassword = "";
         })
-        .catch(e => {
-          console.log(e.message);
+        .catch(error => {
+          console.log(error.message);
+          this.errorPopUp(error)
         });
     },
-    googleSignUp: function(e)  {
+    googleSignUp: function(e) {
       this.$store
         .dispatch("signInWithGoogle")
         .then(() => {
           console.log("inside then statement on login");
         })
-        .catch(e => {
-          console.log(e.message);
+        .catch(error => {
+          console.log(error.message);
+          this.errorPopUp(error)
         });
     },
-    facebookSignUp: function(e)  {
+    facebookSignUp: function(e) {
       this.$store
         .dispatch("signInWithFacebook")
         .then(() => {
           console.log("inside then statement on login");
         })
-        .catch(e => {
-          console.log(e.message);
+        .catch(error => {
+          console.log(error.message);
+          this.errorPopUp(error)
         });
-    }
+    },
+    successPopUp: function(success) {
+      
+    },
+    errorPopUp: function(error) {
+      this.$swal({
+        type: "error",
+        title: "Login Failed !!!",
+        text: `Please Check your user name or password again ! ${error.message}`
+      });
+    },
   }
 };
 </script>
 
 <style lang="css">
-
-
 </style>

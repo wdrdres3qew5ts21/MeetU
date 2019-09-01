@@ -26,15 +26,15 @@
         :round="true"
         color="#341646"
         class="signIn mb-2 white--text"
-        @click="loginPopup"
+        @click="emailLogin()"
       >Log In</v-btn>
 
       <center>
         <a class="linkForgotPassword" href>Forgot your password</a>
       </center>
 
-      <br>
-      <br>
+      <br />
+      <br />
 
       <center>
         <h3>
@@ -56,21 +56,20 @@ export default {
   data: () => ({
     valid: true,
     name: "",
+    password: "",
+    email: "",
     nameRules: [
       v => !!v || "Name is required",
-      v => (v && v.length <= 10) || "Name must be less than 10 characters"
+      v => (v && v.length <= 8) || "Name must be less than 8 characters"
     ],
-    email: "",
     emailRules: [
       v => !!v || "E-mail is required",
-      v => /.+@.+/.test(v) || "E-mail must be valid"
+      v => /.+@.+/ || "E-mail must be valid"
     ],
-    password: "",
     passwordRules: [
       v => !!v || "Password is required",
-      v => /.+@.+/.test(v) || "Password must be valid"
+      v => /.+@.+/ || "Password must be valid"
     ],
-
     //   confirmPassword: '',
     //   passwordRules: [
     //     v => !!v || 'Password is required',
@@ -83,16 +82,31 @@ export default {
   forgotPassword: "Forgot your password?",
 
   methods: {
-    validate: function(e)  {
+    validate: function(e) {
       if (this.$refs.form.validate()) {
         this.snackbar = true;
       }
     },
-    reset: function(e)  {
+    reset: function(e) {
       this.$refs.form.reset();
     },
     resetValidation() {
       this.$refs.form.resetValidation();
+    },
+    emailLogin: function() {
+      this.$store
+        .dispatch("signInWithEmail", {
+          email: this.email,
+          password: this.email
+        })
+        .then(() => {
+          // this.email = "";
+          // this.password = "";
+        })
+        .catch(error => {
+          console.log(error.message);
+          this.errorPopUp(error);
+        });
     },
     loginPopup: function(e) {
       Swal.fire({
@@ -101,6 +115,13 @@ export default {
         confirmButtonColor: "#4BB543",
         confirmButtonText: "OK"
       });
+    },
+    errorPopUp: function(error) {
+      this.$swal({
+        type: "error",
+        title: "Login Failed !!!",
+        text: `Please Check your user name or password again ! ${error.message}`
+      });
     }
   }
 };
@@ -108,8 +129,6 @@ export default {
  
  
 <style>
-
-
 .linkForgotPassword {
   color: #341646;
   text-decoration-line: none;

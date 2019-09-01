@@ -54,7 +54,11 @@ export default {
     },
     logout: function() {
       this.$store.dispatch("signOut").then(() => {
-        alert("logged out!");
+        this.$swal({
+            type: "success",
+            title: "Sign Out !",
+            text: `Bye bye see you next time ;)`
+          });
         this.$router.push("/");
       });
     }

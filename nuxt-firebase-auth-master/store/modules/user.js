@@ -59,16 +59,16 @@ const state = () => ({
 });
 
 const getters = {
-  getUser: function(state) {
+  getUser: function (state) {
     return state.user;
   }
 };
 
 const mutations = {
-  setUser: function(state, user) {
+  setUser: function (state, user) {
     state.user = user;
   },
-  addInterestIdea: function(state, interestIdea) {
+  addInterestIdea: function (state, interestIdea) {
     let interestIdeaList = state.user.persona.interestIdea;
     if (interestIdeaList.length >= 3) {
       interestIdeaList.shift();
@@ -76,29 +76,39 @@ const mutations = {
     interestIdeaList.push(interestIdea);
     //state.User.persona.interestIdea.push(interestIdea)
   },
-  setInterestIdea: function(state, interestIdea) {
+  setInterestIdea: function (state, interestIdea) {
     state.User.persona.interestIdea = interestIdea;
   }
 };
 
 const actions = {
-  login: function({ commit }, user) {
+  login: function ({ commit }, user) {
     console.log("action work for  login");
     commit("SetLogin", user);
   },
-  setInterestIdea: function({ commit }, idea) {
+  setInterestIdea: function ({ commit }, idea) {
     commit("setInterestIdea", idea);
   },
-  autoSignIn: function({ commit }, payload) {
+  autoSignIn: function ({ commit }, payload) {
     commit("setUser", payload);
   },
-  signInWithGoogle: function({ commit }) {
-    return new Promise((resolve, reject) => {
-      auth.signInWithRedirect(GoogleProvider);
-      resolve();
-    });
+  signInWithEmail: function ({ commit }, credential) {
+    auth.signInWithEmailAndPassword(credential.email, credential.password).then(result => {
+      console.log(result);
+    })
+      .catch(err => {
+        console.log(err);
+      });
   },
-  signInWithFacebook: function({ commit }) {
+  signInWithGoogle: function ({ commit }) {
+    auth.signInWithRedirect(GoogleProvider).then(result => {
+      console.log(result);
+    })
+      .catch(err => {
+        console.log(err);
+      });
+  },
+  signInWithFacebook: function ({ commit }) {
     console.log(FacebookProvider);
     auth
       .signInWithRedirect(FacebookProvider)
@@ -109,7 +119,7 @@ const actions = {
         console.log(err);
       });
   },
-  signOut: function({ commit }) {
+  signOut: function ({ commit }) {
     auth
       .signOut()
       .then(() => {
