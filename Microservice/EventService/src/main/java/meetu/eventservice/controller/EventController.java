@@ -6,6 +6,7 @@
 package meetu.eventservice.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import meetu.eventservice.service.EventService;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
@@ -94,8 +95,8 @@ public class EventController {
     }
 
     @DeleteMapping("/event/{eventId}")
-    public ResponseEntity<Event> deleteEventById(@PathVariable String eventId) {
-        return new ResponseEntity<Event>(eventService.deleteEventById(eventId), HttpStatus.OK);
+    public ResponseEntity<HashMap<String, Object>> deleteEventByElasticId(@PathVariable String elasticEventId) {
+        return eventService.deleteEventByElasticId(elasticEventId);
     }
 
 //    @GetMapping("/events/qrcode")

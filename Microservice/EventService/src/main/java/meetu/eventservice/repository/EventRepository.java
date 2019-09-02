@@ -21,6 +21,6 @@ public interface EventRepository extends MongoRepository<Event, String> {
     
     public Event findByElasticEventId(String elasticEventId);
 
-    public Event deleteByElasticEventId(String eventId);
+    public void deleteByElasticEventId(String eventId);
 
 }

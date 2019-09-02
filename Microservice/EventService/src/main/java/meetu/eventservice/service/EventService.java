@@ -6,10 +6,13 @@
 package meetu.eventservice.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -20,6 +23,7 @@ import meetu.eventservice.model.InterestGenreBehavior;
 import meetu.eventservice.model.Persona;
 import meetu.eventservice.model.User;
 import meetu.eventservice.repository.EventRepository;
+import org.elasticsearch.action.DocWriteResponse;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.delete.DeleteResponse;
@@ -50,6 +54,7 @@ import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 /**
@@ -104,9 +109,9 @@ public class EventService {
 
         return savedEventMongoDB;
     }
-    
 
-    public Event deleteEventById(String eventId) {
+    public ResponseEntity<HashMap<String, Object>> deleteEventByElasticId(String eventId) {
+        HashMap<String, Object> responseBody = new HashMap();
         Event deletedEventMongo = null;
         DeleteRequest deleteRequest = new DeleteRequest(eventsIndex, eventId);
         DeleteResponse deleteResponse = null;
@@ -115,10 +120,21 @@ public class EventService {
         } catch (IOException ex) {
             Logger.getLogger(EventService.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if (deleteResponse != null) {
-            deletedEventMongo = eventRepository.deleteByElasticEventId(eventId);
+        if (deleteResponse.getResult() == DocWriteResponse.Result.DELETED) {
+            System.out.println(deleteResponse);
+            try {
+                System.out.println("---- initial delete item ----");
+                eventRepository.deleteByElasticEventId(eventId);
+                System.out.println("---- Deleted Event Mongo ----");
+            } catch (Exception ex) {
+                Logger.getLogger(EventService.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            responseBody.put("response", "remove " + eventId + " fail !");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
         }
-        return deletedEventMongo;
+        responseBody.put("response", "remove " + eventId + " successful !");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(responseBody);
     }
 
     public List<Event> findEventByUsingFilter(String[] eventTags, boolean isRecently, String eventDetail, double longitude, double latitude, String areaOfEvent, int page, int contentPerPage) throws IOException {
@@ -284,7 +300,6 @@ public class EventService {
         GetRequest getRequest = new GetRequest(eventsIndex, elasticEventId);
         try {
             getResponse = elasticClient.get(getRequest, RequestOptions.DEFAULT);
-
         } catch (IOException ex) {
             Logger.getLogger(EventService.class.getName()).log(Level.SEVERE, null, ex);
         }
