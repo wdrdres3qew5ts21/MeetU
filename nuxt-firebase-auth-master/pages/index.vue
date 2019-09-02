@@ -12,7 +12,6 @@
         <h3>Setting Recommedation</h3>
       </nuxt-link>
       <!-- <h1>Recomended Event for {{$store.getters.mockGetUser.firstName}}</h1> -->
-
       <!-- <event-list :eventList="recommendedEventList"></event-list> -->
       <!-- Test card img -->
 
@@ -138,7 +137,6 @@
       </center>
     </v-container>
   </div>
-
   <!-- </transition> -->
 </template>
 
@@ -269,7 +267,7 @@ export default {
         `${process.env.EVENT_SERVICE}/events/recommend/persona`,
         this.$store.getters.mockGetUser
       );
-      console.log("-- rec ---");
+      console.log("-- recommend ---");
       console.log(recommendEventList.data);
       this.recommendedEventList = recommendEventList.data;
     },

@@ -29,6 +29,10 @@ public class FirebaseConfiguration {
         FileInputStream serviceAccount = null;
         FirebaseApp.getInstance().delete();
         try {
+            if (FirebaseApp.DEFAULT_APP_NAME == null) {
+                System.out.println("Destroy Firebase Inastance");
+                FirebaseApp.getInstance().delete();
+            }
             System.out.println("---------- Firebase Configuration Start ---------------");
             System.out.println(FirebaseApp.DEFAULT_APP_NAME);
             serviceAccount = new FileInputStream("C:\\ProjectCode\\MeetU\\Microservice\\UserService\\meetu-firebase-key.json");

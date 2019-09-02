@@ -33,7 +33,7 @@
         <v-list-group>
           <v-list-tile slot="activator">
             <v-list-tile>
-              <v-icon class="icon">category</v-icon>
+              <v-icon class="icon">group</v-icon>
             </v-list-tile>
             <v-list-tile-content class="categoryIcon" style="color:#341646;">Community</v-list-tile-content>
           </v-list-tile>
