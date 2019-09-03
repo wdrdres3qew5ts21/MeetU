@@ -82,7 +82,7 @@ public class EventController {
     
     @GetMapping("/event/{elasticEventId}")
     public ResponseEntity<Event> findEventByElasticId(@PathVariable String elasticEventId){
-        return new ResponseEntity<Event>(eventService.findEventByElasticId(elasticEventId), HttpStatus.OK);
+        return eventService.findEventByElasticId(elasticEventId);
     }
 
     @PostMapping("/events/recommend/persona")
