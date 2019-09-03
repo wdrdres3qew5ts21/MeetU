@@ -36,7 +36,8 @@ public class UserService {
     private TokenAuthenticationService tokenAuthenticationService;
 
     public User createUser(User user) {
-
+        System.out.println("----- Createe User -------");
+        System.out.println(user);
         BCryptPasswordEncoder passwordEncrypt = new BCryptPasswordEncoder();
         user.setPassword(passwordEncrypt.encode(user.getPassword()));
         return userRepository.save(user);
@@ -94,7 +95,7 @@ public class UserService {
             return ResponseEntity.status(HttpStatus.OK).body("success full verify with JWT Token");
         } catch (FirebaseAuthException ex) {
             Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
-            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
         } catch (Exception ex) {
             Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
         }

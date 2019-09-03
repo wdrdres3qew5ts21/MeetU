@@ -65,6 +65,12 @@ export default {
       console.log(qrCode);
       this.qrCode = qrCode.data;
     },
+    emailSignUp: function() {
+      this.$store.dispatch("signUpWithEmail", {
+        email: this.formEmail,
+        password: this.formPassword
+      });
+    },
     emailLogin: function(e) {
       this.$store
         .dispatch("signInWithEmail", {
@@ -77,7 +83,7 @@ export default {
         })
         .catch(error => {
           console.log(error.message);
-          this.errorPopUp(error)
+          this.errorPopUp(error);
         });
     },
     googleSignUp: function(e) {
@@ -88,7 +94,7 @@ export default {
         })
         .catch(error => {
           console.log(error.message);
-          this.errorPopUp(error)
+          this.errorPopUp(error);
         });
     },
     facebookSignUp: function(e) {
@@ -96,22 +102,21 @@ export default {
         .dispatch("signInWithFacebook")
         .then(() => {
           console.log("inside then statement on login");
+          this.$router.push("/");
         })
         .catch(error => {
           console.log(error.message);
-          this.errorPopUp(error)
+          this.errorPopUp(error);
         });
     },
-    successPopUp: function(success) {
-      
-    },
+    successPopUp: function(success) {},
     errorPopUp: function(error) {
       this.$swal({
         type: "error",
         title: "Login Failed !!!",
         text: `Please Check your user name or password again ! ${error.message}`
       });
-    },
+    }
   }
 };
 </script>

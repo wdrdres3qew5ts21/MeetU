@@ -6,7 +6,6 @@ export default (context) => {
 
   auth.onAuthStateChanged(user => {
     console.log("state change")
-    console.log(user)
     auth.currentUser.getIdToken(/* forceRefresh */ true)
       .then((jwtToken) => {
         // Send token to your backend via HTTPS
@@ -21,9 +20,13 @@ export default (context) => {
       }).catch((error) => {
         console.log(error)
       })
+    if (user) {
+      console.log(user)
+      // context.redirect('/')
+    }
 
     store.commit('setUser', {
-      dispalyName: user.displayName,
+      displayName: user.displayName,
       email: user.email,
       emailVerified: user.emailVerified,
       isAnonymous: user.isAnonymous,

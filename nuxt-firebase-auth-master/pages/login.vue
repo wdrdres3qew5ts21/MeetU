@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import { mapGetters} from 'vuex'
 import LoginForm from "~/components/LoginForm";
 import LoginEmailForm from "~/components/LoginEmailForm";
 
@@ -13,6 +14,14 @@ export default {
   components: {
     LoginForm,
     LoginEmailForm
+  },
+  computed: {
+    ...mapGetters(['getUser'])
+  },
+  watch: {
+    getUser(){
+      this.$router.push('/')
+    }
   }
 };
 </script>

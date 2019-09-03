@@ -97,7 +97,7 @@ export default {
       this.$store
         .dispatch("signInWithEmail", {
           email: this.email,
-          password: this.email
+          password: this.password
         })
         .then(() => {
           // this.email = "";

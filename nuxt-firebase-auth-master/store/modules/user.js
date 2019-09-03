@@ -4,6 +4,7 @@ import firebase, {
   FacebookProvider,
   TwitterProvider
 } from "@/plugins/fireinit.js";
+import axios from "axios"
 
 const state = () => ({
   user: {
@@ -82,6 +83,9 @@ const mutations = {
 };
 
 const actions = {
+  testContext: function (context) {
+    this.$router.push({ path: '/' })
+  },
   login: function ({ commit }, user) {
     console.log("action work for  login");
     commit("SetLogin", user);
@@ -91,6 +95,20 @@ const actions = {
   },
   autoSignIn: function ({ commit }, payload) {
     commit("setUser", payload);
+  },
+  signUpWithEmail: function ({ commit }, credential) {
+    console.log("email!!!!!!!!!!!!!!!")
+    console.log(credential)
+    auth.createUserWithEmailAndPassword(credential.email, credential.password).then(result => {
+      credential.uid =result.user.uid
+      credential.displayName = result.user.displayName
+      credential.photoURL = result.user.photoURL
+      axios.post(`${process.env.USER_SERVICE}/user`,credential)
+      console.log(result);
+    })
+      .catch(err => {
+        console.log(err);
+      });
   },
   signInWithEmail: function ({ commit }, credential) {
     auth.signInWithEmailAndPassword(credential.email, credential.password).then(result => {
@@ -112,8 +130,15 @@ const actions = {
     console.log(FacebookProvider);
     auth
       .signInWithRedirect(FacebookProvider)
-      .then(result => {
-        console.log(result);
+      .then(user => {
+        commit('setUser', {
+          dispalyName: user.displayName,
+          email: user.email,
+          emailVerified: user.emailVerified,
+          isAnonymous: user.isAnonymous,
+          photoURL: user.photoURL,
+          uid: user.uid
+        })
       })
       .catch(err => {
         console.log(err);

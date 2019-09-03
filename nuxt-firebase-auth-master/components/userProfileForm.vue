@@ -13,6 +13,7 @@
       </center>
     </v-flex>
     <v-flex xs12>
+      <v-btn color="success" @click="testContext()">Fuq Vuex Context</v-btn>
       <v-btn color="success" @click="logout()">Logout</v-btn>
     </v-flex>
     <v-flex xs12>
@@ -29,7 +30,7 @@
  
  
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "userProfileForm",
   components: {},
@@ -46,6 +47,7 @@ export default {
     ...mapGetters(["getUser"])
   },
   methods: {
+    ...mapActions(['testContext']),
     onFileChanged(event) {
       this.selectedFile = event.target.files[0];
     },

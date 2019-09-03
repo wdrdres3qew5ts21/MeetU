@@ -1,9 +1,10 @@
 <template>
   <div>
     <v-card class="elevation-0 mx-auto" color="transparent" max-width="150">
-      <v-img :aspect-ratio="1/1" 
-      src="https://image.flaticon.com/icons/png/512/64/64572.png"
-      background-color="info"      
+      <v-img
+        :aspect-ratio="1/1"
+        src="https://image.flaticon.com/icons/png/512/64/64572.png"
+        background-color="info"
       ></v-img>
 
       <v-card-text class="pt-4" style="position: relative;">
@@ -25,8 +26,8 @@
       ></v-text-field>
 
       <v-text-field
-        v-model="password"
-        type="confirmPassword"
+        v-model="confirmPassword"
+        type="password"
         :rules="passwordRules"
         label="Confirm Password"
         required
@@ -43,7 +44,7 @@
             v-model="menu"
             :close-on-content-click="false"
             :nudge-right="40"
-            :return-value.sync="date"
+            :return-value.sync="birthDate"
             lazy
             transition="scale-transition"
             offset-y
@@ -52,31 +53,31 @@
           >
             <template v-slot:activator="{ on }">
               <v-text-field
-                v-model="date"
+                v-model="birthDate"
                 label="Date of Birth"
                 prepend-icon="event"
                 readonly
                 v-on="on"
               ></v-text-field>
             </template>
-            <v-date-picker v-model="date" no-title scrollable>
+            <v-date-picker v-model="birthDate" no-title scrollable>
               <v-spacer></v-spacer>
               <v-btn flat color="error" @click="menu = false">Cancel</v-btn>
-              <v-btn flat color="primary" @click="$refs.menu.save(date)">OK</v-btn>
+              <v-btn flat color="primary" @click="$refs.menu.save(birthDate)">OK</v-btn>
             </v-date-picker>
           </v-menu>
         </v-flex>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <v-radio-group v-model="row" row>
+        <v-radio-group v-model="gender" row>
           Gender: &nbsp;&nbsp;&nbsp;
-          <v-radio label="Male" value="radio-1"></v-radio>
-          <v-radio label="Female" value="radio-2"></v-radio>
+          <v-radio label="Male" value="male"></v-radio>
+          <v-radio label="Female" value="female"></v-radio>
           <!-- <v-radio label="Unspecific" value="radio-3"></v-radio> -->
         </v-radio-group>
 
         <!-- <v-container> -->
 
         <v-flex xs12 sm5 d-flex>
-          <v-select :items="location" label="Location" prepend-icon="place"></v-select>
+          <v-select :items="locationList" label="Location" prepend-icon="place" v-model="location"></v-select>
         </v-flex>
 
         <v-spacer></v-spacer>
@@ -86,7 +87,7 @@
             <v-select :items="phone" label="TH" prepend-icon="phone"></v-select>
           </v-flex>
           <v-flex xs6 sm6 md6>
-            <v-text-field label="Phone"></v-text-field>
+            <v-text-field label="Phone" v-model="phone"></v-text-field>
           </v-flex>
         </v-layout>
       </v-layout>
@@ -103,10 +104,10 @@
         round="16px;"
         color="#341646"
         class="signIn mb-2 white--text"
-        @click="signupPopup"
+        @click="emailSignUp"
       >Sign Up</v-btn>
 
-      <br>
+      <br />
 
       <center>
         <h3>
@@ -126,16 +127,25 @@ import Swal from "sweetalert2";
 export default {
   name: "signupForm",
   data: () => ({
+    phone: "",
+    gender: "",
     email: "",
     emailRules: [
       v => !!v || "E-mail is required",
       v => /.+@.+/.test(v) || "E-mail must be valid"
     ],
+
     password: "",
     passwordRules: [
       v => !!v || "Password is required",
-      v => /.+@.+/.test(v) || "Password must be valid"
+      v => v.length >= 8 || "Password must be 8 character",
+      v => this.password === this.confirmPassword || "Password and Confirm Password need to be match"
     ],
+    confirmPassword: "",
+    // passwordRules: [
+    //   v => !!v || "Password is required",
+    //   v => v.length >= 8 || "Password must be 8 character",
+    // ],
 
     valid: true,
     firstname: "",
@@ -145,16 +155,12 @@ export default {
     lastname: "",
     lastnameRules: [v => !!v || "Lastname is required"],
 
-    confirmPassword: "",
-    passwordRules: [
-      v => !!v || "Password is required",
-      v => /.+@.+/.test(v) || "Password must be valid"
-    ],
-
-    date: new Date().toISOString().substr(0, 10),
+    birthDate: new Date().toISOString().substr(0, 10),
     menu: false,
 
-    location: [
+    location: "",
+
+    locationList: [
       "Bangkok",
       "Amnat Charoen",
       "Ang Thong",
@@ -233,9 +239,6 @@ export default {
       "Yala",
       "Yasothon"
     ]
-
-    // })
-
     //   checkbox: false
   }),
 
@@ -253,7 +256,27 @@ export default {
     resetValidation: function(e) {
       this.$refs.form.resetValidation();
     },
-
+    emailSignUp: function() {
+      console.log({
+        email: this.email,
+        password: this.password,
+        province: this.location,
+        birthDate: this.birthDate,
+        gender: this.gender,
+        firstName: this.firstname,
+        lastName: this.lastname
+      })
+      this.$store.dispatch("signUpWithEmail", {
+        email: this.email,
+        password: this.password,
+        province: this.location,
+        birthDate: this.birthDate,
+        gender: this.gender,
+        firstName: this.firstname,
+        lastName: this.lastname,
+        phone: this.phone
+      });
+    },
     signupPopup: function(e) {
       Swal.fire({
         title: "Sign Up Success!",
