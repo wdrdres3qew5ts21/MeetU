@@ -108,9 +108,9 @@
 
       <v-spacer></v-spacer>
 
-      <nuxt-link :to="`/login`" style="text-decoration-line:none;">
+      <nuxt-link :to="`/search`" style="text-decoration-line:none;">
         <v-btn icon>
-          <v-icon class="accountButton" color="#341646;">person</v-icon>
+          <v-icon color="#341646;">search</v-icon>
         </v-btn>
       </nuxt-link>
 
@@ -208,7 +208,7 @@ export default {
         "Social",
         "Technology"
       ],
-      title: "MeetU",
+      
       menu: false,
       linksFooter: [
         "Home",
