@@ -38,12 +38,12 @@
                 <p>{{infoDetail}}</p>
                 <nuxt-link to="/">click</nuxt-link>
               </gmap-info-window>
-              <GmapMarker
+              <!-- <GmapMarker
                 :key="index"
                 :position="marker.position"
                 :clickable="true"
                 @click="toggleInfoWindow(marker,index)"
-              />
+              />-->
             </GmapMap>
           </no-ssr>
         </v-layout>
@@ -55,7 +55,7 @@
  
  
 <script>
-import { eventNotFound } from "~/utils/errorMessage"
+import { eventNotFound } from "~/utils/errorMessage";
 import axios from "axios";
 import { mapMutations, mapActions, mapGetters } from "vuex";
 export default {
@@ -92,13 +92,17 @@ export default {
         "https://www.blognone.com/sites/default/files/externals/41bbf3e3153999d8d2111d753cf1d5f2.jpg"
     };
   },
-  async asyncData({ params, error }) {
+  asyncData({ params, error }) {
     let eventElasticId = params.eventElasticId;
-    await axios
+    console.log(eventElasticId);
+    return axios
       .get(`${process.env.EVENT_SERVICE}/event/${eventElasticId}`)
-      .then(data => {
+      .then(response => {
+        console.log("------------ Async Data  -----------");
+        let data = response.data;
+        console.log(data);
         return {
-          eventName: data.eventName,
+          eventName: "hhhh",
           eventPictureCover: data.eventPictureCover,
           eventPictureLists: data.eventPictureLists,
           createEventDate: data.createEventDate,
@@ -115,7 +119,7 @@ export default {
       })
       .catch(err => {
         console.log("!!!!!!!!!!!!!!!!! Boom Not found !!!!!!!!!!");
-        error({ statusCode: 404, message: eventNotFound() });
+        return error({ statusCode: 404, message: eventNotFound() });
       });
   },
   computed: {

@@ -304,6 +304,9 @@ public class EventService {
         } catch (IOException ex) {
             Logger.getLogger(EventService.class.getName()).log(Level.SEVERE, null, ex);
         }
+        System.out.println("-------- Response -----------");
+        System.out.println(getResponse);
+        System.out.println(getResponse.isExists());
         if (getResponse.isExists()) {
             ObjectMapper mapper = new ObjectMapper();
             Event convertValue = mapper.convertValue(getResponse.getSource(), Event.class);
