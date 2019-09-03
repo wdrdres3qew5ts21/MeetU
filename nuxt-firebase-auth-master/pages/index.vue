@@ -164,7 +164,7 @@
         </v-card-actions>
       </v-card>
 
-      <br><br>
+      <br />
       <v-card class="mx-auto" max-width="400">
         <v-img
           class="#341646--text"
@@ -188,7 +188,7 @@
         </v-card-actions>
       </v-card>
 
-      <br><br>
+      <br />
       <v-card class="mx-auto" max-width="400">
         <v-img
           class="#341646--text"
@@ -212,7 +212,7 @@
         </v-card-actions>
       </v-card>
 
-      <br><br>
+      <br />
       <v-card class="mx-auto" max-width="400">
         <v-img
           class="#341646--text"
@@ -235,7 +235,7 @@
           <v-btn class="white--text" color="#341646">JOIN</v-btn>
         </v-card-actions>
       </v-card>
-<br><br>
+      <br />
       <center>
         <nuxt-link :to="``" style="text-decoration-line:none;">
           <v-btn class="black--text" outline color="#341646" depressed large>View more</v-btn>
