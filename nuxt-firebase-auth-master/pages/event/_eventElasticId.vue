@@ -5,6 +5,7 @@
     </v-carousel>
     <br>
     <h3>Event name: {{eventName}}</h3>
+    <v-btn block color="accent">View Ticket</v-btn>
     <br>
     <p>Date & Time: {{createEventDate}}</p>
     <p>Location: {{location}}</p>
@@ -117,9 +118,6 @@ export default {
     this.markers[0].position.lat = event.location.geopoint.lat
     this.markers[0].position.lng = event.location.geopoint.lon
     this.eventPictureCover[0].src = event.eventPictureCover
-    
-
-    
   },
   computed: {
     ...mapGetters(["getCurrentLocation"])
@@ -180,7 +178,7 @@ export default {
 <style lang="css">
 .v-content {
   max-width: 100%;
-  background-image: url(~assets/bg.png) !important;
+  /* background-image: url(~assets/bg.png) !important; */
   /* background-repeat: repeat; */
   background-attachment: fixed;
   background-position: center;
