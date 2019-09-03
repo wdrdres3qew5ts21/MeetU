@@ -6,8 +6,8 @@
         <v-carousel-item sm6 xs2 v-for="(item,i) in carouselsPhoto" :src="item.src" :key="i"></v-carousel-item>
       </v-carousel>
 
-      <br>
-      <br>
+      <br />
+      <br />
       <nuxt-link to="/selectGenres">
         <h3>Setting Recommedation</h3>
       </nuxt-link>
@@ -42,7 +42,7 @@
               <v-slide-y-transition>
                 <v-card-text>
                   Date:
-                  <br>Location:
+                  <br />Location:
                 </v-card-text>
               </v-slide-y-transition>
             </v-card>
@@ -51,11 +51,11 @@
       </v-container>
       <center>
         <nuxt-link :to="``" style="text-decoration-line:none;">
-          <v-btn class="black--text" outline color="indigo" depressed large>View more</v-btn>
+          <v-btn class="black--text" outline color="#341646" depressed large>View more</v-btn>
         </nuxt-link>
       </center>
 
-      <br>
+      <br />
       <h1>Popular Event</h1>
       <v-container fluid grid-list-md>
         <v-layout row wrap>
@@ -83,7 +83,7 @@
               <v-slide-y-transition>
                 <v-card-text>
                   Date:
-                  <br>Location:
+                  <br />Location:
                 </v-card-text>
               </v-slide-y-transition>
             </v-card>
@@ -92,43 +92,169 @@
       </v-container>
       <center>
         <nuxt-link :to="``" style="text-decoration-line:none;">
-          <v-btn class="black--text" outline color="indigo" depressed large>View more</v-btn>
+          <v-btn class="black--text" outline color="#341646" depressed large>View more</v-btn>
         </nuxt-link>
       </center>
-      <!-- Test card img -->
 
-      <!-- <h1>Popular Event</h1>
-      <br>
-      <event-list :eventList="popularEventList"></event-list>-->
+      <h1>New Event</h1>
+      <v-container fluid grid-list-md>
+        <v-layout row wrap>
+          <v-flex v-for="card in cards" :key="card.title" v-bind="{ [`xs${card.flex}`]: true }">
+            <v-card>
+              <nuxt-link to="/">
+                <v-img :src="card.src" height="200px">
+                  <v-container fill-height fluid pa-2>
+                    <v-layout fill-height>
+                      <v-flex xs12 align-end flexbox>
+                        <span class="headline white--text" v-text="card.title"></span>
+                      </v-flex>
+                    </v-layout>
+                  </v-container>
+                </v-img>
+              </nuxt-link>
 
-      <!-- <br>
-      <h1>Recently Event</h1>
-      <br>
-      <event-list :eventList="recentlyEventList"></event-list>
+              <v-card-actions>
+                <span class="grey--text">eventName</span>
+                <v-spacer></v-spacer>
+                <!-- <v-btn icon @click="show = !show"> -->
+                <!-- <v-icon>{{ show ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon> -->
+                <!-- </v-btn> -->
+              </v-card-actions>
+              <v-slide-y-transition>
+                <v-card-text>
+                  Date:
+                  <br />Location:
+                </v-card-text>
+              </v-slide-y-transition>
+            </v-card>
+          </v-flex>
+        </v-layout>
+      </v-container>
+      <center>
+        <nuxt-link :to="``" style="text-decoration-line:none;">
+          <v-btn class="black--text" outline color="#341646" depressed large>View more</v-btn>
+        </nuxt-link>
+      </center>
 
-      <br>
-      <h1>Art Event</h1>
-      <event-list :eventList="artsEventList"></event-list>
+      <br />
+      <h1>Community</h1>
 
-      <br>
-      <h1>Book Event</h1>
-      <br>
-      <event-list :eventList="bookEventList"></event-list>-->
+      <!-- test community -->
 
-      <br>
-      <br>
+      <v-card class="mx-auto" max-width="400">
+        <v-img
+          class="#341646--text"
+          height="200px"
+          src="http://toosmall.org/body/community-banner.png"
+        >
+          <!-- <v-card-title class="align-end fill-height">Top 10 Australian beaches</v-card-title> -->
+        </v-img>
+
+        <v-card-text>
+          <span class="text--primary">
+            <span>Community name :</span>
+            <br />
+            <span>Members :</span>
+            <br />
+          </span>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-btn class="white--text" color="#341646">JOIN</v-btn>
+        </v-card-actions>
+      </v-card>
+
+      <br><br>
+      <v-card class="mx-auto" max-width="400">
+        <v-img
+          class="#341646--text"
+          height="200px"
+          src="https://duluthinteract.weebly.com/uploads/3/8/2/7/38276677/7880568_orig.jpg?1435629183"
+        >
+          <!-- <v-card-title class="align-end fill-height">Top 10 Australian beaches</v-card-title> -->
+        </v-img>
+
+        <v-card-text>
+          <span class="text--primary">
+            <span>Community name :</span>
+            <br />
+            <span>Members :</span>
+            <br />
+          </span>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-btn class="white--text" color="#341646">JOIN</v-btn>
+        </v-card-actions>
+      </v-card>
+
+      <br><br>
+      <v-card class="mx-auto" max-width="400">
+        <v-img
+          class="#341646--text"
+          height="200px"
+          src="https://pbs.twimg.com/media/DxDAAFuWwAEuckF?format=jpg&name=large"
+        >
+          <!-- <v-card-title class="align-end fill-height">Top 10 Australian beaches</v-card-title> -->
+        </v-img>
+
+        <v-card-text>
+          <span class="text--primary">
+            <span>Community name :</span>
+            <br />
+            <span>Members :</span>
+            <br />
+          </span>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-btn class="white--text" color="#341646">JOIN</v-btn>
+        </v-card-actions>
+      </v-card>
+
+      <br><br>
+      <v-card class="mx-auto" max-width="400">
+        <v-img
+          class="#341646--text"
+          height="200px"
+          src="http://www.openbiomedical.org/wordpress/wp-content/uploads/2016/08/community-025.jpg"
+        >
+          <!-- <v-card-title class="align-end fill-height">Top 10 Australian beaches</v-card-title> -->
+        </v-img>
+
+        <v-card-text>
+          <span class="text--primary">
+            <span>Community name :</span>
+            <br />
+            <span>Members :</span>
+            <br />
+          </span>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-btn class="white--text" color="#341646">JOIN</v-btn>
+        </v-card-actions>
+      </v-card>
+<br><br>
+      <center>
+        <nuxt-link :to="``" style="text-decoration-line:none;">
+          <v-btn class="black--text" outline color="#341646" depressed large>View more</v-btn>
+        </nuxt-link>
+      </center>
+
+      <br />
+      <br />
       <center>
         <h2 class="upgradeToOrganizer">
           Use MeetU for your
-          <br>next events & activities.
+          <br />next events & activities.
         </h2>
 
-        <br>
+        <br />
 
         <nuxt-link :to="`/organizer?`" style="text-decoration-line:none;">
           <v-btn
             class="upgradeToOrganizerButton white--text"
-            :round="true"
             depressed
             large
             color="#341646"
@@ -211,7 +337,7 @@ export default {
         {
           // title: "Charity auction",
           src:
-            "https://jenniferhowedesigns.com/wp-content/uploads/2018/06/goodcharityposter.png",
+            "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/copy-of-event-flyer-design-template-166759b5d38435948e0d0998f22ef4f3_screen.jpg?ts=1566601755",
           flex: 6
         },
         {
@@ -273,9 +399,7 @@ export default {
     },
     getRecentlyEvent: async function() {
       let concentPerPage = 3;
-      let recentlyEventList = await axios(`${
-        process.env.EVENT_SERVICE
-      }/events?isRecently=true
+      let recentlyEventList = await axios(`${process.env.EVENT_SERVICE}/events?isRecently=true
       &contentPerPage=${concentPerPage}`);
       recentlyEventList = recentlyEventList.data;
       this.recentlyEventList = recentlyEventList;
@@ -283,9 +407,7 @@ export default {
     },
     getArtsEvent: async function() {
       let concentPerPage = 3;
-      let artsEventList = await axios(`${
-        process.env.EVENT_SERVICE
-      }/events?isRecently=true
+      let artsEventList = await axios(`${process.env.EVENT_SERVICE}/events?isRecently=true
       &contentPerPage=${concentPerPage}
       &eventTags=art`);
       artsEventList = artsEventList.data;
@@ -346,6 +468,8 @@ export default {
   background-repeat: no-repeat;
   background-size: cover;
   background: transparent; */
+
+  background-color: #eeeeee;
 }
 
 .flex-container {
