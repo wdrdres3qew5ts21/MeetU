@@ -94,7 +94,7 @@ public class EventController {
         return new ResponseEntity<List<Event>>(eventService.findEventByPersonalize(user), HttpStatus.OK);
     }
 
-    @DeleteMapping("/event/{eventId}")
+    @DeleteMapping("/event/{elasticEventId}")
     public ResponseEntity<HashMap<String, Object>> deleteEventByElasticId(@PathVariable String elasticEventId) {
         return eventService.deleteEventByElasticId(elasticEventId);
     }
