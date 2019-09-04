@@ -2,7 +2,6 @@ import firebase, {
   auth,
   GoogleProvider,
   FacebookProvider,
-  TwitterProvider
 } from "@/plugins/fireinit.js";
 import axios from "axios"
 

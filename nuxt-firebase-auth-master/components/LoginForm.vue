@@ -65,12 +65,6 @@ export default {
       console.log(qrCode);
       this.qrCode = qrCode.data;
     },
-    emailSignUp: function() {
-      this.$store.dispatch("signUpWithEmail", {
-        email: this.formEmail,
-        password: this.formPassword
-      });
-    },
     emailLogin: function(e) {
       this.$store
         .dispatch("signInWithEmail", {
