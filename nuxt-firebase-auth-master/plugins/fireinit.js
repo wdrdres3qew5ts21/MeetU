@@ -1,9 +1,7 @@
-// global.XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest
-import axios from "axios"
-import * as firebase from "firebase";
+import * as firebase from "firebase/app";
 import 'firebase/messaging';
-// import 'firebase/auth'
-// import 'firebase/database'
+import 'firebase/auth';
+import axios from "axios"
 
 const firebaseConfig = {
   apiKey: "AIzaSyDj6tin4BDkUrwgtaKyjEMncf60p7GkLn0",
@@ -17,34 +15,32 @@ const firebaseConfig = {
 
 if (!firebase.apps.length){
   firebase.initializeApp(firebaseConfig)
+  console.log("Fuq client Side !!!")
+  // let messaging = firebase.messaging();
 
-  const messaging = firebase.messaging();
-  messaging.usePublicVapidKey("BBE3arRFCbWg0FTbJ-xh0R__ngAdYnjdPtv3PFTyCJRy1ceuztLgcDrPVkVpNzSwn7xsOL5tFwW6dQzhcwoBEqM");
-  // Request Permission of Notifications
-  messaging.requestPermission().then(() => {
-    console.log('Notification permission granted.');
-    // Get Token
-    messaging.getToken().then((token) => {
-      let notificationBody = {
-        token: token,
-        userId: "userId",
-        username: "username"
-      }
-      axios.post(`${process.env.USER_SERVICE}/notification/token`, notificationBody)
-      console.log(token)
-    }).catch(err =>{
-      console.log(err)
-    })
-
-  }).catch((err) => {
-    console.log('Unable to get permission to notify.', err);
-  });
+  // messaging.usePublicVapidKey("BBE3arRFCbWg0FTbJ-xh0R__ngAdYnjdPtv3PFTyCJRy1ceuztLgcDrPVkVpNzSwn7xsOL5tFwW6dQzhcwoBEqM");
+  // // Request Permission of Notifications
+  // messaging.requestPermission().then(() => {
+  //   console.log('Notification permission granted.');
+  //   // Get Token
+  //   messaging.getToken().then((token) => {
+  //     let notificationBody = {
+  //       token: token,
+  //       userId: "userId",
+  //       username: "username"
+  //     }
+  //     axios.post(`${process.env.USER_SERVICE}/notification/token`, notificationBody)
+  //     console.log(token)
+  //   }).catch(err =>{
+  //     console.log(err)
+  //   })
+  // }).catch((err) => {
+  //   console.log('Unable to get permission to notify.', err);
+  // });
 
 } 
 
 export const FacebookProvider = new firebase.auth.FacebookAuthProvider()
 export const GoogleProvider = new firebase.auth.GoogleAuthProvider()
-export const TwitterProvider = new firebase.auth.TwitterAuthProvider()
 export const auth = firebase.auth()
-export const DB = firebase.database()
 export default firebase

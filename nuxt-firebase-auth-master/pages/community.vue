@@ -1,27 +1,18 @@
 <template>
   <v-container>
-    <login-form></login-form>
-    <login-email-form></login-email-form>
+    <community-form></community-form>
+   
   </v-container>
 </template>
 
 <script>
-import { mapGetters} from 'vuex'
-import LoginForm from "~/components/LoginForm";
-import LoginEmailForm from "~/components/LoginEmailForm";
+import communityForm from "~/components/communityForm";
+
 
 export default {
   components: {
-    LoginForm,
-    LoginEmailForm
-  },
-  computed: {
-    ...mapGetters(['getUser'])
-  },
-  watch: {
-    getUser(){
-      this.$router.push('/')
-    }
+    communityForm
+ 
   }
 };
 </script>

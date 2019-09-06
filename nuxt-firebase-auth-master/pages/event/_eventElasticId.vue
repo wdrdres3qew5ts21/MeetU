@@ -1,19 +1,27 @@
 <template>
   <div>
     <v-carousel hide-delimiters hide-controls xs6 sm12 height="200px;">
-      <v-carousel-item v-for="(pic,i) in eventPictureCover" :key="i" :src="pic.src"></v-carousel-item>
+      <v-carousel-item v-for="(pic,i) in eventPictureLists" :key="i" :src="pic"></v-carousel-item>
     </v-carousel>
-    <br>
-    <h3>Event name: {{eventName}}</h3>
-    <br>
-    <p>Date & Time: {{createEventDate}}</p>
-    <p>Location: {{location}}</p>
+    <br />
+    <h3>{{eventName}}</h3>
+    <v-btn block color="#341646" style="color:white">View Ticket</v-btn>
+    <br />
+    <p>Date</p>
+    <p>
+      <b>{{createEventDate}}</b>
+    </p>
+    <a href>Add to Calendar</a>
+    <p>Location</p>
+    <p>
+      <b>{{location.country}}, {{location.province}}</b>
+    </p>
     <center>
       <v-container>
         <v-layout row wrap>
           <no-ssr>
             <GmapMap
-              :center="markers[0].position"
+              :center="marker.position"
               :zoom="14"
               map-type-id="terrain"
               style="width: 500px; height: 300px"
@@ -30,36 +38,24 @@
                 <p>{{infoDetail}}</p>
                 <nuxt-link to="/">click</nuxt-link>
               </gmap-info-window>
-              <GmapMarker
+              <!-- <GmapMarker
                 :key="index"
-                v-for="(marker, index) in markers"
                 :position="marker.position"
                 :clickable="true"
                 @click="toggleInfoWindow(marker,index)"
-              />
+              />-->
             </GmapMap>
           </no-ssr>
-
-          <input type="text" v-model="areaOfEvent" placeholder="input area">
         </v-layout>
       </v-container>
-
-      <img
-        :src="eventPictureCover[0].src"
-        alt="ice cream event"
-        width="250px;"
-        height="350px;"
-      >
-      <br>
-      <v-btn block color="success" large>JOIN</v-btn>
+      <br />
     </center>
-
-    <!-- {{event.eventPhoto}} -->
   </div>
 </template> 
  
  
 <script>
+import { eventNotFound } from "~/utils/errorMessage";
 import axios from "axios";
 import { mapMutations, mapActions, mapGetters } from "vuex";
 export default {
@@ -68,7 +64,6 @@ export default {
       eventName: "",
       createEventDate: "",
       location: "",
-      position: {},
       infoTitle: "",
       infoDetail: "",
       infoWindowPos: null,
@@ -81,45 +76,51 @@ export default {
           height: -35
         }
       },
-      markers: [
-        {
-          icon:
-            "https://png2.kisspng.com/sh/5a457e82acb6e22a2ae8836f35448931/L0KzQYm3VMAzN6dBiZH0aYP2gLBuTfNwdaF6jNd7LXnmf7B6TfJ2e5pzfeV8LYfygrztjP94NZVuf9t9YXywhMPojwNnd6NyRd94dnWwRbLqUvQ2bGE3e9dqN0axQ4S8Vsc2OGc2TaQ7N0G7QYe3Ucg1NqFzf3==/kisspng-computer-icons-business-workflow-digital-transform-move-5ac2d5d02cea76.335675061522718160184.png",
-          title: "Digital Transformation 4.0 By IMC",
-          detail:
-            "พบกับผู้ที่คร่ำหวอดในวงการอุตสาหกรรมที่พร้อมจะมาพลิกโฉมอุตสาหกรรมของท่านให้ก้าวไปสู่ยุค Thailand 4.0",
-          position: {
-            lat: 13.6518128,
-            lng: 100.4937549
-          }
+      marker: {
+        icon:
+          "https://png2.kisspng.com/sh/5a457e82acb6e22a2ae8836f35448931/L0KzQYm3VMAzN6dBiZH0aYP2gLBuTfNwdaF6jNd7LXnmf7B6TfJ2e5pzfeV8LYfygrztjP94NZVuf9t9YXywhMPojwNnd6NyRd94dnWwRbLqUvQ2bGE3e9dqN0axQ4S8Vsc2OGc2TaQ7N0G7QYe3Ucg1NqFzf3==/kisspng-computer-icons-business-workflow-digital-transform-move-5ac2d5d02cea76.335675061522718160184.png",
+        title: "Digital Transformation 4.0 By IMC",
+        detail:
+          "พบกับผู้ที่คร่ำหวอดในวงการอุตสาหกรรมที่พร้อมจะมาพลิกโฉมอุตสาหกรรมของท่านให้ก้าวไปสู่ยุค Thailand 4.0",
+        position: {
+          lat: 13.6518128,
+          lng: 100.4937549
         }
-      ],
-      eventPictureCover: [
-        {
-          src:
-            "https://res.cloudinary.com/xceed-me/image/upload/f_auto/v1553892848/events/cover/freedom-party-ice-cream-closing-pool-party-official-event-maspalomas-pride-2019-1553892847.jpeg.jpg"
-        }
-      ]
+      },
+      eventPictureLists: [],
+      eventPictureCover:
+        "https://www.blognone.com/sites/default/files/externals/41bbf3e3153999d8d2111d753cf1d5f2.jpg"
     };
   },
-  async mounted() {
-    this.getLocation();
-    let eventElasticId = this.$route.params.eventElasticId;
-    console.log(this.$route.params.eventElasticId);
-    let event = await axios.get(`${process.env.EVENT_SERVICE}/event/${eventElasticId}`);
-    console.log(event.data)
-    event = event.data
-    this.eventName = event.eventName
-    this.createEventDate = event.createEventDate 
-    this.location = event.location
-    this.markers[0].title = event.eventName
-    this.markers[0].detail = event.eventDetail
-    this.markers[0].position.lat = event.location.geopoint.lat
-    this.markers[0].position.lng = event.location.geopoint.lon
-    this.eventPictureCover[0].src = event.eventPictureCover
-    
-
-    
+  asyncData({ params, error }) {
+    let eventElasticId = params.eventElasticId;
+    console.log(eventElasticId);
+    return axios
+      .get(`${process.env.EVENT_SERVICE}/event/${eventElasticId}`)
+      .then(response => {
+        console.log("------------ Async Data  -----------");
+        let data = response.data;
+        console.log(data);
+        return {
+          eventName: "hhhh",
+          eventPictureCover: data.eventPictureCover,
+          eventPictureLists: data.eventPictureLists,
+          createEventDate: data.createEventDate,
+          location: data.location,
+          marker: {
+            title: data.eventName,
+            detail: data.eventDetail,
+            position: {
+              lat: data.location.geopoint.lat,
+              lng: data.location.geopoint.lon
+            }
+          }
+        };
+      })
+      .catch(err => {
+        console.log("!!!!!!!!!!!!!!!!! Boom Not found !!!!!!!!!!");
+        return error({ statusCode: 404, message: eventNotFound() });
+      });
   },
   computed: {
     ...mapGetters(["getCurrentLocation"])
@@ -180,7 +181,7 @@ export default {
 <style lang="css">
 .v-content {
   max-width: 100%;
-  background-image: url(~assets/bg.png) !important;
+  /* background-image: url(~assets/bg.png) !important; */
   /* background-repeat: repeat; */
   background-attachment: fixed;
   background-position: center;

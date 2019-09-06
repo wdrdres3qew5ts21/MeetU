@@ -1,6 +1,6 @@
 <template>
   <section class="">
-
+<!-- 
         <v-flex id="adminChild" xs12>
           <nuxt-child :key="$router.fullPath"></nuxt-child>
         </v-flex>
@@ -27,45 +27,45 @@
             ></v-text-field>
             <v-btn @click="addItem">Add Item</v-btn>
           </v-flex>
-        </v-layout>
+        </v-layout> -->
 
   </section>
 </template>
 
 <script>
-import {DB} from '@/plugins/fireinit.js'
+// import {DB} from '@/plugins/fireinit.js'
 
-export default {
-  asyncData({store}) {
-    return {
-      itemsRef: DB.ref(`items/${store.state.user.uid}`)
-    }
-  },
-  data () {
-    return {
-      item: '',
-      items: {}
-    }
-  },
-  created () {
-    let vm = this
-    vm.itemsRef.on('value', function(snapshot) {
-      vm.items = snapshot.val()
-    });
-  },
-  methods: {
-    addItem () {
-      this.itemsRef.push({
-        name: this.item
-      }).then(() => {
-        this.item = ''
-      })
-    },
-    deleteItem (key) {
-      this.itemsRef.child(key).remove()
-    }
-  }
-}
+// export default {
+//   asyncData({store}) {
+//     return {
+//       itemsRef: DB.ref(`items/${store.state.user.uid}`)
+//     }
+//   },
+//   data () {
+//     return {
+//       item: '',
+//       items: {}
+//     }
+//   },
+//   created () {
+//     let vm = this
+//     vm.itemsRef.on('value', function(snapshot) {
+//       vm.items = snapshot.val()
+//     });
+//   },
+//   methods: {
+//     addItem () {
+//       this.itemsRef.push({
+//         name: this.item
+//       }).then(() => {
+//         this.item = ''
+//       })
+//     },
+//     deleteItem (key) {
+//       this.itemsRef.child(key).remove()
+//     }
+//   }
+// }
 </script>
 
 <style>

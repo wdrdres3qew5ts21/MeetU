@@ -20,26 +20,8 @@
         @click.native="facebookSignUp()"
       >Facebook</v-btn>
 
-      <!-- <v-btn round="16px;" class="signIn mb-2" primary @click.native="twitterSignUp()">Twitter Sign In</v-btn> -->
-      <!-- <v-btn
-        block
-        :round="true"
-        class="signIn mb-2"
-        primary
-        @click.native="qrCodeGenerate()"
-      >QR Code Generate</v-btn>
-      <img src="http://localhost:3002/events/qrcode" alt srcset width="200" />
-      <p>Or</p>-->
-
-      <!-- {{qrCodeGenerate()}} -->
-      <!-- <no-ssr placeholder="loading...">
-  
-       <qrcode-stream @decode="onDecode"></qrcode-stream> 
-    
-   
-     <qrcode-stream @decode="onDecode"></qrcode-stream>
+       <v-btn round="16px;" class="signIn mb-2" primary @click.native="twitterSignUp()">Twitter Sign In</v-btn> 
      
-      </no-ssr>-->
     </v-flex>
   </v-layout>
 </template>
@@ -62,7 +44,7 @@ export default {
     },
     async qrCodeGenerate() {
       let qrCode = await axios.get("http://localhost:3002/events/qrcode");
-      console.log(qrCode);
+       console.log(qrCode);
       this.qrCode = qrCode.data;
     },
     emailLogin: function(e) {
@@ -77,7 +59,7 @@ export default {
         })
         .catch(error => {
           console.log(error.message);
-          this.errorPopUp(error)
+          this.errorPopUp(error);
         });
     },
     googleSignUp: function(e) {
@@ -88,7 +70,7 @@ export default {
         })
         .catch(error => {
           console.log(error.message);
-          this.errorPopUp(error)
+          this.errorPopUp(error);
         });
     },
     facebookSignUp: function(e) {
@@ -96,22 +78,21 @@ export default {
         .dispatch("signInWithFacebook")
         .then(() => {
           console.log("inside then statement on login");
+          this.$router.push("/");
         })
         .catch(error => {
           console.log(error.message);
-          this.errorPopUp(error)
+          this.errorPopUp(error);
         });
     },
-    successPopUp: function(success) {
-      
-    },
+    successPopUp: function(success) {},
     errorPopUp: function(error) {
       this.$swal({
         type: "error",
         title: "Login Failed !!!",
         text: `Please Check your user name or password again ! ${error.message}`
       });
-    },
+    }
   }
 };
 </script>

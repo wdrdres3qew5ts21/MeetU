@@ -82,7 +82,7 @@ public class EventController {
     
     @GetMapping("/event/{elasticEventId}")
     public ResponseEntity<Event> findEventByElasticId(@PathVariable String elasticEventId){
-        return new ResponseEntity<Event>(eventService.findEventByElasticId(elasticEventId), HttpStatus.OK);
+        return eventService.findEventByElasticId(elasticEventId);
     }
 
     @PostMapping("/events/recommend/persona")
@@ -94,14 +94,16 @@ public class EventController {
         return new ResponseEntity<List<Event>>(eventService.findEventByPersonalize(user), HttpStatus.OK);
     }
 
-    @DeleteMapping("/event/{eventId}")
+    @DeleteMapping("/event/{elasticEventId}")
     public ResponseEntity<HashMap<String, Object>> deleteEventByElasticId(@PathVariable String elasticEventId) {
         return eventService.deleteEventByElasticId(elasticEventId);
     }
 
-//    @GetMapping("/events/qrcode")
-//    public ResponseEntity<byte[]> qrCodeGenerator(HttpServletResponse response) {
-//        response.setContentType("image/png");
-//        return new ResponseEntity<byte[]>(qRCodeService.getQRCodeImage("https://trello.com/b/OutSJrmK/project", 1000, 1000), HttpStatus.OK);
-//    }
+    @GetMapping("/events/qrcode")
+    public ResponseEntity<byte[]> qrCodeGenerator(HttpServletResponse response) {
+        response.setContentType("image/png");
+        return new ResponseEntity<byte[]>(qRCodeService.getQRCodeImage("https://trello.com/b/OutSJrmK/project", 1000, 1000), HttpStatus.OK);
+    }
+    
+  
 }

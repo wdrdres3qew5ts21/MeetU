@@ -165,7 +165,7 @@
 
     <v-content>
       <v-container fluid>
-        <router-view></router-view>
+        <nuxt/>
       </v-container>
     </v-content>
 

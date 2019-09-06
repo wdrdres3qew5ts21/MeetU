@@ -1,27 +1,18 @@
 <template>
   <v-container>
-    <login-form></login-form>
-    <login-email-form></login-email-form>
+    <h1>Ticket(s)</h1>
+    <ticketDetail></ticketDetail>
+      
   </v-container>
 </template>
 
 <script>
-import { mapGetters} from 'vuex'
-import LoginForm from "~/components/LoginForm";
-import LoginEmailForm from "~/components/LoginEmailForm";
+import ticketDetail from "~/components/ticketDetail";
 
 export default {
   components: {
-    LoginForm,
-    LoginEmailForm
-  },
-  computed: {
-    ...mapGetters(['getUser'])
-  },
-  watch: {
-    getUser(){
-      this.$router.push('/')
-    }
+    ticketDetail,
+   
   }
 };
 </script>

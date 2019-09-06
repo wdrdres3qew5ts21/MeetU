@@ -32,43 +32,37 @@ public class User {
 
     private String role;
 
+    private String uid;
+
     @Email
     private String email;
+
+    private boolean emailVerified;
+
+    private String displayName;
 
     private String firstName;
 
     private String lastName;
 
-    private Date birthDay;
-    
-    private String gender; 
+    private Date birthDate;
 
-    private String userImage;
+    private String gender;
+
+    private String photoURL;
 
     private List<Integer> interest = new ArrayList();
 
     private String province;
 
     private String country;
+    
+    private String phone;
 
     private List<Badge> badgeList = new ArrayList<Badge>();
 
     public User() {
 
-    }
-
-    public User(String id, String username, String password, String role, String email, String firstName, String lastName, Date birthDay, String userImage, String province, String counry) {
-        this.userId = id;
-        this.username = username;
-        this.password = password;
-        this.role = role;
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.birthDay = birthDay;
-        this.userImage = userImage;
-        this.province = province;
-        this.country = country;
     }
 
     public String getUserId() {
@@ -95,6 +89,38 @@ public class User {
         BCryptPasswordEncoder passwordEncrypt = new BCryptPasswordEncoder();
         //this.password = passwordEncrypt.encode(password);
         this.password = password;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public boolean isEmailVerified() {
+        return emailVerified;
+    }
+
+    public void setEmailVerified(boolean emailVerified) {
+        this.emailVerified = emailVerified;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public String getPhotoURL() {
+        return photoURL;
+    }
+
+    public void setPhotoURL(String photoURL) {
+        this.photoURL = photoURL;
     }
 
     public String getRole() {
@@ -130,19 +156,19 @@ public class User {
     }
 
     public Date getBirthDay() {
-        return birthDay;
+        return birthDate;
     }
 
     public void setBirthDay(Date birthDay) {
-        this.birthDay = birthDay;
+        this.birthDate = birthDay;
     }
 
     public String getUserImage() {
-        return userImage;
+        return photoURL;
     }
 
     public void setUserImage(String userImage) {
-        this.userImage = userImage;
+        this.photoURL = userImage;
     }
 
     public List<Integer> getInterest() {
@@ -185,9 +211,18 @@ public class User {
         this.badgeList = badgeList;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     @Override
     public String toString() {
-        return "User{" + "id=" + userId + ", username=" + username + ", password=" + password + ", role=" + role + ", email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + ", birthDay=" + birthDay + ", gender=" + gender + ", userImage=" + userImage + ", interest=" + interest + ", province=" + province + ", country=" + country + ", badgeList=" + badgeList + '}';
+        return "User{" + "userId=" + userId + ", username=" + username + ", role=" + role + ", uid=" + uid + ", email=" + email + ", emailVerified=" + emailVerified + ", displayName=" + displayName + ", firstName=" + firstName + ", lastName=" + lastName + ", birthDay=" + birthDate + ", gender=" + gender + ", photoURL=" + photoURL + ", interest=" + interest + ", province=" + province + ", country=" + country + ", phone=" + phone + ", badgeList=" + badgeList + '}';
     }
+
     
 }

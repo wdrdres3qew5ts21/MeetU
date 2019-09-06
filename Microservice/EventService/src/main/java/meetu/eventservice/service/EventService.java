@@ -295,17 +295,26 @@ public class EventService {
         return searchSourceBuilder;
     }
 
-    public Event findEventByElasticId(String elasticEventId) {
+    public ResponseEntity findEventByElasticId(String elasticEventId) {
         GetResponse getResponse = null;
         GetRequest getRequest = new GetRequest(eventsIndex, elasticEventId);
+        HashMap<String, Object> responseBody = new HashMap<>();
         try {
             getResponse = elasticClient.get(getRequest, RequestOptions.DEFAULT);
         } catch (IOException ex) {
             Logger.getLogger(EventService.class.getName()).log(Level.SEVERE, null, ex);
         }
-        ObjectMapper mapper = new ObjectMapper();
-        Event convertValue = mapper.convertValue(getResponse.getSource(), Event.class);
-        return convertValue;
+        System.out.println("-------- Response -----------");
+        System.out.println(getResponse);
+        System.out.println(getResponse.isExists());
+        if (getResponse.isExists()) {
+            ObjectMapper mapper = new ObjectMapper();
+            Event convertValue = mapper.convertValue(getResponse.getSource(), Event.class);
+            return ResponseEntity.status(HttpStatus.OK).body(convertValue);
+        }
+        responseBody.put("response", "Not found EventID: " + elasticEventId + " !");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
+
     }
 
 }

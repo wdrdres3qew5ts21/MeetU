@@ -24,7 +24,8 @@
     "nuxt": "^1.4.2",
     "nuxt-sweetalert2": "^1.0.0",
     "vue-flickity": "^1.1.2",
-    "vue-qrcode-reader": "^1.4.0",
+    "vue-picture-input": "^2.1.6",
+    "vue-qrcode-reader": "^2.0.4",
     "vue-sweetalert2": "^1.6.4",
     "vue2-google-maps": "^0.10.6",
     "vuetify": "^1.2.1"

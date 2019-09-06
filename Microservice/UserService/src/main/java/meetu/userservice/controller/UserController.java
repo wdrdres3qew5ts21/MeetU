@@ -57,7 +57,7 @@ public class UserController {
         return "port: "+port;
     }
 
-    @PostMapping("/users")
+    @PostMapping("/user")
     public ResponseEntity<User> createUser(@RequestBody User user) {
         return new ResponseEntity<User>(userService.createUser(user), HttpStatus.CREATED);
     }
@@ -74,7 +74,6 @@ public class UserController {
     public ResponseEntity<HashMap<String, Object>> verifyJwtToken(@RequestBody HashMap<String, Object> jwtRequestBody) {
         //return new ResponseEntity<HashMap<String, Object>>(this.userService.verifyJwtToken(jwtRequestBody),HttpStatus.OK);
         return this.userService.verifyJwtToken(jwtRequestBody);
-
     }
 
     @GetMapping("/users")
