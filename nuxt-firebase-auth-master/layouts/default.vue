@@ -108,11 +108,11 @@
 
       <v-spacer></v-spacer>
 
-      <nuxt-link :to="`/search`" style="text-decoration-line:none;">
+      <!-- <nuxt-link :to="`/search`" style="text-decoration-line:none;">
         <v-btn icon>
           <v-icon color="#341646;">search</v-icon>
         </v-btn>
-      </nuxt-link>
+      </nuxt-link> -->
 
       <div>
         <nuxt-link to="/search">
