@@ -99,9 +99,11 @@ public class EventController {
         return eventService.deleteEventByElasticId(elasticEventId);
     }
 
-//    @GetMapping("/events/qrcode")
-//    public ResponseEntity<byte[]> qrCodeGenerator(HttpServletResponse response) {
-//        response.setContentType("image/png");
-//        return new ResponseEntity<byte[]>(qRCodeService.getQRCodeImage("https://trello.com/b/OutSJrmK/project", 1000, 1000), HttpStatus.OK);
-//    }
+    @GetMapping("/events/qrcode")
+    public ResponseEntity<byte[]> qrCodeGenerator(HttpServletResponse response) {
+        response.setContentType("image/png");
+        return new ResponseEntity<byte[]>(qRCodeService.getQRCodeImage("https://trello.com/b/OutSJrmK/project", 1000, 1000), HttpStatus.OK);
+    }
+    
+  
 }

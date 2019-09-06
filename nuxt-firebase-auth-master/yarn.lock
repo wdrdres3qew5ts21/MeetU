@@ -1861,6 +1861,11 @@ caller-path@^2.0.0:
   dependencies:
     caller-callsite "^2.0.0"
 
+callforth@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/callforth/-/callforth-0.3.0.tgz#3ff358c8bc67f72afae1a11dd90835e8139d9fe6"
+  integrity sha512-f2WARW6XXXZBEUshqoBhcWq9UxCYSCFJ0C3/hpdoXQTnhos3HQV1z7ATJVDmTp4LgjZ0leW2mBhp6T797PhwDQ==
+
 callsites@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/callsites/-/callsites-2.0.0.tgz#06eb84f00eea413da86affefacbffb36093b3c50"
@@ -4569,7 +4574,7 @@ jsonfile@^4.0.0:
   optionalDependencies:
     graceful-fs "^4.1.6"
 
-jsqr@^1.1.0, jsqr@^1.2.0:
+jsqr@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/jsqr/-/jsqr-1.2.0.tgz#f93fc65fa7d1ded78b1bcb020fa044352b04261a"
   integrity sha512-wKcQS9QC2VHGk7aphWCp1RrFyC0CM6fMgC5prZZ2KV/Lk6OKNoCod9IR6bao+yx3KPY0gZFC5dc+h+KFzCI0Wg==
@@ -7972,14 +7977,14 @@ vue-meta@^1.4.3:
     lodash.uniqueid "^4.0.1"
     object-assign "^4.1.1"
 
-vue-qrcode-reader@^1.4.0:
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/vue-qrcode-reader/-/vue-qrcode-reader-1.4.2.tgz#ed0812b33976fa7a1ba97b04bd907284c4a2f2e1"
-  integrity sha512-V1+ObiYXrz2EbAnWv6nNxSRvzWXqch9WDlrxBH/i9GEypE5XklWRvOHiNeB0kQBVdv7f8G43BUWAwVNBfZvIQg==
+vue-qrcode-reader@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/vue-qrcode-reader/-/vue-qrcode-reader-2.0.4.tgz#905029495b39049373c8388c3c6a21f53d64ffce"
+  integrity sha512-aYw+iRPhBXU/HfyGKtF7AFQTG65YT3k9pgF3V8ur9PvNTvsN48V2NCWUJXLqXpvx6ucx0jaPPjpv2SxHspIdJA==
   dependencies:
     babel-runtime "^6.26.0"
-    jsqr "^1.1.0"
-    lodash "^4.17.11"
+    callforth "^0.3.0"
+    jsqr "^1.2.0"
     webrtc-adapter "^6.2.1"
 
 vue-router@^3.0.1:
