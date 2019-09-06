@@ -1,15 +1,15 @@
 <template>
   <v-container>
-    <organizer-form></organizer-form>
+    <become-organizer></become-organizer>
   </v-container>
 </template>
 
 <script>
-import organizerForm from "~/components/organizerForm";
+import becomeOrganizer from "~/components/becomeOrganizer";
 
 export default {
   components: {
-    organizerForm
+    becomeOrganizer
   }
 };
 </script>
@@ -17,6 +17,7 @@ export default {
 <style lang="css">
 .v-content {
   max-width: 100%;
+  background-color: #eeeeee;
   /* background-image: url(../assets/bg.png) !important; */
   /* background-repeat: repeat; */
   /* background-attachment: fixed;
