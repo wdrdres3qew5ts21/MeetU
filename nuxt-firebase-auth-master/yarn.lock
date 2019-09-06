@@ -7977,6 +7977,11 @@ vue-meta@^1.4.3:
     lodash.uniqueid "^4.0.1"
     object-assign "^4.1.1"
 
+vue-picture-input@^2.1.6:
+  version "2.1.6"
+  resolved "https://registry.yarnpkg.com/vue-picture-input/-/vue-picture-input-2.1.6.tgz#6a47af68d19c9122cdd20de980d3b113b0a614be"
+  integrity sha512-aM5Pyjz3Kup35/6OCjpgA0BEpLTW9YuN7Ds44XLibXZcxnYYLQezmXpb6IXg/orVTMwMLWNpsHCT3wPhLfjdeA==
+
 vue-qrcode-reader@^2.0.4:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/vue-qrcode-reader/-/vue-qrcode-reader-2.0.4.tgz#905029495b39049373c8388c3c6a21f53d64ffce"
