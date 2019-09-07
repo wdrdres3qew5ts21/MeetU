@@ -14,7 +14,7 @@
   <br><br>
 
 <center>
-<nuxt-link :to="`/?`" style="text-decoration-line:none;">
+<nuxt-link :to="`/organizerForm?`" style="text-decoration-line:none;">
           <v-btn
             class="getStartButton white--text"
             depressed
@@ -93,6 +93,10 @@ color:#100C4B;
     text-decoration: underline #100C4B;
 }
 
+.getStartedButton{
+  font-family: Roboto !important;
+  
+}
 
 
 </style>
