@@ -60,6 +60,8 @@ public class User {
     private String phone;
 
     private List<Badge> badgeList = new ArrayList<Badge>();
+    
+    private String notificationToken;
 
     public User() {
 
@@ -218,6 +220,23 @@ public class User {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public String getNotificationToken() {
+        return notificationToken;
+    }
+
+    public void setNotificationToken(String notificationToken) {
+        this.notificationToken = notificationToken;
+    }
+    
 
     @Override
     public String toString() {

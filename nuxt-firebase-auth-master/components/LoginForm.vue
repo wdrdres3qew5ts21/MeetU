@@ -20,8 +20,6 @@
         @click.native="facebookSignUp()"
       >Facebook</v-btn>
 
-       <v-btn round="16px;" class="signIn mb-2" primary @click.native="twitterSignUp()">Twitter Sign In</v-btn> 
-     
     </v-flex>
   </v-layout>
 </template>
