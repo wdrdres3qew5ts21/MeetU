@@ -28,7 +28,6 @@ export default (context) => {
 
     authen.onAuthStateChanged(user => {
       console.log("state change")
-      console.log(user)
       authen.currentUser.getIdToken(/* forceRefresh */ true)
         .then((jwtToken) => {
           // Send token to your backend via HTTPS
@@ -62,21 +61,6 @@ export default (context) => {
             })
           }).catch((err) => {
             console.log('Unable to get permission to notify.', err);
-          });
-
-          // Do something after OAuth Redirect login success
-          authen.getRedirectResult().then((result) => {
-            if (result.credential) {
-              console.log("fuq finallyyyyyyyyyyyyyyyy")
-              // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-              let token = result.credential.accessToken;
-              console.log(result)
-              
-            }
-            // The signed-in user info.
-            let user = result.user;
-          }).catch(function (error) {
-  
           });
 
         }).catch((error) => {

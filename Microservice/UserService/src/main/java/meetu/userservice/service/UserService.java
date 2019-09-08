@@ -39,8 +39,9 @@ public class UserService {
     public User createUserFromFirebaase(User user) {
         System.out.println("----- Create User/ Update User -------");
         System.out.println(user);
-        BCryptPasswordEncoder passwordEncrypt = new BCryptPasswordEncoder();
-        user.setPassword(passwordEncrypt.encode(user.getPassword()));
+        user.setUsername(user.getUid());
+//        BCryptPasswordEncoder passwordEncrypt = new BCryptPasswordEncoder();
+//        user.setPassword(passwordEncrypt.encode(user.getPassword()));
         return userRepository.save(user);
     }
 

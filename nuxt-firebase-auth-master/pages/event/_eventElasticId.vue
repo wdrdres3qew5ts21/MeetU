@@ -38,18 +38,30 @@
                 <p>{{infoDetail}}</p>
                 <nuxt-link to="/">click</nuxt-link>
               </gmap-info-window>
-              <!-- <GmapMarker
+              <GmapMarker
                 :key="index"
                 :position="marker.position"
                 :clickable="true"
                 @click="toggleInfoWindow(marker,index)"
-              />-->
+              />
             </GmapMap>
           </no-ssr>
         </v-layout>
       </v-container>
       <br />
     </center>
+    <p>Share with...</p>
+    <h3>Tickets</h3>
+    <p>
+      <b>{{eventName}}</b>
+    </p>
+    <p>Free</p>
+    <v-select
+      items="items"
+      label="label"
+      segmented overflow editable
+      target="#target"
+    ></v-select>
   </div>
 </template> 
  

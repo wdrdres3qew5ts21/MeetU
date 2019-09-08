@@ -127,28 +127,26 @@ const actions = {
   },
   signInWithFacebook: function ({ commit }) {
     console.log(FacebookProvider);
-
-    // auth.signInWithCredential(credential).catch((error) => {
-    //   // Handle Errors here.
-    //   let errorCode = error.code;
-    //   let errorMessage = error.message;
-    //   // The email of the user's account used.
-    //   let email = error.email;
-    //   // The firebase.auth.AuthCredential type that was used.
-    //   let credential = error.credential;
-    //   if (errorCode === 'auth/account-exists-with-different-credential') {
-    //     alert('Email already associated with another account.');
-    //     // Handle account linking here, if using.
-    //   } else {
-    //     console.error(error);
-    //   }
-    // })
-
     auth
       .signInWithRedirect(FacebookProvider)
       .then(user => {
-        axios.post("http://localhost:4000/userservice/user/test",user)
+        // Do something after OAuth Redirect login success
+        auth.getRedirectResult().then((result) => {
+          console.log("stupid")
+          if (result.credential) {
+            // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+            let token = result.credential.accessToken;
+            let isNewUser = result.additionalUserInfo.isNewUser
+            console.log(result)
+            if (isNewUser) {
+              console.log("---------- First Time sign up ----------")
+              axios.post(`${process.env.USER_SERVICE}/userservice/user`, result.user)
+            }
 
+          }
+        }).catch(function (error) {
+
+        });
         commit('setUser', {
           dispalyName: user.displayName,
           email: user.email,
