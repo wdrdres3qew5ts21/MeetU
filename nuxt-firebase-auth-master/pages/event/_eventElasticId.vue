@@ -53,7 +53,6 @@
   </div>
 </template> 
  
- 
 <script>
 import { eventNotFound } from "~/utils/errorMessage";
 import axios from "axios";
@@ -102,7 +101,7 @@ export default {
         let data = response.data;
         console.log(data);
         return {
-          eventName: "hhhh",
+          eventName: data.eventName,
           eventPictureCover: data.eventPictureCover,
           eventPictureLists: data.eventPictureLists,
           createEventDate: data.createEventDate,

@@ -189,6 +189,7 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
+      title: "MeetU",
       height: {
         height: "10px"
       },

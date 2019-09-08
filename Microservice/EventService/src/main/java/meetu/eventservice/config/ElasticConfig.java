@@ -44,8 +44,8 @@ public class ElasticConfig {
     @Bean(destroyMethod = "close")
     public RestHighLevelClient restHighLevelClient() {
         System.out.println("Starting Configuration");
-       //  RestHighLevelClient client = this.aesClient();
-        RestHighLevelClient client = this.restHighLevelClientVanila();
+       //  RestHighLevelClient client = this.aesClient();   //ต่อกับ AWS เข้าหรัสด้วย AES
+        RestHighLevelClient client = this.restHighLevelClientVanila(); // ต่อกับ Local คอมเราเอง
         System.out.println(client);
         try {
             System.out.println(client.info(RequestOptions.DEFAULT).getNodeName());
