@@ -12,35 +12,42 @@ const firebaseConfig = {
   messagingSenderId: "1058128161659",
   appId: "1:1058128161659:web:6e143e16242ba4c2"
 };
+let messaging = null;
 
-if (!firebase.apps.length){
+if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig)
-  console.log("Fuq client Side !!!")
-  // let messaging = firebase.messaging();
+}
 
-  // messaging.usePublicVapidKey("BBE3arRFCbWg0FTbJ-xh0R__ngAdYnjdPtv3PFTyCJRy1ceuztLgcDrPVkVpNzSwn7xsOL5tFwW6dQzhcwoBEqM");
-  // // Request Permission of Notifications
-  // messaging.requestPermission().then(() => {
-  //   console.log('Notification permission granted.');
-  //   // Get Token
-  //   messaging.getToken().then((token) => {
-  //     let notificationBody = {
-  //       token: token,
-  //       userId: "userId",
-  //       username: "username"
-  //     }
-  //     axios.post(`${process.env.USER_SERVICE}/notification/token`, notificationBody)
-  //     console.log(token)
-  //   }).catch(err =>{
-  //     console.log(err)
-  //   })
-  // }).catch((err) => {
-  //   console.log('Unable to get permission to notify.', err);
-  // });
+export default (context) => {
+  if (process.client) {
+    console.log("Fuq client Side !!!")
+    messaging = firebase.messaging()
+    messaging.usePublicVapidKey("BBE3arRFCbWg0FTbJ-xh0R__ngAdYnjdPtv3PFTyCJRy1ceuztLgcDrPVkVpNzSwn7xsOL5tFwW6dQzhcwoBEqM");
+    // Request Permission of Notifications
+    messaging.requestPermission().then(() => {
+      console.log('Notification permission granted.');
+      // Get Token
+      messaging.getToken().then((notificationToken) => {
+        let notificationBody = {
+          notificationToken: notificationToken,
+          userId: "sss",
+          username: "username"
+        }
+        axios.post(`${process.env.USER_SERVICE}/notification/token`, notificationBody)
+        console.log(token)
+      }).catch(err => {
+        console.log(err)
+      })
+    }).catch((err) => {
+      console.log('Unable to get permission to notify.', err);
+    });
+  }
+}
 
-} 
+
+
 
 export const FacebookProvider = new firebase.auth.FacebookAuthProvider()
 export const GoogleProvider = new firebase.auth.GoogleAuthProvider()
 export const auth = firebase.auth()
-export default firebase
+// export default firebase
