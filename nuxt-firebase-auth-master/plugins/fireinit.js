@@ -54,7 +54,7 @@ export default (context) => {
                 notificationToken,
                 uid: store.getters.getUser.uid,
               }
-              axios.post(`${process.env.USER_SERVICE}/notification/token`, notificationBody)
+              axios.post(`${process.env.EVENT_SERVICE}/notification/token`, notificationBody)
               console.log(notificationToken)
             }).catch(err => {
               console.log(err)
