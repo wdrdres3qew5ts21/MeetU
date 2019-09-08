@@ -1,17 +1,18 @@
 <template>
   <v-container>
     <community-detail></community-detail>
-   
+    <br/>
+        <post-community> </post-community>
   </v-container>
 </template>
 
 <script>
 import communityDetail from "~/components/communityDetail";
-
+import postCommunity from "~/components/postCommunity";
 
 export default {
   components: {
-
+      postCommunity,
     communityDetail
   }
 };
