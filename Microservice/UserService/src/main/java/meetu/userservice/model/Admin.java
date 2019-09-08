@@ -14,18 +14,18 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 public class Admin {
     
-    private String userId;
+    private String uid;
 
     private String username;
     
     private List<String>  roles ;
 
-    public String getUserId() {
-        return userId;
+    public String getUid() {
+        return uid;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getUsername() {

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package meetu.userservice.config;
+package meetu.eventservice.config;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
@@ -13,21 +13,20 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import meetu.userservice.controller.UserController;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 
 /**
  *
  * @author Test
  */
-//@Configuration
+@Configuration
 public class FirebaseConfiguration {
 
-//    @Bean
-    public void initFirebaseApp() {
+    @Bean
+     public void initFirebaseApp() {
         FileInputStream serviceAccount = null;
-        FirebaseApp.getInstance().delete();
         try {
             if (FirebaseApp.DEFAULT_APP_NAME == null) {
                 System.out.println("Destroy Firebase Inastance");

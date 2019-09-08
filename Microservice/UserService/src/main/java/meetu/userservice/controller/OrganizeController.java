@@ -31,6 +31,7 @@ public class OrganizeController {
 
     @PostMapping("/organize/{userId}")
     public ResponseEntity<Organize> createOrganize(@PathVariable String userId, @RequestBody Organize organize) {
+        System.out.println("fuq !");
         return new ResponseEntity<Organize>(organizeService.createOrganize(userId, organize), HttpStatus.CREATED);
     }
     
