@@ -29,7 +29,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ElasticConfig {
 
-    @Value("${elasticsearch.host:search-meetu-yuaodhycqphhgutbr327txd3ke.ap-southeast-1.es.amazonaws.com}")
+    @Value("${elasticsearch.host:localhost}")
     private String host;
 
     @Value("${elasticsearch.port:9200}")
@@ -44,8 +44,8 @@ public class ElasticConfig {
     @Bean(destroyMethod = "close")
     public RestHighLevelClient restHighLevelClient() {
         System.out.println("Starting Configuration");
-        host = "search-meetu-yuaodhycqphhgutbr327txd3ke.ap-southeast-1.es.amazonaws.com";
-        RestHighLevelClient client = this.aesClient();
+       //  RestHighLevelClient client = this.aesClient();   //ต่อกับ AWS เข้าหรัสด้วย AES
+        RestHighLevelClient client = this.restHighLevelClientVanila(); // ต่อกับ Local คอมเราเอง
         System.out.println(client);
         try {
             System.out.println(client.info(RequestOptions.DEFAULT).getNodeName());
@@ -59,7 +59,6 @@ public class ElasticConfig {
     //@Bean(destroyMethod = "close")
     public RestHighLevelClient restHighLevelClientVanila() {
         System.out.println("Starting Configuration");
-        host = "search-meetu-yuaodhycqphhgutbr327txd3ke.ap-southeast-1.es.amazonaws.com";
         RestHighLevelClient client = new RestHighLevelClient(
                 RestClient.builder(new HttpHost(host, port))
         );
