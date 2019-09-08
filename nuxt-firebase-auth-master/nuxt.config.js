@@ -60,7 +60,6 @@ module.exports = {
     { src: '~/plugins/vuetify.js' },
     { src: '~/plugins/fireinit.js', mode: 'client' },
     { src: '~/plugins/fireauth.js', mode: 'client' },
-    { src: '~/plugins/firenoti.js', mode: 'client' },
     { src: '~/plugins/vue-qrcode-reader.js', ssr: false },
     { src: '~/plugins/vue2-google-maps.js', ssr: false }
   ],

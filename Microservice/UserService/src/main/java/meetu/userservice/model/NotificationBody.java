@@ -14,26 +14,26 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "notification")
 public class NotificationBody {
     
-    private String token;
+    private String notificationToken;
     
-    private String userId;
+    private String uid;
     
     private String username;
 
     public String getToken() {
-        return token;
+        return notificationToken;
     }
 
     public void setToken(String token) {
-        this.token = token;
+        this.notificationToken = token;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUid() {
+        return uid;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getUsername() {
@@ -44,11 +44,17 @@ public class NotificationBody {
         this.username = username;
     }
 
+    public String getNotificationToken() {
+        return notificationToken;
+    }
+
+    public void setNotificationToken(String notificationToken) {
+        this.notificationToken = notificationToken;
+    }
+
     @Override
     public String toString() {
-        return "NotificationBody{" + "token=" + token + ", userId=" + userId + ", username=" + username + '}';
+        return "NotificationBody{" + "notificationToken=" + notificationToken + ", uid=" + uid + ", username=" + username + '}';
     }
-    
-    
     
 }

@@ -97,7 +97,7 @@
             </v-list-tile-content>
           </v-list-tile>
         </v-list-group>
-        <v-divider inset=true></v-divider>
+        <v-divider :inset=true></v-divider>
       </v-list>
     </v-navigation-drawer>
 

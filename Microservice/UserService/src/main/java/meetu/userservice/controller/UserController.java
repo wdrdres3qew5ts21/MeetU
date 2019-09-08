@@ -48,22 +48,28 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-    
+
     @Value("${server.port}")
-    private int port; 
-            
+    private int port;
+
     @GetMapping("/myself")
-    public String test(){
-        return "port: "+port;
+    public String test() {
+        return "port: " + port;
+    }
+
+    @PostMapping("/user/test")
+    public ResponseEntity<User> testCreateUser(@RequestBody HashMap<String, Object> user) {
+        System.out.println(user);
+        return null;
     }
 
     @PostMapping("/user")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        return new ResponseEntity<User>(userService.createUser(user), HttpStatus.CREATED);
+    public ResponseEntity<User> createUserFromFirebaase(@RequestBody User user) {
+        return new ResponseEntity<User>(userService.createUserFromFirebaase(user), HttpStatus.CREATED);
     }
 
     //@Value("${server.message.greeting}")
-    private String testMessage="Test Had Work !!!";
+    private String testMessage = "Test Had Work !!!";
 
     @GetMapping("/test")
     public ResponseEntity<String> getTestMessage() {
@@ -101,8 +107,8 @@ public class UserController {
     }
 
     @PostMapping("/notification/token")
-    public User saveNotificationToken(@RequestBody NotificationBody notificationBody) {
-        return null;
+    public User saveNotificationToken(@RequestBody User notificationBody) {
+        return userService.saveNotificationToken(notificationBody);
     }
 
     @GetMapping("/users/{id}")

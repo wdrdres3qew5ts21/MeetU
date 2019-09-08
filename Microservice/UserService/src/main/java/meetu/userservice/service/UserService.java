@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import meetu.userservice.controller.UserController;
 import meetu.userservice.filters.TokenAuthenticationService;
+import meetu.userservice.model.NotificationBody;
 import meetu.userservice.repository.UserRepository;
 import meetu.userservice.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +36,8 @@ public class UserService {
     @Autowired
     private TokenAuthenticationService tokenAuthenticationService;
 
-    public User createUser(User user) {
-        System.out.println("----- Createe User -------");
+    public User createUserFromFirebaase(User user) {
+        System.out.println("----- Create User/ Update User -------");
         System.out.println(user);
         BCryptPasswordEncoder passwordEncrypt = new BCryptPasswordEncoder();
         user.setPassword(passwordEncrypt.encode(user.getPassword()));
@@ -99,6 +100,13 @@ public class UserService {
         } catch (Exception ex) {
             Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return null;
+    }
+
+    public User saveNotificationToken(User notificationBody) {
+        System.out.println("---- ------------------------");
+        System.out.println("Notification Token //" +notificationBody.getUid()+" /// token: "+notificationBody.getNotificationToken());
+       
         return null;
     }
 

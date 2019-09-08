@@ -99,10 +99,10 @@ const actions = {
     console.log("email!!!!!!!!!!!!!!!")
     console.log(credential)
     auth.createUserWithEmailAndPassword(credential.email, credential.password).then(result => {
-      credential.uid =result.user.uid
+      credential.uid = result.user.uid
       credential.displayName = result.user.displayName
       credential.photoURL = result.user.photoURL
-      axios.post(`${process.env.USER_SERVICE}/user`,credential)
+      axios.post(`${process.env.USER_SERVICE}/user`, credential)
       console.log(result);
     })
       .catch(err => {
@@ -127,9 +127,28 @@ const actions = {
   },
   signInWithFacebook: function ({ commit }) {
     console.log(FacebookProvider);
+
+    // auth.signInWithCredential(credential).catch((error) => {
+    //   // Handle Errors here.
+    //   let errorCode = error.code;
+    //   let errorMessage = error.message;
+    //   // The email of the user's account used.
+    //   let email = error.email;
+    //   // The firebase.auth.AuthCredential type that was used.
+    //   let credential = error.credential;
+    //   if (errorCode === 'auth/account-exists-with-different-credential') {
+    //     alert('Email already associated with another account.');
+    //     // Handle account linking here, if using.
+    //   } else {
+    //     console.error(error);
+    //   }
+    // })
+
     auth
       .signInWithRedirect(FacebookProvider)
       .then(user => {
+        axios.post("http://localhost:4000/userservice/user/test",user)
+
         commit('setUser', {
           dispalyName: user.displayName,
           email: user.email,
