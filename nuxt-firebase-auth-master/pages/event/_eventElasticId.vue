@@ -5,13 +5,26 @@
     </v-carousel>
     <br />
     <h3>{{eventName}}</h3>
-    <v-btn block color="#341646" style="color:white">View Ticket</v-btn>
+    <v-btn
+      block
+      color="#341646"
+      style="color:white"
+      @click="$vuetify.goTo('#ticketSection')"
+    >View Ticket</v-btn>
     <br />
+
     <p>Date</p>
     <p>
       <b>{{createEventDate}}</b>
     </p>
-    <a href>Add to Calendar</a>
+
+    <p>
+      <a href>Add to Calendar</a>
+    </p>
+
+    <h4>Event Detail</h4>
+    <p class="text-justify">{{eventDetail}}</p>
+
     <p>Location</p>
     <p>
       <b>{{location.country}}, {{location.province}}</b>
@@ -34,25 +47,57 @@
                 :opened="infoWinOpen"
                 @closeclick="infoWinOpen=false"
               >
-                <h2>{{infoTitle}}</h2>
-                <p>{{infoDetail}}</p>
+                <h2>{{eventName}}</h2>
+                <p>{{eventDetail}}</p>
                 <nuxt-link to="/">click</nuxt-link>
               </gmap-info-window>
-              <!-- <GmapMarker
-                :key="index"
+              <GmapMarker
                 :position="marker.position"
                 :clickable="true"
-                @click="toggleInfoWindow(marker,index)"
-              />-->
+                @click="toggleInfoWindow(marker,0)"
+              />
             </GmapMap>
           </no-ssr>
         </v-layout>
       </v-container>
       <br />
     </center>
+    <p>Share with...</p>
+    <h3>Tickets</h3>
+    <p>
+      <b>{{eventName}}</b>
+    </p>
+    <v-layout row wrap>
+      <v-flex xs6>Free</v-flex>
+      <v-flex xs6>
+        <v-select :items="numberOfTicket" label="numberOfTicket"></v-select>
+      </v-flex>
+    </v-layout>
+    <v-btn @click="userReserveTicket()" block :disabled="!isTicketSelected" color="primary" id="ticketSection">GET TICKET</v-btn>
+    
+    <qrcode :value="qrCodeSrc" :options="{ width: 200 }"></qrcode>
+    <h3>Contract</h3>
+    <p>Contract the oraganizer for more information</p>
+    <v-card class="mx-auto" elevation="1">
+      <div style="width:200px;overflow:hidden">
+        <v-img
+          src="https://picsum.photos/id/11/500/300"
+          lazy-src="https://picsum.photos/id/11/10/6"
+          aspect-ratio="1"
+          class="grey lighten-2"
+          max-width="300"
+          style="border-radius:60%;"
+        ></v-img>
+      </div>
+      <v-card-title justify-center>Organizer</v-card-title>
+      <v-card-text>Website</v-card-text>
+      <v-card-text>Email</v-card-text>
+      <v-card-actions>
+        <v-btn text>Click</v-btn>
+      </v-card-actions>
+    </v-card>
   </div>
 </template> 
- 
  
 <script>
 import { eventNotFound } from "~/utils/errorMessage";
@@ -61,11 +106,13 @@ import { mapMutations, mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
+      qrCodeSrc: "demo",
+      isTicketSelected: true,
+      numberOfTicket: [],
       eventName: "",
+      eventDetail: "",
       createEventDate: "",
       location: "",
-      infoTitle: "",
-      infoDetail: "",
       infoWindowPos: null,
       infoWinOpen: false,
       currentMidx: null,
@@ -102,11 +149,14 @@ export default {
         let data = response.data;
         console.log(data);
         return {
-          eventName: "hhhh",
+          eventName: data.eventName,
+          eventDetail: data.eventDetail,
           eventPictureCover: data.eventPictureCover,
           eventPictureLists: data.eventPictureLists,
           createEventDate: data.createEventDate,
           location: data.location,
+          organizeId: data.organize.organizeId,
+          organizeName: data.organize.organizeName,
           marker: {
             title: data.eventName,
             detail: data.eventDetail,
@@ -119,14 +169,29 @@ export default {
       })
       .catch(err => {
         console.log("!!!!!!!!!!!!!!!!! Boom Not found !!!!!!!!!!");
-        return error({ statusCode: 404, message: eventNotFound() });
+        return error({ statusCode: 404, message: eventNotFound(err) });
       });
   },
+  mounted() {
+    for (let i = 0; i <= 5; i++) {
+      this.numberOfTicket.push(i);
+    }
+  },
   computed: {
-    ...mapGetters(["getCurrentLocation"])
+    ...mapGetters(["getCurrentLocation","getUser"])
   },
   methods: {
     ...mapActions(["updateCurrentLocation"]),
+    userReserveTicket: function(){
+      console.log("User Reserve Ticket Event!")
+
+      let userJoinEventBody = {
+        uid: this.getUser.uid,
+        eventElasticId: this.$route.params.eventElasticId
+      }
+      this.qrCodeSrc = JSON.stringify(userJoinEventBody);
+      //axios.post(`${process.env.EVENT_SERVICE}/event/ticket`, userJoinEventBody)
+    },
     findEventInArea: async function() {
       let geolocation = {
         lat: this.getCurrentLocation.lat,
@@ -144,7 +209,6 @@ export default {
       console.log(searchEventLocation.data);
     },
     toggleInfoWindow: function(marker, idx) {
-      console.log("fuq click marker");
       this.infoWindowPos = marker.position;
       this.infoTitle = marker.title;
       this.infoDetail = marker.detail;

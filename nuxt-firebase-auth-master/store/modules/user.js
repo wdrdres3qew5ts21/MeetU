@@ -99,10 +99,10 @@ const actions = {
     console.log("email!!!!!!!!!!!!!!!")
     console.log(credential)
     auth.createUserWithEmailAndPassword(credential.email, credential.password).then(result => {
-      credential.uid =result.user.uid
+      credential.uid = result.user.uid
       credential.displayName = result.user.displayName
       credential.photoURL = result.user.photoURL
-      axios.post(`${process.env.USER_SERVICE}/user`,credential)
+      axios.post(`${process.env.USER_SERVICE}/user`, credential)
       console.log(result);
     })
       .catch(err => {
@@ -130,6 +130,23 @@ const actions = {
     auth
       .signInWithRedirect(FacebookProvider)
       .then(user => {
+        // Do something after OAuth Redirect login success
+        auth.getRedirectResult().then((result) => {
+          console.log("stupid")
+          if (result.credential) {
+            // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+            let token = result.credential.accessToken;
+            let isNewUser = result.additionalUserInfo.isNewUser
+            console.log(result)
+            if (isNewUser) {
+              console.log("---------- First Time sign up ----------")
+              axios.post(`${process.env.USER_SERVICE}/userservice/user`, result.user)
+            }
+
+          }
+        }).catch(function (error) {
+
+        });
         commit('setUser', {
           dispalyName: user.displayName,
           email: user.email,

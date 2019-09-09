@@ -35,17 +35,19 @@ import org.springframework.stereotype.Service;
  *
  * @author wdrdr
  */
+
 @Service
 public class QRCodeService {
-	public static byte[] getQRCodeImage(String text, int width, int height) {
-		try {
-			QRCodeWriter qrCodeWriter = new QRCodeWriter();
-			BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width, height);
-			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-			MatrixToImageWriter.writeToStream(bitMatrix, "png", byteArrayOutputStream);
-			return byteArrayOutputStream.toByteArray();
-		} catch (Exception e) {
-			return null;
-		}
-	}
-     }
+
+    public byte[] getQRCodeImage(String text, int width, int height) {
+        try {
+            QRCodeWriter qrCodeWriter = new QRCodeWriter();
+            BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width, height);
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            MatrixToImageWriter.writeToStream(bitMatrix, "png", byteArrayOutputStream);
+            return byteArrayOutputStream.toByteArray();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+}

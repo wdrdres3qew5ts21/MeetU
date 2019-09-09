@@ -17,12 +17,26 @@
     <v-flex>
       <v-select :items="privacy" label="Select privacy"></v-select>
     </v-flex>
+
+
+        <v-layout.mb-4>
+            <v-text-field
+              name="description"
+              label="Description"
+              color="pink"
+              textarea
+              rows="6"
+              required
+              hide-details>
+            </v-text-field>
+        </v-layout.mb-4>
+              
     <v-btn
       block
       round="16px;"
       color="#341646"
       class="mb-2 white--text"
-      @click.stop="upgradeAccountPopup"
+      @click.stop="createCommunityPopup"
     >Create Community</v-btn>
   </div>
 </template> 
@@ -53,7 +67,7 @@ export default {
       // upload file, get it from this.selectedFile
     },
 
-    upgradeAccountPopup: function(e) {
+    createCommunityPopup: function(e) {
       Swal.fire({
         title: "Are you sure?",
         type: "warning",

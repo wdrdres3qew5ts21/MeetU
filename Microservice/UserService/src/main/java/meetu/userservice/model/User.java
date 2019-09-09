@@ -31,7 +31,8 @@ public class User {
     private String password;
 
     private String role;
-
+    
+    @Indexed
     private String uid;
 
     @Email
@@ -60,6 +61,8 @@ public class User {
     private String phone;
 
     private List<Badge> badgeList = new ArrayList<Badge>();
+    
+    private String notificationToken;
 
     public User() {
 
@@ -89,6 +92,10 @@ public class User {
         BCryptPasswordEncoder passwordEncrypt = new BCryptPasswordEncoder();
         //this.password = passwordEncrypt.encode(password);
         this.password = password;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public String getUid() {
@@ -219,10 +226,25 @@ public class User {
         this.phone = phone;
     }
 
-    @Override
-    public String toString() {
-        return "User{" + "userId=" + userId + ", username=" + username + ", role=" + role + ", uid=" + uid + ", email=" + email + ", emailVerified=" + emailVerified + ", displayName=" + displayName + ", firstName=" + firstName + ", lastName=" + lastName + ", birthDay=" + birthDate + ", gender=" + gender + ", photoURL=" + photoURL + ", interest=" + interest + ", province=" + province + ", country=" + country + ", phone=" + phone + ", badgeList=" + badgeList + '}';
+    public Date getBirthDate() {
+        return birthDate;
     }
 
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public String getNotificationToken() {
+        return notificationToken;
+    }
+
+    public void setNotificationToken(String notificationToken) {
+        this.notificationToken = notificationToken;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" + "userId=" + userId + ", username=" + username + ", role=" + role + ", uid=" + uid + ", email=" + email + ", emailVerified=" + emailVerified + ", displayName=" + displayName + ", firstName=" + firstName + ", lastName=" + lastName + ", birthDate=" + birthDate + ", gender=" + gender + ", photoURL=" + photoURL + ", interest=" + interest + ", province=" + province + ", country=" + country + ", phone=" + phone + ", badgeList=" + badgeList + ", notificationToken=" + notificationToken + '}';
+    }
     
 }

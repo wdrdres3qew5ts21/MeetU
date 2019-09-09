@@ -18,7 +18,7 @@ HELP.md
 *.ipr
 
 ## firebase
-/microservice/**/meetu-firebase-key.json
+/Microservice/**/meetu-firebase-key.json
 
 ### NetBeans ###
 /nbproject/private/
@@ -31,7 +31,7 @@ HELP.md
 /Microservice/CommunityService/nbactions.xml
 /Microservice/ConfigServer/nbactions.xml
 /Microservice/EurekaServer/nbactions.xml
-Microservice/EventService/nbactions.xml
+/Microservice/EventService/nbactions.xml
 /Microservice/UserService/nbactions.xml
 
 

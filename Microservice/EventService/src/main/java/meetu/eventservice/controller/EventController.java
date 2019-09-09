@@ -11,7 +11,9 @@ import meetu.eventservice.service.EventService;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import meetu.eventservice.model.Event;
+import meetu.eventservice.model.EventTicket;
 import meetu.eventservice.model.User;
+import meetu.eventservice.model.UserNotification;
 import meetu.eventservice.service.QRCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -53,6 +56,21 @@ public class EventController {
         return new ResponseEntity<Event>(eventService.createEvent(event), HttpStatus.CREATED);
     }
 
+    @PostMapping("/notification/token")
+    public ResponseEntity saveUserNotificationToken(@RequestBody UserNotification userNotification) {
+        return new ResponseEntity(eventService.saveuserNotification(userNotification), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/event/join")
+    public ResponseEntity<EventTicket> userJoinEvent(@RequestBody EventTicket userJoinEvent) {
+        return new ResponseEntity<EventTicket>(eventService.userJoinEvent(userJoinEvent), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/event/ticket")
+    public ResponseEntity<EventTicket> userReserveTicket(@RequestBody EventTicket userJoinEvent) {
+        return new ResponseEntity<EventTicket>(eventService.userReserveTicket(userJoinEvent), HttpStatus.CREATED);
+    }
+
     @GetMapping("/events")
     public ResponseEntity<List<Event>> searchWithFilter(
             @RequestParam(required = false, defaultValue = "0") int page,
@@ -79,10 +97,10 @@ public class EventController {
                         page, contentPerPage), HttpStatus.OK
         );
     }
-    
+
     @GetMapping("/event/{elasticEventId}")
-    public ResponseEntity<Event> findEventByElasticId(@PathVariable String elasticEventId){
-        return eventService.findEventByElasticId(elasticEventId);
+    public ResponseEntity<Event> findEventByElasticId(@PathVariable String elasticEventId) {
+        return eventService.findEventByEventId(elasticEventId);
     }
 
     @PostMapping("/events/recommend/persona")
@@ -99,11 +117,28 @@ public class EventController {
         return eventService.deleteEventByElasticId(elasticEventId);
     }
 
-    @GetMapping("/events/qrcode")
+    @GetMapping("/event/qrcode")
     public ResponseEntity<byte[]> qrCodeGenerator(HttpServletResponse response) {
         response.setContentType("image/png");
         return new ResponseEntity<byte[]>(qRCodeService.getQRCodeImage("https://trello.com/b/OutSJrmK/project", 1000, 1000), HttpStatus.OK);
     }
-    
+
+//    @GetMapping("/events/qrcode")
+//    public ResponseEntity<byte[]> qrCodeGenerator(HttpServletResponse response) {
+//        response.setContentType("image/png");
+//        return new ResponseEntity<byte[]>(qRCodeService.getQRCodeImage("https://trello.com/b/OutSJrmK/project", 1000, 1000), HttpStatus.OK);
+//    }
+    @RequestMapping (value="event/qr/{elasticEventId}", method = RequestMethod.GET)
+public ResponseEntity<byte[]> qr(@PathVariable final Long elasticEventId) {
+
+    ByteArrayOutputStream stream = QRCode.from(findByElasticEventId.findOne(elasticEventId).toString()).stream();
+
+    byte[] bytes = stream.toByteArray();
+
+    final HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.IMAGE_PNG);
+
+    return new ResponseEntity<byte[]> (bytes, headers, HttpStatus.CREATED);
+}
   
 }

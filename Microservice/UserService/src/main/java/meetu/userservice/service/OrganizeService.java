@@ -22,9 +22,9 @@ public class OrganizeService {
     @Autowired
     private OrganizeRepository organizeRepository;
 
-    public Organize createOrganize(String userId, Organize organize) {
+    public Organize createOrganize(String uid, Organize organize) {
         Admin organizeOwner = new Admin();
-        organizeOwner.setUserId(userId);
+        organizeOwner.setUid(uid);
         organize.setOrganizeOwner(organizeOwner);
         organize.getAdminList();
         return organizeRepository.save(organize);

@@ -14,6 +14,7 @@
     "deploy": "yarn generate && firebase deploy"
   },
   "dependencies": {
+    "@chenfengyuan/vue-qrcode": "^1.0.1",
     "@nuxtjs/onesignal": "^3.0.0-beta.16",
     "@nuxtjs/pwa": "^2.4.0",
     "axios": "^0.18.0",

@@ -97,7 +97,7 @@
             </v-list-tile-content>
           </v-list-tile>
         </v-list-group>
-        <v-divider inset=true></v-divider>
+        <v-divider :inset=true></v-divider>
       </v-list>
     </v-navigation-drawer>
 
@@ -189,6 +189,7 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
+      title: "MeetU",
       height: {
         height: "10px"
       },

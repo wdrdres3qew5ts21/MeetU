@@ -8,8 +8,14 @@ package meetu.eventservice.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.firebase.messaging.BatchResponse;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingException;
+import com.google.firebase.messaging.Message;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -19,10 +25,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import meetu.eventservice.config.ElasticUtil;
 import meetu.eventservice.model.Event;
+import meetu.eventservice.model.EventTicket;
 import meetu.eventservice.model.InterestGenreBehavior;
 import meetu.eventservice.model.Persona;
 import meetu.eventservice.model.User;
+import meetu.eventservice.model.UserNotification;
 import meetu.eventservice.repository.EventRepository;
+import meetu.eventservice.repository.EventTicketRespository;
+import meetu.eventservice.repository.UserNotificationRepository;
 import org.elasticsearch.action.DocWriteResponse;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.delete.DeleteRequest;
@@ -39,6 +49,10 @@ import org.elasticsearch.client.indices.GetIndexRequest;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.FuzzyQueryBuilder;
+import com.google.firebase.messaging.BatchResponse;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingException;
+import com.google.firebase.messaging.Notification;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
 import org.elasticsearch.index.query.MatchAllQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
@@ -68,9 +82,49 @@ public class EventService {
     private EventRepository eventRepository;
 
     @Autowired
+    private EventTicketRespository eventTicketRespository;
+
+    @Autowired
+    private UserNotificationRepository userNotificationRepository;
+
+    @Autowired
+    private QRCodeService qrCodeService;
+
+    @Autowired
     private RestHighLevelClient elasticClient;
 
     private final String eventsIndex = "events";
+
+    public void pushNotificationOfEvent(String eventName, String eventDetail) {
+        // Create a list containing up to 100 messages.
+        List<UserNotification> userNotifications = userNotificationRepository.findAll();
+        List<Message> messages = new ArrayList<>();
+        for (UserNotification userNotification : userNotifications) {
+            messages = Arrays.asList(
+                    Message.builder()
+                            .setNotification(new Notification(
+                                    eventName,
+                                    eventDetail))
+                            .setToken(userNotification.getNotificationToken())
+                            .build(),
+                    // ...
+                    Message.builder()
+                            .setNotification(new Notification("Price drop", "2% off all books"))
+                            .setTopic("readers-club")
+                            .build()
+            );
+        }
+        BatchResponse response = null;
+        try {
+            response = FirebaseMessaging.getInstance().sendAll(messages);
+        } catch (FirebaseMessagingException ex) {
+            Logger.getLogger(EventService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+// See the BatchResponse reference documentation
+// for the contents of response.
+        System.out.println(response.getSuccessCount() + " messages were sent successfully");
+    }
 
     public Event createEvent(Event event) {
         Date currentDate = new Date();
@@ -106,7 +160,7 @@ public class EventService {
                 }
             }
         }
-
+        this.pushNotificationOfEvent(event.getEventName(),event.getEventDetail());
         return savedEventMongoDB;
     }
 
@@ -295,6 +349,10 @@ public class EventService {
         return searchSourceBuilder;
     }
 
+    public ResponseEntity findEventByEventId(String eventId) {
+        return ResponseEntity.status(HttpStatus.OK).body(eventRepository.findByElasticEventId(eventId));
+    }
+
     public ResponseEntity findEventByElasticId(String elasticEventId) {
         GetResponse getResponse = null;
         GetRequest getRequest = new GetRequest(eventsIndex, elasticEventId);
@@ -314,7 +372,21 @@ public class EventService {
         }
         responseBody.put("response", "Not found EventID: " + elasticEventId + " !");
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
+    }
 
+    public EventTicket userJoinEvent(EventTicket userJoinEvent) {
+        userJoinEvent.setIsParticipate(true);
+        userJoinEvent.setParticipateDate(new Timestamp(System.currentTimeMillis()));
+        return eventTicketRespository.save(userJoinEvent);
+    }
+
+    public EventTicket userReserveTicket(EventTicket userReserveTicket) {
+        qrCodeService.getQRCodeImage(eventsIndex, 0, 0);
+        return null;
+    }
+
+    public UserNotification saveuserNotification(UserNotification userNotification) {
+        return userNotificationRepository.save(userNotification);
     }
 
 }

@@ -12,35 +12,69 @@ const firebaseConfig = {
   messagingSenderId: "1058128161659",
   appId: "1:1058128161659:web:6e143e16242ba4c2"
 };
+let messaging = null;
+let authen = null;
 
-if (!firebase.apps.length){
+if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig)
-  console.log("Fuq client Side !!!")
-  // let messaging = firebase.messaging();
+}
 
-  // messaging.usePublicVapidKey("BBE3arRFCbWg0FTbJ-xh0R__ngAdYnjdPtv3PFTyCJRy1ceuztLgcDrPVkVpNzSwn7xsOL5tFwW6dQzhcwoBEqM");
-  // // Request Permission of Notifications
-  // messaging.requestPermission().then(() => {
-  //   console.log('Notification permission granted.');
-  //   // Get Token
-  //   messaging.getToken().then((token) => {
-  //     let notificationBody = {
-  //       token: token,
-  //       userId: "userId",
-  //       username: "username"
-  //     }
-  //     axios.post(`${process.env.USER_SERVICE}/notification/token`, notificationBody)
-  //     console.log(token)
-  //   }).catch(err =>{
-  //     console.log(err)
-  //   })
-  // }).catch((err) => {
-  //   console.log('Unable to get permission to notify.', err);
-  // });
+export default (context) => {
+  const { store } = context
+  if (process.client) {
+    console.log("Fuq client Side !!!")
+    authen = firebase.auth()
+    messaging = firebase.messaging()
 
-} 
+    authen.onAuthStateChanged(user => {
+      console.log("state change")
+      authen.currentUser.getIdToken(/* forceRefresh */ true)
+        .then((jwtToken) => {
+          // Send token to your backend via HTTPS
+          localStorage.setItem("jwtToken", jwtToken)
+          console.log("current user !")
+          // Set Vuex State After Success login
+          store.commit('setUser', {
+            displayName: user.displayName,
+            email: user.email,
+            emailVerified: user.emailVerified,
+            isAnonymous: user.isAnonymous,
+            photoURL: user.photoURL,
+            uid: user.uid
+          })
+          // Request Permission Will work only user login Success
+
+          messaging.usePublicVapidKey("BBE3arRFCbWg0FTbJ-xh0R__ngAdYnjdPtv3PFTyCJRy1ceuztLgcDrPVkVpNzSwn7xsOL5tFwW6dQzhcwoBEqM");
+          // Request Permission of Notifications
+          messaging.requestPermission().then(() => {
+            console.log('Notification permission granted.');
+            // Get Token
+            messaging.getToken().then((notificationToken) => {
+              let notificationBody = {
+                notificationToken,
+                uid: store.getters.getUser.uid,
+              }
+              axios.post(`${process.env.EVENT_SERVICE}/notification/token`, notificationBody)
+              console.log(notificationToken)
+            }).catch(err => {
+              console.log(err)
+            })
+          }).catch((err) => {
+            console.log('Unable to get permission to notify.', err);
+          });
+
+        }).catch((error) => {
+          // login failed
+          console.log(error)
+        })
+    })
+  }
+}
+
+
+
 
 export const FacebookProvider = new firebase.auth.FacebookAuthProvider()
 export const GoogleProvider = new firebase.auth.GoogleAuthProvider()
 export const auth = firebase.auth()
-export default firebase
+// export default firebase
