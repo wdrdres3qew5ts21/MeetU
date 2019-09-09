@@ -1,44 +1,36 @@
 <template>
   <div>
     <br />
+    <h1 style="color:#341646">All Events</h1>
+
     <br />
     <br />
-    <br />
-    <br />
-    <!-- <v-img
-              :src="require(`@/assets/${successLogo}.png`)"
-              
-    />-->
     <center>
-      <v-img :src="require('@/assets/successLogo.png')" width="75" />
-
-      <br />
-      <br />
-
-      <h2>
-        Your Organizer Account
-        <br />Has Been Created!
-      </h2>
-
-      <br />
-      <nuxt-link :to="`/startedEvent?`" style="text-decoration-line:none;">
+      <nuxt-link :to="`/createEventForm?`" style="text-decoration-line:none;">
         <v-btn
-          class="getStartedEvents white--text"
+          class="createEvent white--text"
           color="#341646"
           depressed
           large
           height="50"
-        >Get Started an Event!</v-btn>
+        >Create an Event</v-btn>
       </nuxt-link>
+    </center>
+
+    <center>
+      <br />
+      <p style="color:grey">No event, please create a new event.</p>
     </center>
   </div>
 </template>
 
+
 <script>
 export default {
-  name: "organizerAccountCreate"
+  name: "startedEvent"
 };
 </script>
+
 
 
 <style lang="css">
@@ -53,5 +45,9 @@ export default {
   background-repeat: no-repeat;
   background-size: cover;
   background: transparent; */
+}
+
+.h1 {
+  font-family: Roboto;
 }
 </style>
