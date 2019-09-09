@@ -16,16 +16,16 @@
         </v-layout>
         <v-layout>
           <v-flex xs12 class="text-xs-left">
-            <v-btn text icon>
-              <v-icon>photo_camera</v-icon>
+            <v-btn style="margin-right: 0px" icon>
+              <v-icon >photo_camera</v-icon>
             </v-btn>
-            <v-btn text icon>
+            <v-btn style="margin: 0px"  icon>
               <v-icon>room</v-icon>
             </v-btn>
-            <v-btn text icon>
+            <v-btn style="margin: 0px" icon>
               <v-icon>assessment</v-icon>
             </v-btn>
-            <v-btn text icon>
+            <v-btn style="margin: 0px" icon>
               <v-icon>event</v-icon>
             </v-btn>
           </v-flex>
