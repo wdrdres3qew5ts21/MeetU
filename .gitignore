@@ -18,6 +18,7 @@ HELP.md
 *.ipr
 
 ## firebase
+/Microservice/UserService/meetu-firebase-key.json
 /Microservice/**/meetu-firebase-key.json
 
 ### NetBeans ###
