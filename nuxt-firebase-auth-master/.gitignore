@@ -15,4 +15,3 @@ backups
 nuxt-firebase-auth-key.json
 serviceAccountKey.json
 .firebase
-static
