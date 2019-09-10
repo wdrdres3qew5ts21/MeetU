@@ -35,6 +35,7 @@ import org.springframework.stereotype.Service;
  *
  * @author wdrdr
  */
+
 @Service
 public class QRCodeService {
 

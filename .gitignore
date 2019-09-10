@@ -19,6 +19,7 @@ HELP.md
 
 ## firebase
 /Microservice/UserService/meetu-firebase-key.json
+/Microservice/**/meetu-firebase-key.json
 
 ### NetBeans ###
 /nbproject/private/
