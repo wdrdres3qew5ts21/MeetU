@@ -13,6 +13,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -23,6 +24,10 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class FirebaseConfiguration {
+    
+    
+    @Value("${firebase.key.src}")
+    private String firebaseSrc;
 
     @Bean
      public void initFirebaseApp() {
@@ -34,7 +39,7 @@ public class FirebaseConfiguration {
             }
             System.out.println("---------- Firebase Configuration Start ---------------");
             System.out.println(FirebaseApp.DEFAULT_APP_NAME);
-            serviceAccount = new FileInputStream("C:\\ProjectCode\\MeetU\\Microservice\\UserService\\meetu-firebase-key.json");
+            serviceAccount = new FileInputStream(this.firebaseSrc);
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                     .setDatabaseUrl("https://meetu-69b29.firebaseio.com")
