@@ -1,43 +1,5 @@
 <template>
   <div>
-    <v-card rounded outlined class="mx-auto">
-      <div class="px-3">
-        <v-layout>
-          <v-flex xs12>
-            <v-text-field
-              class="questrial no-top-padding"
-              height="44px"
-              rounded
-              placeholder="Write somthing..."
-            ></v-text-field>
-
-            <v-divider></v-divider>
-          </v-flex>
-        </v-layout>
-        <v-layout>
-          <v-flex xs12 class="text-xs-left">
-            <v-btn style="margin-right: 0px" icon>
-              <v-icon >photo_camera</v-icon>
-            </v-btn>
-            <v-btn style="margin: 0px"  icon>
-              <v-icon>room</v-icon>
-            </v-btn>
-            <v-btn style="margin: 0px" icon>
-              <v-icon>assessment</v-icon>
-            </v-btn>
-            <v-btn style="margin: 0px" icon>
-              <v-icon>event</v-icon>
-            </v-btn>
-          </v-flex>
-          <v-flex xs12 class="text-xs-right">
-            <v-btn text color="#341646" class="mb-2 white--text">Post</v-btn>
-          </v-flex>
-        </v-layout>
-      </div>
-    </v-card>
-    <br />
-    <br />
-
     <v-card rounded outlined>
       <br />
       <div>
@@ -60,7 +22,7 @@
           </v-flex>
         </v-layout>
       </div>
-      <!-- <v-container grid-list-xs fluid style="padding:10px"> -->
+      <v-container grid-list-xs fluid style="padding:10px">
       <br />
       <v-layout wrap>
         <v-flex v-for="n in 2" :key="n" xs6>
@@ -80,7 +42,7 @@
           </v-card>
         </v-flex>
       </v-layout>
-      <!-- </v-container> -->
+      </v-container>
       <v-card-text rounded outlined class="mx-auto">
         <div class="questrial body1 mb-4">{{lorem}}</div>
         <v-divider></v-divider>
@@ -120,26 +82,18 @@
               height="44px"
               rounded
               placeholder="Write somthing..."
-            >
-            </v-text-field>
+            ></v-text-field>
           </v-flex>
-          <v-flex  class="text-xs-right">
-              <br/>
-              <v-btn text icon>
+          <v-flex class="text-xs-right">
+            <br />
+            <v-btn text icon>
               <v-icon>photo_camera</v-icon>
             </v-btn>
-              
           </v-flex>
         </v-layout>
       </v-card-text>
       <v-list-item style="align-items:normal"></v-list-item>
-      <v-list-item>
-          
-  
-      </v-list-item>
-
-      
-  
+      <v-list-item></v-list-item>
     </v-card>
   </div>
 </template>
