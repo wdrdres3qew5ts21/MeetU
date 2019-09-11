@@ -53,6 +53,11 @@ import com.google.firebase.messaging.BatchResponse;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Notification;
+import java.nio.charset.Charset;
+import java.util.Random;
+import java.util.UUID;
+import meetu.eventservice.model.UserEventTicket;
+import meetu.eventservice.repository.UserEventTicketRepository;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
 import org.elasticsearch.index.query.MatchAllQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
@@ -82,7 +87,7 @@ public class EventService {
     private EventRepository eventRepository;
 
     @Autowired
-    private EventTicketRespository eventTicketRespository;
+    private UserEventTicketRepository userEventTicketRespository;
 
     @Autowired
     private UserNotificationRepository userNotificationRepository;
@@ -160,7 +165,7 @@ public class EventService {
                 }
             }
         }
-        this.pushNotificationOfEvent(event.getEventName(),event.getEventDetail());
+        this.pushNotificationOfEvent(event.getEventName(), event.getEventDetail());
         return savedEventMongoDB;
     }
 
@@ -374,15 +379,47 @@ public class EventService {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
     }
 
-    public EventTicket userJoinEvent(EventTicket userJoinEvent) {
-        userJoinEvent.setIsParticipate(true);
-        userJoinEvent.setParticipateDate(new Timestamp(System.currentTimeMillis()));
-        return eventTicketRespository.save(userJoinEvent);
+    public ResponseEntity userJoinEvent(UserEventTicket userJoinEvent) {
+        HashMap<String, Object> responseBody = new HashMap<>();
+        UserEventTicket userEventTicketInDatabase = userEventTicketRespository.findById(userJoinEvent.getId()).get();
+        if (userEventTicketInDatabase != null) {
+            if (userEventTicketInDatabase.isIsParticipate() == false) {
+                if (userEventTicketInDatabase.getTicketKey().equals(userJoinEvent.getTicketKey()) && userEventTicketInDatabase.getUid().equals(userJoinEvent.getUid())) {
+                    userEventTicketInDatabase.setIsParticipate(true);
+                    userEventTicketInDatabase.setParticipateDate(new Timestamp(System.currentTimeMillis()));
+                    return ResponseEntity.status(HttpStatus.CREATED).body(userEventTicketRespository.save(userEventTicketInDatabase));
+                }
+            } else {
+                responseBody.put("response", "This ticket had been usage !!!");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseBody);
+            }
+        }
+        responseBody.put("response", "This ticket is wrong perhaps not our ticket !!!");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseBody);
     }
 
-    public EventTicket userReserveTicket(EventTicket userReserveTicket) {
-        qrCodeService.getQRCodeImage(eventsIndex, 0, 0);
-        return null;
+    public ResponseEntity userReserveTicket(UserEventTicket userReserveTicket) {
+        HashMap<String, Object> responseBody = new HashMap<>();
+        Event eventInDatabase = eventRepository.findByElasticEventId(userReserveTicket.getElasticEventId());
+        if (eventInDatabase != null) {
+            if (eventInDatabase.getNumberOfTicket() > 0) {
+                byte[] array = new byte[15]; // length is bounded by 7
+                new Random().nextBytes(array);
+                String generateTicketKey = new String(array, Charset.forName("UTF-8"));
+                userReserveTicket.setTicketKey(UUID.randomUUID().toString());
+                System.out.println(userReserveTicket);
+                int numberOfTicket = eventInDatabase.getNumberOfTicket();
+                numberOfTicket--;
+                eventInDatabase.setNumberOfTicket(numberOfTicket);
+                eventRepository.save(eventInDatabase);
+                return ResponseEntity.status(HttpStatus.CREATED).body(userEventTicketRespository.save(userReserveTicket));
+            } else {
+                responseBody.put("response", "Ticket had been sold out !");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responseBody);
+            }
+        }
+        responseBody.put("response", "Event not available for sold ticket now !");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
     }
 
     public UserNotification saveuserNotification(UserNotification userNotification) {

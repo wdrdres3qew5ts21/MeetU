@@ -14,6 +14,7 @@ import meetu.eventservice.model.Event;
 import meetu.eventservice.model.EventTicket;
 import meetu.eventservice.model.User;
 import meetu.eventservice.model.UserNotification;
+import meetu.eventservice.model.UserEventTicket;
 import meetu.eventservice.service.QRCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -62,13 +63,14 @@ public class EventController {
     }
 
     @PostMapping("/event/join")
-    public ResponseEntity<EventTicket> userJoinEvent(@RequestBody EventTicket userJoinEvent) {
-        return new ResponseEntity<EventTicket>(eventService.userJoinEvent(userJoinEvent), HttpStatus.CREATED);
+    public ResponseEntity userJoinEvent(@RequestBody UserEventTicket userJoinEvent) {
+        return new ResponseEntity(eventService.userJoinEvent(userJoinEvent), HttpStatus.CREATED);
     }
 
-    @PostMapping("/event/ticket")
-    public ResponseEntity<EventTicket> userReserveTicket(@RequestBody EventTicket userJoinEvent) {
-        return new ResponseEntity<EventTicket>(eventService.userReserveTicket(userJoinEvent), HttpStatus.CREATED);
+    @PostMapping("/event/reserve")
+    public ResponseEntity userReserveTicket(@RequestBody UserEventTicket userJoinEvent) {
+        System.out.println("---- Reserve -----");
+        return eventService.userReserveTicket(userJoinEvent);
     }
 
     @GetMapping("/events")

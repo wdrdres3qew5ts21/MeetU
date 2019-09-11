@@ -85,18 +85,18 @@
       @click:append="show1 = !show1"
     ></v-text-field>
 
-          <v-text-field
-            :append-icon="show4 ? 'visibility' : 'visibility_off'"
-            :rules="[rules.required, rules.emailMatch]"
-            :type="show4 ? 'text' : 'password'"
-            name="input-10-2"
-            label="Password Comfermation"
-            hint="At least 8 characters"
-            value="Pa"
-            error
-            @click:append="show4 = !show4"
-          ></v-text-field>
-      <v-text-field
+    <v-text-field
+      :append-icon="show4 ? 'visibility' : 'visibility_off'"
+      :rules="[rules.required, rules.emailMatch]"
+      :type="show4 ? 'text' : 'password'"
+      name="input-10-2"
+      label="Password Comfermation"
+      hint="At least 8 characters"
+      value="Pa"
+      error
+      @click:append="show4 = !show4"
+    ></v-text-field>
+    <v-text-field
       v-model="password"
       :append-icon="show3 ? 'visibility' : 'visibility_off'"
       :rules="[rules.required, rules.min]"
@@ -107,15 +107,14 @@
       counter
       @click:append="show3 = !show3"
     ></v-text-field>
-<br />
+    <br />
 
-     <h2>Social Links</h2>
-     something
-     <br />
-     <v-layout justify-center row wrap>
+    <h2>Social Links</h2>something
+    <br />
+    <v-layout justify-center row wrap>
       <v-btn class="white--text" color="#341646">CANCEL</v-btn>
-       <v-btn class="white--text" color="#341646">SAVE</v-btn>
-     </v-layout>
+      <v-btn class="white--text" color="#341646">SAVE</v-btn>
+    </v-layout>
   </div>
 </template> 
  
@@ -132,7 +131,7 @@ export default {
       show1: false,
       show3: false,
       show4: false,
-      password: 'Password',
+      password: "Password",
       firstname: "",
       lastname: "",
       nameRules: [
@@ -144,11 +143,11 @@ export default {
         v => !!v || "E-mail is required",
         v => /.+@.+/.test(v) || "E-mail must be valid"
       ],
-       rules: {
-          required: value => !!value || 'Required.',
-          min: v => v.length >= 8 || 'Min 8 characters',
-          emailMatch: () => ('The email and password you entered don\'t match'),
-        },
+      rules: {
+        required: value => !!value || "Required.",
+        min: v => v.length >= 8 || "Min 8 characters",
+        emailMatch: () => "The email and password you entered don't match"
+      }
     };
   },
   computed: {

@@ -5,9 +5,7 @@
  */
 package meetu.eventservice.model;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 import java.util.List;
 import org.springframework.data.annotation.Id;
@@ -43,6 +41,8 @@ public class Event {
     private List<Post> postLists;
     
     private int totalView;
+    
+    private int numberOfTicket;
     
     private Date createEventDate;
 
@@ -96,8 +96,6 @@ public class Event {
         this.totalView = totalView;
     }
 
-    
-    
     public Date getCreateEventDate() {
         return createEventDate;
     }
@@ -128,6 +126,22 @@ public class Event {
 
     public void setEventStartDate(Date eventStartDate) {
         this.eventStartDate = eventStartDate;
+    }
+
+    public List<Post> getPostLists() {
+        return postLists;
+    }
+
+    public void setPostLists(List<Post> postLists) {
+        this.postLists = postLists;
+    }
+
+    public int getNumberOfTicket() {
+        return numberOfTicket;
+    }
+
+    public void setNumberOfTicket(int numberOfTicket) {
+        this.numberOfTicket = numberOfTicket;
     }
 
     public Location getLocation() {
@@ -174,6 +188,5 @@ public class Event {
     public String toString() {
         return "Event{" + "eventId=" + eventId + ", elasticEventId=" + elasticEventId + ", eventName=" + eventName + ", eventTags=" + eventTags + ", eventDetail=" + eventDetail + ", eventPictureCover=" + eventPictureCover + ", eventPictureLists=" + eventPictureLists + ", postLists=" + postLists + ", totalView=" + totalView + ", createEventDate=" + createEventDate + ", endRegisterDate=" + endRegisterDate + ", eventEndDate=" + eventEndDate + ", eventStartDate=" + eventStartDate + ", location=" + location + ", organize=" + organize + '}';
     }
-
 
 }
