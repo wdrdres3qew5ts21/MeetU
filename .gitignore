@@ -28,7 +28,8 @@ HELP.md
 /nbdist/
 /.nb-gradle/
 /build/
-/Microservice/APIGateway/manifest.yml
+
+
 /Microservice/CommunityService/nbactions.xml
 /Microservice/ConfigServer/nbactions.xml
 /Microservice/EurekaServer/nbactions.xml

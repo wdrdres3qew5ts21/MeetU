@@ -1,7 +1,0 @@
-applications:
-- name: meetu-config-server
-  memory: 256MB
-  path: target/configserver-0.0.1-SNAPSHOT.jar
-  env:
-    git.username: wdrdres3qew5ts21
-    git.password: "!qwer989654"

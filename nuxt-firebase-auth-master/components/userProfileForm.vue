@@ -3,7 +3,7 @@
     <h1>My Profile</h1>
     <v-layout justify-center row wrap>
       <v-flex xs12>
-        <v-card class="elevation-0 mx-auto" color="white" max-width="150">
+        <v-card class="elevation-0 mx-auto" color="white" max-width="150" style="border-radius:50%">
           <v-img :aspect-ratio="1/1" :src="getUser.photoURL"></v-img>
         </v-card>
       </v-flex>

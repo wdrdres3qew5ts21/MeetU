@@ -1,6 +1,5 @@
 applications:
 - name: meetu-service-discovery
-  memory: 256MB
+  memory: 128MB
+  random-route: true
   path: target/eurekaserver-0.0.1-SNAPSHOT.jar
-  env:
-    test: 

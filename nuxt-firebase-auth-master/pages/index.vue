@@ -5,7 +5,6 @@
       <v-carousel>
         <v-carousel-item sm6 xs2 v-for="(item,i) in carouselsPhoto" :src="item.src" :key="i"></v-carousel-item>
       </v-carousel>
-
       <br />
       <br />
       <nuxt-link to="/selectGenres">
