@@ -72,6 +72,12 @@ public class EventController {
         System.out.println("---- Reserve -----");
         return eventService.userReserveTicket(userJoinEvent);
     }
+    
+    @PostMapping("/event/view")
+    public ResponseEntity userViewEvent(@RequestBody HashMap<String, String> userViewEvent) {
+        System.out.println("---- User View Event -----");
+        return eventService.userViewEvent(userViewEvent);
+    }
 
     @GetMapping("/events")
     public ResponseEntity<List<Event>> searchWithFilter(

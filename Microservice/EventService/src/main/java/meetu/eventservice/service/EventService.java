@@ -53,6 +53,7 @@ import com.google.firebase.messaging.BatchResponse;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Notification;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import java.nio.charset.Charset;
 import java.util.Random;
 import java.util.UUID;
@@ -71,10 +72,12 @@ import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 /**
  *
@@ -93,10 +96,19 @@ public class EventService {
     private UserNotificationRepository userNotificationRepository;
 
     @Autowired
-    private QRCodeService qrCodeService;
+    private RestTemplate restTemplate;
 
     @Autowired
     private RestHighLevelClient elasticClient;
+
+    @Value("${event.service}")
+    private String EVENTSERVICE_URL;
+
+    @Value("${user.service}")
+    private String USERSERVICE_URL;
+
+    @Value("${community.service}")
+    private String COMMUNITYSERVICE_URL;
 
     private final String eventsIndex = "events";
 
@@ -381,6 +393,9 @@ public class EventService {
 
     public ResponseEntity userJoinEvent(UserEventTicket userJoinEvent) {
         HashMap<String, Object> responseBody = new HashMap<>();
+        System.out.println("------ Rest Template ------");
+        String testValue = this.restTemplate.getForObject(this.USERSERVICE_URL + "/test", String.class);
+        System.out.println(testValue);
         UserEventTicket userEventTicketInDatabase = userEventTicketRespository.findById(userJoinEvent.getId()).get();
         if (userEventTicketInDatabase != null) {
             if (userEventTicketInDatabase.isIsParticipate() == false) {
@@ -424,6 +439,31 @@ public class EventService {
 
     public UserNotification saveuserNotification(UserNotification userNotification) {
         return userNotificationRepository.save(userNotification);
+    }
+
+    @HystrixCommand(fallbackMethod = "fuckYouFallback")
+    public ResponseEntity userViewEvent(HashMap<String, String> userViewEvent) {
+        System.out.println("fuuuuuuuuuuuuu");
+        String uid = userViewEvent.get("uid");
+        String elasticEventId = userViewEvent.get("elasticEventId");
+        Event eventInDatabase = eventRepository.findByElasticEventId(elasticEventId);
+        int totalView = eventInDatabase.getTotalView();
+        totalView++;
+        eventInDatabase.setTotalView(totalView);
+        eventRepository.save(eventInDatabase);
+
+        if (uid != null) {
+            HashMap<String, String> userBody = new HashMap();
+            userBody.put("uid", uid);
+           return  restTemplate.postForEntity(USERSERVICE_URL+"/user/interest", userBody , User.class);
+
+        }
+        return null;
+    }
+    
+    public ResponseEntity fuckYouFallback(HashMap test){
+        System.out.println("Doom day hystrix!!!");
+        return ResponseEntity.status(HttpStatus.OK).body("fuq");
     }
 
 }
