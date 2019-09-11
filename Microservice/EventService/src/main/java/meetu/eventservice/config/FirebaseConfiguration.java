@@ -24,6 +24,10 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class FirebaseConfiguration {
+    
+    
+    @Value("${firebase.key.src}")
+    private String firebaseSrc;
 
     @Value("${firebase.key.src}")
     private String firebaseKeySrc;
@@ -40,7 +44,7 @@ public class FirebaseConfiguration {
             System.out.println("Firebase SRC : " + firebaseKeySrc);
 
             System.out.println(FirebaseApp.DEFAULT_APP_NAME);
-            serviceAccount = new FileInputStream(this.firebaseKeySrc);
+            serviceAccount = new FileInputStream(this.firebaseSrc);
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                     .setDatabaseUrl("https://meetu-69b29.firebaseio.com")
