@@ -13,12 +13,18 @@
     "precommit": "npm run lint",
     "deploy": "yarn generate && firebase deploy"
   },
+  "config": {
+    "nuxt": {
+      "host": "0.0.0.0",
+      "port": "3333"
+    }
+  },
   "dependencies": {
     "@chenfengyuan/vue-qrcode": "^1.0.1",
     "@nuxtjs/onesignal": "^3.0.0-beta.16",
     "@nuxtjs/pwa": "^2.4.0",
     "axios": "^0.18.0",
-    "cross-env": "^5.2.0",
+    "cross-env": "^5.2.1",
     "dotenv": "^8.0.0",
     "firebase": "^6.2.4",
     "jsqr": "^1.2.0",
