@@ -22,12 +22,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class User {
 
     private String userId;
+    
+    private String uid;
+
+    private String email;
 
     private String username;
 
     private String role;
-
-    private String email;
 
     private String firstName;
 
@@ -136,6 +138,15 @@ public class User {
     public void setCounry(String counry) {
         this.country = counry;
     }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+    
 
     public String getGender() {
         return gender;

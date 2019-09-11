@@ -106,9 +106,22 @@ public class UserService {
 
     public User saveNotificationToken(User notificationBody) {
         System.out.println("---- ------------------------");
-        System.out.println("Notification Token //" +notificationBody.getUid()+" /// token: "+notificationBody.getNotificationToken());
-       
+        System.out.println("Notification Token //" + notificationBody.getUid() + " /// token: " + notificationBody.getNotificationToken());
+
         return null;
+    }
+
+    public ResponseEntity updateUserInterestPersona(HashMap<String, String> userInterest) {
+        String uid = userInterest.get("uid");
+        User userInDatabase = userRepository.findByUid(uid);
+        if (userInDatabase != null) {
+            System.out.println("found user !!!");
+            System.out.println(userInDatabase);
+            return ResponseEntity.status(HttpStatus.CREATED).body(userInDatabase);
+        }
+        HashMap<String, String> responseBody = new HashMap();
+        responseBody.put("response", "Not found any user in database !");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
     }
 
 }
