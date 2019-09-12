@@ -16,9 +16,6 @@
       <v-select :items="eventTypes" label="Event Types" v-model="eventTypes"></v-select>
     </v-flex>
 
-    <v-form>
-      <v-text-field v-model="eventStart" :rules="eventStartRules" label="* Event Starts" required></v-text-field>
-    </v-form>
 
     <v-col cols="12" sm="6" md="4">
       <v-menu
@@ -136,10 +133,18 @@
     <v-btn class="addLocationButton" color="white">Add Location</v-btn>
 
     <br><br><br>
+<!-- 
+        <v-file-input
+    label="File input"
+    filled
+    prepend-icon="mdi-camera"
+  ></v-file-input> -->
+
 
     <nuxt-link class="uploadPosterImg" to="/">Upload poster image </nuxt-link>
+    
     <br>
-    <nuxt-link class="createTicket" to="/">Create ticket </nuxt-link>
+    <nuxt-link class="createTicket" to="/createNewTicket">Create ticket </nuxt-link>
 
     <br />
     <br />
@@ -149,7 +154,7 @@
       <nuxt-link :to="`/?`" style="text-decoration-line:none;">
         <v-btn
           block
-          class="setupOrganizerAccount white--text"
+          class="saveButton white--text"
           color="#341646"
           depressed
           large

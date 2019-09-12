@@ -1,6 +1,35 @@
 <template>
   <div>
-    <v-card class="elevation-0 mx-auto" color="transparent" max-width="150">
+    <br />
+
+    <v-layout>
+      <v-flex text-xs-center xs12 sm6 offset-sm3>
+        <h1 class="title">Sign Up</h1>
+        <br />
+        <v-btn
+          block
+          :round="true"
+          color="#DC4B3F"
+          class="signIn mb-2 white--text"
+          primary
+          @click.native="googleSignUp()"
+        >Google</v-btn>
+        <v-btn
+          block
+          :round="true"
+          color="#3B5998"
+          class="signIn mb-2 white--text"
+          primary
+          @click.native="facebookSignUp()"
+        >Facebook</v-btn>
+      </v-flex>
+    </v-layout>
+    <br />
+
+    <hr />
+
+    <br />
+    <!-- <v-card class="elevation-0 mx-auto" color="transparent" max-width="150">
       <v-img
         :aspect-ratio="1/1"
         src="https://image.flaticon.com/icons/png/512/64/64572.png"
@@ -12,16 +41,16 @@
           <v-icon>add_a_photo</v-icon>
         </v-btn>
       </v-card-text>
-    </v-card>
+    </v-card>-->
 
     <v-form ref="form" v-model="valid" lazy-validation>
-      <v-text-field v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
+      <v-text-field v-model="email" :rules="emailRules" label="* E-mail" required></v-text-field>
 
       <v-text-field
         v-model="password"
         type="password"
         :rules="passwordRules"
-        label="Password"
+        label="* Password"
         required
       ></v-text-field>
 
@@ -29,13 +58,13 @@
         v-model="confirmPassword"
         type="password"
         :rules="passwordRules"
-        label="Confirm Password"
+        label="* Password Confirmation"
         required
       ></v-text-field>
 
-      <v-text-field v-model="firstname" :rules="firstnameRules" label="Firstname" required></v-text-field>
+      <v-text-field v-model="firstname" :rules="firstnameRules" label="* Firstname" required></v-text-field>
 
-      <v-text-field v-model="lastname" :rules="lastnameRules" label="Lastname" required></v-text-field>
+      <v-text-field v-model="lastname" :rules="lastnameRules" label="* Lastname" required></v-text-field>
 
       <v-layout row wrap>
         <v-flex xs12 sm6 md4>
@@ -139,7 +168,9 @@ export default {
     passwordRules: [
       v => !!v || "Password is required",
       v => v.length >= 8 || "Password must be 8 character",
-      v => this.password === this.confirmPassword || "Password and Confirm Password need to be match"
+      v =>
+        this.password === this.confirmPassword ||
+        "Password and Confirm Password need to be match"
     ],
     confirmPassword: "",
     // passwordRules: [
@@ -265,7 +296,7 @@ export default {
         gender: this.gender,
         firstName: this.firstname,
         lastName: this.lastname
-      })
+      });
       this.$store.dispatch("signUpWithEmail", {
         email: this.email,
         password: this.password,
