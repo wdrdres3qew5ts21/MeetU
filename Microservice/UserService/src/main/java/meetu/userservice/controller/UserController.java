@@ -96,6 +96,11 @@ public class UserController {
     public ResponseEntity<String> login(@RequestBody User user) {
         return new ResponseEntity<String>(userService.login(user), HttpStatus.OK);
     }
+    
+    @PostMapping("/user/interest")
+    public ResponseEntity updateUserInterestPersona(@RequestBody HashMap<String, String> userInterest) {
+        return userService.updateUserInterestPersona(userInterest);
+    }
 
     @PatchMapping
     public ResponseEntity<User> giveExpFromEventToBadge(@RequestBody HashMap<String, Object> expForBadge) {

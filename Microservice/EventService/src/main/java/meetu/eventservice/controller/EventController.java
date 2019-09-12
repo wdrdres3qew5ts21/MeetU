@@ -14,6 +14,7 @@ import meetu.eventservice.model.Event;
 import meetu.eventservice.model.EventTicket;
 import meetu.eventservice.model.User;
 import meetu.eventservice.model.UserNotification;
+import meetu.eventservice.model.UserEventTicket;
 import meetu.eventservice.service.QRCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -62,13 +63,20 @@ public class EventController {
     }
 
     @PostMapping("/event/join")
-    public ResponseEntity<EventTicket> userJoinEvent(@RequestBody EventTicket userJoinEvent) {
-        return new ResponseEntity<EventTicket>(eventService.userJoinEvent(userJoinEvent), HttpStatus.CREATED);
+    public ResponseEntity userJoinEvent(@RequestBody UserEventTicket userJoinEvent) {
+        return new ResponseEntity(eventService.userJoinEvent(userJoinEvent), HttpStatus.CREATED);
     }
 
-    @PostMapping("/event/ticket")
-    public ResponseEntity<EventTicket> userReserveTicket(@RequestBody EventTicket userJoinEvent) {
-        return new ResponseEntity<EventTicket>(eventService.userReserveTicket(userJoinEvent), HttpStatus.CREATED);
+    @PostMapping("/event/reserve")
+    public ResponseEntity userReserveTicket(@RequestBody UserEventTicket userJoinEvent) {
+        System.out.println("---- Reserve -----");
+        return eventService.userReserveTicket(userJoinEvent);
+    }
+    
+    @PostMapping("/event/view")
+    public ResponseEntity userViewEvent(@RequestBody HashMap<String, String> userViewEvent) {
+        System.out.println("---- User View Event -----");
+        return eventService.userViewEvent(userViewEvent);
     }
 
     @GetMapping("/events")
@@ -122,23 +130,5 @@ public class EventController {
         response.setContentType("image/png");
         return new ResponseEntity<byte[]>(qRCodeService.getQRCodeImage("https://trello.com/b/OutSJrmK/project", 1000, 1000), HttpStatus.OK);
     }
-
-//    @GetMapping("/events/qrcode")
-//    public ResponseEntity<byte[]> qrCodeGenerator(HttpServletResponse response) {
-//        response.setContentType("image/png");
-//        return new ResponseEntity<byte[]>(qRCodeService.getQRCodeImage("https://trello.com/b/OutSJrmK/project", 1000, 1000), HttpStatus.OK);
-//    }
-    @RequestMapping (value="event/qr/{elasticEventId}", method = RequestMethod.GET)
-public ResponseEntity<byte[]> qr(@PathVariable final Long elasticEventId) {
-
-    ByteArrayOutputStream stream = QRCode.from(findByElasticEventId.findOne(elasticEventId).toString()).stream();
-
-    byte[] bytes = stream.toByteArray();
-
-    final HttpHeaders headers = new HttpHeaders();
-    headers.setContentType(MediaType.IMAGE_PNG);
-
-    return new ResponseEntity<byte[]> (bytes, headers, HttpStatus.CREATED);
-}
-  
+    
 }

@@ -37,7 +37,9 @@ public class ElasticConfig {
     
     private static final String serviceName = "es";
     private static final String region = "ap-southeast-1";
-    private static final String aesEndpoint = "search-meetu-yuaodhycqphhgutbr327txd3ke.ap-southeast-1.es.amazonaws.com";
+    
+    @Value("${elasticsearch.endpoint}")
+    private static String aesEndpoint;
 
     static final AWSCredentialsProvider credentialsProvider = new DefaultAWSCredentialsProviderChain();
 
