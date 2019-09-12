@@ -5,14 +5,10 @@
  */
 package meetu.eventservice.config;
 
-import com.mongodb.MongoClientOptions;
-import com.mongodb.MongoCredential;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.mongodb.core.MongoClientFactoryBean;
+
 
 /**
  *
@@ -39,5 +35,5 @@ public class MongoConfig {
 //                .build());
 //        return mongo;
 //    }
-
+    
 }

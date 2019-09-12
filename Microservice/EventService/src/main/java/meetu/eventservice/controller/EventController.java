@@ -61,6 +61,11 @@ public class EventController {
     public ResponseEntity saveUserNotificationToken(@RequestBody UserNotification userNotification) {
         return new ResponseEntity(eventService.saveuserNotification(userNotification), HttpStatus.CREATED);
     }
+    
+    @GetMapping("/events/tickets/{uid}")
+    public ResponseEntity findUserTicketHistory(@PathVariable String uid) {
+        return eventService.findUserTicketHistory(uid);
+    }
 
     @PostMapping("/event/join")
     public ResponseEntity userJoinEvent(@RequestBody UserEventTicket userJoinEvent) {

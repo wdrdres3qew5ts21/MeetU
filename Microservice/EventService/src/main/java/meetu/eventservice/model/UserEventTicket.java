@@ -24,7 +24,7 @@ public class UserEventTicket {
     private String elasticEventId;
     
     private String ticketKey;
-
+    
     private boolean isParticipate = false;
 
     private Date participateDate;

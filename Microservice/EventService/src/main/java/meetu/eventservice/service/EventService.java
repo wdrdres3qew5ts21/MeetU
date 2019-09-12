@@ -53,6 +53,7 @@ import com.google.firebase.messaging.BatchResponse;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Notification;
+import com.mongodb.BasicDBObject;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import java.nio.charset.Charset;
 import java.util.Random;
@@ -74,9 +75,15 @@ import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
+import org.springframework.data.mongodb.core.aggregation.LookupOperation;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -94,6 +101,9 @@ public class EventService {
 
     @Autowired
     private UserNotificationRepository userNotificationRepository;
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     @Autowired
     private RestTemplate restTemplate;
@@ -455,15 +465,29 @@ public class EventService {
         if (uid != null) {
             HashMap<String, String> userBody = new HashMap();
             userBody.put("uid", uid);
-           return  restTemplate.postForEntity(USERSERVICE_URL+"/user/interest", userBody , User.class);
+            return restTemplate.postForEntity(USERSERVICE_URL + "/user/interest", userBody, User.class);
 
         }
         return null;
     }
-    
-    public ResponseEntity fuckYouFallback(HashMap test){
+
+    public ResponseEntity fuckYouFallback(HashMap test) {
         System.out.println("Doom day hystrix!!!");
         return ResponseEntity.status(HttpStatus.OK).body("fuq");
+    }
+
+    public ResponseEntity findUserTicketHistory(String uid) {
+        LookupOperation lookupOperation = LookupOperation.newLookup()
+                .from("events")
+                .localField("elasticEventId")
+                .foreignField("elasticEventId")
+                .as("ticketHistory");
+        AggregationOperation match = Aggregation.match(Criteria.where("uid").is(uid));
+        Aggregation aggregation = Aggregation.newAggregation(lookupOperation, match);
+        List<BasicDBObject> results = mongoTemplate.aggregate(aggregation, "userEventTicket", BasicDBObject.class).getMappedResults();
+        System.out.println("----------------------");
+        System.out.println(results);
+        return ResponseEntity.status(HttpStatus.OK).body(results);
     }
 
 }

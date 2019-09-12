@@ -16,4 +16,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 public interface UserEventTicketRepository  extends MongoRepository<UserEventTicket, String> {
     
     
+    
 }
