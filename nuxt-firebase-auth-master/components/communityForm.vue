@@ -30,14 +30,14 @@
               hide-details>
             </v-text-field>
         </v-layout.mb-4>
-              
+        <nuxt-link :to="`/community/communityId/?`" style="text-decoration-line:none;">      
     <v-btn
       block
       round="16px;"
       color="#341646"
       class="mb-2 white--text"
-      @click.stop="createCommunityPopup"
     >Create Community</v-btn>
+        </nuxt-link>
   </div>
 </template> 
  
@@ -67,25 +67,7 @@ export default {
       // upload file, get it from this.selectedFile
     },
 
-    createCommunityPopup: function(e) {
-      Swal.fire({
-        title: "Are you sure?",
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#4BB543",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Create organize!"
-      }).then(result => {
-        if (result.value) {
-          Swal.fire({
-            title: "Create organize success!",
-            type: "success",
-            showConfirmButton: true,
-            confirmButtonColor: "#4BB543"
-          });
-        }
-      });
-    }
+ 
   }
 };
 </script> 

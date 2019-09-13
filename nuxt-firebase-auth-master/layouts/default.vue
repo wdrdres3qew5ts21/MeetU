@@ -214,6 +214,7 @@ export default {
       linksFooter: [
         "Home",
         "About Us",
+        "Community",
         "Team",
         "Services",
         "Blog",

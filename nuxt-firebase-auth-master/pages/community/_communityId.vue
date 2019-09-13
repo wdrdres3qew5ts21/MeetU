@@ -12,8 +12,6 @@
               rounded
               placeholder="Write somthing..."
             ></v-text-field>
-
-            <v-divider></v-divider>
           </v-flex>
         </v-layout>
         <v-layout>
