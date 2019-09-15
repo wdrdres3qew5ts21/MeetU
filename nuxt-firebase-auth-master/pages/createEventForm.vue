@@ -141,10 +141,10 @@
   ></v-file-input> -->
 
 
-    <nuxt-link class="uploadPosterImg" to="/">Upload poster image </nuxt-link>
+    <nuxt-link class="uploadPosterImg" to="/uploadPosterImg?">Upload poster image </nuxt-link>
     
     <br>
-    <nuxt-link class="createTicket" to="/createNewTicket">Create ticket </nuxt-link>
+    <nuxt-link class="createTicket" to="/createNewTicket?">Create ticket </nuxt-link>
 
     <br />
     <br />
