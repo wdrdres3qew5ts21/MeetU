@@ -1,7 +1,7 @@
 <template>
   <div>
     <br />
-    <h1 style="color:#341646">Create New Events</h1>
+    <h2 class="h2">Create New Events</h2>
     <br />
 
     <v-form>
@@ -214,6 +214,9 @@ export default {
   background: transparent; */
 }
 
+.h2 {
+  color: #341646;
+}
 
 .location{
     font-family: Roboto !important;
