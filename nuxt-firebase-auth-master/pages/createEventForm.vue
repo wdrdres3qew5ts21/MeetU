@@ -193,6 +193,10 @@ export default {
       time:null,
       menuTime1:false,
       menuTime2:false,
+      eventNameRules: [
+      v => !!v || "Event name is required",
+      
+    ],
     
     };
   }
