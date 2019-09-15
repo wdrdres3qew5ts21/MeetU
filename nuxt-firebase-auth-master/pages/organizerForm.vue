@@ -41,13 +41,21 @@
       </v-layout>
     </v-form>
 
-    <v-checkbox v-model="checkbox" :error-messages="checkboxErrors" label="* Accept" required></v-checkbox>
 
-    <nuxt-link to="/">Term of service</nuxt-link>
-    <p class="termOfServiceDescription grey--text">
-      I hereby accept this agreement and provided
-      <br />my identification and company registration document as proof.
-    </p>
+
+     <v-checkbox
+        v-model="agreement"
+        :rules="[rules.required]"
+        color="#341646"
+      >
+        <template v-slot:label>
+          I agree to the&nbsp;
+          <nuxt-link to="/" @click.stop.prevent="dialog = true">
+            Terms of Service </nuxt-link>
+           
+          
+        </template>
+      </v-checkbox>
 
     <br />
     <br />
@@ -66,8 +74,7 @@
 
     <br />
     <br />
-    <br />
-    <br />
+
 
     <!-- <v-form>
         <span>* Organizer Name</span>
@@ -96,7 +103,10 @@ export default {
       ],
       organizerNameRules: [v => !!v || "Organizer Name is required"],
 
-      checkbox: false
+      checkbox: false,
+      agreement: false,
+      rules: {required: v => !!v || 'This field is required',
+      },
     };
   }
 };
