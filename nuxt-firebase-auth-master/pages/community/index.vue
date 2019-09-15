@@ -8,13 +8,33 @@
     <br />
     <h2>Recent activity</h2>
     <br />
+
+<div class="avatars">
+  <!-- url:image loop -->
+    <span class="avatar" >
+      <img src="https://cdn.vuetifyjs.com/images/john.jpg"  width="50" height="50"/>
+    </span>
+
+      <span class="avatar" >
+      <img src="https://cdn.vuetifyjs.com/images/john.jpg"  width="50" height="50"/>
+    </span>
+
+    <span class="avatar" >
+      <img src="https://cdn.vuetifyjs.com/images/john.jpg"  width="50" height="50"/>
+    </span>
+</div>
+   
+
     <center>
-      
-        <v-btn class="black--text"   block outline color="#341646" depressed large>Filter community <v-icon>filter_list </v-icon></v-btn>
-      
+      <v-btn class="black--text" block outline color="#341646" depressed large>
+        Filter community
+        <v-icon>filter_list</v-icon>
+      </v-btn>
     </center>
     <br />
-    <v-card class="mx-auto" max-width="800"> 
+
+    <v-card class="mx-auto" max-width="800">
+      <!-- :src="meetu.imageUrl" -->
       <v-img
         class="#341646--text"
         height="300px"
@@ -28,7 +48,6 @@
           <br />
         </span>
       </v-card-text>
-
       <v-card-actions>
         <v-btn class="white--text" color="#341646">JOIN</v-btn>
       </v-card-actions>
@@ -73,14 +92,6 @@ export default {
         },
         {
           src: "http://sites.ieee.org/vancouver-cs/files/2012/07/CIS_logo.png"
-        },
-        {
-          src:
-            "https://www.rabbittoday.com/-/media/rabbittoday/content/events/ed-sheeran-divide-world-tour-2019/ed-sheeran-divide-world-tour-2019-event-rabbit-today-banner.jpg?la=th-TH&hash=C6B48BA5F7F79606DCE4B88DDE9A51EE9FE25A1C"
-        },
-        {
-          src:
-            "https://www.rabbittoday.com/-/media/rabbittoday/content/events/siamsongkranmusicfestival/siamsongkranmusicfestival-banner.jpg?la=th-TH&hash=6DBCBED42B97294F2E6AAE635F84BCE455518957"
         }
       ]
     };
@@ -96,6 +107,18 @@ export default {
 .createCummunityButton {
   font-weight: bold;
   margin-bottom: 10%;
+}
+
+.avatars {
+  text-align: left;  
+  padding-left: 25px; 
+}
+.avatar img {
+  border-radius: 50%;
+  position: relative;
+  left: -5px;
+  margin-left: -20px;
+  z-index: 1;
 }
 </style>
 
