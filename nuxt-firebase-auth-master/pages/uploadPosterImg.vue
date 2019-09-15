@@ -1,18 +1,10 @@
 <template>
-  <v-container>
-    <user-profile-form></user-profile-form>
-  </v-container>
+    <div>
+        
+    </div>
 </template>
 
-<script>
-import userProfileForm from "~/components/userProfileForm";
 
-export default {
-  components: {
-    userProfileForm
-  }
-};
-</script>
 
 <style lang="css">
 
@@ -29,4 +21,5 @@ export default {
   background: transparent; */
 }
 
+    
 </style>
