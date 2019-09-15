@@ -131,6 +131,4 @@ export default {
   border: solid 1px #341646 !important;
 }
 
-.organizerForm {
-}
 </style>

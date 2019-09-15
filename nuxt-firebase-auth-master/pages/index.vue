@@ -251,7 +251,7 @@
 
         <br />
 
-        <nuxt-link :to="`/organizer?`" style="text-decoration-line:none;">
+        <nuxt-link :to="`/becomeOrganizer?`" style="text-decoration-line:none;">
           <v-btn
             class="upgradeToOrganizerButton white--text"
             depressed

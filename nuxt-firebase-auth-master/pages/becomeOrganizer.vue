@@ -78,25 +78,18 @@ export default {
 
 
 <style lang="css">
-
 .v-content {
   max-width: 100%;
   background-color: #eeeeee;
-
 }
-
 .linkToContactUs{
 color:#100C4B;
 }
-
 .linkToContactUs:hover{
     text-decoration: underline #100C4B;
 }
-
 .getStartedButton{
   font-family: Roboto !important;
   
 }
-
-
 </style>
