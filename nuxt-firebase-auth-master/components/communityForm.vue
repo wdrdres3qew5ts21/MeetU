@@ -1,6 +1,7 @@
 <template>
   <div>
     <h1>Create New Community</h1>
+  
     <v-text-field
       v-model="communityName"
       :rules="communityNameRules"
@@ -8,36 +9,28 @@
       required
     ></v-text-field>
 
-    <v-flex>
-      <v-select :items="Category" label="Category"></v-select>
-    </v-flex>
+    <v-autocomplete label="Categorys" :items="Category"></v-autocomplete>
 
     <v-text-field label="Add some people" required></v-text-field>
 
-    <v-flex>
-      <v-select :items="privacy" label="Select privacy"></v-select>
-    </v-flex>
+    <br />
+    <v-layout class="mb-4">
+      <v-text-field
+        name="description"
+        label="Description"
+        color="pink"
+        textarea
+        rows="6"
+        required
+        hide-details
+      ></v-text-field>
+    </v-layout>
+    <nuxt-link :to="`/community/communityId/?`" style="text-decoration-line:none;">
+      <br />
+      <v-btn block round="16px;" color="#341646" class="mb-2 white--text" >Create Community</v-btn>
 
-
-        <v-layout.mb-4>
-            <v-text-field
-              name="description"
-              label="Description"
-              color="pink"
-              textarea
-              rows="6"
-              required
-              hide-details>
-            </v-text-field>
-        </v-layout.mb-4>
-        <nuxt-link :to="`/community/communityId/?`" style="text-decoration-line:none;">      
-    <v-btn
-      block
-      round="16px;"
-      color="#341646"
-      class="mb-2 white--text"
-    >Create Community</v-btn>
-        </nuxt-link>
+    </nuxt-link>
+   
   </div>
 </template> 
  
@@ -52,8 +45,6 @@ export default {
       valid: true,
       communityName: "",
       communityNameRules: [v => !!v || "Community name is required"],
-      privacy: ["Public", "Closed", "Secret"],
-
       Category: ["Education"],
       dialog1: false,
       dialog2: false
@@ -65,9 +56,7 @@ export default {
     },
     onUpload: function(e) {
       // upload file, get it from this.selectedFile
-    },
-
- 
+    }
   }
 };
 </script> 
