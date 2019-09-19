@@ -1,31 +1,49 @@
 <template>
   <transition name="router-anim" enter-active-class="animated slideInRight">
     <div class="text-xs-center">
-      <v-flex justify-content: left>
-        <v-text-field placeholder="Search..." v-model="search" @keyup.enter="searchEventByFilter()"></v-text-field>
-      </v-flex>
-      <v-flex justify-start>
-        <v-btn
-          class="white--text"
-          :round="true"
-          depressed
-          color="#341646"
-          ref="searchButton"
-          @click="searchEventByFilter()"
-        >Search</v-btn>
-      </v-flex>
+        <v-card
+    class="mx-auto"
+    elevation="0"
+    outlined
+  >
+        <div class="px-3">
+        <v-layout>
+          <v-flex xs12>
+            <v-text-field   
+              class="questrial no-top-padding"
+              height="44px"
+              rounded
+              placeholder="Search..."
+              v-model="search"
+              @keyup.enter="searchEventByFilter()"
+            ></v-text-field>
+          </v-flex>
+        </v-layout>
+        </div>
+      </v-card>
 
-      <br>
+      <v-btn
+        class="white--text"
+        depressed
+        large
+        color="#341646"
+        ref="searchButton"
+        @click="searchEventByFilter()"
+      >Search</v-btn>
+
+      <br />
       <v-flex justify-space-around>
         <div class="text-xs-left">
-          <v-chip
-            color="#341646"
-            :round="true"
-            text-color="white"
-            @click="isShowEventTag=!isShowEventTag"
-          >
-            <v-icon left color="white">label</v-icon>Tags
+        
+         <v-chip 
+          outlined
+         
+          class="ma-2" 
+           @click="isShowEventTag=!isShowEventTag">
+            <v-icon left color="black" >label</v-icon>Tags
           </v-chip>
+
+          
           {{selectedCategoryList}}
           <v-combobox
             v-model="selectedCategoryList"
@@ -40,7 +58,7 @@
         </div>
       </v-flex>
       <h1>Founded Event</h1>
-      <br>
+      <br />
       <no-ssr>
         <v-layout>
           <v-layout row wrap>
@@ -101,14 +119,16 @@ export default {
       this.chips = [...this.chips];
     },
     searchEventByFilter: async function() {
-      let query= `${process.env.EVENT_SERVICE}/events?isRecently=${this.isRecently}&eventDetail=${this.search.toLowerCase()}`;
-     if(this.selectedCategoryList.length>0){
-       query +=`&eventTags=`
-        for(let i =0;i<this.selectedCategoryList.length;i++){
-          query +=`${this.selectedCategoryList[i]},`
+      let query = `${process.env.EVENT_SERVICE}/events?isRecently=${
+        this.isRecently
+      }&eventDetail=${this.search.toLowerCase()}`;
+      if (this.selectedCategoryList.length > 0) {
+        query += `&eventTags=`;
+        for (let i = 0; i < this.selectedCategoryList.length; i++) {
+          query += `${this.selectedCategoryList[i]},`;
         }
-     }
-     console.log(query)
+      }
+      console.log(query);
       let searchedEventList = await axios.get(query);
       searchedEventList = searchedEventList.data;
       this.searchedEventList = searchedEventList;
