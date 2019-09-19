@@ -59,6 +59,7 @@ import java.nio.charset.Charset;
 import java.util.Random;
 import java.util.UUID;
 import meetu.eventservice.model.UserEventTicket;
+import meetu.eventservice.model.UserViewEvent;
 import meetu.eventservice.repository.UserEventTicketRepository;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
 import org.elasticsearch.index.query.MatchAllQueryBuilder;
@@ -452,10 +453,10 @@ public class EventService {
     }
 
     @HystrixCommand(fallbackMethod = "fuckYouFallback")
-    public ResponseEntity userViewEvent(HashMap<String, String> userViewEvent) {
+    public ResponseEntity userViewEvent(UserViewEvent userViewEvent) {
         System.out.println("fuuuuuuuuuuuuu");
-        String uid = userViewEvent.get("uid");
-        String elasticEventId = userViewEvent.get("elasticEventId");
+        String elasticEventId = userViewEvent.getElasticEventId();
+        String uid = userViewEvent.getUid();
         Event eventInDatabase = eventRepository.findByElasticEventId(elasticEventId);
         int totalView = eventInDatabase.getTotalView();
         totalView++;
@@ -463,10 +464,7 @@ public class EventService {
         eventRepository.save(eventInDatabase);
 
         if (uid != null) {
-            HashMap<String, String> userBody = new HashMap();
-            userBody.put("uid", uid);
-            return restTemplate.postForEntity(USERSERVICE_URL + "/user/interest", userBody, User.class);
-
+            return restTemplate.postForEntity(USERSERVICE_URL + "/user/interest", userViewEvent, User.class);
         }
         return null;
     }

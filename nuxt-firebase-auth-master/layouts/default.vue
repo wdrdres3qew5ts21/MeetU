@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-navigation-drawer v-model="drawer" fixed app style="background-color: #fff">
+    <v-navigation-drawer v-model="drawer" fixed app right style="background-color: #fff">
       <v-list>
         <v-list-tile>
           <v-spacer></v-spacer>

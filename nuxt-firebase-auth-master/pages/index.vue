@@ -13,7 +13,6 @@
       <!-- <h1>Recomended Event for {{$store.getters.mockGetUser.firstName}}</h1> -->
       <!-- <event-list :eventList="recommendedEventList"></event-list> -->
       <!-- Test card img -->
-
       <h1>Recomended Event</h1>
       <v-container fluid grid-list-md>
         <v-layout row wrap>

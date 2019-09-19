@@ -73,7 +73,7 @@ export default {
       ]
     };
   },
-  beforeMount() {
+  mounted() {
     this.getLocation();
   },
   computed: {

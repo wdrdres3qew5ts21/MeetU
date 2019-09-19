@@ -15,6 +15,7 @@ import meetu.eventservice.model.EventTicket;
 import meetu.eventservice.model.User;
 import meetu.eventservice.model.UserNotification;
 import meetu.eventservice.model.UserEventTicket;
+import meetu.eventservice.model.UserViewEvent;
 import meetu.eventservice.service.QRCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -79,9 +80,14 @@ public class EventController {
     }
     
     @PostMapping("/event/view")
-    public ResponseEntity userViewEvent(@RequestBody HashMap<String, String> userViewEvent) {
+    public ResponseEntity userViewEvent(@RequestBody UserViewEvent userViewEvent) {
         System.out.println("---- User View Event -----");
         return eventService.userViewEvent(userViewEvent);
+    }
+    
+    @DeleteMapping("/event/{elasticEventId}")
+    public ResponseEntity deleteEventByElasticId(@PathVariable String elasticEventId){
+        return eventService.deleteEventByElasticId(elasticEventId);
     }
 
     @GetMapping("/events")
@@ -123,11 +129,6 @@ public class EventController {
             @RequestBody User user
     ) {
         return new ResponseEntity<List<Event>>(eventService.findEventByPersonalize(user), HttpStatus.OK);
-    }
-
-    @DeleteMapping("/event/{elasticEventId}")
-    public ResponseEntity<HashMap<String, Object>> deleteEventByElasticId(@PathVariable String elasticEventId) {
-        return eventService.deleteEventByElasticId(elasticEventId);
     }
 
     @GetMapping("/event/qrcode")

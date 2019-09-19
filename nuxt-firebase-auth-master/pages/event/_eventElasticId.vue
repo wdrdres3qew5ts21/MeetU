@@ -69,26 +69,36 @@
     </p>
     <v-layout row wrap>
       <v-flex xs6>Free</v-flex>
-      <v-flex xs6>
+      <!-- <v-flex xs6>
         <v-select :items="numberOfTicket" label="numberOfTicket"></v-select>
-      </v-flex>
+      </v-flex>-->
     </v-layout>
-    <v-btn @click="userReserveTicket()" block :disabled="!isTicketSelected" color="primary" id="ticketSection">GET TICKET</v-btn>
-    
-    <qrcode :value="qrCodeSrc" :options="{ width: 200 }"></qrcode>
+    <v-btn
+      @click="userReserveTicket()"
+      block
+      :disabled="!isTicketSelected"
+      color="primary"
+      id="ticketSection"
+    >GET TICKET</v-btn>
+    <center>
+      <qrcode :value="qrCodeSrc" :options="{ width: 200 }"></qrcode>
+    </center>
+
     <h3>Contract</h3>
     <p>Contract the oraganizer for more information</p>
     <v-card class="mx-auto" elevation="1">
-      <div style="width:200px;overflow:hidden">
-        <v-img
-          src="https://picsum.photos/id/11/500/300"
-          lazy-src="https://picsum.photos/id/11/10/6"
-          aspect-ratio="1"
-          class="grey lighten-2"
-          max-width="300"
-          style="border-radius:60%;"
-        ></v-img>
-      </div>
+      <center>
+        <div style="width:200px;overflow:hidden">
+          <v-img
+            src="https://picsum.photos/id/11/500/300"
+            lazy-src="https://picsum.photos/id/11/10/6"
+            aspect-ratio="1"
+            class="grey lighten-2"
+            max-width="300"
+            style="border-radius:60%;"
+          ></v-img>
+        </div>
+      </center>
       <v-card-title justify-center>Organizer</v-card-title>
       <v-card-text>Website</v-card-text>
       <v-card-text>Email</v-card-text>
@@ -178,17 +188,17 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["getCurrentLocation","getUser"])
+    ...mapGetters(["getCurrentLocation", "getUser"])
   },
   methods: {
     ...mapActions(["updateCurrentLocation"]),
-    userReserveTicket: function(){
-      console.log("User Reserve Ticket Event!")
+    userReserveTicket: function() {
+      console.log("User Reserve Ticket Event!");
 
       let userJoinEventBody = {
         uid: this.getUser.uid,
         eventElasticId: this.$route.params.eventElasticId
-      }
+      };
       this.qrCodeSrc = JSON.stringify(userJoinEventBody);
       //axios.post(`${process.env.EVENT_SERVICE}/event/ticket`, userJoinEventBody)
     },
