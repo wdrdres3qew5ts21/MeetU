@@ -35,8 +35,8 @@
           <v-list-tile v-for="(category, i) in categoryList" :key="i" ripple>
             <v-list-tile-action></v-list-tile-action>
             <v-list-tile-content>
-              <nuxt-link class="categoryLink" :to="`/event?category=${category}`">
-                <v-list-tile-title>{{ category }}</v-list-tile-title>
+              <nuxt-link class="categoryLink" :to="`/event?category=${category.categoryName}`">
+                <v-list-tile-title>{{ category.categoryLabel }}</v-list-tile-title>
               </nuxt-link>
             </v-list-tile-content>
           </v-list-tile>
@@ -52,8 +52,8 @@
           <v-list-tile v-for="(category, i) in categoryList" :key="i" ripple>
             <v-list-tile-action></v-list-tile-action>
             <v-list-tile-content>
-              <nuxt-link class="categoryLink" :to="`/event?category=${category}`">
-                <v-list-tile-title>{{ category }}</v-list-tile-title>
+              <nuxt-link class="categoryLink" :to="`/event?category=${category.categoryName}`">
+                <v-list-tile-title>{{ category.categoryLabel }}</v-list-tile-title>
               </nuxt-link>
             </v-list-tile-content>
           </v-list-tile>
@@ -69,8 +69,8 @@
           <v-list-tile v-for="(category, i) in categoryList" :key="i" ripple>
             <v-list-tile-action></v-list-tile-action>
             <v-list-tile-content>
-              <nuxt-link class="categoryLink" :to="`/event?category=${category}`">
-                <v-list-tile-title>{{ category }}</v-list-tile-title>
+              <nuxt-link class="categoryLink" :to="`/event?category=${category.categoryName}`">
+                <v-list-tile-title>{{ category.categoryLabel }}</v-list-tile-title>
               </nuxt-link>
             </v-list-tile-content>
           </v-list-tile>
@@ -86,8 +86,8 @@
           <v-list-tile v-for="(category, i) in categoryList" :key="i" ripple>
             <v-list-tile-action></v-list-tile-action>
             <v-list-tile-content>
-              <nuxt-link class="categoryLink" :to="`/event?category=${category}`">
-                <v-list-tile-title>{{ category }}</v-list-tile-title>
+              <nuxt-link class="categoryLink" :to="`/event?category=${category.categoryName}`">
+                <v-list-tile-title>{{ category.categoryLabel }}</v-list-tile-title>
               </nuxt-link>
             </v-list-tile-content>
           </v-list-tile>
@@ -103,8 +103,8 @@
           <v-list-tile v-for="(category, i) in categoryList" :key="i" ripple>
             <v-list-tile-action></v-list-tile-action>
             <v-list-tile-content>
-              <nuxt-link class="categoryLink" :to="`/event?category=${category}`">
-                <v-list-tile-title>{{ category }}</v-list-tile-title>
+              <nuxt-link class="categoryLink" :to="`/event?category=${category.categoryName}`">
+                <v-list-tile-title>{{ category.categoryLabel }}</v-list-tile-title>
               </nuxt-link>
             </v-list-tile-content>
           </v-list-tile>
@@ -199,10 +199,8 @@ import { auth } from "@/plugins/fireinit.js";
 import Swal from "sweetalert2";
 import { mapActions, mapGetters } from "vuex";
 import { isLogin } from "@/utils/loginVerify";
-import { error } from 'util';
-import {
-  mockCategoryList,
-} from "@/utils/categoryJson";
+import { error } from "util";
+import { mockCategoryList } from "@/utils/categoryJson";
 
 export default {
   data() {
@@ -260,18 +258,20 @@ export default {
       return this.$store.getters.mockGetUser;
     }
   },
-  mounted(){
-    this.loadCategoryList()
+  mounted() {
+    this.loadCategoryList();
   },
   methods: {
     ...mapActions(["autoSignIn"]),
     loadCategoryList() {
-      axios.get(`${process.env.EVENT_SERVICE}/category`)
-      .then(categoryList => {
-        this.categoryList = categoryList.sdata;
-      }).catch(error=>{
-        this.categoryList = mockCategoryList;
-      });
+      axios
+        .get(`${process.env.EVENT_SERVICE}/category`)
+        .then(categoryList => {
+          this.categoryList = categoryList.data;
+        })
+        .catch(error => {
+          this.categoryList = mockCategoryList;
+        });
     },
     onItemClick(event, itemsCategory) {
       if (event) {
