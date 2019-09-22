@@ -126,6 +126,7 @@ export default {
   },
   data() {
     return {
+      carouselsPhoto: [],
       recommendedEventList: [],
       recentlyEventList: [],
       popularEventList: [],
