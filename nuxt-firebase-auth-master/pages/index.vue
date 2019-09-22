@@ -16,34 +16,12 @@
       <h1>Recomended Event</h1>
       <v-container fluid grid-list-md>
         <v-layout row wrap>
-          <v-flex v-for="card in cards" :key="card.title" v-bind="{ [`xs${card.flex}`]: true }">
-            <v-card>
-              <nuxt-link to="/">
-                <v-img :src="card.src" height="200px">
-                  <v-container fill-height fluid pa-2>
-                    <v-layout fill-height>
-                      <v-flex xs12 align-end flexbox>
-                        <span class="headline white--text" v-text="card.title"></span>
-                      </v-flex>
-                    </v-layout>
-                  </v-container>
-                </v-img>
-              </nuxt-link>
-
-              <v-card-actions>
-                <span class="grey--text">eventName</span>
-                <v-spacer></v-spacer>
-                <!-- <v-btn icon @click="show = !show"> -->
-                <!-- <v-icon>{{ show ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon> -->
-                <!-- </v-btn> -->
-              </v-card-actions>
-              <v-slide-y-transition>
-                <v-card-text>
-                  Date:
-                  <br />Location:
-                </v-card-text>
-              </v-slide-y-transition>
-            </v-card>
+          <v-flex
+            v-for="(event, index) in popularEventList"
+            :key="index"
+            v-bind="{ [`xs6`]: true }"
+          >
+            <event-card :eventPictureCover="event.eventPictureCover" :eventName="event.eventName"></event-card>
           </v-flex>
         </v-layout>
       </v-container>
@@ -52,39 +30,16 @@
           <v-btn class="black--text" outline color="#341646" depressed large>View more</v-btn>
         </nuxt-link>
       </center>
-
       <br />
       <h1>Popular Event</h1>
       <v-container fluid grid-list-md>
         <v-layout row wrap>
-          <v-flex v-for="card in cards" :key="card.title" v-bind="{ [`xs${card.flex}`]: true }">
-            <v-card>
-              <nuxt-link to="/">
-                <v-img :src="card.src" height="200px">
-                  <v-container fill-height fluid pa-2>
-                    <v-layout fill-height>
-                      <v-flex xs12 align-end flexbox>
-                        <span class="headline white--text" v-text="card.title"></span>
-                      </v-flex>
-                    </v-layout>
-                  </v-container>
-                </v-img>
-              </nuxt-link>
-
-              <v-card-actions>
-                <span class="grey--text">eventName</span>
-                <v-spacer></v-spacer>
-                <!-- <v-btn icon @click="show = !show"> -->
-                <!-- <v-icon>{{ show ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon> -->
-                <!-- </v-btn> -->
-              </v-card-actions>
-              <v-slide-y-transition>
-                <v-card-text>
-                  Date:
-                  <br />Location:
-                </v-card-text>
-              </v-slide-y-transition>
-            </v-card>
+          <v-flex
+            v-for="(event, index) in popularEventList"
+            :key="index"
+            v-bind="{ [`xs6`]: true }"
+          >
+            <event-card :eventPictureCover="event.eventPictureCover" :eventName="event.eventName"></event-card>
           </v-flex>
         </v-layout>
       </v-container>
@@ -93,38 +48,15 @@
           <v-btn class="black--text" outline color="#341646" depressed large>View more</v-btn>
         </nuxt-link>
       </center>
-
       <h1>New Event</h1>
       <v-container fluid grid-list-md>
         <v-layout row wrap>
-          <v-flex v-for="card in cards" :key="card.title" v-bind="{ [`xs${card.flex}`]: true }">
-            <v-card>
-              <nuxt-link to="/">
-                <v-img :src="card.src" height="200px">
-                  <v-container fill-height fluid pa-2>
-                    <v-layout fill-height>
-                      <v-flex xs12 align-end flexbox>
-                        <span class="headline white--text" v-text="card.title"></span>
-                      </v-flex>
-                    </v-layout>
-                  </v-container>
-                </v-img>
-              </nuxt-link>
-
-              <v-card-actions>
-                <span class="grey--text">eventName</span>
-                <v-spacer></v-spacer>
-                <!-- <v-btn icon @click="show = !show"> -->
-                <!-- <v-icon>{{ show ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon> -->
-                <!-- </v-btn> -->
-              </v-card-actions>
-              <v-slide-y-transition>
-                <v-card-text>
-                  Date:
-                  <br />Location:
-                </v-card-text>
-              </v-slide-y-transition>
-            </v-card>
+          <v-flex
+            v-for="(event, index) in popularEventList"
+            :key="index"
+            v-bind="{ [`xs6`]: true }"
+          >
+            <event-card :eventPictureCover="event.eventPictureCover" :eventName="event.eventName"></event-card>
           </v-flex>
         </v-layout>
       </v-container>
@@ -134,7 +66,6 @@
         </nuxt-link>
       </center>
       <br />
-
       <!-- test community -->
       <h1>Community</h1>
       <community-card
@@ -150,7 +81,6 @@
           <v-btn class="black--text" outline color="#341646" depressed large>View more</v-btn>
         </nuxt-link>
       </center>
-
       <br />
       <br />
       <center>
@@ -158,9 +88,7 @@
           Use MeetU for your
           <br />next events & activities.
         </h2>
-
         <br />
-
         <nuxt-link :to="`/becomeOrganizer?`" style="text-decoration-line:none;">
           <v-btn
             class="upgradeToOrganizerButton white--text"
@@ -182,84 +110,26 @@ import EventList from "@/components/EventList";
 import axios from "axios";
 import { mapActions } from "vuex";
 import CommunityCard from "@/components/communityCard";
-import { communityList } from "@/utils/eventJson";
+import EventCard from "@/components/eventCard";
+import {
+  carouselsPhoto,
+  communityList,
+  popularEventList
+} from "@/utils/eventJson";
 
 export default {
   components: {
     EventList,
-    CommunityCard
+    CommunityCard,
+    EventCard
     //CarouselCard
   },
   data() {
     return {
       recommendedEventList: [],
       recentlyEventList: [],
-      bookEventList: [],
-      artsEventList: [],
-      popularEventList: [
-        {
-          eventId: "11111a",
-          eventName: "Icecream Social",
-          eventPictureCover:
-            "https://news.cci.fsu.edu/files/2014/03/2014-CCI-SLC-Ice-Cream-Social-Flyer.png",
-          eventDate: new Date(1554653418)
-        },
-        {
-          eventId: "11112a",
-          eventName: "Charity Auction",
-          eventPictureCover:
-            "https://jenniferhowedesigns.com/wp-content/uploads/2018/06/goodcharityposter.png",
-          eventDate: new Date(1554653418)
-        },
-        {
-          eventId: "11113a",
-          eventName: "Original Festival",
-          eventPictureCover:
-            "https://i.pinimg.com/originals/0f/04/6f/0f046f654320d387d7608a754f205d1e.png",
-          eventDate: new Date(1554653418)
-        },
-        {
-          eventId: "11114a",
-          eventName: "Mars Event",
-          eventPictureCover:
-            "https://s3.amazonaws.com/thumbnails.venngage.com/template/70fdebc4-7bb7-49fc-9caf-700f890de92b.png",
-          eventDate: new Date(1554653418)
-        },
-        {
-          eventId: "11115a",
-          eventName: "Night Market",
-          eventPictureCover:
-            "https://stumbler.co.za/wp-content/uploads/2017/11/26685184_140352653308218_9209494944451264947_o-4.jpg",
-          eventDate: new Date(1554653418)
-        }
-      ],
-      cards: [
-        {
-          // title: "Ice-cream social",
-          src:
-            "https://news.cci.fsu.edu/files/2014/03/2014-CCI-SLC-Ice-Cream-Social-Flyer.png",
-          flex: 6
-        },
-        {
-          // title: "Mars event",
-          src:
-            "https://s3.amazonaws.com/thumbnails.venngage.com/template/70fdebc4-7bb7-49fc-9caf-700f890de92b.png",
-          flex: 6
-        },
-        {
-          // title: "Charity auction",
-          src:
-            "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/copy-of-event-flyer-design-template-166759b5d38435948e0d0998f22ef4f3_screen.jpg?ts=1566601755",
-          flex: 6
-        },
-        {
-          // title: "Ice-cream social",
-          src:
-            "https://i.pinimg.com/originals/0f/04/6f/0f046f654320d387d7608a754f205d1e.png",
-          flex: 6
-        }
-      ],
-
+      popularEventList: [],
+      communityList: [],
       linksFooter: [
         "Home",
         "About Us",
@@ -267,31 +137,14 @@ export default {
         "Services",
         "Blog",
         "Contact Us"
-      ],
-      communityList: [],
-      carouselsPhoto: [
-        {
-          src:
-            "https://www.rabbittoday.com/-/media/rabbittoday/content/events/bangkok-block-party-2019/bangkok-block-party-2019-event-banner.jpg?la=th-TH&hash=FE90C817F1C953E5DCB6834242EE517801037D28"
-        },
-        {
-          src:
-            "https://www.rabbittoday.com/-/media/rabbittoday/content/events/atlantiswaterfestival2019/atlantiswaterfestival2019-banner.jpg?la=th-TH&hash=5346DE429E1704AF25E6CCBC7FDC25CA56AF09ADg"
-        },
-        {
-          src:
-            "https://www.rabbittoday.com/-/media/rabbittoday/content/events/ed-sheeran-divide-world-tour-2019/ed-sheeran-divide-world-tour-2019-event-rabbit-today-banner.jpg?la=th-TH&hash=C6B48BA5F7F79606DCE4B88DDE9A51EE9FE25A1C"
-        },
-        {
-          src:
-            "https://www.rabbittoday.com/-/media/rabbittoday/content/events/siamsongkranmusicfestival/siamsongkranmusicfestival-banner.jpg?la=th-TH&hash=6DBCBED42B97294F2E6AAE635F84BCE455518957"
-        }
       ]
     };
   },
   mounted() {
+    this.carouselsPhoto = carouselsPhoto;
     this.communityList = communityList;
-    this.artsEvent = [];
+    this.popularEventList = popularEventList;
+    console.log(this.popularEventList);
     //this.recentlyEvent = []
     this.getRecentlyEvent();
     this.getArtsEvent();

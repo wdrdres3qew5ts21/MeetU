@@ -22,14 +22,13 @@
       <span class="avatar">
         <img src="https://cdn.vuetifyjs.com/images/john.jpg" width="50" height="50" />
       </span>
-    </div> -->
+    </div>-->
     <ul>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-</ul>
-
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
 
     <center>
       <v-btn class="black--text" block outline color="#341646" depressed large>
@@ -133,7 +132,8 @@ export default {
             "https://d1.awsstatic.com/Marketplace/cases/600x400_ClubAutomation_Logo.e312129c6220eb729d9c7b7912be2ee59a108421.png"
         },
         {
-          src: "https://eventbrowse.com/wp-content/uploads/2018/11/DoG1Z3FXUAEfR3N.jpg"
+          src:
+            "https://eventbrowse.com/wp-content/uploads/2018/11/DoG1Z3FXUAEfR3N.jpg"
         },
         {
           src:
