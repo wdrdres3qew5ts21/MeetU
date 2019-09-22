@@ -51,7 +51,8 @@ module.exports = {
   },
   modules: [
     '@nuxtjs/pwa',
-    'nuxt-sweetalert2'
+    'nuxt-sweetalert2',
+    '@nuxtjs/axios'
   ],
   router: {
     middleware: 'router-auth'
@@ -60,6 +61,7 @@ module.exports = {
     { src: '~/plugins/vuetify.js' },
     { src: '~/plugins/fireinit.js', mode: 'client' },
     { src: '~/plugins/fireauth.js', mode: 'client' },
+    { src: '~/plugins/axios.js', mode: 'client' },
     { src: '~/plugins/vue-qrcode-generator.js', mode: 'client' },
     { src: '~/plugins/vue-qrcode-reader.js', ssr: false },
     { src: '~/plugins/vue2-google-maps.js', ssr: false }

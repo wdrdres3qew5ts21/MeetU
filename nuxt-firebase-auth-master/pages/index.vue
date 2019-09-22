@@ -151,7 +151,6 @@ export default {
     this.carouselsPhoto = mockCarouselsPhoto;
     this.popularEventList = mockCommunityList;
     this.communityList = mockPopularEventList;
-    console.log(this.popularEventList);
     this.isLogin = isLogin();
     this.getRecentlyEvent();
     this.getArtsEvent();
@@ -175,11 +174,10 @@ export default {
     },
     getRecentlyEvent: async function() {
       let concentPerPage = 3;
-      let recentlyEventList = await axios(`${process.env.EVENT_SERVICE}/events?isRecently=true
+      let recentlyEventList = await axios.get(`${process.env.EVENT_SERVICE}/events?isRecently=true
       &contentPerPage=${concentPerPage}`)
         .then(recentlyEventList => {
           this.recentlyEventList = recentlyEventList.data;
-          console.log(this.recentlyEventList);
         })
         .catch(error => {
           this.recentlyEventList = mockPopularEventList;

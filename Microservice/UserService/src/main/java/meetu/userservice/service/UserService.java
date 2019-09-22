@@ -10,6 +10,7 @@ import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import meetu.userservice.filters.TokenAuthenticationService;
@@ -120,6 +121,22 @@ public class UserService {
         HashMap<String, String> responseBody = new HashMap();
         responseBody.put("response", "Not found any user in database !");
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
+    }
+
+    public ResponseEntity createCustomToken() {
+        try {
+            String uid = "some-uid";
+            Map<String, Object> additionalClaims = new HashMap<String, Object>();
+            additionalClaims.put("premiumAccount", true);
+
+            String customToken = FirebaseAuth.getInstance()
+                    .createCustomToken(uid, additionalClaims);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(customToken);
+        } catch (FirebaseAuthException ex) {
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
 }

@@ -10,9 +10,9 @@ const state = () => ({
     photoURL: "https://image.flaticon.com/icons/png/512/64/64572.png",
     uid: null,
     displayName: '',
-    username: "linjingyun12",
-    firstName: "Supakorn",
-    lastName: "Trakulmaiphol",
+    username: "",
+    firstName: "",
+    lastName: "",
     persona: {
       probationDuration: 2,
       absentInRow: 5,
@@ -162,6 +162,7 @@ const actions = {
       });
   },
   signOut: function ({ commit }) {
+    localStorage.removeItem("jwtToken")
     auth
       .signOut()
       .then(() => {

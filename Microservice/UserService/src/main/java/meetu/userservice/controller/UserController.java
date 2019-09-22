@@ -75,6 +75,12 @@ public class UserController {
     public ResponseEntity<String> getTestMessage() {
         return new ResponseEntity<String>(testMessage, HttpStatus.OK);
     }
+    
+    @GetMapping("/user/create/jwt")
+    public ResponseEntity customJWT() {
+        //return new ResponseEntity<HashMap<String, Object>>(this.userService.verifyJwtToken(jwtRequestBody),HttpStatus.OK);
+        return this.userService.createCustomToken();
+    }
 
     @PostMapping("/user/verify/jwt")
     public ResponseEntity<HashMap<String, Object>> verifyJwtToken(@RequestBody HashMap<String, Object> jwtRequestBody) {

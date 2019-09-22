@@ -2,7 +2,7 @@
   <v-app>
     <v-navigation-drawer v-model="drawer" fixed app right style="background-color: #fff">
       <v-list>
-        <v-list-tile v-if="isLogin === false">
+        <v-list-tile v-if="getUser.jwtToken == null">
           <v-spacer></v-spacer>
           <v-list-tile-content>
             <nuxt-link to="/login">Log In</nuxt-link>
@@ -19,9 +19,7 @@
             </v-list-tile-avatar>
             <nuxt-link to="/userProfile">
               <v-list-tile-content>
-                <v-list-tile-title>
-                  {{getUser.displayName==''? 'Guest (Please Login)': getUser.displayName}}
-                </v-list-tile-title>
+                <v-list-tile-title>{{getUser.displayName==''? 'Guest (Please Login)': getUser.displayName}}</v-list-tile-title>
               </v-list-tile-content>
             </nuxt-link>
           </v-list-tile>
@@ -201,6 +199,11 @@ import { auth } from "@/plugins/fireinit.js";
 import Swal from "sweetalert2";
 import { mapActions, mapGetters } from "vuex";
 import { isLogin } from "@/utils/loginVerify";
+import { error } from 'util';
+import {
+  mockCategoryList,
+} from "@/utils/categoryJson";
+
 export default {
   data() {
     return {
@@ -212,20 +215,7 @@ export default {
       drawer: false,
       fixed: false,
       search: null,
-      categoryList: [
-        "Arts",
-        "Book Clubs",
-        "Business",
-        "Beauty",
-        "Family",
-        "Film",
-        "Game",
-        "Music",
-        "Photography",
-        "Social",
-        "Technology"
-      ],
-
+      categoryList: [],
       menu: false,
       linksFooter: [
         "Home",
@@ -270,8 +260,19 @@ export default {
       return this.$store.getters.mockGetUser;
     }
   },
+  mounted(){
+    this.loadCategoryList()
+  },
   methods: {
     ...mapActions(["autoSignIn"]),
+    loadCategoryList() {
+      axios.get(`${process.env.EVENT_SERVICE}/category`)
+      .then(categoryList => {
+        this.categoryList = categoryList.sdata;
+      }).catch(error=>{
+        this.categoryList = mockCategoryList;
+      });
+    },
     onItemClick(event, itemsCategory) {
       if (event) {
         this.selected = itemsCategory;

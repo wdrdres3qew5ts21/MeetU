@@ -58,6 +58,7 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import java.nio.charset.Charset;
 import java.util.Random;
 import java.util.UUID;
+import meetu.eventservice.model.Category;
 import meetu.eventservice.model.UserEventTicket;
 import meetu.eventservice.model.UserViewEvent;
 import meetu.eventservice.repository.UserEventTicketRepository;
@@ -87,6 +88,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
+import meetu.eventservice.repository.CategoryRepository;
 
 /**
  *
@@ -103,6 +105,9 @@ public class EventService {
 
     @Autowired
     private UserNotificationRepository userNotificationRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Autowired
     private MongoTemplate mongoTemplate;
@@ -483,5 +488,21 @@ public class EventService {
         System.out.println(results);
         return ResponseEntity.status(HttpStatus.OK).body(results);
     }
+
+    public ResponseEntity createEventCategory(Category category) {
+        HashMap<String, String> responseBody = new HashMap<>();
+        Category savedCatagory = categoryRepository.save(category);
+        if (savedCatagory != null) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedCatagory);
+        }
+        responseBody.put("response", "Failed to create new Catagory");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+    }
+
+    public ResponseEntity getAllEventCategory() {
+        List<Category> categoryList = categoryRepository.findAllByOrderByCategoryLabelAsc();
+        return ResponseEntity.status(HttpStatus.OK).body(categoryList);
+    }
+    
 
 }

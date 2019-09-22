@@ -15,6 +15,7 @@
         </center>
       </v-flex>
     </v-layout>
+    <v-btn color="success" @click="logout()">logout</v-btn>
     <h2>Level:</h2>
     <br />
     <br />

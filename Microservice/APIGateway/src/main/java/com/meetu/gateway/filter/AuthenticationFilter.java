@@ -5,10 +5,13 @@
  */
 package com.meetu.gateway.filter;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseToken;
 import com.meetu.gateway.utils.FilterUtils;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
+import java.util.Enumeration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
@@ -49,10 +52,14 @@ public class AuthenticationFilter extends ZuulFilter {
 
     @Override
     public Object run() throws ZuulException {
+        
         RequestContext ctx = RequestContext.getCurrentContext();
         HttpServletRequest request = ctx.getRequest();
         System.out.println("---------------  Authentication Filter --------------- ");
-        System.out.println(ctx.get("proxy"));
+        System.out.println(request.getHeader("Authorization"));
+        
+//           FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(request.getHeader("Authorization"));
+//            String uid = decodedToken.getUid();
         log.info(String.format("%s RequetTo: %s RemoteIP: %s RemotePort: %s", request.getMethod(), request.getRequestURL().toString(), request.getRemoteAddr(), request.getRemotePort()));
         return null;
     }

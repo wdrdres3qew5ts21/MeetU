@@ -5,6 +5,7 @@
  */
 package meetu.eventservice.controller;
 
+import meetu.eventservice.model.Category;
 import java.io.IOException;
 import java.util.HashMap;
 import meetu.eventservice.service.EventService;
@@ -121,7 +122,7 @@ public class EventController {
     public ResponseEntity<Event> findEventByElasticId(@PathVariable String elasticEventId) {
         return eventService.findEventByEventId(elasticEventId);
     }
-
+    
     @PostMapping("/events/recommend/persona")
     public ResponseEntity<List<Event>> searchWithPersonalize(
             @RequestParam(required = false, defaultValue = "0") int page,
@@ -130,6 +131,25 @@ public class EventController {
     ) {
         return new ResponseEntity<List<Event>>(eventService.findEventByPersonalize(user), HttpStatus.OK);
     }
+    
+    @GetMapping("/category")
+    public ResponseEntity getAllEventCatagory(){
+        return eventService.getAllEventCategory();
+    }
+    
+    @PostMapping("/category")
+    public ResponseEntity createEventCatagory(@RequestBody Category category){
+        return eventService.createEventCategory(category);
+    }
+
+//    @PostMapping("/events/recommend/persona")
+//    public ResponseEntity<List<Event>> searchWithPersonalize(
+//            @RequestParam(required = false, defaultValue = "0") int page,
+//            @RequestParam(required = false, defaultValue = "20") int contentPerPage,
+//            @RequestBody User user
+//    ) {
+//        return new ResponseEntity<List<Event>>(eventService.findEventByPersonalize(user), HttpStatus.OK);
+//    }
 
     @GetMapping("/event/qrcode")
     public ResponseEntity<byte[]> qrCodeGenerator(HttpServletResponse response) {

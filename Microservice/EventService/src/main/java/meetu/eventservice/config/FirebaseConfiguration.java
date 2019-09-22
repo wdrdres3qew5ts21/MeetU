@@ -25,12 +25,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class FirebaseConfiguration {
     
-    
     @Value("${firebase.key.src}")
     private String firebaseSrc;
-
-    @Value("${firebase.key.src}")
-    private String firebaseKeySrc;
 
     @Bean
     public void initFirebaseApp() {
@@ -41,7 +37,7 @@ public class FirebaseConfiguration {
                 FirebaseApp.getInstance().delete();
             }
             System.out.println("---------- Firebase Configuration Start ---------------");
-            System.out.println("Firebase SRC : " + firebaseKeySrc);
+            System.out.println("Firebase SRC : " + firebaseSrc);
 
             System.out.println(FirebaseApp.DEFAULT_APP_NAME);
             serviceAccount = new FileInputStream(this.firebaseSrc);
