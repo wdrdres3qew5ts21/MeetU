@@ -12,6 +12,7 @@ const firebaseConfig = {
   messagingSenderId: "1058128161659",
   appId: "1:1058128161659:web:6e143e16242ba4c2"
 };
+
 let messaging = null;
 let authen = null;
 
@@ -40,7 +41,8 @@ export default (context) => {
             emailVerified: user.emailVerified,
             isAnonymous: user.isAnonymous,
             photoURL: user.photoURL,
-            uid: user.uid
+            uid: user.uid,
+            jwtToken: jwtToken
           })
           // Request Permission Will work only user login Success
 

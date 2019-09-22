@@ -2,7 +2,7 @@
   <v-app>
     <v-navigation-drawer v-model="drawer" fixed app right style="background-color: #fff">
       <v-list>
-        <v-list-tile>
+        <v-list-tile v-if="isLogin === false">
           <v-spacer></v-spacer>
           <v-list-tile-content>
             <nuxt-link to="/login">Log In</nuxt-link>
@@ -12,6 +12,20 @@
             <nuxt-link to="/signup">Sign Up</nuxt-link>
           </v-list-tile-content>
         </v-list-tile>
+        <v-list v-else>
+          <v-list-tile avatar>
+            <v-list-tile-avatar>
+              <img :src="getUser.photoURL" />
+            </v-list-tile-avatar>
+            <nuxt-link to="/userProfile">
+              <v-list-tile-content>
+                <v-list-tile-title>
+                  {{getUser.displayName==''? 'Guest (Please Login)': getUser.displayName}}
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </nuxt-link>
+          </v-list-tile>
+        </v-list>
 
         <v-list-group>
           <v-list-tile slot="activator">
@@ -97,7 +111,7 @@
             </v-list-tile-content>
           </v-list-tile>
         </v-list-group>
-        <v-divider :inset=true></v-divider>
+        <v-divider :inset="true"></v-divider>
       </v-list>
     </v-navigation-drawer>
 
@@ -112,7 +126,7 @@
         <v-btn icon>
           <v-icon color="#341646;">search</v-icon>
         </v-btn>
-      </nuxt-link> -->
+      </nuxt-link>-->
 
       <div>
         <nuxt-link to="/search">
@@ -165,7 +179,7 @@
 
     <v-content>
       <v-container fluid>
-        <nuxt/>
+        <nuxt />
       </v-container>
     </v-content>
 
@@ -185,10 +199,12 @@
 import axios from "axios";
 import { auth } from "@/plugins/fireinit.js";
 import Swal from "sweetalert2";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
+import { isLogin } from "@/utils/loginVerify";
 export default {
   data() {
     return {
+      isLogin: false,
       title: "MeetU",
       height: {
         height: "10px"
@@ -209,7 +225,7 @@ export default {
         "Social",
         "Technology"
       ],
-      
+
       menu: false,
       linksFooter: [
         "Home",
@@ -222,7 +238,8 @@ export default {
       ]
     };
   },
-  created() {
+  mounted() {
+    this.isLogin = isLogin();
     // auth.onAuthStateChanged(user => {
     //   auth.currentUser.getIdToken(/* forceRefresh */ true)
     //     .then((jwtToken) => {
@@ -245,6 +262,7 @@ export default {
     // )
   },
   computed: {
+    ...mapGetters(["getUser"]),
     user() {
       return this.$store.getters.getUser;
     },

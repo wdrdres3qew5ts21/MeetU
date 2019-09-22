@@ -13,24 +13,27 @@
       <!-- <h1>Recomended Event for {{$store.getters.mockGetUser.firstName}}</h1> -->
       <!-- <event-list :eventList="recommendedEventList"></event-list> -->
       <!-- Test card img -->
-      <h1>Recomended Event</h1>
-      <v-container fluid grid-list-md>
-        <v-layout row wrap>
-          <v-flex
-            v-for="(event, index) in popularEventList"
-            :key="index"
-            v-bind="{ [`xs6`]: true }"
-          >
-            <event-card :eventPictureCover="event.eventPictureCover" :eventName="event.eventName"></event-card>
-          </v-flex>
-        </v-layout>
-      </v-container>
-      <center>
-        <nuxt-link :to="``" style="text-decoration-line:none;">
-          <v-btn class="black--text" outline color="#341646" depressed large>View more</v-btn>
-        </nuxt-link>
-      </center>
-      <br />
+      <div v-if="isLogin">
+        <h1>Recomended Event</h1>
+        <v-container fluid grid-list-md>
+          <v-layout row wrap>
+            <v-flex
+              v-for="(event, index) in popularEventList"
+              :key="index"
+              v-bind="{ [`xs6`]: true }"
+            >
+              <event-card :eventPictureCover="event.eventPictureCover" :eventName="event.eventName"></event-card>
+            </v-flex>
+          </v-layout>
+        </v-container>
+        <center>
+          <nuxt-link :to="``" style="text-decoration-line:none;">
+            <v-btn class="black--text" outline color="#341646" depressed large>View more</v-btn>
+          </nuxt-link>
+        </center>
+        <br />
+      </div>
+
       <h1>Popular Event</h1>
       <v-container fluid grid-list-md>
         <v-layout row wrap>
@@ -52,7 +55,7 @@
       <v-container fluid grid-list-md>
         <v-layout row wrap>
           <v-flex
-            v-for="(event, index) in popularEventList"
+            v-for="(event, index) in recentlyEventList"
             :key="index"
             v-bind="{ [`xs6`]: true }"
           >
@@ -103,19 +106,21 @@
   <!-- </transition> -->
 </template>
 
-
 <script>
+import { mapGetters } from "vuex";
 import EventList from "@/components/EventList";
 //import CarouselCard from '../components/CarouselCard.vue';
 import axios from "axios";
 import { mapActions } from "vuex";
 import CommunityCard from "@/components/communityCard";
 import EventCard from "@/components/eventCard";
+import { isLogin } from "@/utils/loginVerify";
 import {
-  carouselsPhoto,
-  communityList,
-  popularEventList
+  mockCarouselsPhoto,
+  mockCommunityList,
+  mockPopularEventList
 } from "@/utils/eventJson";
+import { error } from "util";
 
 export default {
   components: {
@@ -126,6 +131,7 @@ export default {
   },
   data() {
     return {
+      isLogin: false,
       carouselsPhoto: [],
       recommendedEventList: [],
       recentlyEventList: [],
@@ -142,16 +148,19 @@ export default {
     };
   },
   mounted() {
-    this.carouselsPhoto = carouselsPhoto;
-    this.communityList = communityList;
-    this.popularEventList = popularEventList;
+    this.carouselsPhoto = mockCarouselsPhoto;
+    this.popularEventList = mockCommunityList;
+    this.communityList = mockPopularEventList;
     console.log(this.popularEventList);
-    //this.recentlyEvent = []
+    this.isLogin = isLogin();
     this.getRecentlyEvent();
     this.getArtsEvent();
     this.getRecommendEvent();
     console.log(this.getEventByTags("art"));
     console.log(this.getEventByTags("book"));
+  },
+  computed: {
+    ...mapGetters(["getUser"])
   },
   methods: {
     ...mapActions(["getEventByTags"]),
@@ -167,9 +176,15 @@ export default {
     getRecentlyEvent: async function() {
       let concentPerPage = 3;
       let recentlyEventList = await axios(`${process.env.EVENT_SERVICE}/events?isRecently=true
-      &contentPerPage=${concentPerPage}`);
-      recentlyEventList = recentlyEventList.data;
-      this.recentlyEventList = recentlyEventList;
+      &contentPerPage=${concentPerPage}`)
+        .then(recentlyEventList => {
+          this.recentlyEventList = recentlyEventList.data;
+          console.log(this.recentlyEventList);
+        })
+        .catch(error => {
+          this.recentlyEventList = mockPopularEventList;
+        });
+
       //      console.log(this.recentlyEventList)
     },
     getArtsEvent: async function() {

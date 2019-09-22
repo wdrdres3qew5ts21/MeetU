@@ -96,7 +96,7 @@
 import axios from "axios";
 import { mapActions } from "vuex";
 import CommunityCard from "@/components/communityCard";
-import { communityList } from "@/utils/eventJson";
+import { mockCommunityList } from "@/utils/eventJson";
 export default {
   components: {
     CommunityCard
@@ -169,7 +169,7 @@ export default {
     };
   },
   mounted() {
-    this.communityList = communityList;
+    this.communityList = mockCommunityList;
   }
 };
 </script>

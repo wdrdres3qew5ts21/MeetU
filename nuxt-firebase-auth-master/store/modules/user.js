@@ -9,6 +9,7 @@ const state = () => ({
   user: {
     photoURL: "https://image.flaticon.com/icons/png/512/64/64572.png",
     uid: null,
+    displayName: '',
     username: "linjingyun12",
     firstName: "Supakorn",
     lastName: "Trakulmaiphol",

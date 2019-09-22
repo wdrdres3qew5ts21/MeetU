@@ -1,4 +1,4 @@
-export const carouselsPhoto = [
+export const mockCarouselsPhoto = [
     {
         src:
             "https://www.rabbittoday.com/-/media/rabbittoday/content/events/bangkok-block-party-2019/bangkok-block-party-2019-event-banner.jpg?la=th-TH&hash=FE90C817F1C953E5DCB6834242EE517801037D28"
@@ -17,7 +17,7 @@ export const carouselsPhoto = [
     }
 ]
 
-export const popularEventList = [
+export const mockPopularEventList = [
     {
         eventId: "11111a",
         eventName: "Icecream Social",
@@ -48,7 +48,7 @@ export const popularEventList = [
     }
 ]
 
-export const communityList = [
+export const mockCommunityList = [
     {
         communityPictureCover: "https://www.redhat.com/cms/managed-files/rh-summit-social-announcements-save-the-date-2400x1260-US206684-CK-201904_fb-li_0.jpg",
         communityName: "Redhat Community"
