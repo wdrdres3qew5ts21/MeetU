@@ -1,16 +1,16 @@
 <template>
   <div>
     <h1>Create New Community</h1>
-  
+
     <v-text-field
       v-model="communityName"
       :rules="communityNameRules"
       label="Community Name"
       required
     ></v-text-field>
-
-    <v-autocomplete label="Categorys" :items="Category"></v-autocomplete>
-
+    <v-layout class="mb-4">
+      <v-autocomplete label="Categorys" :items="Category" block></v-autocomplete>
+    </v-layout>
     <v-text-field label="Add some people" required></v-text-field>
 
     <br />
@@ -27,10 +27,8 @@
     </v-layout>
     <nuxt-link :to="`/community/communityId/?`" style="text-decoration-line:none;">
       <br />
-      <v-btn block round="16px;" color="#341646" class="mb-2 white--text" >Create Community</v-btn>
-
+      <v-btn block round="16px;" color="#341646" class="mb-2 white--text">Create Community</v-btn>
     </nuxt-link>
-   
   </div>
 </template> 
  
