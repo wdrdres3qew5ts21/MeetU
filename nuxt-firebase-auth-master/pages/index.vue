@@ -104,8 +104,8 @@ export default {
   },
   mounted() {
     this.carouselsPhoto = mockCarouselsPhoto;
-    this.popularEventList = mockCommunityList;
-    this.communityList = mockPopularEventList;
+    this.popularEventList = mockPopularEventList;
+    this.communityList = mockCommunityList;
     this.isLogin = isLogin();
     this.getRecentlyEvent();
     this.getArtsEvent();
@@ -136,6 +136,7 @@ export default {
         )
         .then(recentlyEventList => {
           this.recentlyEventList = recentlyEventList.data;
+          console.log(this.recentlyEventList)
         })
         .catch(error => {
           this.recentlyEventList = mockPopularEventList;

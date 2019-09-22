@@ -1,17 +1,14 @@
 <template>
   <v-card>
-    <nuxt-link to="/">
-      <v-img :src="eventPictureCover" height="200px">
-        <v-container fill-height fluid pa-2>
-          <v-layout fill-height>
-            <v-flex xs12 align-end flexbox>
-              <span class="headline white--text" v-text="eventName"></span>
-            </v-flex>
-          </v-layout>
-        </v-container>
-      </v-img>
-    </nuxt-link>
-
+    <v-img :src="eventPictureCover" height="200px">
+      <v-container fill-height fluid pa-2>
+        <v-layout fill-height>
+          <v-flex xs12 align-end flexbox>
+            <span class="headline white--text" v-text="eventName"></span>
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </v-img>
     <v-card-actions>
       <span class="grey--text">{{eventName}}</span>
       <v-spacer></v-spacer>
@@ -21,8 +18,9 @@
     </v-card-actions>
     <v-slide-y-transition>
       <v-card-text>
-        Date: 
-        <br />Location: {{location}}
+        Date:
+        <br />
+        Location: {{location}}
       </v-card-text>
     </v-slide-y-transition>
   </v-card>
