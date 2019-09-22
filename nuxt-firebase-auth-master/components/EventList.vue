@@ -6,9 +6,9 @@
       </v-flex>
     </v-layout>
     <center>
-      <nuxt-link :to="link" style="text-decoration-line:none;">
+      <!-- <nuxt-link :to="link" style="text-decoration-line:none;">
         <v-btn class="black--text" outline color="#341646" depressed large>View more</v-btn>
-      </nuxt-link>
+      </nuxt-link> -->
     </center>
   </v-container>
 </template>

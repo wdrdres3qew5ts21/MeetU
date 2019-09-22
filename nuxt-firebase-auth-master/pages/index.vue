@@ -301,7 +301,7 @@ export default {
 } */
 
 .mycarousel {
-  height: 300px !important;
+  height: 250px !important;
 }
 
 /* .v-carousel {

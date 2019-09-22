@@ -1,91 +1,42 @@
 <template>
   <transition name="router-anim" enter-active-class="animated slideInRight">
-    <div class="text-xs-center">
-      <v-card class="mx-auto" elevation="0" outlined>
-        <div class="px-3">
-          <v-layout>
-            <v-flex xs12>
-              <v-text-field
-                class="questrial no-top-padding"
-                height="44px"
-                rounded
-                placeholder="Search..."
-                v-model="search"
-                @keyup.enter="searchEventByFilter()"
-              ></v-text-field>
-            </v-flex>
-          </v-layout>
-        </div>
-      </v-card>
+    <v-container fluid grid-list-md>
+      <v-layout row wrap>
+        <v-flex xs12>
+          <v-card class="mx-auto" elevation="0" outlined width="100%">
+            <div class="px-3">
+              <v-layout>
+                <v-text-field
+                  class="questrial no-top-padding"
+                  height="44px"
+                  rounded
+                  placeholder="Search..."
+                  v-model="search"
+                  @keyup.enter="searchEventByFilter()"
+                ></v-text-field>
+              </v-layout>
+            </div>
+          </v-card>
+        </v-flex>
+        <v-flex xs12>
+          <center>
+            <v-btn
+              class="white--text"
+              depressed
+              large
+              color="#341646"
+              ref="searchButton"
+              @click="searchEventByFilter()"
+            >Search</v-btn>
+          </center>
+        </v-flex>
+        <br />
 
-      <v-btn
-        class="white--text"
-        depressed
-        large
-        color="#341646"
-        ref="searchButton"
-        @click="searchEventByFilter()"
-      >Search</v-btn>
+        <br />
 
-      <br />
+        <event-list v-if="searchedEventList.length>0" :eventList="searchedEventList"></event-list>
 
-      <v-combobox
-        v-model="chips"
-        :items="items"
-        chips
-        clearable
-        label="Your favorite hobbies"
-        multiple
-        prepend-icon="filter_list"
-        solo
-      >
-        <template v-slot:selection="{ attrs, item, select, selected }">
-          <v-chip
-            v-bind="attrs"
-            :input-value="selected"
-            close
-            @click="select"
-            @click:close="remove(item)"
-          >
-            <strong>{{ item }}</strong>&nbsp;
-            <span>(interest)</span>
-          </v-chip>
-        </template>
-      </v-combobox>
-      <!-- <v-flex justify-space-around>
-        <div class="text-xs-left">
-          <v-chip outlined class="ma-2" @click="isShowEventTag=!isShowEventTag">
-            <v-icon left color="black">label</v-icon>Tags
-          </v-chip>
-          {{selectedCategoryList}}
-          <v-combobox
-            v-model="selectedCategoryList"
-            :items="categoryList"
-            label="I use chips"
-            multiple
-            chips
-          ></v-combobox>
-        </div>
-      </v-flex>
-      -->
-      <h1>Founded Event</h1>
-      <br />
-      <no-ssr>
-        <v-layout>
-          <v-layout row wrap>
-            <v-flex v-for="event in searchedEventList" :key="event.elasticEventId" xs4>
-              <nuxt-link :to="`/event/${event.elasticEventId}`">
-                <v-card flat tile>
-                  <v-img img v-bind:src="event.eventPictureCover" max-height="230px"></v-img>
-                  <v-card-text>{{event.eventName}}</v-card-text>
-                </v-card>
-              </nuxt-link>
-            </v-flex>
-          </v-layout>
-        </v-layout>
-      </no-ssr>
-
-      <!-- <v-btn
+        <!-- <v-btn
             color="#fc5577"
             
             :round="true"
@@ -93,18 +44,27 @@
             @click="findEventInArea()">
             Click to search nearby event for {{areaOfEvent}}
             
-      </v-btn>-->
-    </div>
+        </v-btn>-->
+      </v-layout>
+    </v-container>
   </transition>
 </template>
 
 <script>
+import EventList from "@/components/eventList";
 import { mapGetters } from "vuex";
 import axios from "axios";
 export default {
-  components: {},
+  components: { EventList },
   data() {
     return {
+      chips: [
+        "Programming",
+        "Playing video games",
+        "Watching movies",
+        "Sleeping"
+      ],
+      items: ["Streaming", "Eating"],
       search: "",
       isRecently: false,
       isShowEventTag: false,
