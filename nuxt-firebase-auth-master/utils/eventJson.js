@@ -1,16 +1,28 @@
+export const carouselsPhoto = [
+    {
+        src:
+            "https://www.rabbittoday.com/-/media/rabbittoday/content/events/bangkok-block-party-2019/bangkok-block-party-2019-event-banner.jpg?la=th-TH&hash=FE90C817F1C953E5DCB6834242EE517801037D28"
+    },
+    {
+        src:
+            "https://www.rabbittoday.com/-/media/rabbittoday/content/events/atlantiswaterfestival2019/atlantiswaterfestival2019-banner.jpg?la=th-TH&hash=5346DE429E1704AF25E6CCBC7FDC25CA56AF09ADg"
+    },
+    {
+        src:
+            "https://www.rabbittoday.com/-/media/rabbittoday/content/events/ed-sheeran-divide-world-tour-2019/ed-sheeran-divide-world-tour-2019-event-rabbit-today-banner.jpg?la=th-TH&hash=C6B48BA5F7F79606DCE4B88DDE9A51EE9FE25A1C"
+    },
+    {
+        src:
+            "https://www.rabbittoday.com/-/media/rabbittoday/content/events/siamsongkranmusicfestival/siamsongkranmusicfestival-banner.jpg?la=th-TH&hash=6DBCBED42B97294F2E6AAE635F84BCE455518957"
+    }
+]
+
 export const popularEventList = [
     {
         eventId: "11111a",
         eventName: "Icecream Social",
         eventPictureCover:
             "https://news.cci.fsu.edu/files/2014/03/2014-CCI-SLC-Ice-Cream-Social-Flyer.png",
-        eventDate: new Date(1554653418)
-    },
-    {
-        eventId: "11112a",
-        eventName: "Charity Auction",
-        eventPictureCover:
-            "https://jenniferhowedesigns.com/wp-content/uploads/2018/06/goodcharityposter.png",
         eventDate: new Date(1554653418)
     },
     {
