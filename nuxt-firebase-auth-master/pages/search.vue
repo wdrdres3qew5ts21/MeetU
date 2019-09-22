@@ -35,6 +35,11 @@
         <br />
 
         <event-list v-if="searchedEventList.length>0" :eventList="searchedEventList"></event-list>
+        <v-flex xs12 v-else>
+          <h3>
+            <center>You can search event ;)</center>
+          </h3>
+        </v-flex>
 
         <!-- <v-btn
             color="#fc5577"
