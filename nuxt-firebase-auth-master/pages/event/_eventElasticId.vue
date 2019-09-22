@@ -179,6 +179,7 @@ export default {
       })
       .catch(err => {
         console.log("!!!!!!!!!!!!!!!!! Boom Not found !!!!!!!!!!");
+        console.log(err)
         return error({ statusCode: 404, message: eventNotFound(err) });
       });
   },

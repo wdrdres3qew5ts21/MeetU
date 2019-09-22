@@ -2,7 +2,7 @@
   <div>
     <!-- <transition name="router-anim"  leave-active-class="animated slideOutLeft"> -->
     <v-container class="bg">
-      <v-carousel>
+      <v-carousel class="mycarousel">
         <v-carousel-item sm6 xs2 v-for="(item,i) in carouselsPhoto" :src="item.src" :key="i"></v-carousel-item>
       </v-carousel>
       <br />
@@ -13,16 +13,33 @@
       <!-- Event List -->
       <div v-if="isLogin">
         <h1>Recomended Event</h1>
-        <event-list :eventList="recentlyEventList" link="/event"></event-list>
+        <no-ssr>
+          <carousel :perPage="1" :paginationEnabled="false">
+            <slide v-for="(event, index) in recentlyEventList" :key="index">
+              <event-card :event="event"></event-card>
+            </slide>
+          </carousel>
+        </no-ssr>
+        <!-- <event-list :eventList="recentlyEventList" link="/event"></event-list> -->
         <br />
       </div>
 
       <h1>Popular Event</h1>
-      <event-list :eventList="recentlyEventList" link="/event"></event-list>
+      <carousel :perPage="1" :paginationEnabled="false">
+        <slide v-for="(event, index) in recentlyEventList" :key="index">
+          <event-card :event="event"></event-card>
+        </slide>
+      </carousel>
+      <!-- <event-list :eventList="recentlyEventList" link="/event"></event-list> -->
       <br />
 
       <h1>New Event</h1>
-      <event-list :eventList="recentlyEventList" link="/event"></event-list>
+      <carousel :perPage="1" :paginationEnabled="false">
+        <slide v-for="(event, index) in recentlyEventList" :key="index">
+          <event-card :event="event"></event-card>
+        </slide>
+      </carousel>
+      <!-- <event-list :eventList="recentlyEventList" link="/event"></event-list> -->
       <br />
       <!-- Community -->
       <h1>Community</h1>
@@ -62,6 +79,8 @@
 </template>
 
 <script>
+import Carousel from "vue-carousel/src/Carousel.vue";
+import Slide from "vue-carousel/src/Slide.vue";
 import { mapGetters } from "vuex";
 //import CarouselCard from '../components/CarouselCard.vue';
 import axios from "axios";
@@ -79,6 +98,8 @@ import { error } from "util";
 
 export default {
   components: {
+    Carousel,
+    Slide,
     EventList,
     CommunityCard,
     EventCard
@@ -136,7 +157,7 @@ export default {
         )
         .then(recentlyEventList => {
           this.recentlyEventList = recentlyEventList.data;
-          console.log(this.recentlyEventList)
+          console.log(this.recentlyEventList);
         })
         .catch(error => {
           this.recentlyEventList = mockPopularEventList;
@@ -279,9 +300,13 @@ export default {
   border-bottom: 25px solid transparent;
 } */
 
-.v-carousel {
+.mycarousel {
   height: 300px !important;
 }
+
+/* .v-carousel {
+  height: 300px !important;
+} */
 
 .upgradeToOrganizer {
   margin-top: 5%;

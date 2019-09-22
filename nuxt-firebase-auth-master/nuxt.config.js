@@ -61,7 +61,8 @@ module.exports = {
     { src: '~/plugins/vuetify.js' },
     { src: '~/plugins/fireinit.js', mode: 'client' },
     { src: '~/plugins/fireauth.js', mode: 'client' },
-    { src: '~/plugins/axios.js', mode: 'client' },
+    { src: '~/plugins/vue-carousel.js', ssr: false },
+    { src: '~/plugins/axios.js',  mode: 'client'},
     { src: '~/plugins/vue-qrcode-generator.js', mode: 'client' },
     { src: '~/plugins/vue-qrcode-reader.js', ssr: false },
     { src: '~/plugins/vue2-google-maps.js', ssr: false }

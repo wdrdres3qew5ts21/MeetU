@@ -228,26 +228,6 @@ export default {
   },
   mounted() {
     this.isLogin = isLogin();
-    // auth.onAuthStateChanged(user => {
-    //   auth.currentUser.getIdToken(/* forceRefresh */ true)
-    //     .then((jwtToken) => {
-    //     // Send token to your backend via HTTPS
-    //     localStorage.setItem("jwtToken", jwtToken)
-    //       console.log("current user !")
-    //       console.log(jwtToken)
-    //       axios.post(`${process.env.USER_SERVICE}/user/jwt`,{
-    //         token: jwtToken
-    //       }).then(res=>{
-    //         console.log(res)
-    //       })
-    //     }).catch((error) => {
-    //       console.log(error)
-    //     })
-    //   console.log('state change login fireauth.js')
-    //   console.log(user)
-    //   this.autoSignIn(user)
-    // }
-    // )
   },
   computed: {
     ...mapGetters(["getUser"]),
@@ -262,12 +242,13 @@ export default {
     this.loadCategoryList();
   },
   methods: {
-    ...mapActions(["autoSignIn"]),
+    ...mapActions(["autoSignIn","setCategory"]),
     loadCategoryList() {
       axios
         .get(`${process.env.EVENT_SERVICE}/category`)
         .then(categoryList => {
           this.categoryList = categoryList.data;
+          this.setCategory(this.categoryList)
         })
         .catch(error => {
           this.categoryList = mockCategoryList;

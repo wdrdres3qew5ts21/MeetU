@@ -1,24 +1,20 @@
 <template>
   <transition name="router-anim" enter-active-class="animated slideInRight">
     <div class="text-xs-center">
-        <v-card
-    class="mx-auto"
-    elevation="0"
-    outlined
-  >
+      <v-card class="mx-auto" elevation="0" outlined>
         <div class="px-3">
-        <v-layout>
-          <v-flex xs12>
-            <v-text-field   
-              class="questrial no-top-padding"
-              height="44px"
-              rounded
-              placeholder="Search..."
-              v-model="search"
-              @keyup.enter="searchEventByFilter()"
-            ></v-text-field>
-          </v-flex>
-        </v-layout>
+          <v-layout>
+            <v-flex xs12>
+              <v-text-field
+                class="questrial no-top-padding"
+                height="44px"
+                rounded
+                placeholder="Search..."
+                v-model="search"
+                @keyup.enter="searchEventByFilter()"
+              ></v-text-field>
+            </v-flex>
+          </v-layout>
         </div>
       </v-card>
 
@@ -32,18 +28,35 @@
       >Search</v-btn>
 
       <br />
-      <v-flex justify-space-around>
-        <div class="text-xs-left">
-        
-         <v-chip 
-          outlined
-         
-          class="ma-2" 
-           @click="isShowEventTag=!isShowEventTag">
-            <v-icon left color="black" >label</v-icon>Tags
-          </v-chip>
 
-          
+      <v-combobox
+        v-model="chips"
+        :items="items"
+        chips
+        clearable
+        label="Your favorite hobbies"
+        multiple
+        prepend-icon="filter_list"
+        solo
+      >
+        <template v-slot:selection="{ attrs, item, select, selected }">
+          <v-chip
+            v-bind="attrs"
+            :input-value="selected"
+            close
+            @click="select"
+            @click:close="remove(item)"
+          >
+            <strong>{{ item }}</strong>&nbsp;
+            <span>(interest)</span>
+          </v-chip>
+        </template>
+      </v-combobox>
+      <!-- <v-flex justify-space-around>
+        <div class="text-xs-left">
+          <v-chip outlined class="ma-2" @click="isShowEventTag=!isShowEventTag">
+            <v-icon left color="black">label</v-icon>Tags
+          </v-chip>
           {{selectedCategoryList}}
           <v-combobox
             v-model="selectedCategoryList"
@@ -52,11 +65,9 @@
             multiple
             chips
           ></v-combobox>
-          <!-- <div v-if="isShowEventTag">
-            <v-chip @click="selectedTags[i-1] = !selectedTags[i-1]" :selected="selectedTags[i-1]" v-for="(category, i) in categoryList" :key="category">{{category}}</v-chip>
-          </div>-->
         </div>
       </v-flex>
+      -->
       <h1>Founded Event</h1>
       <br />
       <no-ssr>
@@ -88,6 +99,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import axios from "axios";
 export default {
   components: {},
@@ -96,22 +108,16 @@ export default {
       search: "",
       isRecently: false,
       isShowEventTag: false,
-      categoryList: [
-        "art",
-        "book",
-        "business",
-        "beauty",
-        "family",
-        "film",
-        "game",
-        "music",
-        "photography",
-        "social",
-        "technology"
-      ],
+      categoryList: [],
       searchedEventList: [],
       selectedCategoryList: []
     };
+  },
+  computed: {
+    ...mapGetters(["getCategory"])
+  },
+  mounted() {
+    this.categoryList = this.getCategory;
   },
   methods: {
     remove: function(item) {
@@ -158,5 +164,4 @@ export default {
   background-size: cover;
   background: transparent; */
 }
-
 </style>
