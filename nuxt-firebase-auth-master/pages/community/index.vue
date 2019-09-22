@@ -39,9 +39,15 @@
     <br />
 
     <center>
-      <v-flex v-for="card in cards" :key="card.title" v-bind="{ [`xs${card.flex}`]: true }">
+      <community-card
+        v-for="(community, index) in communityList"
+        :key="index"
+        :communityPictureCover="community.communityPictureCover"
+        :communityName="community.communityName"
+      ></community-card>
+      <!-- <v-flex v-for="card in cards" :key="card.title" v-bind="{ [`xs${card.flex}`]: true }">
         <v-card class="mx-auto">
-          <!-- :src="meetu.imageUrl" -->
+          
           <v-img :src="card.src" height="200px"></v-img>
           <v-card-text>
             <span class="text--primary">
@@ -56,7 +62,7 @@
           </v-card-actions>
         </v-card>
         <br />
-      </v-flex>
+      </v-flex>-->
     </center>
     <br />
     <br />
@@ -87,9 +93,17 @@
 <style>
 </style>
 <script>
+import axios from "axios";
+import { mapActions } from "vuex";
+import CommunityCard from "@/components/communityCard";
+import { communityList } from "@/utils/eventJson";
 export default {
+  components: {
+    CommunityCard
+  },
   data() {
     return {
+      communityList: [],
       cards: [
         {
           // title: "Ice-cream social",
@@ -153,6 +167,9 @@ export default {
         }
       ]
     };
+  },
+  mounted() {
+    this.communityList = communityList;
   }
 };
 </script>
