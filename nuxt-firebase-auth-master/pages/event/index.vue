@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-layout row wrap>
-      <no-ssr>
+      <!-- <no-ssr>
         <GmapMap
           :center="getCurrentLocation"
           :zoom="14"
@@ -28,7 +28,7 @@
             @click="toggleInfoWindow(marker,index)"
           />
         </GmapMap>
-      </no-ssr>
+      </no-ssr> -->
 
       <h1>{{getCurrentLocation}}</h1>
       <input type="text" v-model="areaOfEvent" placeholder="input area">

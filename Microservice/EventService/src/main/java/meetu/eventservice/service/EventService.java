@@ -134,11 +134,6 @@ public class EventService {
                                     eventName,
                                     eventDetail))
                             .setToken(userNotification.getNotificationToken())
-                            .build(),
-                    // ...
-                    Message.builder()
-                            .setNotification(new Notification("Price drop", "2% off all books"))
-                            .setTopic("readers-club")
                             .build()
             );
         }

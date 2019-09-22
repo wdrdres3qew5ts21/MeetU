@@ -91,15 +91,6 @@
 export default {
   data() {
     return {
-      carouselsPhoto: [
-        {
-          src:
-            "https://d1.awsstatic.com/Marketplace/cases/600x400_ClubAutomation_Logo.e312129c6220eb729d9c7b7912be2ee59a108421.png"
-        },
-        {
-          src: "http://sites.ieee.org/vancouver-cs/files/2012/07/CIS_logo.png"
-        }
-      ],
       cards: [
         {
           // title: "Ice-cream social",
@@ -137,6 +128,13 @@ export default {
       ],
 
       carouselsPhoto: [
+        {
+          src:
+            "https://d1.awsstatic.com/Marketplace/cases/600x400_ClubAutomation_Logo.e312129c6220eb729d9c7b7912be2ee59a108421.png"
+        },
+        {
+          src: "https://eventbrowse.com/wp-content/uploads/2018/11/DoG1Z3FXUAEfR3N.jpg"
+        },
         {
           src:
             "https://www.rabbittoday.com/-/media/rabbittoday/content/events/bangkok-block-party-2019/bangkok-block-party-2019-event-banner.jpg?la=th-TH&hash=FE90C817F1C953E5DCB6834242EE517801037D28"

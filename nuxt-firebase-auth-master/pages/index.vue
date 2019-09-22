@@ -133,106 +133,17 @@
           <v-btn class="black--text" outline color="#341646" depressed large>View more</v-btn>
         </nuxt-link>
       </center>
-
       <br />
-      <h1>Community</h1>
 
       <!-- test community -->
-
-      <v-card class="mx-auto" max-width="400">
-        <v-img
-          class="#341646--text"
-          height="200px"
-          src="http://toosmall.org/body/community-banner.png"
-        >
-          <!-- <v-card-title class="align-end fill-height">Top 10 Australian beaches</v-card-title> -->
-        </v-img>
-
-        <v-card-text>
-          <span class="text--primary">
-            <span>Community name :</span>
-            <br />
-            <span>Members :</span>
-            <br />
-          </span>
-        </v-card-text>
-
-        <v-card-actions>
-          <v-btn class="white--text" color="#341646">JOIN</v-btn>
-        </v-card-actions>
-      </v-card>
-
+      <h1>Community</h1>
+      <community-card
+        v-for="(community, index) in communityList"
+        :key="index"
+        :communityPictureCover="community.communityPictureCover"
+        :communityName="community.communityName"
+      ></community-card>
       <br />
-      <v-card class="mx-auto" max-width="400">
-        <v-img
-          class="#341646--text"
-          height="200px"
-          src="https://duluthinteract.weebly.com/uploads/3/8/2/7/38276677/7880568_orig.jpg?1435629183"
-        >
-          <!-- <v-card-title class="align-end fill-height">Top 10 Australian beaches</v-card-title> -->
-        </v-img>
-
-        <v-card-text>
-          <span class="text--primary">
-            <span>Community name :</span>
-            <br />
-            <span>Members :</span>
-            <br />
-          </span>
-        </v-card-text>
-
-        <v-card-actions>
-          <v-btn class="white--text" color="#341646">JOIN</v-btn>
-        </v-card-actions>
-      </v-card>
-
-      <br />
-      <v-card class="mx-auto" max-width="400">
-        <v-img
-          class="#341646--text"
-          height="200px"
-          src="https://pbs.twimg.com/media/DxDAAFuWwAEuckF?format=jpg&name=large"
-        >
-          <!-- <v-card-title class="align-end fill-height">Top 10 Australian beaches</v-card-title> -->
-        </v-img>
-
-        <v-card-text>
-          <span class="text--primary">
-            <span>Community name :</span>
-            <br />
-            <span>Members :</span>
-            <br />
-          </span>
-        </v-card-text>
-
-        <v-card-actions>
-          <v-btn class="white--text" color="#341646">JOIN</v-btn>
-        </v-card-actions>
-      </v-card>
-
-      <br />
-      <v-card class="mx-auto" max-width="400">
-        <v-img
-          class="#341646--text"
-          height="200px"
-          src="http://www.openbiomedical.org/wordpress/wp-content/uploads/2016/08/community-025.jpg"
-        >
-          <!-- <v-card-title class="align-end fill-height">Top 10 Australian beaches</v-card-title> -->
-        </v-img>
-
-        <v-card-text>
-          <span class="text--primary">
-            <span>Community name :</span>
-            <br />
-            <span>Members :</span>
-            <br />
-          </span>
-        </v-card-text>
-
-        <v-card-actions>
-          <v-btn class="white--text" color="#341646">JOIN</v-btn>
-        </v-card-actions>
-      </v-card>
       <br />
       <center>
         <nuxt-link :to="``" style="text-decoration-line:none;">
@@ -270,9 +181,13 @@ import EventList from "@/components/EventList";
 //import CarouselCard from '../components/CarouselCard.vue';
 import axios from "axios";
 import { mapActions } from "vuex";
+import CommunityCard from "@/components/communityCard";
+import { communityList } from "@/utils/eventJson";
+
 export default {
   components: {
-    EventList
+    EventList,
+    CommunityCard
     //CarouselCard
   },
   data() {
@@ -318,7 +233,6 @@ export default {
           eventDate: new Date(1554653418)
         }
       ],
-
       cards: [
         {
           // title: "Ice-cream social",
@@ -354,7 +268,7 @@ export default {
         "Blog",
         "Contact Us"
       ],
-
+      communityList: [],
       carouselsPhoto: [
         {
           src:
@@ -376,6 +290,7 @@ export default {
     };
   },
   mounted() {
+    this.communityList = communityList;
     this.artsEvent = [];
     //this.recentlyEvent = []
     this.getRecentlyEvent();
