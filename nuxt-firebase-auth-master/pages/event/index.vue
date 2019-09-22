@@ -1,50 +1,25 @@
 <template>
   <v-container>
     <v-layout row wrap>
-      <!-- <no-ssr>
-        <GmapMap
-          :center="getCurrentLocation"
-          :zoom="14"
-          map-type-id="terrain"
-          style="width: 500px; height: 300px"
-          :options="{
-                scaleControl: true
-            }"
-        >
-          <gmap-info-window
-            :position="infoWindowPos"
-            :opened="infoWinOpen"
-            @closeclick="infoWinOpen=false"
-          >
-            <h2>{{infoTitle}} {{$route}}</h2>
-            <p>{{infoDetail}}</p>
-            <nuxt-link to="/">click</nuxt-link>
-          </gmap-info-window>
-          <GmapMarker
-            :key="index"
-            v-for="(marker, index) in markers"
-            :position="marker.position"
-            :clickable="true"
-            @click="toggleInfoWindow(marker,index)"
-          />
-        </GmapMap>
-      </no-ssr> -->
-
-      <h1>{{getCurrentLocation}}</h1>
-      <input type="text" v-model="areaOfEvent" placeholder="input area">
-      <v-btn
-        color="info"
-        @click="findEventInArea()"
-      >Click to search nearby event for {{areaOfEvent}}</v-btn>
+      <v-flex v-for="(event, index) in eventList" :key="index" v-bind="{ [`xs6`]: true }">
+        <event-card :eventPictureCover="event.eventPictureCover" :eventName="event.eventName"></event-card>
+      </v-flex>
     </v-layout>
+    <input type="text" v-model="areaOfEvent" placeholder="input area" />
+    <v-btn color="info" @click="findEventInArea()">Click to search nearby event for {{areaOfEvent}}</v-btn>
   </v-container>
 </template>
 <script>
 import axios from "axios";
+import EventCard from "@/components/eventCard";
 import { mapMutations, mapActions, mapGetters } from "vuex";
 export default {
+  components: {
+    EventCard
+  },
   data() {
     return {
+      eventList: [],
       position: {},
       infoTitle: "",
       infoDetail: "",
@@ -79,8 +54,20 @@ export default {
   computed: {
     ...mapGetters(["getCurrentLocation"])
   },
+  mounted() {
+    this.findAllEvent();
+  },
   methods: {
     ...mapActions(["updateCurrentLocation"]),
+    findAllEvent: async function() {
+      let category = this.$route.query.category;
+      axios
+        .get(`${process.env.EVENT_SERVICE}/events?category=${category}`)
+        .then(eventList => {
+          this.eventList = eventList.data;
+        })
+        .catch(error => {});
+    },
     findEventInArea: async function() {
       let geolocation = {
         lat: this.getCurrentLocation.lat,

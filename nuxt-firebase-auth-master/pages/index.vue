@@ -10,66 +10,21 @@
       <nuxt-link to="/selectGenres">
         <h3>Setting Recommedation</h3>
       </nuxt-link>
-      <!-- <h1>Recomended Event for {{$store.getters.mockGetUser.firstName}}</h1> -->
-      <!-- <event-list :eventList="recommendedEventList"></event-list> -->
-      <!-- Test card img -->
+      <!-- Event List -->
       <div v-if="isLogin">
         <h1>Recomended Event</h1>
-        <v-container fluid grid-list-md>
-          <v-layout row wrap>
-            <v-flex
-              v-for="(event, index) in popularEventList"
-              :key="index"
-              v-bind="{ [`xs6`]: true }"
-            >
-              <event-card :eventPictureCover="event.eventPictureCover" :eventName="event.eventName"></event-card>
-            </v-flex>
-          </v-layout>
-        </v-container>
-        <center>
-          <nuxt-link :to="``" style="text-decoration-line:none;">
-            <v-btn class="black--text" outline color="#341646" depressed large>View more</v-btn>
-          </nuxt-link>
-        </center>
+        <event-list :eventList="recentlyEventList" link="/event"></event-list>
         <br />
       </div>
 
       <h1>Popular Event</h1>
-      <v-container fluid grid-list-md>
-        <v-layout row wrap>
-          <v-flex
-            v-for="(event, index) in popularEventList"
-            :key="index"
-            v-bind="{ [`xs6`]: true }"
-          >
-            <event-card :eventPictureCover="event.eventPictureCover" :eventName="event.eventName"></event-card>
-          </v-flex>
-        </v-layout>
-      </v-container>
-      <center>
-        <nuxt-link :to="``" style="text-decoration-line:none;">
-          <v-btn class="black--text" outline color="#341646" depressed large>View more</v-btn>
-        </nuxt-link>
-      </center>
-      <h1>New Event</h1>
-      <v-container fluid grid-list-md>
-        <v-layout row wrap>
-          <v-flex
-            v-for="(event, index) in recentlyEventList"
-            :key="index"
-            v-bind="{ [`xs6`]: true }"
-          >
-            <event-card :eventPictureCover="event.eventPictureCover" :eventName="event.eventName"></event-card>
-          </v-flex>
-        </v-layout>
-      </v-container>
-      <center>
-        <nuxt-link :to="``" style="text-decoration-line:none;">
-          <v-btn class="black--text" outline color="#341646" depressed large>View more</v-btn>
-        </nuxt-link>
-      </center>
+      <event-list :eventList="recentlyEventList" link="/event"></event-list>
       <br />
-      <!-- test community -->
+
+      <h1>New Event</h1>
+      <event-list :eventList="recentlyEventList" link="/event"></event-list>
+      <br />
+      <!-- Community -->
       <h1>Community</h1>
       <community-card
         v-for="(community, index) in communityList"
@@ -108,10 +63,10 @@
 
 <script>
 import { mapGetters } from "vuex";
-import EventList from "@/components/EventList";
 //import CarouselCard from '../components/CarouselCard.vue';
 import axios from "axios";
 import { mapActions } from "vuex";
+import EventList from "@/components/eventList";
 import CommunityCard from "@/components/communityCard";
 import EventCard from "@/components/eventCard";
 import { isLogin } from "@/utils/loginVerify";
@@ -174,8 +129,11 @@ export default {
     },
     getRecentlyEvent: async function() {
       let concentPerPage = 3;
-      let recentlyEventList = await axios.get(`${process.env.EVENT_SERVICE}/events?isRecently=true
-      &contentPerPage=${concentPerPage}`)
+      let recentlyEventList = await axios
+        .get(
+          `${process.env.EVENT_SERVICE}/events?isRecently=true
+      &contentPerPage=${concentPerPage}`
+        )
         .then(recentlyEventList => {
           this.recentlyEventList = recentlyEventList.data;
         })
