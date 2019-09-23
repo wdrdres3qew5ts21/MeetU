@@ -1,21 +1,23 @@
 <template>
-  <v-container>
-    <v-layout row wrap>
-      <v-flex v-for="(event, index) in eventList" :key="index" v-bind="{ [`xs6`]: true }">
-        <event-card :eventPictureCover="event.eventPictureCover" :eventName="event.eventName"></event-card>
-      </v-flex>
-    </v-layout>
+  <div>
+    <h1>Music</h1>
+    <event-list :eventList="eventList"></event-list>
     <input type="text" v-model="areaOfEvent" placeholder="input area" />
     <v-btn color="info" @click="findEventInArea()">Click to search nearby event for {{areaOfEvent}}</v-btn>
-  </v-container>
+  </div>
 </template>
 <script>
 import axios from "axios";
-import EventCard from "@/components/eventCard";
+import EventList from "@/components/eventList";
 import { mapMutations, mapActions, mapGetters } from "vuex";
 export default {
   components: {
-    EventCard
+    EventList
+  },
+  watch: {
+    "$route.query.category"(){
+      this.findAllEvent()
+    }
   },
   data() {
     return {
@@ -52,7 +54,7 @@ export default {
     this.getLocation();
   },
   computed: {
-    ...mapGetters(["getCurrentLocation"])
+    ...mapGetters(["getCurrentLocation","getUser"])
   },
   mounted() {
     this.findAllEvent();
@@ -62,7 +64,7 @@ export default {
     findAllEvent: async function() {
       let category = this.$route.query.category;
       axios
-        .get(`${process.env.EVENT_SERVICE}/events?category=${category}`)
+        .get(`${process.env.EVENT_SERVICE}/events?eventTags=${category}`)
         .then(eventList => {
           this.eventList = eventList.data;
         })
