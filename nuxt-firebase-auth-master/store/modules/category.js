@@ -15,7 +15,7 @@ const mutations = {
 };
 
 const actions = {
-    updateCategory: function ({ commit }, updatedCategory) {
+    setCategory: function ({ commit }, updatedCategory) {
         console.log("action work for setlocation");
         commit("setCategory", updatedCategory);
     }
