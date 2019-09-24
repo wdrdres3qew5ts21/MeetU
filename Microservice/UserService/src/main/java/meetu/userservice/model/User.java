@@ -31,6 +31,8 @@ public class User {
 
     private String role;
     
+    private Persona persona;
+    
     @Indexed
     private String uid;
 
@@ -65,6 +67,14 @@ public class User {
 
     public User() {
 
+    }
+
+    public Persona getPersona() {
+        return persona;
+    }
+
+    public void setPersona(Persona persona) {
+        this.persona = persona;
     }
 
     public String getUserId() {

@@ -468,7 +468,6 @@ public class EventService {
         totalView++;
         eventInDatabase.setTotalView(totalView);
         eventRepository.save(eventInDatabase);
-
         if (uid != null) {
             return restTemplate.postForEntity(USERSERVICE_URL + "/user/interest", userViewEvent, User.class);
         }

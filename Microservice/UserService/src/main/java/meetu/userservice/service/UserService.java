@@ -14,8 +14,10 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import meetu.userservice.filters.TokenAuthenticationService;
+import meetu.userservice.model.Persona;
 import meetu.userservice.repository.UserRepository;
 import meetu.userservice.model.User;
+import meetu.userservice.model.UserViewEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -110,12 +112,13 @@ public class UserService {
         return null;
     }
 
-    public ResponseEntity updateUserInterestPersona(HashMap<String, String> userInterest) {
-        String uid = userInterest.get("uid");
-        User userInDatabase = userRepository.findByUid(uid);
+    public ResponseEntity updateUserInterestPersona(UserViewEvent userViewEvent) {
+        User userInDatabase = userRepository.findByUid(userViewEvent.getUid());
         if (userInDatabase != null) {
             System.out.println("found user !!!");
+            System.out.println(userInDatabase.getUid());
             System.out.println(userInDatabase);
+            Persona userPersona = userInDatabase.getPersona();
             return ResponseEntity.status(HttpStatus.CREATED).body(userInDatabase);
         }
         HashMap<String, String> responseBody = new HashMap();

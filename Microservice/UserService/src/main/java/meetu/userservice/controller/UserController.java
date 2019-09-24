@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 import meetu.userservice.service.UserService;
 import meetu.userservice.model.Badge;
 import meetu.userservice.model.User;
+import meetu.userservice.model.UserViewEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -104,8 +105,8 @@ public class UserController {
     }
     
     @PostMapping("/user/interest")
-    public ResponseEntity updateUserInterestPersona(@RequestBody HashMap<String, String> userInterest) {
-        return userService.updateUserInterestPersona(userInterest);
+    public ResponseEntity updateUserInterestPersona(@RequestBody UserViewEvent userViewEvent) {
+        return userService.updateUserInterestPersona(userViewEvent);
     }
 
     @PatchMapping

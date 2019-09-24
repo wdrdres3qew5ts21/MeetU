@@ -5,7 +5,8 @@
   "author": "milktea.js team",
   "private": true,
   "scripts": {
-    "dev": "nuxt",
+    "dev": "nuxt --spa",
+    "test": "cross-env NUXT_HOST=0.0.0.0 NUXT_PORT=3333 nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
@@ -26,7 +27,7 @@
     "@nuxtjs/pwa": "^2.4.0",
     "axios": "^0.18.0",
     "bootstrap": "^4.3.1",
-    "cross-env": "^5.2.1",
+    "cross-env": "^6.0.0",
     "dotenv": "^8.0.0",
     "firebase": "^6.2.4",
     "jsqr": "^1.2.0",
