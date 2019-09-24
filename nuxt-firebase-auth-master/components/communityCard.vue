@@ -13,11 +13,16 @@
       </span>
     </v-card-text>
 
+    <br />
     <v-card-actions>
-      <v-btn class="white--text" color="#341646">JOIN</v-btn>
+      <v-flex class="text-xs-right">
+        <v-btn class="white--text" color="#341646">JOIN</v-btn>
+      </v-flex>
     </v-card-actions>
   </v-card>
+  
 </template>
+
 <script>
 export default {
   name: "CommunityCard",
