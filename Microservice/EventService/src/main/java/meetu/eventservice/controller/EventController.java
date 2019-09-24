@@ -63,7 +63,7 @@ public class EventController {
     public ResponseEntity saveUserNotificationToken(@RequestBody UserNotification userNotification) {
         return new ResponseEntity(eventService.saveuserNotification(userNotification), HttpStatus.CREATED);
     }
-    
+
     @GetMapping("/events/tickets/{uid}")
     public ResponseEntity findUserTicketHistory(@PathVariable String uid) {
         return eventService.findUserTicketHistory(uid);
@@ -79,16 +79,21 @@ public class EventController {
         System.out.println("---- Reserve -----");
         return eventService.userReserveTicket(userJoinEvent);
     }
-    
+
     @PostMapping("/event/view")
     public ResponseEntity userViewEvent(@RequestBody UserViewEvent userViewEvent) {
         System.out.println("---- User View Event -----");
         return eventService.userViewEvent(userViewEvent);
     }
-    
+
     @DeleteMapping("/event/{elasticEventId}")
-    public ResponseEntity deleteEventByElasticId(@PathVariable String elasticEventId){
+    public ResponseEntity deleteEventByElasticId(@PathVariable String elasticEventId) {
         return eventService.deleteEventByElasticId(elasticEventId);
+    }
+
+    @GetMapping("/events/popular")
+    public ResponseEntity findAllPopularEvent() {
+        return eventService.findAllPopularEvent();
     }
 
     @GetMapping("/events")
@@ -98,6 +103,7 @@ public class EventController {
             @RequestParam(required = false, defaultValue = "") String eventDetail,
             @RequestParam(required = false) String[] eventTags,
             @RequestParam(required = false, defaultValue = "false") boolean isRecently,
+            @RequestParam(required = false, defaultValue = "false") boolean isPopularEvent,
             @RequestParam(required = false, defaultValue = "0.0", name = "lon") double longitude,
             @RequestParam(required = false, defaultValue = "0.0", name = "lat") double latitude,
             @RequestParam(required = false, defaultValue = "5km") String areaOfEvent
@@ -112,7 +118,7 @@ public class EventController {
         }
         return new ResponseEntity<List<Event>>(
                 eventService.findEventByUsingFilter(
-                        eventTags, isRecently, eventDetail,
+                        eventTags, isRecently, isPopularEvent, eventDetail,
                         longitude, latitude, areaOfEvent,
                         page, contentPerPage), HttpStatus.OK
         );
@@ -122,7 +128,7 @@ public class EventController {
     public ResponseEntity<Event> findEventByElasticId(@PathVariable String elasticEventId) {
         return eventService.findEventByEventId(elasticEventId);
     }
-    
+
     @PostMapping("/events/recommend/persona")
     public ResponseEntity<List<Event>> searchWithPersonalize(
             @RequestParam(required = false, defaultValue = "0") int page,
@@ -131,14 +137,14 @@ public class EventController {
     ) {
         return new ResponseEntity<List<Event>>(eventService.findEventByPersonalize(user), HttpStatus.OK);
     }
-    
+
     @GetMapping("/category")
-    public ResponseEntity getAllEventCatagory(){
+    public ResponseEntity getAllEventCatagory() {
         return eventService.getAllEventCategory();
     }
-    
+
     @PostMapping("/category")
-    public ResponseEntity createEventCatagory(@RequestBody Category category){
+    public ResponseEntity createEventCatagory(@RequestBody Category category) {
         return eventService.createEventCategory(category);
     }
 
@@ -150,11 +156,10 @@ public class EventController {
 //    ) {
 //        return new ResponseEntity<List<Event>>(eventService.findEventByPersonalize(user), HttpStatus.OK);
 //    }
-
     @GetMapping("/event/qrcode")
     public ResponseEntity<byte[]> qrCodeGenerator(HttpServletResponse response) {
         response.setContentType("image/png");
         return new ResponseEntity<byte[]>(qRCodeService.getQRCodeImage("https://trello.com/b/OutSJrmK/project", 1000, 1000), HttpStatus.OK);
     }
-    
+
 }

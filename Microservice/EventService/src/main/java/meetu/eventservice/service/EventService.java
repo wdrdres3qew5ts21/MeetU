@@ -220,7 +220,7 @@ public class EventService {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(responseBody);
     }
 
-    public List<Event> findEventByUsingFilter(String[] eventTags, boolean isRecently, String eventDetail, double longitude, double latitude, String areaOfEvent, int page, int contentPerPage) throws IOException {
+    public List<Event> findEventByUsingFilter(String[] eventTags, boolean isRecently, boolean isPopularEvent, String eventDetail, double longitude, double latitude, String areaOfEvent, int page, int contentPerPage) throws IOException {
         BoolQueryBuilder queryFilter = new BoolQueryBuilder();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         SearchRequest searchRequest = new SearchRequest(eventsIndex);
@@ -238,6 +238,11 @@ public class EventService {
         if (isRecently == true) {
             System.out.println("Recently Filter");
             searchSourceBuilder = filterByRecently(searchSourceBuilder, "createEventDate");
+        }
+        if (isPopularEvent == true) {
+            System.out.println("Popular Event Filter");
+            queryFilter.must(QueryBuilders.rangeQuery("endRegisterDate").lte("now-1d/d"));
+            searchSourceBuilder.sort("totalView", SortOrder.DESC);
         }
         if (longitude != 0.0 & latitude != 0.0) {
             System.out.println("Geo Filter");
@@ -503,6 +508,9 @@ public class EventService {
         List<Category> categoryList = categoryRepository.findAllByOrderByCategoryLabelAsc();
         return ResponseEntity.status(HttpStatus.OK).body(categoryList);
     }
-    
+
+    public ResponseEntity findAllPopularEvent() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
 }

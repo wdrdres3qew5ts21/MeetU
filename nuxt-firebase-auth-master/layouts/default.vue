@@ -230,7 +230,7 @@ export default {
     this.isLogin = isLogin();
   },
   computed: {
-    ...mapGetters(["getUser"]),
+    ...mapGetters(["getUser","getCategory"]),
     user() {
       return this.$store.getters.getUser;
     },

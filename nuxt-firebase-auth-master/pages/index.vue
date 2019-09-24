@@ -148,12 +148,24 @@ export default {
       console.log(recommendEventList.data);
       this.recommendedEventList = recommendEventList.data;
     },
+    getPopularEvent: async function() {
+      await axios
+        .get(
+          `${process.env.EVENT_SERVICE}/events?isPopular=true&contentPerPage=${concentPerPage}`
+        )
+        .then(popularEventList => {
+          this.popularEventList = popularEventList.data;
+          console.log(this.recentlyEventList);
+        })
+        .catch(error => {
+          this.popularEventList = mockPopularEventList;
+        });
+    },
     getRecentlyEvent: async function() {
       let concentPerPage = 3;
       let recentlyEventList = await axios
         .get(
-          `${process.env.EVENT_SERVICE}/events?isRecently=true
-      &contentPerPage=${concentPerPage}`
+          `${process.env.EVENT_SERVICE}/events?isRecently=true&contentPerPage=${concentPerPage}`
         )
         .then(recentlyEventList => {
           this.recentlyEventList = recentlyEventList.data;

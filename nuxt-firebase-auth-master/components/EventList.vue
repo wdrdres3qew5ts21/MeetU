@@ -1,7 +1,7 @@
 <template>
   <v-container fluid grid-list-md>
     <v-layout row wrap>
-      <v-flex v-for="(event, index) in eventList" :key="index" v-bind="{ [`xs6`]: true }">
+      <v-flex v-for="(event, index) in eventList" :key="index" >
         <event-card :event="event"></event-card>
       </v-flex>
     </v-layout>

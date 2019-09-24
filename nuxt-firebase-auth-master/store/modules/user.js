@@ -57,16 +57,12 @@ const state = () => ({
       }
     ]
   },
-  category: {}
 });
 
 const getters = {
   getUser: function (state) {
     return state.user;
   },
-  getCategory: function (state) {
-    return state.category
-  }
 };
 
 const mutations = {
@@ -90,9 +86,6 @@ const mutations = {
 };
 
 const actions = {
-  setCategory: function ({ commit }, category) {
-    commit('setCategory', category)
-  },
   testContext: function (context) {
     this.$router.push({ path: '/' })
   },
