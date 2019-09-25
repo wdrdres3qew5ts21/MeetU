@@ -35,17 +35,21 @@ public class OrganizeController {
         return new ResponseEntity<Organize>(organizeService.createOrganize(userId, organize), HttpStatus.CREATED);
     }
     
-    public ResponseEntity<Organize> addAdminOrganize(@PathVariable Admin adminList[], @RequestBody Organize organize) {
+    public ResponseEntity addAdminOrganize(@PathVariable Admin adminList[], @RequestBody Organize organize) {
         return new ResponseEntity<Organize>(organizeService.addAdminOrganize(adminList, organize), HttpStatus.CREATED);
     }
 
     @GetMapping("/organizes")
-    public ResponseEntity<List<Organize>> findAllOrganizes(@RequestParam(required = false) String organizeName) {
+    public ResponseEntity findAllOrganizes(@RequestParam(required = false) String organizeName) {
         if (organizeName == null) {
             return new ResponseEntity<List<Organize>>(organizeService.findAllOrganizes(), HttpStatus.OK);
         }
         return new ResponseEntity<List<Organize>>(organizeService.findByOrganizeName(organizeName), HttpStatus.OK);
-
+    }
+    
+    @GetMapping("/organize/{organizeId}")
+    public ResponseEntity findOrganizeById(@PathVariable String organizeId) {
+        return new ResponseEntity(organizeService.findOrganizeById(organizeId), HttpStatus.OK);
     }
 
 }
