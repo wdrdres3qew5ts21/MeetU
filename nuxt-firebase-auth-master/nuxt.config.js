@@ -1,10 +1,6 @@
 const env = require('dotenv').config()
 console.log(env)
 module.exports = {
-  server: {
-    port: 3333, // default: 3000
-    host: '0.0.0.0', // default: localhost
-  },
   env: env.parsed,
   head: {
     title: 'MeetU',
@@ -27,12 +23,12 @@ module.exports = {
     "display": "fullscreen",
     "icons": [
       {
-        "src": "~/assets/meetu.png",
+        "src": "~/assets/logo/meetu-alt.png",
         "type": "image/png",
         "sizes": "512x512"
       }
     ],
-    "gcm_sender_id": "103953800507"
+    "gcm_sender_id": "1058128161659"
   },
   build: {
     extend (config, ctx) {

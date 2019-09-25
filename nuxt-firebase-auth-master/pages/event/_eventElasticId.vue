@@ -159,6 +159,7 @@ export default {
         let data = response.data;
         console.log(data);
         return {
+          eventElasticId: data.eventElasticId,
           eventName: data.eventName,
           eventDetail: data.eventDetail,
           eventPictureCover: data.eventPictureCover,
@@ -179,20 +180,26 @@ export default {
       })
       .catch(err => {
         console.log("!!!!!!!!!!!!!!!!! Boom Not found !!!!!!!!!!");
-        console.log(err)
+        console.log(err);
         return error({ statusCode: 404, message: eventNotFound(err) });
       });
   },
   mounted() {
-    for (let i = 0; i <= 5; i++) {
-      this.numberOfTicket.push(i);
-    }
+    console.log(this.$route.params.eventElasticId)
+    console.log(this.getUser.uid)
+    this.userViewEvent()
   },
   computed: {
     ...mapGetters(["getCurrentLocation", "getUser"])
   },
   methods: {
     ...mapActions(["updateCurrentLocation"]),
+    userViewEvent: function() {
+      axios.post(`${process.env.EVENT_SERVICE}/event/view`, {
+        uid: this.getUser.uid,
+        elasticEventId: this.$route.params.eventElasticId,
+      });
+    },
     userReserveTicket: function() {
       console.log("User Reserve Ticket Event!");
 
