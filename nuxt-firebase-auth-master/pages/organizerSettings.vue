@@ -11,7 +11,7 @@
       </v-avatar>
       <br />
       <br />
-      <nuxt-link class="editProfile" to="/editProfileOrganizer?">Edit Profile</nuxt-link>
+      <nuxt-link class="editProfile" to="/editOrganizerSettings?">Edit Profile</nuxt-link>
     </center>
     <br />
     <h3 class="h3">Contact Information</h3>
