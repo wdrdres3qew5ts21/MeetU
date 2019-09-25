@@ -32,8 +32,7 @@
     <center>
       <v-container>
         <v-layout row wrap>
-          <no-ssr>
-            <GmapMap
+          <!-- <GmapMap
               :center="marker.position"
               :zoom="14"
               map-type-id="terrain"
@@ -56,8 +55,7 @@
                 :clickable="true"
                 @click="toggleInfoWindow(marker,0)"
               />
-            </GmapMap>
-          </no-ssr>
+          </GmapMap>-->
         </v-layout>
       </v-container>
       <br />
@@ -185,9 +183,9 @@ export default {
       });
   },
   mounted() {
-    console.log(this.$route.params.eventElasticId)
-    console.log(this.getUser.uid)
-    this.userViewEvent()
+    console.log(this.$route.params.eventElasticId);
+    console.log(this.getUser.uid);
+    this.userViewEvent();
   },
   computed: {
     ...mapGetters(["getCurrentLocation", "getUser"])
@@ -197,7 +195,7 @@ export default {
     userViewEvent: function() {
       axios.post(`${process.env.EVENT_SERVICE}/event/view`, {
         uid: this.getUser.uid,
-        elasticEventId: this.$route.params.eventElasticId,
+        elasticEventId: this.$route.params.eventElasticId
       });
     },
     userReserveTicket: function() {

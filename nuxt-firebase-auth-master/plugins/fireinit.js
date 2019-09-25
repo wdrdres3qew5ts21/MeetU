@@ -28,18 +28,23 @@ export default (context) => {
     authen = firebase.auth()
     messaging = firebase.messaging()
 
-    let userJwt = jwtDecode(localStorage.getItem("jwtToken"))
-    console.log(userJwt)
-    if(userJwt){
-      store.commit('setUser', {
-        displayName: userJwt.name,
-        email: userJwt.email,
-        emailVerified: userJwt.email_verified,
-        photoURL: userJwt.picture,
-        uid: userJwt.user_id,
-        jwtToken: localStorage.getItem("jwtToken")
-      })
+    try{
+      let userJwt = jwtDecode(localStorage.getItem("jwtToken"))
+      console.log(userJwt)
+      if(userJwt){
+        store.commit('setUser', {
+          displayName: userJwt.name,
+          email: userJwt.email,
+          emailVerified: userJwt.email_verified,
+          photoURL: userJwt.picture,
+          uid: userJwt.user_id,
+          jwtToken: localStorage.getItem("jwtToken")
+        })
+      }
+    }catch(err){
+      console.log(err)
     }
+
 
     authen.onAuthStateChanged(user => {
       console.log("state change")
