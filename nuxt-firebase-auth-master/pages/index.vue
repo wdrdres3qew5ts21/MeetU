@@ -11,7 +11,7 @@
         <h3>Setting Recommedation</h3>
       </nuxt-link>
       <!-- Event List -->
-      <div v-if="isLogin">
+      <div v-if="getUser.uid!=null">
         <h1>Recomended Event</h1>
         <client-only>
           <carousel :perPage="1" :paginationEnabled="false">
@@ -130,9 +130,9 @@ export default {
     this.isLogin = isLogin();
     this.getRecentlyEvent();
     this.getArtsEvent();
-    this.getRecommendEvent();
-    console.log(this.getEventByTags("art"));
-    console.log(this.getEventByTags("book"));
+    if(this.isLogin){
+      this.getRecommendEvent();
+    }
   },
   computed: {
     ...mapGetters(["getUser"])
@@ -142,7 +142,9 @@ export default {
     getRecommendEvent: async function() {
       let recommendEventList = await axios.post(
         `${process.env.EVENT_SERVICE}/events/recommend/persona`,
-        this.$store.getters.mockGetUser
+        {
+          uid: this.getUser.uid
+        }
       );
       console.log("-- recommend ---");
       console.log(recommendEventList.data);

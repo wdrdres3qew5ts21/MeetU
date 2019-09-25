@@ -269,6 +269,7 @@ public class EventService {
     }
 
     public ResponseEntity findUserAndEventThatMatchingInDatabase(User user) {
+        System.out.println(user);
         String uid = user.getUid();
         if (uid != null) {
             User userInDatabase = restTemplate.getForObject(USERSERVICE_URL+"/user/"+uid, User.class);
