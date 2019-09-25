@@ -497,7 +497,7 @@ public class EventService {
         if (saveEventMongo != null) {
             List<String> eventTags = eventInDatabase.getEventTags();
             userViewEvent.setEventTags(eventTags);
-            return restTemplate.postForEntity(USERSERVICE_URL + "/user/interest", userViewEvent, UserViewEvent.class);
+            return restTemplate.postForEntity(USERSERVICE_URL + "/user/view", userViewEvent, UserViewEvent.class);
             // return ResponseEntity.status(HttpStatus.CREATED).body(saveEventMongo);
         }
         response.put("response", "failed to update Event view");

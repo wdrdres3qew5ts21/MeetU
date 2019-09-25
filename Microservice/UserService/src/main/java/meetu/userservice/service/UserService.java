@@ -113,7 +113,36 @@ public class UserService {
         return null;
     }
 
-    public ResponseEntity updateUserInterestPersona(UserViewEvent userViewEvent) {
+    public ResponseEntity userViewEvent(UserViewEvent userViewEvent) {
+        User userInDatabase = userRepository.findByUid(userViewEvent.getUid());
+        if (userInDatabase != null) {
+            System.out.println("found user !!!");
+            System.out.println(userInDatabase.getUid());
+            System.out.println(userInDatabase);
+            Persona userPersona = userInDatabase.getPersona();
+            List<InterestGenreBehavior> interestBehaviorList = userPersona.getInterestBehaviorList();
+            System.out.println("Before Update Interest Behavior");
+            System.out.println(interestBehaviorList.toString());
+            interestBehaviorList.forEach(interestBehavior -> {
+                String genre = interestBehavior.getGenre();
+                if (userViewEvent.getEventTags().contains(genre) == true) {
+                    int totalView = interestBehavior.getTotalView();
+                    totalView++;
+                    interestBehavior.setTotalView(totalView);
+                }
+            });
+            System.out.println("After Update Interest Behavior");
+            System.out.println(interestBehaviorList.toString());
+            System.out.println("-------------");
+            userRepository.save(userInDatabase);
+            return ResponseEntity.status(HttpStatus.CREATED).body(userInDatabase);
+        }
+        HashMap<String, String> responseBody = new HashMap();
+        responseBody.put("response", "Not found any user in database !");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
+    }
+
+    public ResponseEntity updateUserInterestPersonaFromJoinEvent(UserViewEvent userViewEvent) {
         User userInDatabase = userRepository.findByUid(userViewEvent.getUid());
         if (userInDatabase != null) {
             System.out.println("found user !!!");
