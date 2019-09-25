@@ -124,6 +124,22 @@ const actions = {
   signInWithGoogle: function ({ commit }) {
     auth.signInWithRedirect(GoogleProvider).then(result => {
       console.log(result);
+      auth.getRedirectResult().then((result) => {
+        console.log("stupid")
+        if (result.credential) {
+          // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+          let token = result.credential.accessToken;
+          let isNewUser = result.additionalUserInfo.isNewUser
+          console.log(result)
+          if (isNewUser) {
+            console.log("---------- First Time sign up ----------")
+            axios.post(`${process.env.USER_SERVICE}/user`, result.user)
+          }
+
+        }
+      }).catch(function (error) {
+
+      });
     })
       .catch(err => {
         console.log(err);
