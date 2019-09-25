@@ -70,6 +70,9 @@ public class User {
     }
 
     public Persona getPersona() {
+        if(persona == null){
+            persona = new Persona();
+        }
         return persona;
     }
 

@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import meetu.userservice.filters.TokenAuthenticationService;
+import meetu.userservice.model.InterestGenreBehavior;
 import meetu.userservice.model.Persona;
 import meetu.userservice.repository.UserRepository;
 import meetu.userservice.model.User;
@@ -119,6 +120,19 @@ public class UserService {
             System.out.println(userInDatabase.getUid());
             System.out.println(userInDatabase);
             Persona userPersona = userInDatabase.getPersona();
+            List<InterestGenreBehavior> interestBehaviorList = userPersona.getInterestBehaviorList();
+            System.out.println("Before Update Interest Behavior");
+            System.out.println(interestBehaviorList.toArray());
+            interestBehaviorList.forEach(interestBehavior -> {
+                String genre = interestBehavior.getGenre();
+                if (userViewEvent.getEventTags().contains(genre) == true) {
+                    int totalView = interestBehavior.getTotalView();
+                    totalView++;
+                    interestBehavior.setTotalView(totalView);
+                }
+            });
+            System.out.println("After Update Interest Behavior");
+            System.out.println(interestBehaviorList.toArray());
             return ResponseEntity.status(HttpStatus.CREATED).body(userInDatabase);
         }
         HashMap<String, String> responseBody = new HashMap();
