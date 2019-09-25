@@ -497,7 +497,13 @@ public class EventService {
         if (saveEventMongo != null) {
             List<String> eventTags = eventInDatabase.getEventTags();
             userViewEvent.setEventTags(eventTags);
-            return restTemplate.postForEntity(USERSERVICE_URL + "/user/view", userViewEvent, UserViewEvent.class);
+            if (userViewEvent.getUid() != null) {
+                System.out.println("User have login");
+                return restTemplate.postForEntity(USERSERVICE_URL + "/user/view", userViewEvent, UserViewEvent.class);
+            } else {
+                System.out.println("Dont have user login");
+                return ResponseEntity.status(HttpStatus.CREATED).body(saveEventMongo);
+            }
             // return ResponseEntity.status(HttpStatus.CREATED).body(saveEventMongo);
         }
         response.put("response", "failed to update Event view");

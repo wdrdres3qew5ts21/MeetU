@@ -2,6 +2,7 @@ import * as firebase from "firebase/app";
 import 'firebase/messaging';
 import 'firebase/auth';
 import axios from "axios"
+import jwtDecode from "jwt-decode"
 
 const firebaseConfig = {
   apiKey: "AIzaSyDj6tin4BDkUrwgtaKyjEMncf60p7GkLn0",
@@ -27,6 +28,19 @@ export default (context) => {
     authen = firebase.auth()
     messaging = firebase.messaging()
 
+    let userJwt = jwtDecode(localStorage.getItem("jwtToken"))
+    console.log(userJwt)
+    if(userJwt){
+      store.commit('setUser', {
+        displayName: userJwt.name,
+        email: userJwt.email,
+        emailVerified: userJwt.email_verified,
+        photoURL: userJwt.picture,
+        uid: userJwt.user_id,
+        jwtToken: localStorage.getItem("jwtToken")
+      })
+    }
+
     authen.onAuthStateChanged(user => {
       console.log("state change")
       authen.currentUser.getIdToken(/* forceRefresh */ true)
@@ -46,7 +60,7 @@ export default (context) => {
           })
           // Request Permission Will work only user login Success
 
-          messaging.usePublicVapidKey("BBE3arRFCbWg0FTbJ-xh0R__ngAdYnjdPtv3PFTyCJRy1ceuztLgcDrPVkVpNzSwn7xsOL5tFwW6dQzhcwoBEqM");
+          messaging.usePublicVapidKey("BJsK20EGvD7TRip8YI_DP-sxYxeNK65jwuK6v_Mek8birN_doChyesgPAmAuXMiu81TJOkejoypqvz9Pl7TWhe0");
           // Request Permission of Notifications
           messaging.requestPermission().then(() => {
             console.log('Notification permission granted.');
