@@ -60,6 +60,7 @@ import java.util.Random;
 import java.util.UUID;
 import meetu.eventservice.model.Category;
 import meetu.eventservice.model.UserEventTicket;
+import meetu.eventservice.model.UserJoinEvent;
 import meetu.eventservice.model.UserViewEvent;
 import meetu.eventservice.repository.UserEventTicketRepository;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
@@ -422,6 +423,7 @@ public class EventService {
                 if (userEventTicketInDatabase.getTicketKey().equals(userJoinEvent.getTicketKey()) && userEventTicketInDatabase.getUid().equals(userJoinEvent.getUid())) {
                     userEventTicketInDatabase.setIsParticipate(true);
                     userEventTicketInDatabase.setParticipateDate(new Timestamp(System.currentTimeMillis()));
+                    restTemplate.postForEntity(USERSERVICE_URL+"/user/interest", new UserJoinEvent(true), UserViewEvent.class);
                     return ResponseEntity.status(HttpStatus.CREATED).body(userEventTicketRespository.save(userEventTicketInDatabase));
                 }
             } else {
