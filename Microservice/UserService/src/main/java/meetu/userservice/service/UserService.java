@@ -122,7 +122,7 @@ public class UserService {
             Persona userPersona = userInDatabase.getPersona();
             List<InterestGenreBehavior> interestBehaviorList = userPersona.getInterestBehaviorList();
             System.out.println("Before Update Interest Behavior");
-            System.out.println(interestBehaviorList.toArray());
+            System.out.println(interestBehaviorList.toString());
             interestBehaviorList.forEach(interestBehavior -> {
                 String genre = interestBehavior.getGenre();
                 if (userViewEvent.getEventTags().contains(genre) == true) {
@@ -132,7 +132,7 @@ public class UserService {
                 }
             });
             System.out.println("After Update Interest Behavior");
-            System.out.println(interestBehaviorList.toArray());
+            System.out.println(interestBehaviorList.toString());
             return ResponseEntity.status(HttpStatus.CREATED).body(userInDatabase);
         }
         HashMap<String, String> responseBody = new HashMap();

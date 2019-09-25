@@ -15,10 +15,21 @@ public class InterestGenreBehavior implements Comparable<InterestGenreBehavior> 
 
     private int totalView;
 
-    private short totalParticipate;
+    private int totalParticipate;
 
-    private byte absent;
+    private int absent;
+    
+    public InterestGenreBehavior(){
+        
+    }
 
+    public InterestGenreBehavior(String genre, int totalView, int totalParticipate, int absent) {
+        this.genre = genre;
+        this.totalView = totalView;
+        this.totalParticipate = totalParticipate;
+        this.absent = absent;
+    }
+    
     public String getGenre() {
         return genre;
     }
@@ -35,7 +46,7 @@ public class InterestGenreBehavior implements Comparable<InterestGenreBehavior> 
         this.totalView = totalView;
     }
 
-    public short getTotalParticipate() {
+    public int getTotalParticipate() {
         return totalParticipate;
     }
 
@@ -43,7 +54,7 @@ public class InterestGenreBehavior implements Comparable<InterestGenreBehavior> 
         this.totalParticipate = totalParticipate;
     }
 
-    public byte getAbsent() {
+    public int getAbsent() {
         return absent;
     }
 
