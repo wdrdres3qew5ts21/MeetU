@@ -14,29 +14,29 @@ import java.util.List;
  */
 public class Persona {
 
-    private byte probationDuration;
+    private int probationDuration;
 
-    private byte absentInRow;
+    private int absentInRow;
 
     private List<String> interestIdea;
 
-    private short sumAllOfParticipateEvent;
+    private int sumAllOfParticipateEvent;
 
     private List<InterestGenreBehavior> interestBehaviorList;
 
-    public byte getProbationDuration() {
+    public int getProbationDuration() {
         return probationDuration;
     }
 
-    public void setProbationDuration(byte probationDuration) {
+    public void setProbationDuration(int probationDuration) {
         this.probationDuration = probationDuration;
     }
 
-    public byte getAbsentInRow() {
+    public int getAbsentInRow() {
         return absentInRow;
     }
 
-    public void setAbsentInRow(byte absentInRow) {
+    public void setAbsentInRow(int absentInRow) {
         this.absentInRow = absentInRow;
     }
 
@@ -51,20 +51,32 @@ public class Persona {
         this.interestIdea = interestIdea;
     }
 
-    public short getSumAllOfParticipateEvent() {
+    public int getSumAllOfParticipateEvent() {
         for (InterestGenreBehavior interestBehavior : this.interestBehaviorList) {
             this.sumAllOfParticipateEvent += interestBehavior.getTotalParticipate();
         }
         return this.sumAllOfParticipateEvent;
     }
 
-    public void setSumAllOfParticipateEvent(short sumAllOfParticipateEvent) {
+    public void setSumAllOfParticipateEvent(int sumAllOfParticipateEvent) {
         this.sumAllOfParticipateEvent = sumAllOfParticipateEvent;
     }
 
     public List<InterestGenreBehavior> getInterestBehaviorList() {
         if (this.interestBehaviorList == null) {
             this.interestBehaviorList = new ArrayList<InterestGenreBehavior>();
+            // { "genre": "art", "totalView": 0, "totalParticipate": 2, "absent": 0 },
+            this.interestBehaviorList.add(new InterestGenreBehavior("art", 0, 0, 0));
+            this.interestBehaviorList.add(new InterestGenreBehavior("beauty", 0, 0, 0));
+            this.interestBehaviorList.add(new InterestGenreBehavior("book", 0, 0, 0));
+            this.interestBehaviorList.add(new InterestGenreBehavior("business", 0, 0, 0));
+            this.interestBehaviorList.add(new InterestGenreBehavior("family", 0, 0, 0));
+            this.interestBehaviorList.add(new InterestGenreBehavior("flim", 0, 0, 0));
+            this.interestBehaviorList.add(new InterestGenreBehavior("game", 0, 0, 0));
+            this.interestBehaviorList.add(new InterestGenreBehavior("music", 0, 0, 0));
+            this.interestBehaviorList.add(new InterestGenreBehavior("photography", 0, 0, 0));
+            this.interestBehaviorList.add(new InterestGenreBehavior("social", 0, 0, 0));
+            this.interestBehaviorList.add(new InterestGenreBehavior("technology", 0, 0, 0));
         }
         return this.interestBehaviorList;
     }

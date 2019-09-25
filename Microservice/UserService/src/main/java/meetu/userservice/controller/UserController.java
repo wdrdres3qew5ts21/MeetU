@@ -104,9 +104,14 @@ public class UserController {
         return new ResponseEntity<String>(userService.login(user), HttpStatus.OK);
     }
     
+    @PostMapping("/user/view")
+    public ResponseEntity updateUserViewInterest(@RequestBody UserViewEvent userViewEvent) {
+        return userService.userViewEvent(userViewEvent);
+    }
+    
     @PostMapping("/user/interest")
-    public ResponseEntity updateUserInterestPersona(@RequestBody UserViewEvent userViewEvent) {
-        return userService.updateUserInterestPersona(userViewEvent);
+    public ResponseEntity updateUserInterestPersonaFromJoinEvent(@RequestBody UserViewEvent userViewEvent) {
+        return userService.updateUserInterestPersonaFromJoinEvent(userViewEvent);
     }
 
     @PatchMapping
