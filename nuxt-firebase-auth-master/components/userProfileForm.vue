@@ -121,12 +121,42 @@
     ></v-text-field>
     <br />
 
-    <h2>Social Links</h2>something
+    <h3 class="h3">User Social Networks</h3>
     <br />
-    <v-layout justify-center row wrap>
-      <v-btn class="white--text" color="#341646">CANCEL</v-btn>
-      <v-btn class="white--text" color="#341646">SAVE</v-btn>
-    </v-layout>
+
+    <v-form>
+      <v-text-field class="textfield" v-model="website" label="Website" placeholder="http://"></v-text-field>
+    </v-form>
+
+    <v-form>
+      <v-text-field class="textfield" v-model="line" label="Line" placeholder="@"></v-text-field>
+    </v-form>
+
+    <v-form>
+      <v-text-field class="textfield" v-model="facebook" label="Facebook" placeholder="http://"></v-text-field>
+    </v-form>
+
+    <v-form>
+      <v-text-field class="textfield" v-model="twitter" label="Twitter" placeholder="@"></v-text-field>
+    </v-form>
+
+    <v-form>
+      <v-text-field class="textfield" v-model="instagram" label="Instagram" placeholder="@"></v-text-field>
+    </v-form>
+
+
+    <br>
+    <center>
+      <nuxt-link :to="`/?`" style="text-decoration-line:none;">
+        <v-btn class="cancelButton white--text" color="#AEAEAE" depressed large height="50">Cancel</v-btn>
+      </nuxt-link>
+
+      <nuxt-link :to="`/?`" style="text-decoration-line:none;">
+        <v-btn class="saveButton white--text" color="#341646" depressed large height="50">Save</v-btn>
+      </nuxt-link>
+    </center>
+    <br><br>
+    
   </div>
 </template> 
  
