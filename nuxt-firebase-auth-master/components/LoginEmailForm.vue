@@ -39,7 +39,7 @@
       <center>
         <h3>
           Not a member ?
-          <nuxt-link :to="`/signup`" style="text-decoration-line:none;">
+          <nuxt-link :to="`/signup?`" style="text-decoration-line:none;">
             <a class="linkSignup">Sign Up</a>
           </nuxt-link>
         </h3>
