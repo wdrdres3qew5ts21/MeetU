@@ -4,17 +4,9 @@
     <br />
     <v-layout justify-center row wrap>
       <v-flex xs12>
-            <center>
-      <v-avatar color="#DEDEDE" size="120">
-        <span class="black--text">Image</span>
-      </v-avatar>
-
-      <br />
-
-    </center>
-        <!-- <v-card class="elevation-0 mx-auto" color="white" max-width="150" style="border-radius:50%">
+        <v-card class="elevation-0 mx-auto" color="white" max-width="150" style="border-radius:50%">
           <v-img :aspect-ratio="1/1" :src="getUser.photoURL"></v-img>
-        </v-card> -->
+        </v-card>
       </v-flex>
       <v-flex xs12>
         <center>
@@ -85,40 +77,29 @@
     <br />
     <h2>Credentials</h2>
     <br />
+
     <v-text-field
       v-model="password"
       :append-icon="show1 ? 'visibility' : 'visibility_off'"
-      :rules="[rules.required, rules.min]"
+      :rules="[rules.required]"
       :type="show1 ? 'text' : 'password'"
       name="input-10-1"
-      label="Password"
-      hint="At least 8 characters"
+      label="Normal with hint text"
       counter
       @click:append="show1 = !show1"
     ></v-text-field>
 
     <v-text-field
-      :append-icon="show4 ? 'visibility' : 'visibility_off'"
-      :rules="[rules.required, rules.emailMatch]"
-      :type="show4 ? 'text' : 'password'"
-      name="input-10-2"
-      label="Password Comfermation"
-      hint="At least 8 characters"
-      value="Pa"
-      error
-      @click:append="show4 = !show4"
-    ></v-text-field>
-    <v-text-field
-      v-model="password"
-      :append-icon="show3 ? 'visibility' : 'visibility_off'"
-      :rules="[rules.required, rules.min]"
+      v-model="passwordConfirm"
+      :append-icon="show1 ? 'visibility' : 'visibility_off'"
+      :rules="[rules.required]"
       :type="show3 ? 'text' : 'password'"
       name="input-10-1"
-      label="Current Password"
-      hint="At least 8 characters"
+      label="Normal with hint text"
       counter
-      @click:append="show3 = !show3"
+      @click:append="show1 = !show1"
     ></v-text-field>
+
     <br />
 
     <h3 class="h3">User Social Networks</h3>
@@ -144,8 +125,7 @@
       <v-text-field class="textfield" v-model="instagram" label="Instagram" placeholder="@"></v-text-field>
     </v-form>
 
-
-    <br>
+    <br />
     <center>
       <nuxt-link :to="`/?`" style="text-decoration-line:none;">
         <v-btn class="cancelButton white--text" color="#AEAEAE" depressed large height="50">Cancel</v-btn>
@@ -155,8 +135,8 @@
         <v-btn class="saveButton white--text" color="#341646" depressed large height="50">Save</v-btn>
       </nuxt-link>
     </center>
-    <br><br>
-    
+    <br />
+    <br />
   </div>
 </template> 
  
@@ -171,9 +151,17 @@ export default {
       date: null,
       menu: false,
       show1: false,
+      show2: true,
       show3: false,
       show4: false,
       password: "Password",
+      passwordConfirm: "passwordConfirm",
+      website: "",
+      line: "",
+      facebook: "",
+      twitter: "",
+      instagram: "",
+      column: "",
       firstname: "",
       lastname: "",
       nameRules: [
