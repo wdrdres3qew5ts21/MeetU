@@ -1,4 +1,5 @@
 <template>
+<div>
   <v-layout justify-center align-center>
     <v-flex xs12 sm8>
       <v-card>
@@ -19,10 +20,27 @@
       </v-card>
     </v-flex>
   </v-layout>
+  
+  <!-- test logo image -->
+
+<v-row align="center" justify="center">
+    <v-img
+      :src="logoImage"
+      aspect-ratio="1"
+
+    ></v-img>
+  </v-row>
+</div>
 </template>
 
 <script>
-export default {};
+export default {
+  data(){
+    return{
+      logoImage: require('@/assets/logo.png')
+    }
+  }
+}
 </script>
 <style lang="css">
 
