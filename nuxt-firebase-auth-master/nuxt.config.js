@@ -1,6 +1,10 @@
 const env = require('dotenv').config()
 console.log(env)
 module.exports = {
+  server: {
+    port: 3333, // default: 3000
+    host: '0.0.0.0', // default: localhost
+  },
   env: env.parsed,
   head: {
     title: 'MeetU',
@@ -74,8 +78,5 @@ module.exports = {
   vendor: [
     'firebase',
     'vuetify',
-    'vue-qrcode-reader',
-    'vue2-google-maps',
-    'vue-flickity',
   ]
 }

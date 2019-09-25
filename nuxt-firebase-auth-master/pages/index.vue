@@ -13,13 +13,13 @@
       <!-- Event List -->
       <div v-if="isLogin">
         <h1>Recomended Event</h1>
-        <no-ssr>
+        <client-only>
           <carousel :perPage="1" :paginationEnabled="false">
             <slide v-for="(event, index) in recentlyEventList" :key="index">
               <event-card :event="event"></event-card>
             </slide>
           </carousel>
-        </no-ssr>
+        </client-only>
         <!-- <event-list :eventList="recentlyEventList" link="/event"></event-list> -->
         <br />
       </div>

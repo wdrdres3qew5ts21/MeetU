@@ -89,6 +89,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import meetu.eventservice.repository.CategoryRepository;
+import org.elasticsearch.action.update.UpdateRequest;
+import static org.elasticsearch.common.xcontent.XContentFactory.*;
+import org.elasticsearch.index.get.GetResult;
 
 /**
  *
@@ -161,7 +164,7 @@ public class EventService {
         IndexRequest indexRequest = new IndexRequest(eventsIndex);
         String elasticEventid = null;
         Map<String, Object> pojoToMap = ElasticUtil.pojoToMap(event);
-        pojoToMap.remove("organize");
+        //pojoToMap.remove("organize");
         System.out.println(pojoToMap);
         indexRequest.source(pojoToMap);
         try {
@@ -458,23 +461,50 @@ public class EventService {
         return userNotificationRepository.save(userNotification);
     }
 
-    @HystrixCommand(fallbackMethod = "fuckYouFallback")
+//    @HystrixCommand(fallbackMethod = "fuckYouFallback")
     public ResponseEntity userViewEvent(UserViewEvent userViewEvent) {
-        System.out.println("fuuuuuuuuuuuuu");
+        Map<String, Object> response = new HashMap();
+        System.out.println("User View Event");
+        System.out.println(userViewEvent);
+
         String elasticEventId = userViewEvent.getElasticEventId();
         String uid = userViewEvent.getUid();
         Event eventInDatabase = eventRepository.findByElasticEventId(elasticEventId);
+        System.out.println("Event in database");
+        System.out.println(eventInDatabase);
         int totalView = eventInDatabase.getTotalView();
         totalView++;
         eventInDatabase.setTotalView(totalView);
-        eventRepository.save(eventInDatabase);
-        if (uid != null) {
-            return restTemplate.postForEntity(USERSERVICE_URL + "/user/interest", userViewEvent, User.class);
+        Event saveEventMongo = eventRepository.save(eventInDatabase);
+        UpdateRequest updateRequest = new UpdateRequest();
+        updateRequest.index(this.eventsIndex);
+        updateRequest.id(userViewEvent.getElasticEventId());
+        try {
+            updateRequest.doc(jsonBuilder()
+                    .startObject()
+                    .field("totalView", totalView)
+                    .endObject());
+            DocWriteResponse.Result result = elasticClient.update(updateRequest, RequestOptions.DEFAULT).getResult();
+            System.out.println(saveEventMongo);
+            System.out.println("---- Result-----");
+            System.out.println(result);
+            System.out.println("--- Source ----");
+
+        } catch (IOException ex) {
+            Logger.getLogger(EventService.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
+
+        if (saveEventMongo != null) {
+            List<String> eventTags = eventInDatabase.getEventTags();
+            userViewEvent.setEventTags(eventTags);
+            return restTemplate.postForEntity(USERSERVICE_URL + "/user/interest", userViewEvent, UserViewEvent.class);
+            // return ResponseEntity.status(HttpStatus.CREATED).body(saveEventMongo);
+        }
+        response.put("response", "failed to update Event view");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
-    public ResponseEntity fuckYouFallback(HashMap test) {
+    public ResponseEntity fuckYouFallback(UserViewEvent test) {
         System.out.println("Doom day hystrix!!!");
         return ResponseEntity.status(HttpStatus.OK).body("fuq");
     }

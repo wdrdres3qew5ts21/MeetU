@@ -5,6 +5,8 @@
  */
 package meetu.eventservice.model;
 
+import java.util.List;
+
 /**
  *
  * @author Test
@@ -12,7 +14,17 @@ package meetu.eventservice.model;
 public class UserViewEvent extends User{
         
     private String elasticEventId;
+    
+    private List<String> eventTags;
 
+    public List<String> getEventTags() {
+        return eventTags;
+    }
+
+    public void setEventTags(List<String> eventTags) {
+        this.eventTags = eventTags;
+    }
+    
     public String getElasticEventId() {
         return elasticEventId;
     }
@@ -23,7 +35,7 @@ public class UserViewEvent extends User{
 
     @Override
     public String toString() {
-        return "UserViewEvent{" + "elasticEventId=" + elasticEventId + '}';
+        return "UserViewEvent{" + "elasticEventId=" + elasticEventId + ", eventTags=" + eventTags + '}';
     }
-    
+
 }

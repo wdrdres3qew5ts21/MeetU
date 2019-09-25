@@ -55,6 +55,10 @@ public class User {
         return userId;
     }
 
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
     public void setUserId(String userId) {
         this.userId = userId;
     }
