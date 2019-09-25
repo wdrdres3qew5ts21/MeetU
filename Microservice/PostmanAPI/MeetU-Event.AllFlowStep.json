@@ -1,0 +1,376 @@
+{
+	"info": {
+		"_postman_id": "bc8289ad-99a3-4633-b2f9-6b5004f1ed21",
+		"name": "MeetU-Event",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Delete Event by eventElasticId",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{user-host-dev}}/eventservice/event/sU6AZ20B1ZMCPdXGM03T",
+					"host": [
+						"{{user-host-dev}}"
+					],
+					"path": [
+						"eventservice",
+						"event",
+						"sU6AZ20B1ZMCPdXGM03T"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Show Event By elasticEventId",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{user-host-dev}}/eventservice/event/C0RmIW0BF4kiZeqcVyki",
+					"host": [
+						"{{user-host-dev}}"
+					],
+					"path": [
+						"eventservice",
+						"event",
+						"C0RmIW0BF4kiZeqcVyki"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "1.Create Organize From Exist User",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"organizeName\":\"Party Festival - Thailand\",\n\t\"organizeDetail\": \"Royal City Avenue or RCA is one of Bangkok's largest entertainment and clubbing areas. Located on in Huai Khwang district, RCA is a long street located between Rama IX Road and Phetchaburi Road. It contains a multitude of bars, nightclubs and live music venues. RCA, a government designated Entertainment Zone, is frequently visited by young people.\"\n}"
+				},
+				"url": {
+					"raw": "{{user-host-dev}}/userservice/organize/9vYRVtki1JZqQzQSEgtEJPvrdAu1",
+					"host": [
+						"{{user-host-dev}}"
+					],
+					"path": [
+						"userservice",
+						"organize",
+						"9vYRVtki1JZqQzQSEgtEJPvrdAu1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "1.Create KMUTT Organize From Exist User",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"organizeName\":\"KMUTT Japanese Club\",\n\t\"organizeDetail\": \"ชมรม KCJ หรือชมรมศิลปะภาพวาดการ์ตูนและภาพยนตร์อนิเมชั่น มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าธนบุรี (บางมด) เป็นชมรมที่รวบรวมคนที่ชื่นชอบอนิเมะ วัฒนธรรมญี่ปุ่น คอสเพลย์หรือเรื่องราวต่าง ๆ ที่เกื่ยวกับญี่ปุ่น โดยแฟนเพจจะอัพเดทข่าวสาว แชร์เรื่องราวต่างๆ \"\n}"
+				},
+				"url": {
+					"raw": "{{user-host-dev}}/userservice/organize/JdNBfUjngGZEedP8wr9XhY0V15q1",
+					"host": [
+						"{{user-host-dev}}"
+					],
+					"path": [
+						"userservice",
+						"organize",
+						"JdNBfUjngGZEedP8wr9XhY0V15q1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2.Create Songkran from Organize",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"numberOfTicket\": 4,\n\t\"eventName\": \"Songkran Holiday Version2\",\n\t\"eventDetail\": \"Songkran is Thailand's most important public holiday and celebrates their traditional new year. It takes place from the 13-15th April (the hottest time of the year) throughout the country, but Chiang Mai spreads this out for up to 8 days, making it one of the best places to celebrate the world's biggest water fight. The streets fill with processions, cultural shows, beauty pageants and thousands of locals and tourists armed with water pistols and powder. The moat around the city centre provides the perfect set up for an incredible and unforgettable cultural experience. Wetter equals better, so be warned not to carry any valuables that can't take a soaking.\",\n\t\"eventTags\": [\n\t\t\"social\", \"family\"\t\n\t],\n\t\"eventPictureCover\": \"https://i1.wp.com/www.iurban.in.th/wp-content/uploads/2017/09/icover2017-romantic-cm5-1.jpg\",\n\t\"eventPictureLists\": [\"https://travel.mthai.com/app/uploads/2019/04/Amarin_Songkran-Splendors-Festival-2019-8.jpg\",\"https://www.thaihealth.or.th/data/content/2019/04/48274/cms/newscms_thaihealth_c_aefhjostu567.jpg\"],\n\t\"organize\": {\n\t\t\"organizeId\":\"5d7571cf4158d76520eff6bf\",\n\t\t\"organizeName\": \"Party Festival - Thailand\"\n\t},\n\t\"location\":{\n\t\t\"subDistrict\": \"Huay Kaew\",\n\t\t\"distrcit\": \"Su Thep\",\n\t\t\"province\": \"Chaing Mai\",\n\t\t\"country\": \"Thailand\",\n\t\t\t\"geopoint\": {\n\t\t\t\"lat\": 18.804993,\n\t\t\t\"lon\": 98.9208209\n\t\t}\n\t},\n\t\"endRegisterDate\":1574925215,\n\t\"eventEndDate\": 1576394371\n\t\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/eventservice/event",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"eventservice",
+						"event"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2.Create Japan Event from Organize",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"numberOfTicket\": 3,\n\t\"eventName\": \"Japanese Expo 2019\",\n\t\"eventDetail\": \"Exhibition about Japanese\",\n\t\"eventTags\": [\n\t\t\"music\", \"flim\"\t\n\t],\n\t\"eventPictureCover\": \"http://japanexpothailand.com/wp-content/uploads/2014/09/Web-Highlight_%E0%B9%91%E0%B9%99%E0%B9%90%E0%B9%92%E0%B9%91%E0%B9%93_0013.jpg\",\n\t\"eventPictureLists\": [\"https://scontent.fbkk12-1.fna.fbcdn.net/v/t1.0-9/67492585_602461186946587_2451685946668613632_o.jpg?_nc_cat=101&_nc_oc=AQl2hGG8aPosQ0czQ7uqEyAxIzfwfDDr6znoHjyuGOgn01QyNZQHHnEjO1hpcksWDEesbh6htjOco3SXkn3-HFyL&_nc_ht=scontent.fbkk12-1.fna&oh=c15897a8af596ab89d1546945fa380e7&oe=5E098809\",\"https://scontent.fbkk12-2.fna.fbcdn.net/v/t1.0-9/67274484_602157846976921_2177944724294336512_o.jpg?_nc_cat=104&_nc_oc=AQmwjpkc4raqeDDB7l6JnEHfLmaujMmYpZ_3x5-SXTYo6LzwPinbL5WZZAlMTjo4XjhaAsgDOMWDMXQQ5lf85kuD&_nc_ht=scontent.fbkk12-2.fna&oh=1d2bcb01e5cd578df9d99850af722fdc&oe=5DCE2901\"],\n\t\"organize\": {\n\t\t\"organizeId\":\"5d7a7264c817246b583b9aa3\",\n\t\t\"organizeName\": \"KMUTT Japanese CLub\"\n\t},\n\t\"location\":{\n\t\t\"subDistrict\": \"Tungkru\",\n\t\t\"distrcit\": \"Tungkru\",\n\t\t\"province\": \"Bangkok\",\n\t\t\"country\": \"Thailand\",\n\t\t\t\"geopoint\": {\n\t\t\t\"lat\": 13.6519739,\n\t\t\t\"lon\":100.492686\n\t\t}\n\t}\n\t\n}"
+				},
+				"url": {
+					"raw": "{{host}}/eventservice/event",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"eventservice",
+						"event"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2.Create Gfriend from Organize Copy",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"numberOfTicket\": 4,\n\t\"eventName\": \"Gfriend Concert\",\n\t\"eventDetail\": \"ห่างหายจากการมาเยือนประเทศไทยนานร่วม 2 ปี จนเหล่าบัดดี้ชาวไทย (ชื่อแฟนคลับของจีเฟรนด์อย่างเป็นทางการ) ต่างคิดถึงสาวๆ วง GFRIEND (จีเฟรนด์ หรือ ยอจาชินกู) แทบใจจะขาด แต่นับจากนาทีนี้เป็นต้นไปบัดดี้ชาวไทยได้แฮปปี้อย่างแน่นอน เพราะผู้จัด STAR SHOW (สตาร์โชว์) จะพาสมาชิกทั้ง 6 คน ได้แก่ SOWON (โซวอน) , YERIN (เยริน) , EUNHA (อึนฮา) , YUJU (ยูจู) , SINB (ชินบี) และ UMJI (ออมจี) ไอดอลสุดคิ้วท์จากสังกัด Source Music มาจัดเต็มทุกฟีลลิ่งให้สมกับการรอคอย และพวกเธอจะกลับมาเมืองไทยเร็วๆนี้ ในเอเชียทัวร์คอนเสิร์ต 2019 GFRIEND ASIA TOUR [GO GO GFRIEND!] in Bangkok ในวันเสาร์ที่ 27 กรกฎาคมนี้ ณ BCC Hall ศูนย์การค้าเซ็นทรัล ลาดพร้าว \",\n\t\"eventTags\": [\n\t\t\"music\"\t\n\t],\n\t\"eventPictureCover\": \"https://i0.wp.com/www.korseries.com/wp-content/uploads/2019/03/go-go-gfriend-asia-tour.jpg?fit=1000%2C596&ssl=1\",\n\t\"eventPictureLists\": [\"https://pbs.twimg.com/media/DvWiQenUYAINz11.jpg\",\"https://i.ytimg.com/vi/p1TgAPLdidg/maxresdefault.jpg\"],\n\t\"organize\": {\n\t\t\"organizeId\":\"5d7571cf4158d76520eff6bf\",\n\t\t\"organizeName\": \"Party Festival - Thailand\"\n\t},\n\t\"location\":{\n\t\t\"subDistrict\": \"Chatuchak\",\n\t\t\"distrcit\": \"Chatuchak\",\n\t\t\"province\": \"ฺBangkok\",\n\t\t\"country\": \"Thailand\",\n\t\t\t\"geopoint\": {\n\t\t\t\"lat\": 13.8167592,\n\t\t\t\"lon\": 100.559078\n\t\t}\n\t},\n\t\"endRegisterDate\":\"2019-10-13T15:13:26+0000\",\n\t\"eventStartDate\": \"2019-12-01T15:18:06+0000\",\n\t\"eventEndDate\":  \"2019-12-01T18:13:26+00:00\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/eventservice/event",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"eventservice",
+						"event"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.User Reserve Event Ticket",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"elasticEventId\": \"izNPJm0BGe85NeVrLJEf\",\n\t\"uid\": \"9vYRVtki1JZqQzQSEgtEJPvrdAu1\"\n}"
+				},
+				"url": {
+					"raw": "{{user-host-dev}}/eventservice/event/reserve",
+					"host": [
+						"{{user-host-dev}}"
+					],
+					"path": [
+						"eventservice",
+						"event",
+						"reserve"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4.Scan Event Ticket for validate",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"5d7a9b0dda30d46114deaa8b\",\r\n    \"uid\": \"9vYRVtki1JZqQzQSEgtEJPvrdAu1\",\r\n    \"elasticEventId\": \"izNPJm0BGe85NeVrLJEf\",\r\n    \"ticketKey\": \"91a3b363-d1a6-4fe3-b6c6-71dc8523a4f9\"\r\n}"
+				},
+				"url": {
+					"raw": "{{user-host-dev}}/eventservice/event/join",
+					"host": [
+						"{{user-host-dev}}"
+					],
+					"path": [
+						"eventservice",
+						"event",
+						"join"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Catagory",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"categoryName\": \"art\",\n\t\"categoryLabel\": \"Arts\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{user-host-dev}}/eventservice/category",
+					"host": [
+						"{{user-host-dev}}"
+					],
+					"path": [
+						"eventservice",
+						"category"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User View Event",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"uid\": \"JdNBfUjngGZEedP8wr9XhY0V15q1\",\n\t\"elasticEventId\": \"sk6WZ20B1ZMCPdXG7E2Q\",\n\t\"genre\": \"art\"\n}"
+				},
+				"url": {
+					"raw": "{{user-host-dev}}/eventservice/event/view",
+					"host": [
+						"{{user-host-dev}}"
+					],
+					"path": [
+						"eventservice",
+						"event",
+						"view"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Recommend Persona",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"persona\": {\n      \"probationDuration\": 2,\n      \"absentInRow\": 5,\n      \"interestIdea\": [\"art\", \"game\", \"technology\"],\n      \"interestBehaviorList\": [\n        { \"genre\": \"art\", \"totalView\": 0, \"totalParticipate\": 2, \"absent\": 0 },\n        { \"genre\": \"business\", \"totalView\": 5, \"totalParticipate\": 0, \"absent\": 0 },\n        { \"genre\": \"book\", \"totalView\": 2, \"totalParticipate\": 0, \"absent\": 0 },\n        { \"genre\": \"beauty\", \"totalView\": 0, \"totalParticipate\": 0, \"absent\": 0 },\n        { \"genre\": \"family\", \"totalView\": 0, \"totalParticipate\": 5, \"absent\": 0 },\n        { \"genre\": \"flim\", \"totalView\": 0, \"totalParticipate\": 0, \"absent\": 0 },\n        { \"genre\": \"game\", \"totalView\": 20, \"totalParticipate\": 1, \"absent\": 0 },\n        { \"genre\": \"photography\", \"totalView\": 0, \"totalParticipate\": 0, \"absent\": 0 },\n        { \"genre\": \"music\", \"totalView\": 0, \"totalParticipate\": 0, \"absent\": 0 },\n        { \"genre\": \"technology\", \"totalView\": 13, \"totalParticipate\": 1, \"absent\": 0 },\n        { \"genre\": \"social\", \"totalView\": 0, \"totalParticipate\": 0, \"absent\": 0 }\n      ],\n      \"badgeList\": [\n        { \"badgeName\": \"# Shadowy Red Hat\", \"level\": 0, \"totalExp\": 125, \"nextLevelExp\": 150}\n      ]\n    }\n}"
+				},
+				"url": {
+					"raw": "{{user-host-dev}}/eventservice/events/recommend/persona",
+					"host": [
+						"{{user-host-dev}}"
+					],
+					"path": [
+						"eventservice",
+						"events",
+						"recommend",
+						"persona"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

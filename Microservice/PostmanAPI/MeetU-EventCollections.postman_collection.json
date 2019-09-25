@@ -1,0 +1,44 @@
+{
+	"info": {
+		"_postman_id": "28ce9de4-a39f-46f6-b989-0094db5cdbb2",
+		"name": "MeetU-EventCollections",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "2.Create Gfriend from Organize Copy Copy",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"numberOfTicket\": 4,\n\t\"eventName\": \"Gfriend Concert\",\n\t\"eventDetail\": \"ห่างหายจากการมาเยือนประเทศไทยนานร่วม 2 ปี จนเหล่าบัดดี้ชาวไทย (ชื่อแฟนคลับของจีเฟรนด์อย่างเป็นทางการ) ต่างคิดถึงสาวๆ วง GFRIEND (จีเฟรนด์ หรือ ยอจาชินกู) แทบใจจะขาด แต่นับจากนาทีนี้เป็นต้นไปบัดดี้ชาวไทยได้แฮปปี้อย่างแน่นอน เพราะผู้จัด STAR SHOW (สตาร์โชว์) จะพาสมาชิกทั้ง 6 คน ได้แก่ SOWON (โซวอน) , YERIN (เยริน) , EUNHA (อึนฮา) , YUJU (ยูจู) , SINB (ชินบี) และ UMJI (ออมจี) ไอดอลสุดคิ้วท์จากสังกัด Source Music มาจัดเต็มทุกฟีลลิ่งให้สมกับการรอคอย และพวกเธอจะกลับมาเมืองไทยเร็วๆนี้ ในเอเชียทัวร์คอนเสิร์ต 2019 GFRIEND ASIA TOUR [GO GO GFRIEND!] in Bangkok ในวันเสาร์ที่ 27 กรกฎาคมนี้ ณ BCC Hall ศูนย์การค้าเซ็นทรัล ลาดพร้าว \",\n\t\"eventTags\": [\n\t\t\"music\"\t\n\t],\n\t\"eventPictureCover\": \"https://i0.wp.com/www.korseries.com/wp-content/uploads/2019/03/go-go-gfriend-asia-tour.jpg?fit=1000%2C596&ssl=1\",\n\t\"eventPictureLists\": [\"https://pbs.twimg.com/media/DvWiQenUYAINz11.jpg\",\"https://i.ytimg.com/vi/p1TgAPLdidg/maxresdefault.jpg\"],\n\t\"organize\": {\n\t\t\"organizeId\":\"5d7571cf4158d76520eff6bf\",\n\t\t\"organizeName\": \"Party Festival - Thailand\"\n\t},\n\t\"location\":{\n\t\t\"subDistrict\": \"Chatuchak\",\n\t\t\"distrcit\": \"Chatuchak\",\n\t\t\"province\": \"ฺBangkok\",\n\t\t\"country\": \"Thailand\",\n\t\t\t\"geopoint\": {\n\t\t\t\"lat\": 13.8167592,\n\t\t\t\"lon\": 100.559078\n\t\t}\n\t},\n\t\"endRegisterDate\":\"2019-10-13T15:13:26+0000\",\n\t\"eventStartDate\": \"2019-12-01T15:18:06+0000\",\n\t\"eventEndDate\":  \"2019-12-01T18:13:26+00:00\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/eventservice/event",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"eventservice",
+						"event"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
