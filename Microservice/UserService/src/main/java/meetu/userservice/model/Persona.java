@@ -14,29 +14,29 @@ import java.util.List;
  */
 public class Persona {
 
-    private byte probationDuration;
+    private int probationDuration;
 
-    private byte absentInRow;
+    private int absentInRow;
 
     private List<String> interestIdea;
 
-    private short sumAllOfParticipateEvent;
+    private int sumAllOfParticipateEvent;
 
     private List<InterestGenreBehavior> interestBehaviorList;
 
-    public byte getProbationDuration() {
+    public int getProbationDuration() {
         return probationDuration;
     }
 
-    public void setProbationDuration(byte probationDuration) {
+    public void setProbationDuration(int probationDuration) {
         this.probationDuration = probationDuration;
     }
 
-    public byte getAbsentInRow() {
+    public int getAbsentInRow() {
         return absentInRow;
     }
 
-    public void setAbsentInRow(byte absentInRow) {
+    public void setAbsentInRow(int absentInRow) {
         this.absentInRow = absentInRow;
     }
 
@@ -51,14 +51,14 @@ public class Persona {
         this.interestIdea = interestIdea;
     }
 
-    public short getSumAllOfParticipateEvent() {
+    public int getSumAllOfParticipateEvent() {
         for (InterestGenreBehavior interestBehavior : this.interestBehaviorList) {
             this.sumAllOfParticipateEvent += interestBehavior.getTotalParticipate();
         }
         return this.sumAllOfParticipateEvent;
     }
 
-    public void setSumAllOfParticipateEvent(short sumAllOfParticipateEvent) {
+    public void setSumAllOfParticipateEvent(int sumAllOfParticipateEvent) {
         this.sumAllOfParticipateEvent = sumAllOfParticipateEvent;
     }
 
