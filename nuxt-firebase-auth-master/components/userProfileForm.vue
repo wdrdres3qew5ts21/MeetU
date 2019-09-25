@@ -1,21 +1,32 @@
 <template>
   <div>
-    <h1>My Profile</h1>
+    <h1 style="color:#341646">My Profile</h1>
+    <br />
     <v-layout justify-center row wrap>
       <v-flex xs12>
-        <v-card class="elevation-0 mx-auto" color="white" max-width="150" style="border-radius:50%">
+            <center>
+      <v-avatar color="#DEDEDE" size="120">
+        <span class="black--text">Image</span>
+      </v-avatar>
+
+      <br />
+
+    </center>
+        <!-- <v-card class="elevation-0 mx-auto" color="white" max-width="150" style="border-radius:50%">
           <v-img :aspect-ratio="1/1" :src="getUser.photoURL"></v-img>
-        </v-card>
+        </v-card> -->
       </v-flex>
       <v-flex xs12>
         <center>
           <nuxt-link to>
-            <p>Edit Profile</p>
+            <br />
+            <p style="font-weight:bold">Edit Profile</p>
           </nuxt-link>
         </center>
       </v-flex>
     </v-layout>
-    <v-btn color="success" @click="logout()">logout</v-btn>
+    <v-btn class="black--text" outline color="red" depressed large block @click="logout()">LOG OUT</v-btn>
+    <br />
     <h2>Level:</h2>
     <br />
     <br />
@@ -110,12 +121,42 @@
     ></v-text-field>
     <br />
 
-    <h2>Social Links</h2>something
+    <h3 class="h3">User Social Networks</h3>
     <br />
-    <v-layout justify-center row wrap>
-      <v-btn class="white--text" color="#341646">CANCEL</v-btn>
-      <v-btn class="white--text" color="#341646">SAVE</v-btn>
-    </v-layout>
+
+    <v-form>
+      <v-text-field class="textfield" v-model="website" label="Website" placeholder="http://"></v-text-field>
+    </v-form>
+
+    <v-form>
+      <v-text-field class="textfield" v-model="line" label="Line" placeholder="@"></v-text-field>
+    </v-form>
+
+    <v-form>
+      <v-text-field class="textfield" v-model="facebook" label="Facebook" placeholder="http://"></v-text-field>
+    </v-form>
+
+    <v-form>
+      <v-text-field class="textfield" v-model="twitter" label="Twitter" placeholder="@"></v-text-field>
+    </v-form>
+
+    <v-form>
+      <v-text-field class="textfield" v-model="instagram" label="Instagram" placeholder="@"></v-text-field>
+    </v-form>
+
+
+    <br>
+    <center>
+      <nuxt-link :to="`/?`" style="text-decoration-line:none;">
+        <v-btn class="cancelButton white--text" color="#AEAEAE" depressed large height="50">Cancel</v-btn>
+      </nuxt-link>
+
+      <nuxt-link :to="`/?`" style="text-decoration-line:none;">
+        <v-btn class="saveButton white--text" color="#341646" depressed large height="50">Save</v-btn>
+      </nuxt-link>
+    </center>
+    <br><br>
+    
   </div>
 </template> 
  

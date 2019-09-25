@@ -8,6 +8,7 @@
 import signupForm from "~/components/signupForm";
 
 export default {
+  name:"signup",
   components: {
     signupForm
   }

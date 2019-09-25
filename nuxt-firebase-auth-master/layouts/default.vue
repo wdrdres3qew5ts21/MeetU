@@ -114,8 +114,19 @@
     </v-navigation-drawer>
 
     <v-toolbar color="#fff" app style="color:#fff;">
-      <nuxt-link to="/" style="text-decoration-line:none;">
-        <v-toolbar-title style="text-decoration-line:none;color: #341646" v-text="title"></v-toolbar-title>
+      <nuxt-link to="/?" style="text-decoration-line:none;">
+        <!-- <v-toolbar-title style="text-decoration-line:none;color: #341646">
+          <v-img
+      :src="logoImage"
+      height="40"
+
+    ></v-img>
+        </v-toolbar-title>-->
+
+        <v-toolbar-items>
+          <img :src="logoToolbarImage" height="110" />
+        </v-toolbar-items>
+
       </nuxt-link>
 
       <v-spacer></v-spacer>
@@ -206,6 +217,7 @@ export default {
   data() {
     return {
       isLogin: false,
+      logoToolbarImage: require("@/assets/logo_toolbar.png"),
       title: "MeetU",
       height: {
         height: "10px"
@@ -230,7 +242,7 @@ export default {
     this.isLogin = isLogin();
   },
   computed: {
-    ...mapGetters(["getUser","getCategory"]),
+    ...mapGetters(["getUser", "getCategory"]),
     user() {
       return this.$store.getters.getUser;
     },
@@ -242,13 +254,13 @@ export default {
     this.loadCategoryList();
   },
   methods: {
-    ...mapActions(["autoSignIn","setCategory"]),
+    ...mapActions(["autoSignIn", "setCategory"]),
     loadCategoryList() {
       axios
         .get(`${process.env.EVENT_SERVICE}/category`)
         .then(categoryList => {
           this.categoryList = categoryList.data;
-          this.setCategory(this.categoryList)
+          this.setCategory(this.categoryList);
         })
         .catch(error => {
           this.categoryList = mockCategoryList;

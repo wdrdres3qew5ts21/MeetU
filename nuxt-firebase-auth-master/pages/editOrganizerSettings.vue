@@ -97,6 +97,7 @@
 
 <script>
 export default {
+  name:"editOrganizerSettings",
   data: () => ({
     organizerNameRules: [v => !!v || "Name is required"],
     emailRules: [
