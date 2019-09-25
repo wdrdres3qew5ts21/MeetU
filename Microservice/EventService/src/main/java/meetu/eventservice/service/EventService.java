@@ -268,7 +268,21 @@ public class EventService {
         return ElasticUtil.searchHitsToList(searchResponse.getHits(), Event.class);
     }
 
-    public List<Event> findEventByPersonalize(User user) {
+    public ResponseEntity findUserAndEventThatMatchingInDatabase(User user) {
+        String uid = user.getUid();
+        if (uid != null) {
+            User userInDatabase = restTemplate.getForObject(USERSERVICE_URL+"/user/"+uid, User.class);
+            System.out.println("------ User From Database -------");
+            System.out.println(userInDatabase);
+            System.out.println("-----User Personalize ---------");
+            System.out.println(userInDatabase.getPersona().getInterestBehaviorList());
+            return this.personalizeEventForUser(userInDatabase);
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body(personalizeEventForUser(user));
+        }
+    }
+
+    public ResponseEntity personalizeEventForUser(User user) {
         BoolQueryBuilder queryFilter = new BoolQueryBuilder();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         SearchRequest searchRequest = new SearchRequest(eventsIndex);
@@ -359,7 +373,7 @@ public class EventService {
             Logger.getLogger(EventService.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        return ElasticUtil.searchHitsToList(searchResponse.getHits(), Event.class);
+        return ResponseEntity.status(HttpStatus.OK).body(ElasticUtil.searchHitsToList(searchResponse.getHits(), Event.class));
     }
 
     public BoolQueryBuilder filterByEventTags(BoolQueryBuilder queryFilter, String eventTags[]) {
@@ -423,7 +437,7 @@ public class EventService {
                 if (userEventTicketInDatabase.getTicketKey().equals(userJoinEvent.getTicketKey()) && userEventTicketInDatabase.getUid().equals(userJoinEvent.getUid())) {
                     userEventTicketInDatabase.setIsParticipate(true);
                     userEventTicketInDatabase.setParticipateDate(new Timestamp(System.currentTimeMillis()));
-                    restTemplate.postForEntity(USERSERVICE_URL+"/user/interest", new UserJoinEvent(true), UserViewEvent.class);
+                    restTemplate.postForEntity(USERSERVICE_URL + "/user/interest", new UserJoinEvent(true), UserViewEvent.class);
                     return ResponseEntity.status(HttpStatus.CREATED).body(userEventTicketRespository.save(userEventTicketInDatabase));
                 }
             } else {
