@@ -8,7 +8,7 @@ import axios from "axios"
 const state = () => ({
   user: {
     photoURL: "https://image.flaticon.com/icons/png/512/64/64572.png",
-    uid: "",
+    uid: null,
     displayName: '',
     username: "",
     firstName: "",
