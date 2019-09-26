@@ -10,6 +10,8 @@ import java.util.List;
 import meetu.userservice.model.Admin;
 import meetu.userservice.model.Organize;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 /**
@@ -40,6 +42,11 @@ public class OrganizeService {
 
     public List<Organize> findByOrganizeName(String organizeName) {
         return organizeRepository.findByOrganizeNameLike(organizeName);
+    }
+
+    public ResponseEntity findOrganizeById(String organizeId) {
+        return ResponseEntity.status(HttpStatus.OK).body(organizeRepository.findById(organizeId));
+        
     }
 
 }

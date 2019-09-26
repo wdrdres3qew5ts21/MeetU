@@ -128,12 +128,12 @@ public class UserController {
         return userService.saveNotificationToken(notificationBody);
     }
 
-    @GetMapping("/users/{id}")
-    public User findUserById(@PathVariable String id) {
-        return userService.findById(id);
+    @GetMapping("/user/{uid}")
+    public ResponseEntity findUserByUId(@PathVariable String uid) {
+        return userService.findByUId(uid);
     }
 
-    @PutMapping("/users/{id}")
+    @PutMapping("/user/{id}")
     public ResponseEntity<?> put(@PathVariable String id, @RequestBody Object input) {
         return null;
     }

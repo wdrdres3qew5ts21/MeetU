@@ -51,8 +51,17 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User findById(String id) {
-        return userRepository.findById(id).get();
+    public ResponseEntity findByUId(String id) {
+        User userInDatabase = userRepository.findByUid(id);
+        if (userInDatabase != null) {
+            System.out.println("Foundd user");
+            System.out.println(userInDatabase);
+            return ResponseEntity.status(HttpStatus.OK).body(userInDatabase);
+        }
+
+        HashMap<String, String> response = new HashMap();
+        response.put("message", "not found user in database!");
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     public List<User> findByFirstName(String firstName) {

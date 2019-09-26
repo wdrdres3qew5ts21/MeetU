@@ -52,9 +52,13 @@ public class Persona {
     }
 
     public int getSumAllOfParticipateEvent() {
-        for (InterestGenreBehavior interestBehavior : this.interestBehaviorList) {
-            this.sumAllOfParticipateEvent += interestBehavior.getTotalParticipate();
+        if (this.interestBehaviorList != null) {
+            for (InterestGenreBehavior interestBehavior : this.interestBehaviorList) {
+                this.sumAllOfParticipateEvent += interestBehavior.getTotalParticipate();
+            }
+            return this.sumAllOfParticipateEvent;
         }
+        this.sumAllOfParticipateEvent = 0;
         return this.sumAllOfParticipateEvent;
     }
 

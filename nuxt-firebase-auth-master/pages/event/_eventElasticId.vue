@@ -32,7 +32,8 @@
     <center>
       <v-container>
         <v-layout row wrap>
-          <!-- <GmapMap
+          <client-only>
+          <GmapMap
               :center="marker.position"
               :zoom="14"
               map-type-id="terrain"
@@ -55,7 +56,8 @@
                 :clickable="true"
                 @click="toggleInfoWindow(marker,0)"
               />
-          </GmapMap>-->
+          </GmapMap>
+          </client-only>
         </v-layout>
       </v-container>
       <br />

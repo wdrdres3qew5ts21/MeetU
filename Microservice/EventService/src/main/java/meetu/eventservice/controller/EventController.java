@@ -130,12 +130,12 @@ public class EventController {
     }
 
     @PostMapping("/events/recommend/persona")
-    public ResponseEntity<List<Event>> searchWithPersonalize(
+    public ResponseEntity searchWithPersonalize(
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "20") int contentPerPage,
             @RequestBody User user
     ) {
-        return new ResponseEntity<List<Event>>(eventService.findEventByPersonalize(user), HttpStatus.OK);
+        return new ResponseEntity(eventService.findUserAndEventThatMatchingInDatabase(user), HttpStatus.OK);
     }
 
     @GetMapping("/category")
