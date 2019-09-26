@@ -81,8 +81,11 @@
                   <v-subheader>Filter by category</v-subheader>
                   <v-layout class="mb-4">
                     <v-combobox
+                    
                       :items="categoryList"
-                      label="Category"
+                      item-text="categoryLabel"
+                      item-value="categoryName"
+                      label="category"
                       chips
                       clearable
                       solo
@@ -90,16 +93,21 @@
                       sm6
                       xs2
                     >
+                    <!-- slot="item" slot-scope="data" -->
                       <template v-slot:selection="data">
-                        <v-chip :selected="data.selected" close @input="remove(data.item)">
-                          <strong>{{ data.item}}</strong>&nbsp;
+                        <v-chip
+                          :selected="data.selected"
+                          close
+                          @input="remove(data.item.categoryName)"
+                        >
+                          <strong>{{ data.item.categoryName}}</strong>&nbsp;
                         </v-chip>
                       </template>
                     </v-combobox>
                   </v-layout>
                   <v-subheader>Sort by Date</v-subheader>
                   <v-layout class="mb-4">
-                    <v-select :items="items" label="Last Update" solo></v-select>
+                    <v-select :items="sortDate" label="Last Update" solo></v-select>
                   </v-layout>
 
                   <v-subheader>Near your location</v-subheader>
@@ -160,11 +168,13 @@ export default {
       notifications: false,
       sound: true,
       widgets: false,
-      items: ["Last Update", "First Update"],
+      sortDate: ["Last Update", "First Update"],
       search: "",
       isRecently: false,
       isShowEventTag: false,
-      categoryList: [],
+      categoryList: [
+       
+      ],
       searchedEventList: [],
       selectedCategoryList: []
     };
@@ -173,7 +183,6 @@ export default {
     ...mapGetters(["getCategory"])
   },
   mounted() {
-    // this.categoryList = this.getCategory;
     this.loadCategoryList();
   },
   methods: {
