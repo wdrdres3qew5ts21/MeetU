@@ -1,133 +1,101 @@
-<template>
+<template >
   <transition name="router-anim" enter-active-class="animated slideInRight">
     <v-container fluid grid-list-md>
       <v-layout row wrap>
         <v-flex xs12>
-          <v-card class="mx-auto" elevation="0" outlined width="100%">
-            <div class="px-3">
-              <v-layout>
-                <v-text-field
-                  class="questrial no-top-padding"
-                  height="44px"
-                  rounded
-                  placeholder="Search..."
-                  v-model="search"
-                  @keyup.enter="searchEventByFilter()"
-                ></v-text-field>
-              </v-layout>
-            </div>
-          </v-card>
-        </v-flex>
-
-        <v-flex xs12>
-          <center>
-            <v-btn
-              class="white--text"
-              depressed
-              large
-              color="#341646"
-              ref="searchButton"
-              @click="searchEventByFilter()"
-            >Search</v-btn>
-          </center>
-        </v-flex>
-        <!-- <v-list-group>
-          <v-list-tile slot="activator">
-            <v-list-tile>
-              <v-icon class="icon">category</v-icon>
-            </v-list-tile>
-            <v-list-tile-content class="categoryIcon" style="color:#341646;">Category</v-list-tile-content>
-          </v-list-tile>
-          <v-list-tile v-for="(category, i) in categoryList" :key="i" ripple>
-            <v-list-tile-action></v-list-tile-action>
-            <v-list-tile-content>
-              <nuxt-link class="categoryLink" :to="`/event?category=${category.categoryName}`">
-                <v-list-tile-title>{{ category.categoryLabel }}</v-list-tile-title>
-              </nuxt-link>
-            </v-list-tile-content>
-          </v-list-tile>
-        </v-list-group>
-        -->
-
-        <!-- <v-card   v-for="(category, i) in categoryList" :key="i" ripple>
-            <v-list-tile-title>{{ category.categoryLabel }}</v-list-tile-title>
-        </v-card>
-        -->
-
-        <br />
-        <v-container>
-          <v-layout row justify-center>
-            <v-dialog
-              v-model="dialog"
-              fullscreen
-              hide-overlay
-              transition="dialog-bottom-transition"
-            >
-              <template v-slot:activator="{ on }">
-                <v-btn color="primary" dark v-on="on">Filter</v-btn>
-              </template>
-              <v-card>
-                <v-toolbar dark color="primary">
-                  <v-btn icon dark @click="dialog = false">
-                    <v-icon>navigate_before</v-icon>
+          <!-- <v-card class="mx-auto" elevation="0" outlined width="100%"> -->
+          <div class="px-3">
+            <v-layout>
+              <v-dialog
+                v-model="dialog"
+                fullscreen
+                hide-overlay
+                transition="dialog-bottom-transition"
+              >
+                <template v-slot:activator="{ on }">
+                  <v-btn flat icon color="#341646" v-on="on">
+                    <v-icon>filter_list</v-icon>
                   </v-btn>
-                  <v-toolbar-title>Filter</v-toolbar-title>
-                  <v-spacer></v-spacer>
-                </v-toolbar>
+                </template>
+                <v-card>
+                  <v-toolbar dark color="primary">
+                    <v-btn icon dark @click="dialog = false">
+                      <v-icon>navigate_before</v-icon>
+                    </v-btn>
+                    <v-toolbar-title>Filter</v-toolbar-title>
+                    <v-spacer></v-spacer>
+                  </v-toolbar>
 
-                <v-list three-line subheader>
-                  <br />
+                  <v-list three-line subheader>
+                    <br />
 
-                  <v-subheader>Filter by category</v-subheader>
-                  <v-layout class="mb-4">
-                    <v-combobox
-                    
-                      :items="categoryList"
-                      item-text="categoryLabel"
-                      item-value="categoryName"
-                      label="category"
-                      chips
-                      clearable
-                      solo
-                      multiple
-                      sm6
-                      xs2
-                    >
-                    <!-- slot="item" slot-scope="data" -->
-                      <template v-slot:selection="data">
-                        <v-chip
-                          :selected="data.selected"
-                          close
-                          @input="remove(data.item.categoryName)"
-                        >
-                          <strong>{{ data.item.categoryName}}</strong>&nbsp;
-                        </v-chip>
-                      </template>
-                    </v-combobox>
-                  </v-layout>
-                  <v-subheader>Sort by Date</v-subheader>
-                  <v-layout class="mb-4">
-                    <v-select :items="sortDate" label="Last Update" solo></v-select>
-                  </v-layout>
+                    <v-subheader>Filter by category</v-subheader>
+                    <v-layout class="mb-4">
+                      <v-combobox
+                        :items="categoryList"
+                        item-text="categoryLabel"
+                        item-value="categoryName"
+                        label="category"
+                        chips
+                        clearable
+                        solo
+                        multiple
+                        sm6
+                        xs2
+                      >
+                        <template v-slot:selection="data">
+                          <v-chip
+                            :selected="data.selected"
+                            close
+                            @input="remove(data.item.categoryName)"
+                          >
+                            <strong>{{ data.item.categoryName}}</strong>&nbsp;
+                          </v-chip>
+                        </template>
+                      </v-combobox>
+                    </v-layout>
+                    <v-subheader>Sort by Date</v-subheader>
+                    <v-layout class="mb-4">
+                      <v-select :items="sortDate" label="Last Update" solo></v-select>
+                    </v-layout>
 
-                  <v-subheader>Near your location</v-subheader>
-                  <v-text-field label="Distance ... Kilometer"></v-text-field>
-                </v-list>
+                    <v-subheader>Near your location</v-subheader>
+                    <v-text-field label="Distance ... Kilometer"></v-text-field>
+                  </v-list>
 
-                <center>
-                  <v-btn
-                    class="white--text"
-                    depressed
-                    large
-                    color="#341646"
-                    @click="dialog = false"
-                  >Search</v-btn>
-                </center>
-              </v-card>
-            </v-dialog>
-          </v-layout>
-        </v-container>
+                  <center>
+                    <v-btn
+                      class="white--text"
+                      depressed
+                      large
+                      color="#341646"
+                      @click="dialog = false"
+                    >Search</v-btn>
+                  </center>
+                </v-card>
+              </v-dialog>
 
+              <v-text-field
+                class="questrial no-top-padding"
+                height="20px"
+                placeholder="Search..."
+                v-model="search"
+                @keyup.enter="searchEventByFilter()"
+              ></v-text-field>
+              <v-flex class="text-xs-right">
+                <v-btn
+                  class="white--text"
+                  depressed
+                  small
+                  color="#341646"
+                  ref="searchButton"
+                  @click="searchEventByFilter()"
+                >Search</v-btn>
+              </v-flex>
+            </v-layout>
+          </div>
+          <!-- </v-card> -->
+        </v-flex>
         <br />
 
         <!-- <event-list v-if="searchedEventList.length>0" :eventList="searchedEventList"></event-list>
@@ -172,9 +140,7 @@ export default {
       search: "",
       isRecently: false,
       isShowEventTag: false,
-      categoryList: [
-       
-      ],
+      categoryList: [],
       searchedEventList: [],
       selectedCategoryList: []
     };
@@ -235,11 +201,11 @@ export default {
 
 <style lang="css">
 @import "https://cdn.jsdelivr.net/npm/animate.css@3.5.1";
-
+/* 
 .page {
   position: fixed;
   width: inherit;
-}
+} */
 
 .v-content {
   max-width: 100%;
