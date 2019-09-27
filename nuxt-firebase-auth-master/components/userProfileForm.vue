@@ -22,118 +22,135 @@
     <h2>Level:</h2>
     <br />
     <br />
-    <v-flex xs12>
-      <h2>Information</h2>
-      <v-text-field v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
 
-      <br />
-      <v-text-field
-        v-model="firstname"
-        :rules="nameRules"
-        :counter="10"
-        label="First name"
-        required
-      ></v-text-field>
-      <br />
+    <v-layout column>
+      <v-form ref="form" v-model="valid" :lazy-validation="false">
+        <h2>Information</h2>
 
-      <v-text-field v-model="lastname" :rules="nameRules" :counter="10" label="Last name" required></v-text-field>
-    </v-flex>
-    <br />
-    <v-menu
-      ref="menu"
-      v-model="menu"
-      :close-on-content-click="false"
-      transition="scale-transition"
-      offset-y
-      full-width
-      min-width="290px"
-    >
-      <template v-slot:activator="{ on }">
-        <v-text-field v-model="date" label="Birthday date" prepend-icon="event" readonly v-on="on"></v-text-field>
-      </template>
-      <v-date-picker
-        ref="picker"
-        v-model="date"
-        :max="new Date().toISOString().substr(0, 10)"
-        min="1950-01-01"
-        @change="save"
-      ></v-date-picker>
-    </v-menu>
-    <br />
-    <br />
-    <h3>Gender</h3>
+        <br />
+        <v-text-field
+          v-model="userForm.firstname"
+          :rules="nameRules"
+          :counter="10"
+          label="First name"
+          required
+        ></v-text-field>
+        <br />
 
-    <v-radio-group v-model="column" column>
-      <v-radio label="Male" value="radio-1"></v-radio>
-      <v-radio label="Female" value="radio-2"></v-radio>
-      <v-radio label="Unspecified" value="radio-3"></v-radio>
-    </v-radio-group>
-    <br />
-    <h2>Contacts</h2>
-    <br />
-    <v-text-field v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
-    <br />
-    <v-text-field label="Phone number" prepend-icon="phone"></v-text-field>
-    <br />
-    <h2>Credentials</h2>
-    <br />
+        <v-text-field
+          v-model="userForm.lastname"
+          :rules="nameRules"
+          :counter="10"
+          label="Last name"
+          required
+        ></v-text-field>
 
-    <v-text-field
-      v-model="password"
-      :append-icon="show1 ? 'visibility' : 'visibility_off'"
-      :rules="[rules.required]"
-      :type="show1 ? 'text' : 'password'"
-      name="input-10-1"
-      label="Normal with hint text"
-      counter
-      @click:append="show1 = !show1"
-    ></v-text-field>
+        <br />
+        <v-menu
+          ref="menu"
+          v-model="menu"
+          :close-on-content-click="false"
+          transition="scale-transition"
+          offset-y
+          full-width
+          min-width="290px"
+        >
+          <template v-slot:activator="{ on }">
+            <v-text-field
+              v-model="userForm.dateOfBirth"
+              label="Birthday date"
+              prepend-icon="today"
+              readonly
+              v-on="on"
+            ></v-text-field>
+          </template>
+          <v-date-picker
+            ref="picker"
+            v-model="userForm.dateOfBirth"
+            :max="new Date().toISOString().substr(0, 10)"
+            min="1950-01-01"
+            @change="save"
+          ></v-date-picker>
+        </v-menu>
 
-    <v-text-field
-      v-model="passwordConfirm"
-      :append-icon="show1 ? 'visibility' : 'visibility_off'"
-      :rules="[rules.required]"
-      :type="show3 ? 'text' : 'password'"
-      name="input-10-1"
-      label="Normal with hint text"
-      counter
-      @click:append="show1 = !show1"
-    ></v-text-field>
+        <br />
+        <br />
 
-    <br />
+        <h3>Gender</h3>
+        <!-- <v-radio-group> 
+           <v-radio v-for="gender in genderList" :key="gender" :label="`${gender}`" value="gender"
+          v-model="userForm.gender"
+          ></v-radio>
+        </v-radio-group>-->
+        <v-select :items="genderList" v-model="userForm.gender" label="Select gender"></v-select>
 
-    <h3 class="h3">User Social Networks</h3>
-    <br />
+        <h2>Contacts</h2>
+        <br />
+        <v-text-field v-model="userForm.email" :rules="emailRules" label="E-mail" required></v-text-field>
+        <br />
+        <v-text-field
+          label="Phone number"
+          :rules="phoneRules"
+          placeholder="phone number"
+          counter="10"
+          prepend-icon="phone"
+          v-model="userForm.telephone"
+          type="number"
+        ></v-text-field>
+        <br />
 
-    <v-form>
-      <v-text-field class="textfield" v-model="website" label="Website" placeholder="http://"></v-text-field>
-    </v-form>
+        <h2>Credentials</h2>
 
-    <v-form>
-      <v-text-field class="textfield" v-model="line" label="Line" placeholder="@"></v-text-field>
-    </v-form>
+        <v-text-field
+          v-model="password"
+          type="password"
+          :rules="passwordRule"
+          label="* Password"
+          required
+        ></v-text-field>
 
-    <v-form>
-      <v-text-field class="textfield" v-model="facebook" label="Facebook" placeholder="http://"></v-text-field>
-    </v-form>
+        <v-text-field
+          v-model="confirmPassword"
+          type="password"
+          :rules="passwordRules"
+          label="* Password Confirmation"
+          required
+        ></v-text-field>
 
-    <v-form>
-      <v-text-field class="textfield" v-model="twitter" label="Twitter" placeholder="@"></v-text-field>
-    </v-form>
+        <br />
 
-    <v-form>
-      <v-text-field class="textfield" v-model="instagram" label="Instagram" placeholder="@"></v-text-field>
-    </v-form>
+        <h3 class="h3">User Social Networks</h3>
+        <br />
 
+        <v-text-field class="textfield" v-model="website" label="Website" placeholder="http://"></v-text-field>
+
+        <v-text-field class="textfield" v-model="line" label="Line" placeholder="@"></v-text-field>
+
+        <v-text-field class="textfield" v-model="facebook" label="Facebook" placeholder="http://"></v-text-field>
+
+        <v-text-field class="textfield" v-model="twitter" label="Twitter" placeholder="@"></v-text-field>
+
+        <v-text-field class="textfield" v-model="instagram" label="Instagram" placeholder="@"></v-text-field>
+      </v-form>
+    </v-layout>
     <br />
     <center>
       <nuxt-link :to="`/?`" style="text-decoration-line:none;">
         <v-btn class="cancelButton white--text" color="#AEAEAE" depressed large height="50">Cancel</v-btn>
       </nuxt-link>
 
-      <nuxt-link :to="`/?`" style="text-decoration-line:none;">
-        <v-btn class="saveButton white--text" color="#341646" depressed large height="50">Save</v-btn>
-      </nuxt-link>
+      <!-- <nuxt-link :to="`/?`" style="text-decoration-line:none;"> -->
+      <v-btn
+        class="saveButton white--text"
+        color="#341646"
+        :disabled="!valid"
+        @click="updateProfile()"
+        depressed
+        large
+        height="50"
+      >Save</v-btn>
+      <!-- </nuxt-link> -->
+      <!-- <v-btn color="primary" :disabled="!valid" @click="onSubmit()">ถัดไป</v-btn> -->
     </center>
     <br />
     <br />
@@ -142,6 +159,7 @@
  
  
 <script>
+import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
 export default {
   name: "userProfileForm",
@@ -150,33 +168,58 @@ export default {
     return {
       date: null,
       menu: false,
-      show1: false,
-      show2: true,
-      show3: false,
-      show4: false,
-      password: "Password",
-      passwordConfirm: "passwordConfirm",
+      password: "",
+      confirmPassword: "",
       website: "",
       line: "",
       facebook: "",
       twitter: "",
       instagram: "",
-      column: "",
-      firstname: "",
-      lastname: "",
-      nameRules: [
-        v => !!v || "Name is required",
-        v => v.length <= 10 || "Name must be less than 10 characters"
+      genderList: ["Male", "Female", "Unspecified"],
+      numberRules: [
+        v => !!v || "This field is required",
+        v => (v && !Number.isNaN(v)) || "Please insert only number"
       ],
-      email: "",
+      genderRules: [v => !!v || "Please select from choice"],
+      textRules: [v => !!v || "This field is required"],
+      phoneRules: [
+        v => !!v || "Phone Number is required",
+        v => (v && v.length === 10) || "Phone Number msut be 10 digit"
+      ],
       emailRules: [
         v => !!v || "E-mail is required",
-        v => /.+@.+/.test(v) || "E-mail must be valid"
+        v => /.+@.+\..+/.test(v) || "E-mail must be valid"
       ],
-      rules: {
-        required: value => !!value || "Required.",
-        min: v => v.length >= 8 || "Min 8 characters",
-        emailMatch: () => "The email and password you entered don't match"
+      nameRules: [
+        v => !!v || "Name is required",
+        v => (v && v.length >= 2) || "Name must be more than 2 characters"
+      ],
+      lastnameRules: [
+        v => !!v || "Lastname is required",
+        v => (v && v.length >= 2) || "Lastname must be more than 2 characters"
+      ],
+      passwordRules: [
+        v => !!v || "Password is required",
+        v => v.length >= 8 || "Password must be 8 character",
+        v =>
+          this.password === this.confirmPassword ||
+          "Password and Confirm Password need to be match"
+      ],
+      passwordRule: [
+        v => !!v || "Password is required",
+        v => v.length >= 8 || "Password must be 8 character"
+      ],
+      valid: true,
+      userForm: {
+        firstName: "",
+        lastName: "",
+        gender: "",
+        dateArray: [],
+        dateOfBirth: "",
+        telephone: "",
+        email: "",
+        password: "",
+        confirmPassword: ""
       }
     };
   },
@@ -203,6 +246,36 @@ export default {
     },
     save(date) {
       this.$refs.menu.save(date);
+    },
+    validate() {
+      console.log(this.userForm);
+
+      if (this.$refs.form.validate()) {
+        console.log("correct fuq you");
+        this.snackbar = true;
+      } else {
+        console.log("stupid please correct");
+      }
+    },
+    resetValidation() {
+      this.$refs.form.resetValidation();
+    },
+    onSubmit() {
+      console.log(this.userForm);
+
+      let rawTel = this.userForm.telephone;
+      this.userForm.telephone = rawTel.replace(/^0/g, "+66");
+      this.userForm.gender = this.genderList.values;
+    },
+    updateProfile: function() {
+      console.log({
+        email: this.userForm.email,
+        password: this.userForm.password,
+        birthDate: this.userForm.dateOfBirth,
+        firstName: this.userForm.firstname,
+        lastName: this.userForm.lastname,
+        gender: this.userForm.gender
+      });
     }
   },
   watch: {
