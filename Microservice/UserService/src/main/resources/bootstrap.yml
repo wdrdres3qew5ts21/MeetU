@@ -24,6 +24,7 @@ spring:
         max-attempts: 8
         max-interval: 2000
         initial-interval: 10000
+        
 eureka:
   instance:
     appname: userservice

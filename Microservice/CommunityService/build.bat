@@ -1,1 +1,1 @@
-docker build -t linxianer12/configserver . && docker push  linxianer12/configserver
+mvn clean package &&docker build -t linxianer12/communityservice . && docker push  linxianer12/communityservice

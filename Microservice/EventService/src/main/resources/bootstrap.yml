@@ -18,9 +18,9 @@ spring:
 ##          password: popsonfonmeetu
   cloud:
     config:
-      uri: ${spring_cloud_config:https://www.meetu-milktea.tk:8585}
+      uri: ${spring_cloud_config:http://localhost:8585}
       retry:
-        max-attempts: 8
+        max-attempts: 60
         max-interval: 2000
         initial-interval: 60000
       request-read-timeout: 60000
