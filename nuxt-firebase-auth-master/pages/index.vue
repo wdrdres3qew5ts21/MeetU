@@ -18,6 +18,25 @@
             <slide v-for="(event, index) in recentlyEventList" :key="index">
               <event-card :event="event"></event-card>
             </slide>
+            <slide>
+           <v-flex xs12 sm6 offset-sm 3   >
+             <nuxt-link  :event="event" :to="`/event?`">
+            <v-card width="350px" height="320px">
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
+              <center>
+                <v-icon large>add</v-icon>
+              </center>
+              <center>
+                <h2>View More</h2>
+              </center>
+            </v-card>
+             </nuxt-link>
+          </v-flex>
+        </slide>
           </carousel>
         </client-only>
         <!-- <event-list :eventList="recentlyEventList" link="/event"></event-list> -->
@@ -29,6 +48,25 @@
         <slide v-for="(event, index) in recentlyEventList" :key="index">
           <event-card :event="event"></event-card>
         </slide>
+        <slide>
+          <v-flex xs12 sm6 offset-sm 3   >
+             <nuxt-link :event="event" :to="`/event?`">
+            <v-card width="350px" height="320px">
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
+              <center>
+                <v-icon large>add</v-icon>
+              </center>
+              <center>
+                <h2>View More</h2>
+              </center>
+            </v-card>
+             </nuxt-link>
+          </v-flex>
+        </slide>
       </carousel>
       <!-- <event-list :eventList="recentlyEventList" link="/event"></event-list> -->
       <br />
@@ -36,7 +74,27 @@
       <h1>New Event</h1>
       <carousel :perPage="1" :paginationEnabled="false">
         <slide v-for="(event, index) in recentlyEventList" :key="index">
-          <event-card :event="event"></event-card>
+          <event-card :event="event"></event-card>        
+        </slide>
+        <slide>
+          <v-flex xs12 sm6 offset-sm 3   >
+             <nuxt-link  :event="event" :to="`/event?`">
+            <v-card width="350px" height="320px">
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
+              <center>
+                <v-icon large>add</v-icon>
+              </center>
+              <center>
+                <h2>View More</h2>
+              </center>
+            </v-card>
+             </nuxt-link>
+          </v-flex>
+
         </slide>
       </carousel>
       <!-- <event-list :eventList="recentlyEventList" link="/event"></event-list> -->
@@ -130,7 +188,7 @@ export default {
     this.isLogin = isLogin();
     this.getRecentlyEvent();
     this.getPopularEvent();
-    if(this.isLogin){
+    if (this.isLogin) {
       this.getRecommendEvent();
     }
   },
@@ -179,7 +237,7 @@ export default {
         });
 
       //      console.log(this.recentlyEventList)
-    },
+    }
   }
 };
 </script>
