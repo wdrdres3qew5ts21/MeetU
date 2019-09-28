@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -58,8 +59,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .addFilterAfter(new JwtTokenAuthenticationFilter(config),
                             UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                    .antMatchers("/eventservice/events").authenticated()
-                    .antMatchers("/backend/guest").permitAll();
+                    .antMatchers(HttpMethod.POST,"/eventservice/event/join").authenticated()
+                    .antMatchers(HttpMethod.POST,"/eventservice/event/reserve").authenticated()
+                    .antMatchers("/backend/guest").authenticated();
     }
 
 }

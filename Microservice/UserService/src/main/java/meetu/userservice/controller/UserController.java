@@ -135,8 +135,8 @@ public class UserController {
     }
 
     @PutMapping("/user/{id}")
-    public ResponseEntity<?> put(@PathVariable String id, @RequestBody Object input) {
-        return null;
+    public ResponseEntity editUserProfile(@PathVariable String id, @RequestBody User editedUserProfile) {
+        return userService.editUserProfile(editedUserProfile);
     }
 
     @DeleteMapping("/users/{id}")

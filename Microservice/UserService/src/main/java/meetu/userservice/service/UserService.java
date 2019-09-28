@@ -8,6 +8,7 @@ package meetu.userservice.service;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +40,7 @@ public class UserService {
 
     @Autowired
     private TokenAuthenticationService tokenAuthenticationService;
-    
+
     @Autowired
     private UserNotificationRepository userNotificationRepository;
 
@@ -198,6 +199,29 @@ public class UserService {
             Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    public ResponseEntity editUserProfile(User editedUserProfile) {
+        User userInDatabase = userRepository.findByUid(editedUserProfile.getUid());
+        if (userInDatabase != null) {
+            userInDatabase.setEmail(editedUserProfile.getEmail());
+            userInDatabase.setFirstName(editedUserProfile.getFirstName());
+            userInDatabase.setLastName(editedUserProfile.getLastName());
+            userInDatabase.setPhone(editedUserProfile.getPhone());
+            userInDatabase.setGender(editedUserProfile.getGender());
+            userInDatabase.setCounry(editedUserProfile.getCountry());
+            userInDatabase.setBirthDate(editedUserProfile.getBirthDate());
+            userInDatabase.setWebsite(editedUserProfile.getWebsite());
+            userInDatabase.setLine(editedUserProfile.getLine());
+            userInDatabase.setFacebook(editedUserProfile.getFacebook());
+            userInDatabase.setTwitter(editedUserProfile.getTwitter());
+            userInDatabase.setInstragram(editedUserProfile.getInstragram());
+            User savedUserProfile = userRepository.save(userInDatabase);
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedUserProfile);
+        }
+        HashMap<String, String> message = new HashMap();
+        message.put("response", "Cannt update profile");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
     }
 
 }

@@ -12,7 +12,6 @@ import javax.validation.constraints.Email;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
@@ -64,6 +63,16 @@ public class User {
     private List<Badge> badgeList = new ArrayList<Badge>();
     
     private String notificationToken;
+    
+    private String website;
+    
+    private String line;
+    
+    private String twitter;
+    
+    private String facebook;
+    
+    private String instragram;
 
     public User() {
 
@@ -76,6 +85,48 @@ public class User {
         return persona;
     }
 
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public String getTwitter() {
+        return twitter;
+    }
+
+    public void setTwitter(String twitter) {
+        this.twitter = twitter;
+    }
+    
+    
+
+    public String getLine() {
+        return line;
+    }
+
+    public void setLine(String line) {
+        this.line = line;
+    }
+
+    public String getFacebook() {
+        return facebook;
+    }
+
+    public void setFacebook(String facebook) {
+        this.facebook = facebook;
+    }
+
+    public String getInstragram() {
+        return instragram;
+    }
+
+    public void setInstragram(String instragram) {
+        this.instragram = instragram;
+    }
+    
     public void setPersona(Persona persona) {
         this.persona = persona;
     }
@@ -256,7 +307,8 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" + "userId=" + userId + ", username=" + username + ", role=" + role + ", uid=" + uid + ", email=" + email + ", emailVerified=" + emailVerified + ", displayName=" + displayName + ", firstName=" + firstName + ", lastName=" + lastName + ", birthDate=" + birthDate + ", gender=" + gender + ", photoURL=" + photoURL + ", interest=" + interest + ", province=" + province + ", country=" + country + ", phone=" + phone + ", badgeList=" + badgeList + ", notificationToken=" + notificationToken + '}';
+        return "User{" + "userId=" + userId + ", username=" + username + ", password=" + password + ", role=" + role + ", persona=" + persona + ", uid=" + uid + ", email=" + email + ", emailVerified=" + emailVerified + ", displayName=" + displayName + ", firstName=" + firstName + ", lastName=" + lastName + ", birthDate=" + birthDate + ", gender=" + gender + ", photoURL=" + photoURL + ", interest=" + interest + ", province=" + province + ", country=" + country + ", phone=" + phone + ", badgeList=" + badgeList + ", notificationToken=" + notificationToken + ", website=" + website + ", line=" + line + ", twitter=" + twitter + ", facebook=" + facebook + ", instragram=" + instragram + '}';
     }
+    
     
 }

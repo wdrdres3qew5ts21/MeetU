@@ -56,13 +56,6 @@ public class AuthenticationFilter extends ZuulFilter {
     public Object run() throws ZuulException {
         RequestContext ctx = RequestContext.getCurrentContext();
         HttpServletRequest request = ctx.getRequest();
-        System.out.println("---------------  Authentication Filter --------------- ");
-        System.out.println(request.getHeader("Authorization"));
-//           FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(request.getHeader("Authorization"));
-//            String uid = decodedToken.getUid();
-        // do something to check the authentication
-//        ctx.unset();
-//        ctx.setResponseStatusCode(HttpStatus.ACCEPTED.value());
         
         log.info(String.format("%s RequetTo: %s RemoteIP: %s RemotePort: %s", request.getMethod(), request.getRequestURL().toString(), request.getRemoteAddr(), request.getRemotePort()));
         return null;
