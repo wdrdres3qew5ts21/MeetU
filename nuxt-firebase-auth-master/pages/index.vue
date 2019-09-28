@@ -129,7 +129,7 @@ export default {
     this.communityList = mockCommunityList;
     this.isLogin = isLogin();
     this.getRecentlyEvent();
-    this.getArtsEvent();
+    this.getPopularEvent();
     if(this.isLogin){
       this.getRecommendEvent();
     }
@@ -151,6 +151,7 @@ export default {
       this.recommendedEventList = recommendEventList.data;
     },
     getPopularEvent: async function() {
+      let concentPerPage = 6;
       await axios
         .get(
           `${process.env.EVENT_SERVICE}/events?isPopular=true&contentPerPage=${concentPerPage}`
@@ -164,7 +165,7 @@ export default {
         });
     },
     getRecentlyEvent: async function() {
-      let concentPerPage = 3;
+      let concentPerPage = 6;
       let recentlyEventList = await axios
         .get(
           `${process.env.EVENT_SERVICE}/events?isRecently=true&contentPerPage=${concentPerPage}`
@@ -179,34 +180,6 @@ export default {
 
       //      console.log(this.recentlyEventList)
     },
-    getArtsEvent: async function() {
-      let concentPerPage = 3;
-      let artsEventList = await axios(`${process.env.EVENT_SERVICE}/events?isRecently=true
-      &contentPerPage=${concentPerPage}
-      &eventTags=art`);
-      artsEventList = artsEventList.data;
-      this.artsEventList = artsEventList;
-    },
-    createArt: function() {
-      for (let i = 0; i < this.artsEvent.length; i++) {
-        console.log(this.artsEvent[i]);
-        axios.post(`${process.env.EVENT_SERVICE}/event`, {
-          eventPictureCover: this.artsEvent[i].eventPictureCover,
-          eventName: this.artsEvent[i].eventName,
-          eventTags: ["Art"]
-        });
-      }
-    },
-    createBook: function() {
-      for (let i = 0; i < this.bookEvent.length; i++) {
-        console.log(this.bookEvent[i]);
-        axios.post(`${process.env.EVENT_SERVICE}/event`, {
-          eventPictureCover: this.bookEvent[i].eventPictureCover,
-          eventName: this.bookEvent[i].eventName,
-          eventTags: ["Book"]
-        });
-      }
-    }
   }
 };
 </script>
