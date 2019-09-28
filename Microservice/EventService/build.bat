@@ -1,0 +1,1 @@
+mvn clean package &&docker build -t linxianer12/eventservice .

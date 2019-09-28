@@ -7,8 +7,8 @@ package meetu.userservice.controller;
 
 import java.util.List;
 import meetu.userservice.model.Admin;
-import meetu.userservice.service.OrganizeService;
 import meetu.userservice.model.Organize;
+import meetu.userservice.service.OrganizeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -18,7 +18,9 @@ import meetu.userservice.model.InterestGenreBehavior;
 import meetu.userservice.model.Persona;
 import meetu.userservice.repository.UserRepository;
 import meetu.userservice.model.User;
+import meetu.userservice.model.UserNotification;
 import meetu.userservice.model.UserViewEvent;
+import meetu.userservice.repository.UserNotificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +39,9 @@ public class UserService {
 
     @Autowired
     private TokenAuthenticationService tokenAuthenticationService;
+    
+    @Autowired
+    private UserNotificationRepository userNotificationRepository;
 
     public User createUserFromFirebaase(User user) {
         System.out.println("----- Create User/ Update User -------");
@@ -115,11 +120,10 @@ public class UserService {
         return null;
     }
 
-    public User saveNotificationToken(User notificationBody) {
+    public ResponseEntity saveNotificationToken(UserNotification notificationBody) {
         System.out.println("---- ------------------------");
         System.out.println("Notification Token //" + notificationBody.getUid() + " /// token: " + notificationBody.getNotificationToken());
-
-        return null;
+        return ResponseEntity.status(HttpStatus.CREATED).body(userNotificationRepository.save(notificationBody));
     }
 
     public ResponseEntity userViewEvent(UserViewEvent userViewEvent) {

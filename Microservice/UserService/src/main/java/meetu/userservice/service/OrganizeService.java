@@ -5,6 +5,7 @@
  */
 package meetu.userservice.service;
 
+import meetu.userservice.repository.OrganizeRepository;
 import java.util.ArrayList;
 import java.util.List;
 import meetu.userservice.model.Admin;

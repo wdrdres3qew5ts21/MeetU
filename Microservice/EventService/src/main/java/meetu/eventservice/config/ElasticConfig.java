@@ -59,6 +59,7 @@ public class ElasticConfig {
     }
 
     //@Bean(destroyMethod = "close")
+    
     public RestHighLevelClient restHighLevelClientVanila() {
         System.out.println("Starting Configuration");
         RestHighLevelClient client = new RestHighLevelClient(

@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 import meetu.userservice.service.UserService;
 import meetu.userservice.model.Badge;
 import meetu.userservice.model.User;
+import meetu.userservice.model.UserNotification;
 import meetu.userservice.model.UserViewEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -124,7 +125,7 @@ public class UserController {
     }
 
     @PostMapping("/notification/token")
-    public User saveNotificationToken(@RequestBody User notificationBody) {
+    public ResponseEntity saveNotificationToken(@RequestBody UserNotification notificationBody) {
         return userService.saveNotificationToken(notificationBody);
     }
 

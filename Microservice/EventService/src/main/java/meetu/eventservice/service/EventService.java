@@ -137,26 +137,29 @@ public class EventService {
         // Create a list containing up to 100 messages.
         List<UserNotification> userNotifications = userNotificationRepository.findAll();
         List<Message> messages = new ArrayList<>();
-        for (UserNotification userNotification : userNotifications) {
-            messages = Arrays.asList(
-                    Message.builder()
-                            .setNotification(new Notification(
-                                    eventName,
-                                    eventDetail))
-                            .setToken(userNotification.getNotificationToken())
-                            .build()
-            );
-        }
-        BatchResponse response = null;
-        try {
-            response = FirebaseMessaging.getInstance().sendAll(messages);
-        } catch (FirebaseMessagingException ex) {
-            Logger.getLogger(EventService.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        if (userNotifications != null) {
+            for (UserNotification userNotification : userNotifications) {
+                messages = Arrays.asList(
+                        Message.builder()
+                                .setNotification(new Notification(
+                                        eventName,
+                                        eventDetail))
+                                .setToken(userNotification.getNotificationToken())
+                                .build()
+                );
+            }
+            BatchResponse response = null;
+            try {
+                response = FirebaseMessaging.getInstance().sendAll(messages);
+            } catch (FirebaseMessagingException ex) {
+                Logger.getLogger(EventService.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
 // See the BatchResponse reference documentation
 // for the contents of response.
-        System.out.println(response.getSuccessCount() + " messages were sent successfully");
+            System.out.println(response.getSuccessCount() + " messages were sent successfully");
+        }
+
     }
 
     public Event createEvent(Event event) {
@@ -272,7 +275,7 @@ public class EventService {
         System.out.println(user);
         String uid = user.getUid();
         if (uid != null) {
-            User userInDatabase = restTemplate.getForObject(USERSERVICE_URL+"/user/"+uid, User.class);
+            User userInDatabase = restTemplate.getForObject(USERSERVICE_URL + "/user/" + uid, User.class);
             System.out.println("------ User From Database -------");
             System.out.println(userInDatabase);
             System.out.println("-----User Personalize ---------");

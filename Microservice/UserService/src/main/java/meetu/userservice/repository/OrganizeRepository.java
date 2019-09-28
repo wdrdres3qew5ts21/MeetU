@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package meetu.userservice.service;
+package meetu.userservice.repository;
 
 import java.util.List;
 import meetu.userservice.model.Organize;

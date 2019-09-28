@@ -10,6 +10,9 @@ HELP.md
 .springBeans
 .sts4-cache
 
+Dockerfile
+meetu-firebase-key.json
+
 ### IntelliJ IDEA ###
 .idea
 *.iws
