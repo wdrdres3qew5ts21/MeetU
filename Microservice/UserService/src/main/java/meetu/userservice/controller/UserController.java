@@ -134,9 +134,9 @@ public class UserController {
         return userService.findByUId(uid);
     }
 
-    @PutMapping("/user/{id}")
-    public ResponseEntity editUserProfile(@PathVariable String id, @RequestBody User editedUserProfile) {
-        return userService.editUserProfile(editedUserProfile);
+    @PutMapping("/user/{uid}")
+    public ResponseEntity editUserProfile(@PathVariable String uid, @RequestBody User editedUserProfile) {
+        return userService.editUserProfile(uid, editedUserProfile);
     }
 
     @DeleteMapping("/users/{id}")

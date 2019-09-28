@@ -201,8 +201,8 @@ public class UserService {
         return null;
     }
 
-    public ResponseEntity editUserProfile(User editedUserProfile) {
-        User userInDatabase = userRepository.findByUid(editedUserProfile.getUid());
+    public ResponseEntity editUserProfile(String uid, User editedUserProfile) {
+        User userInDatabase = userRepository.findByUid(uid);
         if (userInDatabase != null) {
             userInDatabase.setEmail(editedUserProfile.getEmail());
             userInDatabase.setFirstName(editedUserProfile.getFirstName());

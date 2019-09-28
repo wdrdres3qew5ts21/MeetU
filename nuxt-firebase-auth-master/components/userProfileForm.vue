@@ -2,10 +2,10 @@
   <div>
     <v-layout>
       <h2 style="color:#341646">My Profile</h2>
-      <span> </span>
+      <span></span>
       <v-flex class="text-xs-right">
         <v-btn depressed flat @click=" isEditing= !isEditing">
-          <v-icon color= "#341646" medium> edit</v-icon>
+          <v-icon color="#341646" medium>edit</v-icon>
         </v-btn>
       </v-flex>
     </v-layout>
@@ -210,6 +210,7 @@
 <script>
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
+import userProfileVue from "../pages/userProfile.vue";
 export default {
   name: "userProfileForm",
   components: {},
@@ -277,8 +278,28 @@ export default {
   computed: {
     ...mapGetters(["getUser"])
   },
+  mounted() {
+    this.initUserProfile();
+  },
   methods: {
     ...mapActions(["testContext"]),
+    initUserProfile: function() {
+      axios
+        .get(`${process.env.USER_SERVICE}/user/${this.getUser.uid}`)
+        .then(userProfile => {
+          console.log("haate my self");
+          let userProfileForm = userProfile.data;
+          console.log(userProfile);
+          this.userForm.email = userProfileForm.email;
+          this.userForm.gender = userProfileForm.gender;
+          this.facebook = userProfileForm.facebook;
+          this.line = userProfileForm.line;
+          this.twitter = userProfileForm.twitter;
+          this.instagram = userProfileForm.instagram;
+          this.userForm.telephone = userProfileForm.phone || "";
+        })
+        .catch(err => {});
+    },
     onFileChanged(event) {
       this.selectedFile = event.target.files[0];
     },
@@ -322,13 +343,14 @@ export default {
     },
     onSubmit() {
       console.log(this.userForm);
-      
+
       let rawTel = this.userForm.telephone;
       this.userForm.telephone = rawTel.replace(/^0/g, "+66");
       this.userForm.gender = this.genderList.values;
     },
     updateProfile: function() {
-      (this.edit = true),
+
+      if (this.isEditing === true) {
         console.log({
           email: this.userForm.email,
           password: this.userForm.password,
@@ -337,6 +359,7 @@ export default {
           lastName: this.userForm.lastname,
           gender: this.userForm.gender
         });
+      }
     }
   },
   watch: {
