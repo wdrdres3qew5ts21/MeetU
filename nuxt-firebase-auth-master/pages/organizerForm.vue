@@ -23,7 +23,7 @@
     </center>
     <br />
 
-    <v-form>
+    <v-form ref="form" v-model="valid" :lazy-validation="false">
       <v-text-field
         v-model="organizerName"
         :rules="organizerNameRules"
@@ -31,31 +31,23 @@
         required
       ></v-text-field>
 
-      <v-layout row wrap>
-        <v-flex xs3>
-          <v-select :items="phone" label="TH" prepend-icon="phone"></v-select>
-        </v-flex>
-        <v-flex xs9 sm9 md9>
-          <v-text-field block label="* Mobile Phone" v-model="phone"></v-text-field>
-        </v-flex>
-      </v-layout>
+      <v-text-field
+        label="Phone number"
+        :rules="phoneRules"
+        placeholder="phone number"
+        counter="10"
+        prepend-icon="phone"
+        v-model="telephone"
+        type="number"
+      ></v-text-field>
     </v-form>
 
-
-
-     <v-checkbox
-        v-model="agreement"
-        :rules="[rules.required]"
-        color="#341646"
-      >
-        <template v-slot:label>
-          I agree to the&nbsp;
-          <nuxt-link to="/" @click.stop.prevent="dialog = true">
-            Terms of Service </nuxt-link>
-           
-          
-        </template>
-      </v-checkbox>
+    <v-checkbox v-model="agreement" :rules="[rules.required]" color="#341646">
+      <template v-slot:label>
+        I agree to the&nbsp;
+        <nuxt-link to="/" @click.stop.prevent="dialog = true">Terms of Service</nuxt-link>
+      </template>
+    </v-checkbox>
 
     <br />
     <br />
@@ -74,19 +66,6 @@
 
     <br />
     <br />
-
-
-    <!-- <v-form>
-        <span>* Organizer Name</span>
-        <v-text-field
-            outlined
-          ></v-text-field>
-
-          <span>* Mobile Phone</span>
-        <v-text-field
-            outlined
-          ></v-text-field>
-    </v-form>-->
   </div>
 </template>
 
@@ -96,17 +75,27 @@ export default {
   name: "organizerForm",
   data() {
     return {
+      telephone: "",
+      valid: true,
       names: [
         {
           name: "A"
         }
       ],
-      organizerNameRules: [v => !!v || "Organizer Name is required"],
-
+      organizerNameRules: [
+        v => !!v || "Organizer Name is required",
+        v => (v && v.length >= 2) || "Name must be more than 2 characters"
+      ],
       checkbox: false,
       agreement: false,
-      rules: {required: v => !!v || 'This field is required',
+      rules: {
+        required: v => !!v || "This field is required",
+       
       },
+       phoneRules: [
+          v => !!v || "Phone Number is required",
+          v => (v && v.length === 10) || "Phone Number msut be 10 digit"
+        ]
     };
   }
 };
@@ -140,5 +129,4 @@ export default {
 
   border: solid 1px #341646 !important;
 }
-
 </style>
