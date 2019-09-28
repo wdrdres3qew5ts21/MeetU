@@ -1,20 +1,21 @@
 <template>
   <div>
-    <h1 style="color:#341646">My Profile</h1>
+    <v-layout>
+      <h2 style="color:#341646">My Profile</h2>
+      <span> </span>
+      <v-flex class="text-xs-right">
+        <v-btn depressed flat @click=" isEditing= !isEditing">
+          <v-icon color= "#341646" medium> edit</v-icon>
+        </v-btn>
+      </v-flex>
+    </v-layout>
+
     <br />
     <v-layout justify-center row wrap>
       <v-flex xs12>
         <v-card class="elevation-0 mx-auto" color="white" max-width="150" style="border-radius:50%">
           <v-img :aspect-ratio="1/1" :src="getUser.photoURL"></v-img>
         </v-card>
-      </v-flex>
-      <v-flex xs12>
-        <center>
-          <nuxt-link to>
-            <br />
-            <p style="font-weight:bold">Edit Profile</p>
-          </nuxt-link>
-        </center>
       </v-flex>
     </v-layout>
     <v-btn class="black--text" outline color="red" depressed large block @click="logout()">LOG OUT</v-btn>
@@ -29,6 +30,7 @@
 
         <br />
         <v-text-field
+          :disabled="isEditing"
           v-model="userForm.firstname"
           :rules="nameRules"
           :counter="10"
@@ -40,6 +42,7 @@
         <v-text-field
           v-model="userForm.lastname"
           :rules="nameRules"
+          :disabled="isEditing"
           :counter="10"
           label="Last name"
           required
@@ -49,6 +52,7 @@
         <v-menu
           ref="menu"
           v-model="menu"
+          :disabled="isEditing"
           :close-on-content-click="false"
           transition="scale-transition"
           offset-y
@@ -57,6 +61,7 @@
         >
           <template v-slot:activator="{ on }">
             <v-text-field
+              :disabled="isEditing"
               v-model="userForm.dateOfBirth"
               label="Birthday date"
               prepend-icon="today"
@@ -82,11 +87,22 @@
           v-model="userForm.gender"
           ></v-radio>
         </v-radio-group>-->
-        <v-select :items="genderList" v-model="userForm.gender" label="Select gender"></v-select>
+        <v-select
+          :items="genderList"
+          v-model="userForm.gender"
+          label="Select gender"
+          :disabled="isEditing"
+        ></v-select>
 
         <h2>Contacts</h2>
         <br />
-        <v-text-field v-model="userForm.email" :rules="emailRules" label="E-mail" required></v-text-field>
+        <v-text-field
+          v-model="userForm.email"
+          :rules="emailRules"
+          label="E-mail"
+          :disabled="isEditing"
+          required
+        ></v-text-field>
         <br />
         <v-text-field
           label="Phone number"
@@ -95,6 +111,7 @@
           counter="10"
           prepend-icon="phone"
           v-model="userForm.telephone"
+          :disabled="isEditing"
           type="number"
         ></v-text-field>
         <br />
@@ -107,6 +124,7 @@
           :rules="passwordRule"
           label="* Password"
           required
+          :disabled="isEditing"
         ></v-text-field>
 
         <v-text-field
@@ -115,6 +133,7 @@
           :rules="passwordRules"
           label="* Password Confirmation"
           required
+          :disabled="isEditing"
         ></v-text-field>
 
         <br />
@@ -122,15 +141,45 @@
         <h3 class="h3">User Social Networks</h3>
         <br />
 
-        <v-text-field class="textfield" v-model="website" label="Website" placeholder="http://"></v-text-field>
+        <v-text-field
+          class="textfield"
+          v-model="website"
+          label="Website"
+          placeholder="http://"
+          :disabled="isEditing"
+        ></v-text-field>
 
-        <v-text-field class="textfield" v-model="line" label="Line" placeholder="@"></v-text-field>
+        <v-text-field
+          class="textfield"
+          v-model="line"
+          label="Line"
+          placeholder="@"
+          :disabled="isEditing"
+        ></v-text-field>
 
-        <v-text-field class="textfield" v-model="facebook" label="Facebook" placeholder="http://"></v-text-field>
+        <v-text-field
+          class="textfield"
+          v-model="facebook"
+          label="Facebook"
+          placeholder="http://"
+          :disabled="isEditing"
+        ></v-text-field>
 
-        <v-text-field class="textfield" v-model="twitter" label="Twitter" placeholder="@"></v-text-field>
+        <v-text-field
+          class="textfield"
+          v-model="twitter"
+          label="Twitter"
+          placeholder="@"
+          :disabled="isEditing"
+        ></v-text-field>
 
-        <v-text-field class="textfield" v-model="instagram" label="Instagram" placeholder="@"></v-text-field>
+        <v-text-field
+          class="textfield"
+          v-model="instagram"
+          label="Instagram"
+          placeholder="@"
+          :disabled="isEditing"
+        ></v-text-field>
       </v-form>
     </v-layout>
     <br />
@@ -176,6 +225,7 @@ export default {
       twitter: "",
       instagram: "",
       genderList: ["Male", "Female", "Unspecified"],
+
       numberRules: [
         v => !!v || "This field is required",
         v => (v && !Number.isNaN(v)) || "Please insert only number"
@@ -210,6 +260,7 @@ export default {
         v => v.length >= 8 || "Password must be 8 character"
       ],
       valid: true,
+      isEditing: true,
       userForm: {
         firstName: "",
         lastName: "",
@@ -247,6 +298,15 @@ export default {
     save(date) {
       this.$refs.menu.save(date);
     },
+    activateInEditMode() {
+      this.isEditing = false;
+    },
+    deActivateInEditMode() {
+      this.isEditing = true;
+    },
+    editProfile() {
+      this.edit = false;
+    },
     validate() {
       console.log(this.userForm);
 
@@ -262,20 +322,21 @@ export default {
     },
     onSubmit() {
       console.log(this.userForm);
-
+      
       let rawTel = this.userForm.telephone;
       this.userForm.telephone = rawTel.replace(/^0/g, "+66");
       this.userForm.gender = this.genderList.values;
     },
     updateProfile: function() {
-      console.log({
-        email: this.userForm.email,
-        password: this.userForm.password,
-        birthDate: this.userForm.dateOfBirth,
-        firstName: this.userForm.firstname,
-        lastName: this.userForm.lastname,
-        gender: this.userForm.gender
-      });
+      (this.edit = true),
+        console.log({
+          email: this.userForm.email,
+          password: this.userForm.password,
+          birthDate: this.userForm.dateOfBirth,
+          firstName: this.userForm.firstname,
+          lastName: this.userForm.lastname,
+          gender: this.userForm.gender
+        });
     }
   },
   watch: {
