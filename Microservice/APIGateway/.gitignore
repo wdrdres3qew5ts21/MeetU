@@ -16,6 +16,8 @@ HELP.md
 *.iws
 *.iml
 *.ipr
+Dockerfile
+meetu-firebase-key.json
 
 ### NetBeans ###
 /nbproject/private/
