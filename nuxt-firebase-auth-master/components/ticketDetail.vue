@@ -21,22 +21,24 @@
         @click.native="qrCodeGenerator()"
     >QR Code Generate</v-btn>-->
 
-    <br />
     <div class="text-center">
       <v-btn block round="16px;" color="#341646" class="mb-2 white--text">DOWNLOAD MY TICKET</v-btn>
     </div>
     <br />
     <br />
-      <v-btn @click="camera =!camera">Open camera</v-btn>
-      <div v-if="camera=='on'" > 
-     <no-ssr placeholder="loading...">
-      <qrcode-stream @decode="onDecode" ></qrcode-stream>
-    </no-ssr> 
-      </div>
    
+  <v-btn @click="isCameraOpen = !isCameraOpen">Open camera</v-btn>
+    <div v-if="isCameraOpen">
+     <no-ssr placeholder="loading...">
+          <qrcode-stream @decode="onDecode"></qrcode-stream>
+        </no-ssr> 
+         </div>
+   <div>
 
-    <!-- <qrcode-stream :camera="camera" @init="onCameraChange"></qrcode-stream>
-    -->
+
+   </div> 
+    <!-- <!-- <qrcode-stream :camera="camera" @init="onCameraChange"></qrcode-stream> -->
+   
     <div align="left">
       <h3>Event</h3>
       <br />
@@ -72,8 +74,7 @@ import { mapMutations, mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
-       camera: 'off',
-       
+      isCameraOpen: false,
       qrCodeSrc: "demo",
       isTicketSelected: true,
       numberOfTicket: [],
