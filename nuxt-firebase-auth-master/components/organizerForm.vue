@@ -38,6 +38,7 @@
  
  
 <script>
+import {mapGetters} from "vuex"
 import Swal from "sweetalert2";
 export default {
   name: "organizerForm",
@@ -140,6 +141,9 @@ export default {
       dialog2: false
     };
   },
+  computed:{
+    ...mapGetters(['getUser'])
+  },
   methods: {
     onFileChanged(event) {
       this.selectedFile = event.target.files[0];
@@ -147,9 +151,8 @@ export default {
     onUpload: function(e)  {
       // upload file, get it from this.selectedFile
     },
-
     upgradeAccountPopup: function(e) {
-      Swal.fire({
+      this.$swal.fire({
         title: "Are you sure?",
         type: "warning",
         showCancelButton: true,

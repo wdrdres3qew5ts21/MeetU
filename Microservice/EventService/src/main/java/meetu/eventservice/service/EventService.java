@@ -491,8 +491,13 @@ public class EventService {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
     }
 
-    public UserNotification saveuserNotification(UserNotification userNotification) {
-        return userNotificationRepository.save(userNotification);
+    public ResponseEntity saveuserNotification(UserNotification userNotification) {
+        UserNotification userNotificationInDatabase = userNotificationRepository.findByUid(userNotification.getUid());
+        if (userNotificationInDatabase == null) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(userNotificationRepository.save(userNotification));
+        }
+        userNotificationInDatabase.setNotificationToken(userNotification.getNotificationToken());
+        return ResponseEntity.status(HttpStatus.CREATED).body(userNotificationInDatabase);
     }
 
 //    @HystrixCommand(fallbackMethod = "fuckYouFallback")

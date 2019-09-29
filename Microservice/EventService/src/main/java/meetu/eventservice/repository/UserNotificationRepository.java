@@ -14,4 +14,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
  */
 public interface UserNotificationRepository extends MongoRepository<UserNotification, String> {
     
+    public UserNotification findByUid(String uid);
+    
 }

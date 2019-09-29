@@ -1,81 +1,90 @@
 <template>
-  <div>
-    <br />
-    <h3>Organizer Account</h3>
-    <br />
-    <br />
-    <p>You are signed in as :</p>
-    {{names}}
-    <br />
-    <br />
+  <transition name="fade">
+    <div v-if="!isUpgradeSuccess">
+      <br />
+      <h3>Organizer Account</h3>
+      <br />
+      <br />
+      <p>You are signed in as :</p>
+      {{names}}
+      <br />
+      <br />
 
-    <center>
-      <nuxt-link :to="`/?`" style="text-decoration-line:none;">
-        <v-btn
-          block
-          class="switchAccount #341646--text"
-          color="#fff"
-          depressed
-          large
-          height="40"
-        >Switch Account</v-btn>
-      </nuxt-link>
-    </center>
-    <br />
+      <center>
+        <nuxt-link :to="`/?`" style="text-decoration-line:none;">
+          <v-btn
+            block
+            class="switchAccount #341646--text"
+            color="#fff"
+            depressed
+            large
+            height="40"
+          >Switch Account</v-btn>
+        </nuxt-link>
+      </center>
+      <br />
 
-    <v-form ref="form" v-model="valid" :lazy-validation="false">
-      <v-text-field
-        v-model="organizerName"
-        :rules="organizerNameRules"
-        label="* Organizer Name"
-        required
-      ></v-text-field>
+      <v-form ref="form" v-model="valid" :lazy-validation="false">
+        <v-text-field
+          v-model="organizeName"
+          :rules="organizerNameRules"
+          label="* Organizer Name"
+          required
+        ></v-text-field>
 
-      <v-text-field
-        label="Phone number"
-        :rules="phoneRules"
-        placeholder="phone number"
-        counter="10"
-        prepend-icon="phone"
-        v-model="telephone"
-        type="number"
-      ></v-text-field>
-    </v-form>
-
-    <v-checkbox v-model="agreement" :rules="[rules.required]" color="#341646">
-      <template v-slot:label>
-        I agree to the&nbsp;
-        <nuxt-link to="/" @click.stop.prevent="dialog = true">Terms of Service</nuxt-link>
-      </template>
-    </v-checkbox>
-
-    <br />
-    <br />
-    <center>
-      <nuxt-link :to="`/organizerAccountCreate?`" style="text-decoration-line:none;">
-        <v-btn
-          block
-          class="setupOrganizerAccount white--text"
-          color="#341646"
-          depressed
-          large
-          height="50"
-        >Setup Organizer Account</v-btn>
-      </nuxt-link>
-    </center>
-
-    <br />
-    <br />
-  </div>
+        <v-text-field
+          label="Phone number"
+          :rules="phoneRules"
+          placeholder="phone number"
+          counter="10"
+          prepend-icon="phone"
+          v-model="phone"
+          type="number"
+        ></v-text-field>
+        <v-checkbox v-model="agreement" :rules="[rules.required]" color="#341646">
+          <template v-slot:label>
+            I agree to the&nbsp;Terms of Service
+            <!-- <nuxt-link to="/" @click.stop.prevent="dialog = true">Terms of Service</nuxt-link> -->
+          </template>
+        </v-checkbox>
+        <br />
+        <br />
+        <center>
+          <v-btn
+            @click="upgradeOrganize()"
+            block
+            :disabled="!valid"
+            class="setupOrganizerAccount white--text"
+            color="#341646"
+            depressed
+            large
+            height="50"
+          >Setup Organizer Account</v-btn>
+        </center>
+        <br />
+        <br />
+      </v-form>
+    </div>
+    <organizerAccountCreate v-else />
+  </transition>
 </template>
 
 
 <script>
+import organizerAccountCreate from "~/components/organizerAccountCreate";
+import axios from "axios";
+import { error } from "util";
 export default {
   name: "organizerForm",
+  components: {
+    organizerAccountCreate
+  },
   data() {
     return {
-      telephone: "",
+      valid: true,
+      isUpgradeSuccess: false,
+      phone: "",
+      organizeName: "",
       valid: true,
       names: [
         {
@@ -89,14 +98,34 @@ export default {
       checkbox: false,
       agreement: false,
       rules: {
-        required: v => !!v || "This field is required",
-       
+        required: v => !!v || "This field is required"
       },
-       phoneRules: [
-          v => !!v || "Phone Number is required",
-          v => (v && v.length === 10) || "Phone Number msut be 10 digit"
-        ]
+      phoneRules: [
+        v => !!v || "Phone Number is required",
+        v => (v && v.length === 10) || "Phone Number msut be 10 digit"
+      ]
     };
+  },
+  methods: {
+    upgradeOrganize: function() {
+      axios
+        .get(`${process.env.USER_SERVICE}/organize/${this.getUser.uid}`)
+        .then(upgradeResponse => {
+          this.isUpgradeSuccess = true;
+          this.$swal({
+            type: "success",
+            title: "Upgrade success !!!",
+            text: `upgrade successs`
+          });
+        })
+        .catch(error => {
+          this.$swal({
+            type: "error",
+            title: "Failed to upgrade !!!",
+            text: `Failed to upgrade`
+          });
+        });
+    }
   }
 };
 </script>
