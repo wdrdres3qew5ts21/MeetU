@@ -7,10 +7,10 @@
     </v-flex>
     <br />
     <v-flex xs12>
-      <v-card color="cyan darken-2" class="white--text">
+      <v-card min-width="370" height="180" color="white" >
         <v-layout>
-          <v-flex xs5>
-            <v-img src="https://cdn.vuetifyjs.com/images/cards/foster.jpg" height="125px" contain></v-img>
+          <v-flex xs8>
+            <v-img src="https://cdn.vuetifyjs.com/images/cards/foster.jpg"  height="180px" width="170px"></v-img>
           </v-flex>
           <v-flex xs7>
             <v-card-title primary-title>
@@ -18,8 +18,9 @@
                 <div class="headline">Event name</div>
                 <div>{{new Date().toISOString()}}</div>
                 <div>{{location}}</div>
-                <nuxt-link to>
-                  <b>View Detail</b>
+                 <nuxt-link :to="`/ticket?`">
+                  <br/>
+                  <b color="deep-purple darken-3">View Detail</b>
                 </nuxt-link>
               </div>
             </v-card-title>
@@ -29,10 +30,10 @@
     </v-flex>
     <br />
     <v-flex xs12>
-      <v-card color="cyan darken-2" class="white--text">
+      <v-card min-width="370" height="180" color="white" >
         <v-layout>
-          <v-flex xs5>
-            <v-img src="https://cdn.vuetifyjs.com/images/cards/foster.jpg" height="125px" contain></v-img>
+          <v-flex xs8>
+            <v-img src="https://cdn.vuetifyjs.com/images/cards/foster.jpg"  height="180px" width="170px"></v-img>
           </v-flex>
           <v-flex xs7>
             <v-card-title primary-title>
@@ -40,8 +41,9 @@
                 <div class="headline">Event name</div>
                 <div>{{new Date().toISOString()}}</div>
                 <div>{{location}}</div>
-                <nuxt-link to>
-                  <b>View Detail</b>
+                 <nuxt-link :to="`/ticket?`">
+                  <br/>
+                  <b color="deep-purple darken-3">View Detail</b>
                 </nuxt-link>
               </div>
             </v-card-title>
