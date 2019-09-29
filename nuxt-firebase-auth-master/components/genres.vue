@@ -80,6 +80,7 @@ export default {
             title: "Save Your Preference !!!",
             text: `Your preference have been save`
           });
+          this.$router.push("/userProfile")
         })
         .catch(err => {
           this.$swal({

@@ -25,8 +25,13 @@
     <br />
 
     <v-layout column>
-      <v-form ref="form" v-model="valid" >
+      <v-form ref="form" v-model="valid">
         <h2>Information</h2>
+        <v-flex xs12>
+          <center>
+            <h3><router-link to="/selectGenres" style="color:red">Edit</router-link> Preference: {{userForm.interest}} : {{userForm.interest.length}}/{{limitedSelectNumber}}</h3>
+          </center>
+        </v-flex>
 
         <br />
         <v-text-field
@@ -211,6 +216,8 @@ export default {
   components: {},
   data() {
     return {
+      limitedSelectNumber: 3,
+
       date: null,
       menu: false,
 
@@ -252,6 +259,7 @@ export default {
       valid: true,
       isEditing: true,
       userForm: {
+        interest: [],
         firstName: "",
         lastName: "",
         gender: "",
@@ -285,6 +293,7 @@ export default {
           console.log("haate my self");
           userProfileForm = userProfileForm.data;
           console.log(userProfileForm);
+          this.userForm.interest = userProfileForm.interest;
           this.userForm.firstName = userProfileForm.firstName;
           this.userForm.lastName = userProfileForm.lastName;
           this.userForm.email = userProfileForm.email;
@@ -348,22 +357,26 @@ export default {
     },
     updateProfile: function() {
       console.log(this.userForm);
-      axios.put(`${process.env.USER_SERVICE}/user/${this.getUser.uid}`,this.userForm)
-      .then(updateResponse=>{
-        this.$swal({
-          type: "success",
-          title: "Update Profile success !",
-          text: `Update Profile success`
+      axios
+        .put(
+          `${process.env.USER_SERVICE}/user/${this.getUser.uid}`,
+          this.userForm
+        )
+        .then(updateResponse => {
+          this.$swal({
+            type: "success",
+            title: "Update Profile success !",
+            text: `Update Profile success`
+          });
+        })
+        .catch(err => {
+          console.log(err);
+          this.$swal({
+            type: "error",
+            title: "Update Profile fail !",
+            text: err
+          });
         });
-      })
-      .catch(err=>{
-        console.log(err)
-        this.$swal({
-          type: "error",
-          title: "Update Profile fail !",
-          text: err
-        });
-      })
 
       // console.log({
       //   email: this.userForm.email,
