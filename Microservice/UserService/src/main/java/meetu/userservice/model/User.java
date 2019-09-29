@@ -52,7 +52,7 @@ public class User {
 
     private String photoURL;
 
-    private List<Integer> interest = new ArrayList();
+    private List<String> interest = new ArrayList();
 
     private String province;
 
@@ -232,6 +232,8 @@ public class User {
     public void setBirthDay(Date birthDay) {
         this.birthDate = birthDay;
     }
+    
+    
 
     public String getUserImage() {
         return photoURL;
@@ -241,14 +243,14 @@ public class User {
         this.photoURL = userImage;
     }
 
-    public List<Integer> getInterest() {
+    public List<String> getInterest() {
         return interest;
     }
 
-    public void setInterest(List<Integer> interest) {
+    public void setInterest(List<String> interest) {
         this.interest = interest;
     }
-
+    
     public String getProvince() {
         return province;
     }
