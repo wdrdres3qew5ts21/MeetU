@@ -459,20 +459,29 @@ public class EventService {
         Event eventInDatabase = eventRepository.findByElasticEventId(userReserveTicket.getElasticEventId());
         if (eventInDatabase != null) {
             if (eventInDatabase.getNumberOfTicket() > 0) {
-                byte[] array = new byte[8]; // length is bounded by 7
-                new Random().nextBytes(array);
-                String generateTicketKey = new String(array, Charset.forName("UTF-8"));
+                if (eventInDatabase.getUserLists().contains(userReserveTicket.getUid()) == false) {
+                    byte[] array = new byte[8]; // length is bounded by 7
+                    new Random().nextBytes(array);
+                    String generateTicketKey = new String(array, Charset.forName("UTF-8"));
 //                userReserveTicket.setTicketKey(UUID.randomUUID().toString());
-                userReserveTicket.setEventTags(eventInDatabase.getEventTags());
-                userReserveTicket.setTicketKey(RandomStringUtils.randomAlphanumeric(8));
-                System.out.println(userReserveTicket);
-                int numberOfTicket = eventInDatabase.getNumberOfTicket();
-                numberOfTicket--;
-                eventInDatabase.setNumberOfTicket(numberOfTicket);
-                eventRepository.save(eventInDatabase);
-                System.out.println("Saved User Event Tikcet");
-                UserEventTicket savedUserEventTicket = userEventTicketRespository.save(userReserveTicket);
-                return ResponseEntity.status(HttpStatus.CREATED).body(savedUserEventTicket);
+                    userReserveTicket.setEventTags(eventInDatabase.getEventTags());
+                    userReserveTicket.setTicketKey(RandomStringUtils.randomAlphanumeric(8));
+                    System.out.println(userReserveTicket);
+                    int numberOfTicket = eventInDatabase.getNumberOfTicket();
+                    numberOfTicket--;
+
+                    List<String> userLists = eventInDatabase.getUserLists();
+                    userLists.add(userReserveTicket.getUid());
+                    eventInDatabase.setUserLists(userLists);
+                    eventInDatabase.setNumberOfTicket(numberOfTicket);
+                    eventRepository.save(eventInDatabase);
+                    System.out.println("Saved User Event Tikcet");
+                    UserEventTicket savedUserEventTicket = userEventTicketRespository.save(userReserveTicket);
+                    return ResponseEntity.status(HttpStatus.CREATED).body(savedUserEventTicket);
+                } else {
+                    responseBody.put("response", "You already have ticket !!");
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+                }
             } else {
                 responseBody.put("response", "Ticket had been sold out !");
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responseBody);

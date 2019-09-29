@@ -1,125 +1,124 @@
 <template>
-<div>
-  <div v-if = "isViewTicketDetail ">
-    <v-carousel hide-delimiters hide-controls xs6 sm12 height="200px;">
-      <v-carousel-item v-for="(pic,i) in eventPictureLists" :key="i" :src="pic"></v-carousel-item>
-    </v-carousel>
-    <br />
-    <h3>{{eventName}}</h3>
-    <v-btn
-      block
-      color="#341646"
-      style="color:white"
-      @click="$vuetify.goTo('#ticketSection')"
-    >View Ticket</v-btn>
-    <br />
+  <div>
+    <div v-if="isViewTicketDetail ">
+      <v-carousel hide-delimiters hide-controls xs6 sm12 height="200px;">
+        <v-carousel-item v-for="(pic,i) in eventPictureLists" :key="i" :src="pic"></v-carousel-item>
+      </v-carousel>
+      <br />
+      <h3>{{eventName}}</h3>
+      <v-btn
+        block
+        color="#341646"
+        style="color:white"
+        @click="$vuetify.goTo('#ticketSection')"
+      >View Ticket</v-btn>
+      <br />
 
-    <p>Date</p>
-    <p>
-      <b>{{createEventDate}}</b>
-    </p>
+      <p>Date</p>
+      <p>
+        <b>{{createEventDate}}</b>
+      </p>
 
-    <p>
-      <a href>Add to Calendar</a>
-    </p>
+      <p>
+        <a href>Add to Calendar</a>
+      </p>
 
-    <h4>Event Detail</h4>
-    <p class="text-justify">{{eventDetail}}</p>
+      <h4>Event Detail</h4>
+      <p class="text-justify">{{eventDetail}}</p>
 
-    <p>Location</p>
-    <p>
-      <b>{{location.country}}, {{location.province}}</b>
-    </p>
-    <center>
-      <v-container>
-        <v-layout row wrap>
-          <client-only>
-          <GmapMap
-              :center="marker.position"
-              :zoom="14"
-              map-type-id="terrain"
-              style="width: 500px; height: 300px"
-              :options="{
+      <p>Location</p>
+      <p>
+        <b>{{location.country}}, {{location.province}}</b>
+      </p>
+      <center>
+        <v-container>
+          <v-layout row wrap>
+            <client-only>
+              <GmapMap
+                :center="marker.position"
+                :zoom="14"
+                map-type-id="terrain"
+                style="width: 500px; height: 300px"
+                :options="{
                 scaleControl: true
             }"
-            >
-              <gmap-info-window
-                :position="infoWindowPos"
-                :opened="infoWinOpen"
-                @closeclick="infoWinOpen=false"
               >
-                <h2>{{eventName}}</h2>
-                <p>{{eventDetail}}</p>
-                <nuxt-link to="/">click</nuxt-link>
-              </gmap-info-window>
-              <GmapMarker
-                :position="marker.position"
-                :clickable="true"
-                @click="toggleInfoWindow(marker,0)"
-              />
-          </GmapMap>
-          </client-only>
-        </v-layout>
-      </v-container>
-      <br />
-    </center>
-    <p>Share with...</p>
-    <h3>Tickets</h3>
-    <p>
-      <b>{{eventName}}</b>
-    </p>
-    <v-layout row wrap>
-      <v-flex xs7>Free</v-flex>
-      <v-spacer></v-spacer>
-      <v-flex xs5>{{numberOfTicket}}  Ticket Left(s)</v-flex>
-      <!-- <v-flex xs6>
-        <v-select :items="numberOfTicket" label="numberOfTicket"></v-select>
-      </v-flex>-->
-    </v-layout>
-   
-       <!-- <nuxt-link :to="`/ticket?`" > -->
-       <!-- @click="userReserveTicket()" -->
-    <v-btn
-      @click="isViewTicketDetail = false "
-      block
-      :disabled="!isTicketSelected"
-      color="primary"
-      id="ticketSection"
-    >GET TICKET</v-btn>
-       <!-- </nuxt-link> -->
-    <!-- <center>
-      <qrcode :value="qrCodeSrc" :options="{ width: 200 }"></qrcode>
-    </center> -->
-
-    <h3>Contract</h3>
-    <p>Contract the oraganizer for more information</p>
-    <v-card class="mx-auto" elevation="1">
-      <center>
-        <div style="width:200px;overflow:hidden">
-          <v-img
-            src="https://picsum.photos/id/11/500/300"
-            lazy-src="https://picsum.photos/id/11/10/6"
-            aspect-ratio="1"
-            class="grey lighten-2"
-            max-width="300"
-            style="border-radius:60%;"
-          ></v-img>
-        </div>
+                <gmap-info-window
+                  :position="infoWindowPos"
+                  :opened="infoWinOpen"
+                  @closeclick="infoWinOpen=false"
+                >
+                  <h2>{{eventName}}</h2>
+                  <p>{{eventDetail}}</p>
+                  <nuxt-link to="/">click</nuxt-link>
+                </gmap-info-window>
+                <GmapMarker
+                  :position="marker.position"
+                  :clickable="true"
+                  @click="toggleInfoWindow(marker,0)"
+                />
+              </GmapMap>
+            </client-only>
+          </v-layout>
+        </v-container>
+        <br />
       </center>
-      <v-card-title justify-center>Organizer</v-card-title>
-      <v-card-text>Website</v-card-text>
-      <v-card-text>Email</v-card-text>
-      <v-card-actions>
-        <v-btn text>Click</v-btn>
-      </v-card-actions>
-    </v-card>
-  </div>
+      <p>Share with...</p>
+      <h3>Tickets</h3>
+      <p>
+        <b>{{eventName}}</b>
+      </p>
+      <v-layout row wrap>
+        <v-flex xs7>Free</v-flex>
+        <v-spacer></v-spacer>
+        <v-flex xs5>{{numberOfTicket}} Ticket Left(s)</v-flex>
+        <!-- <v-flex xs6>
+        <v-select :items="numberOfTicket" label="numberOfTicket"></v-select>
+        </v-flex>-->
+      </v-layout>
 
-  <div v-else> 
-<confirmTicket> </confirmTicket>
+      <!-- <nuxt-link :to="`/ticket?`" > -->
+      <!-- @click="userReserveTicket()" -->
+      <v-btn
+        @click="userReserveTicket()"
+        block
+        :disabled="!isTicketSelected"
+        color="primary"
+        id="ticketSection"
+      >GET TICKET</v-btn>
+      <!-- </nuxt-link> -->
+      <!-- <center>
+      <qrcode :value="qrCodeSrc" :options="{ width: 200 }"></qrcode>
+      </center>-->
+
+      <h3>Contract</h3>
+      <p>Contract the oraganizer for more information</p>
+      <v-card class="mx-auto" elevation="1">
+        <center>
+          <div style="width:200px;overflow:hidden">
+            <v-img
+              src="https://picsum.photos/id/11/500/300"
+              lazy-src="https://picsum.photos/id/11/10/6"
+              aspect-ratio="1"
+              class="grey lighten-2"
+              max-width="300"
+              style="border-radius:60%;"
+            ></v-img>
+          </div>
+        </center>
+        <v-card-title justify-center>Organizer</v-card-title>
+        <v-card-text>Website</v-card-text>
+        <v-card-text>Email</v-card-text>
+        <v-card-actions>
+          <v-btn text>Click</v-btn>
+        </v-card-actions>
+      </v-card>
     </div>
 
-</div>
+    <div v-else>
+      <confirmTicket></confirmTicket>
+    </div>
+  </div>
 </template> 
  
 <script>
@@ -127,9 +126,10 @@ import { eventNotFound } from "~/utils/errorMessage";
 import confirmTicket from "@/components/confirmTicket";
 import axios from "axios";
 import { mapMutations, mapActions, mapGetters } from "vuex";
+import { error } from 'util';
 export default {
   components: {
-      confirmTicket
+    confirmTicket
   },
   data() {
     return {
@@ -226,19 +226,22 @@ export default {
         elasticEventId: this.$route.params.elasticEventId
       };
       this.qrCodeSrc = JSON.stringify(reserveTicket);
-      console.log(reserveTicket)
-      axios.post(`${process.env.EVENT_SERVICE}/event/reserve`, reserveTicket)
-      .then(reserveTicket=>{
-        console.log(reserveTicket)
-        this.isViewTicketDetail = false
-      })
-      .catch(err =>{
-        this.$swal({
-          type: "error",
-          title: "Ticket Sold Out !!!",
-          text: `Ticket had been sold or Error`
+      console.log(reserveTicket);
+      axios
+        .post(`${process.env.EVENT_SERVICE}/event/reserve`, reserveTicket)
+        .then(reserveTicket => {
+          console.log(reserveTicket);
+          this.isViewTicketDetail = !this.isViewTicketDetail;
+        })
+        .catch(error => {
+          console.log("fsdfsdf")
+          console.log(error.response )
+          this.$swal({
+            type: "error",
+            title: "Fail to reserve ticket !",
+            text: `${error.response.data.response}`
+          });
         });
-      })
     },
     findEventInArea: async function() {
       let geolocation = {
