@@ -68,6 +68,11 @@ public class EventController {
     public ResponseEntity findUserTicketHistory(@PathVariable String uid) {
         return eventService.findUserTicketHistory(uid);
     }
+    
+    @GetMapping("/events/tickets/{uid}/{elasticEventId}")
+    public ResponseEntity findUserTicketHistory(@PathVariable String uid, @PathVariable String elasticEventId) {
+        return eventService.findUserTicketHistoryByElasticEventId(uid, elasticEventId);
+    }
 
     @PostMapping("/event/join")
     public ResponseEntity userJoinEvent(@RequestBody UserEventTicket userJoinEvent) {

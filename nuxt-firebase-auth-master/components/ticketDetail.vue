@@ -3,7 +3,7 @@
     ! link back numberID Ticket
     <br />
     <br />
-    <h2>E Ticket</h2>
+    <!-- <h2>{{ticketEvent.ticketDetail[0].eventName}}</h2> -->
 
     <br />Please show this QR code to enter the event
     and don’t share this QR to other people.
@@ -37,7 +37,7 @@
 
 
    </div> 
-    <!-- <!-- <qrcode-stream :camera="camera" @init="onCameraChange"></qrcode-stream> -->
+    <!-- <qrcode-stream :camera="camera" @init="onCameraChange"></qrcode-stream> -->
    
     <div align="left">
       <h3>Event</h3>
@@ -72,6 +72,9 @@ import { eventNotFound } from "~/utils/errorMessage";
 import axios from "axios";
 import { mapMutations, mapActions, mapGetters } from "vuex";
 export default {
+  props: {
+    ticketEvent: Object
+  },
   data() {
     return {
       isCameraOpen: false,

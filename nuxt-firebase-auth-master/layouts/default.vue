@@ -25,6 +25,17 @@
           </v-list-tile>
         </v-list>
 
+        <v-list-tile avatar>
+          <v-list-tile-avatar>
+            <v-icon class="icon">group</v-icon>
+          </v-list-tile-avatar>
+          <nuxt-link to="/event/history">
+            <v-list-tile-content>
+              <v-list-tile-title>My Ticket</v-list-tile-title>
+            </v-list-tile-content>
+          </nuxt-link>
+        </v-list-tile>
+
         <v-list-group>
           <v-list-tile slot="activator">
             <v-list-tile>
@@ -126,7 +137,6 @@
         <v-toolbar-items>
           <img :src="logoToolbarImage" height="110" />
         </v-toolbar-items>
-
       </nuxt-link>
 
       <v-spacer></v-spacer>

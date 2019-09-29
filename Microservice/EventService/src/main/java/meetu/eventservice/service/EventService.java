@@ -559,7 +559,7 @@ public class EventService {
                 .from("events")
                 .localField("elasticEventId")
                 .foreignField("elasticEventId")
-                .as("ticketHistory");
+                .as("ticketDetail");
         AggregationOperation match = Aggregation.match(Criteria.where("uid").is(uid));
         Aggregation aggregation = Aggregation.newAggregation(lookupOperation, match);
         List<BasicDBObject> results = mongoTemplate.aggregate(aggregation, "userEventTicket", BasicDBObject.class).getMappedResults();
@@ -590,6 +590,24 @@ public class EventService {
     public ResponseEntity deleteCategoryById(String categoryId) {
         categoryRepository.deleteById(categoryId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    public ResponseEntity findUserTicketHistoryByElasticEventId(String uid, String elasticEventId) {
+       LookupOperation lookupOperation = LookupOperation.newLookup()
+                .from("events")
+                .localField("elasticEventId")
+                .foreignField("elasticEventId")
+                .as("ticketDetail");
+        AggregationOperation uidMatch = Aggregation.match(Criteria.where("uid").is(uid));
+        AggregationOperation elasticMatch = Aggregation.match(Criteria.where("elasticEventId").is(elasticEventId));
+        List<AggregationOperation> aggregateList= new ArrayList<>();
+        aggregateList.add(uidMatch);
+        aggregateList.add(elasticMatch);
+        Aggregation aggregation = Aggregation.newAggregation(lookupOperation, uidMatch,elasticMatch);
+        List<BasicDBObject> results = mongoTemplate.aggregate(aggregation, "userEventTicket", BasicDBObject.class).getMappedResults();
+        System.out.println("----------------------");
+        System.out.println(results);
+        return ResponseEntity.status(HttpStatus.OK).body(results);
     }
 
 }

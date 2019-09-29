@@ -26,7 +26,7 @@ public class UserEventTicket {
     private String elasticEventId;
 
     private String ticketKey;
-
+    
     private List<String> eventTags;
 
     private boolean isParticipate = false;
