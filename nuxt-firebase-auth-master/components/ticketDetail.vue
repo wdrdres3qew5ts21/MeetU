@@ -8,20 +8,18 @@
     <br />Please show this QR code to enter the event
     and don’t share this QR to other people.
     <br />
-    
-     
-     <!-- <v-btn
+    <br />
+    <center>
+      <qrcode :value="qrCodeSrc" :options="{ width: 230 }"></qrcode>
+    </center>
+
+    <!-- <v-btn
         block
         :round="true"
         class="signIn mb-2"
         primary
         @click.native="qrCodeGenerator()"
-      >QR Code Generate</v-btn> -->
-
-       <br />
-        <center>
-         <qrcode :value="qrCodeSrc" :options="{ width: 230 }"></qrcode>
-        </center>
+    >QR Code Generate</v-btn>-->
 
     <br />
     <div class="text-center">
@@ -29,16 +27,20 @@
     </div>
     <br />
     <br />
-      <!-- <v-btn depressed flat @click="openCamera= !openCamera" > Scan QR Code </v-btn> -->
-      <no-ssr placeholder="loading..." > 
-       <qrcode-stream @decode="onDecode" :camera="camera"  ></qrcode-stream>    
-      </no-ssr> 
-      
-       <!-- <qrcode-stream :camera="camera" @init="onCameraChange"></qrcode-stream>
-     -->
+      <v-btn @click="camera =!camera">Open camera</v-btn>
+      <div v-if="camera=='on'" > 
+     <no-ssr placeholder="loading...">
+      <qrcode-stream @decode="onDecode" ></qrcode-stream>
+    </no-ssr> 
+      </div>
+   
+
+    <!-- <qrcode-stream :camera="camera" @init="onCameraChange"></qrcode-stream>
+    -->
     <div align="left">
       <h3>Event</h3>
-      <br />Event name : {{eventName}}
+      <br />
+      Event name : {{eventName}}
       <br />
       <br />
       <h3>Price</h3>
@@ -70,16 +72,17 @@ import { mapMutations, mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
-     
+       camera: 'off',
+       
       qrCodeSrc: "demo",
       isTicketSelected: true,
       numberOfTicket: [],
       eventName: "",
       eventDetail: "",
       createEventDate: "",
-     
+
       location: "",
-         marker: {
+      marker: {
         icon:
           "https://png2.kisspng.com/sh/5a457e82acb6e22a2ae8836f35448931/L0KzQYm3VMAzN6dBiZH0aYP2gLBuTfNwdaF6jNd7LXnmf7B6TfJ2e5pzfeV8LYfygrztjP94NZVuf9t9YXywhMPojwNnd6NyRd94dnWwRbLqUvQ2bGE3e9dqN0axQ4S8Vsc2OGc2TaQ7N0G7QYe3Ucg1NqFzf3==/kisspng-computer-icons-business-workflow-digital-transform-move-5ac2d5d02cea76.335675061522718160184.png",
         title: "Digital Transformation 4.0 By IMC",
@@ -89,11 +92,10 @@ export default {
           lat: 13.6518128,
           lng: 100.4937549
         }
-
-         }
+      }
     };
-    },
-     asyncData({ params, error }) {
+  },
+  asyncData({ params, error }) {
     let eventElasticId = params.eventElasticId;
     console.log(eventElasticId);
     return axios
@@ -106,11 +108,10 @@ export default {
           eventElasticId: data.eventElasticId,
           eventName: data.eventName,
           eventDetail: data.eventDetail,
-          
           createEventDate: data.createEventDate,
           location: data.location,
           organizeId: data.organize.organizeId,
-          organizeName: data.organize.organizeName,
+          organizeName: data.organize.organizeName
         };
       })
       .catch(err => {
@@ -118,7 +119,7 @@ export default {
         console.log(err);
         return error({ statusCode: 404, message: eventNotFound(err) });
       });
-       },
+  },
   mounted() {
     console.log(this.$route.params.eventElasticId);
     console.log(this.getUser.uid);
@@ -146,15 +147,13 @@ export default {
       //axios.post(`${process.env.EVENT_SERVICE}/event/ticket`, userJoinEventBody)
     },
     onDecode(decodedString) {
-       console.log("QR Code is Decoding...");
-     }
-    
-  },
-
+      console.log("QR Code is Decoding...");
+    }
+  }
 };
 // export default {
 //   components: {
-   
+
 //   },
 //   data() {
 //     return {

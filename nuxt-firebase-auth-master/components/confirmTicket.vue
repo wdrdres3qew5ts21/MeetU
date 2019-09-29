@@ -11,13 +11,16 @@
     </center>
     <br />
     <h2>Event name:</h2>
-   
+   <br/>
+
+   <nuxt-link :to="`/event/history`">
       <v-btn block color="#341646" style="color:white" >View My Ticket</v-btn>
+   </nuxt-link>
    
   </div>
 </template>
 <script>
 export default {
-  name: "confirmTicket"
+  name: "ConfirmTicket"
 };
 </script>
