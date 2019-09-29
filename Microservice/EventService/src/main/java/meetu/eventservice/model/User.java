@@ -8,12 +8,6 @@ package meetu.eventservice.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.validation.constraints.Email;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  *
@@ -22,7 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class User {
 
     private String userId;
-    
+
     private String uid;
 
     private String email;
@@ -47,8 +41,18 @@ public class User {
 
     private String country;
 
+    private List<String> interest = new ArrayList();
+
     public User() {
 
+    }
+
+    public List<String> getInterest() {
+        return interest;
+    }
+
+    public void setInterest(List<String> interest) {
+        this.interest = interest;
     }
 
     public String getUserId() {
@@ -126,7 +130,7 @@ public class User {
     public void setPersona(Persona persona) {
         this.persona = persona;
     }
-    
+
     public String getProvince() {
         return province;
     }
@@ -150,7 +154,6 @@ public class User {
     public void setUid(String uid) {
         this.uid = uid;
     }
-    
 
     public String getGender() {
         return gender;
@@ -164,7 +167,5 @@ public class User {
     public String toString() {
         return "User{" + "userId=" + userId + ", uid=" + uid + ", email=" + email + ", username=" + username + ", role=" + role + ", firstName=" + firstName + ", lastName=" + lastName + ", persona=" + persona + ", birthDay=" + birthDay + ", gender=" + gender + ", userImage=" + userImage + ", province=" + province + ", country=" + country + '}';
     }
-
-   
 
 }

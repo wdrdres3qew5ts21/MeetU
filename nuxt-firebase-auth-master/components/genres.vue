@@ -3,25 +3,25 @@
     <v-layout row wrap>
       <v-flex xs12>
         <center>
-          <h3>{{selectedItems}} : {{selectedItems.length}}/{{limitedSelectNumber}} </h3>
+          <h3>{{selectedItems}} : {{selectedItems.length}}/{{limitedSelectNumber}}</h3>
         </center>
       </v-flex>
-      <v-flex xs4 v-for="(genrePicture, i) in genrePictureList" :key="i+genrePicture">
+      <v-flex xs4 v-for="(category, i) in getCategory" :key="i+category.categoryName">
         <input
           type="checkbox"
           :id="`cb${i+1}`"
           name="eee"
           v-model="selectedItems"
-          :value="genrePicture"
-          :disabled="selectedItems.length >= limitedSelectNumber && selectedItems.includes(genrePicture) == false"
-        >
+          :value="category.categoryName"
+          :disabled="selectedItems.length >= limitedSelectNumber && selectedItems.includes(category.categoryName) == false"
+        />
         <label :for="`cb${i+1}`">
           <center>
             <v-img
-              :src="require(`@/assets/genresPhoto/${genrePicture}.png`)"
+              :src="require(`@/assets/genresPhoto/${category.categoryName}.png`)"
               width="85px"
             />
-            <h3>{{genrePicture}}</h3>
+            <h3>{{category.categoryLabel}}</h3>
           </center>
         </label>
       </v-flex>
@@ -35,7 +35,8 @@
   </div>
 </template>
 <script>
-import {mapActions} from 'vuex'
+import axios from "axios";
+import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -59,13 +60,46 @@ export default {
       limitedSelectNumber: 3
     };
   },
-  methods: {
-    ...mapActions(['setInterestIdea']),
-    saveInterestIdea: function() {
-      this.setInterestIdea(this.selectedItems)
-    }
+  computed: {
+    ...mapGetters(["getCategory", "getUser"])
   },
-  mounted() {}
+  mounted() {
+    this.initUserProfile();
+  },
+  methods: {
+    ...mapActions(["setInterestIdea"]),
+    saveInterestIdea: function() {
+      axios
+        .post(`${process.env.USER_SERVICE}/user/interest/preference`, {
+          uid: this.getUser.uid,
+          interest: this.selectedItems
+        })
+        .then(savedInterestIdea => {
+          this.$swal({
+            type: "success",
+            title: "Save Your Preference !!!",
+            text: `Your preference have been save`
+          });
+        })
+        .catch(err => {
+          this.$swal({
+            type: "error",
+            title: "Fail to Save Your Preference !!!",
+            text: `Fail to Save Your Preference  ${error.message}`
+          });
+        });
+    },
+    initUserProfile: function() {
+      axios
+        .get(`${process.env.USER_SERVICE}/user/${this.getUser.uid}`)
+        .then(userProfileForm => {
+          userProfileForm = userProfileForm.data;
+          console.log(userProfileForm);
+          this.selectedItems = userProfileForm.interest;
+        })
+        .catch(err => {});
+    }
+  }
 };
 </script>
 
