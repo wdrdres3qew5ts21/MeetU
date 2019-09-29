@@ -105,7 +105,7 @@
           placeholder="phone number"
           counter="10"
           prepend-icon="phone"
-          v-model="userForm.telephone"
+          v-model="userForm.phone"
           :disabled="isEditing"
           type="number"
         ></v-text-field>
@@ -257,7 +257,7 @@ export default {
         gender: "",
         dateArray: [],
         dateOfBirth: "",
-        telephone: "",
+        phone: "",
         email: "",
         password: "",
         confirmPassword: "",
@@ -291,9 +291,10 @@ export default {
           this.userForm.gender = userProfileForm.gender;
           this.userForm.facebook = userProfileForm.facebook;
           this.userForm.line = userProfileForm.line;
+          this.userForm.website = userProfileForm.website;
           this.userForm.twitter = userProfileForm.twitter;
           this.userForm.instagram = userProfileForm.instagram;
-          this.userForm.telephone = userProfileForm.phone || "";
+          this.userForm.phone = userProfileForm.phone || "";
         })
         .catch(err => {});
     },

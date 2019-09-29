@@ -1,10 +1,12 @@
 package com.meetu.gateway.configuration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -76,8 +78,14 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
             } catch (FirebaseAuthException ex) {
                 System.out.println("Firebase JWT Authen fail !");
                 SecurityContextHolder.clearContext();
-                rsp.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                rsp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+
+                HashMap<String, String> message = new HashMap<>();
+                message.put("response", "Unauthorize error");
+                rsp.getOutputStream().write(new ObjectMapper().writeValueAsBytes(message));
+                //rsp.sendError(HttpServletResponse.SC_UNAUTHORIZED);
                 Logger.getLogger(JwtTokenAuthenticationFilter.class.getName()).log(Level.SEVERE, null, ex);
+                return;
             }
         }
         filterChain.doFilter(req, rsp);
