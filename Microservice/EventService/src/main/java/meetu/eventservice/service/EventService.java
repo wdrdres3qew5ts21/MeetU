@@ -90,6 +90,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import meetu.eventservice.repository.CategoryRepository;
+import org.apache.commons.lang.RandomStringUtils;
 import org.elasticsearch.action.update.UpdateRequest;
 import static org.elasticsearch.common.xcontent.XContentFactory.*;
 import org.elasticsearch.index.get.GetResult;
@@ -433,15 +434,15 @@ public class EventService {
     public ResponseEntity userJoinEvent(UserEventTicket userJoinEvent) {
         HashMap<String, Object> responseBody = new HashMap<>();
         System.out.println("------ Rest Template ------");
-        String testValue = this.restTemplate.getForObject(this.USERSERVICE_URL + "/test", String.class);
-        System.out.println(testValue);
         UserEventTicket userEventTicketInDatabase = userEventTicketRespository.findById(userJoinEvent.getId()).get();
         if (userEventTicketInDatabase != null) {
+            System.out.println("!! userEventTicket !!");
+            System.out.println(userEventTicketInDatabase);
             if (userEventTicketInDatabase.isIsParticipate() == false) {
                 if (userEventTicketInDatabase.getTicketKey().equals(userJoinEvent.getTicketKey()) && userEventTicketInDatabase.getUid().equals(userJoinEvent.getUid())) {
                     userEventTicketInDatabase.setIsParticipate(true);
                     userEventTicketInDatabase.setParticipateDate(new Timestamp(System.currentTimeMillis()));
-                    restTemplate.postForEntity(USERSERVICE_URL + "/user/interest", new UserJoinEvent(true), UserViewEvent.class);
+                    restTemplate.postForEntity(USERSERVICE_URL + "/user/interest", userEventTicketInDatabase, UserViewEvent.class);
                     return ResponseEntity.status(HttpStatus.CREATED).body(userEventTicketRespository.save(userEventTicketInDatabase));
                 }
             } else {
@@ -458,16 +459,20 @@ public class EventService {
         Event eventInDatabase = eventRepository.findByElasticEventId(userReserveTicket.getElasticEventId());
         if (eventInDatabase != null) {
             if (eventInDatabase.getNumberOfTicket() > 0) {
-                byte[] array = new byte[15]; // length is bounded by 7
+                byte[] array = new byte[8]; // length is bounded by 7
                 new Random().nextBytes(array);
                 String generateTicketKey = new String(array, Charset.forName("UTF-8"));
-                userReserveTicket.setTicketKey(UUID.randomUUID().toString());
+//                userReserveTicket.setTicketKey(UUID.randomUUID().toString());
+                userReserveTicket.setEventTags(eventInDatabase.getEventTags());
+                userReserveTicket.setTicketKey(RandomStringUtils.randomAlphanumeric(8));
                 System.out.println(userReserveTicket);
                 int numberOfTicket = eventInDatabase.getNumberOfTicket();
                 numberOfTicket--;
                 eventInDatabase.setNumberOfTicket(numberOfTicket);
                 eventRepository.save(eventInDatabase);
-                return ResponseEntity.status(HttpStatus.CREATED).body(userEventTicketRespository.save(userReserveTicket));
+                System.out.println("Saved User Event Tikcet");
+                UserEventTicket savedUserEventTicket = userEventTicketRespository.save(userReserveTicket);
+                return ResponseEntity.status(HttpStatus.CREATED).body(savedUserEventTicket);
             } else {
                 responseBody.put("response", "Ticket had been sold out !");
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responseBody);

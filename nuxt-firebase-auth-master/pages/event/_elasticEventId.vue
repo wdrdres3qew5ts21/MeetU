@@ -68,7 +68,9 @@
       <b>{{eventName}}</b>
     </p>
     <v-layout row wrap>
-      <v-flex xs6>Free</v-flex>
+      <v-flex xs7>Free</v-flex>
+      <v-spacer></v-spacer>
+      <v-flex xs5>{{numberOfTicket}}  Ticket Left(s)</v-flex>
       <!-- <v-flex xs6>
         <v-select :items="numberOfTicket" label="numberOfTicket"></v-select>
       </v-flex>-->
@@ -118,8 +120,8 @@ export default {
     return {
       qrCodeSrc: "demo",
       isTicketSelected: true,
-      numberOfTicket: [],
       eventName: "",
+      numberOfTicket: 0,
       eventDetail: "",
       createEventDate: "",
       location: "",
@@ -150,16 +152,17 @@ export default {
     };
   },
   asyncData({ params, error }) {
-    let eventElasticId = params.eventElasticId;
-    console.log(eventElasticId);
+    let elasticEventId = params.elasticEventId;
+    console.log(elasticEventId);
     return axios
-      .get(`${process.env.EVENT_SERVICE}/event/${eventElasticId}`)
+      .get(`${process.env.EVENT_SERVICE}/event/${elasticEventId}`)
       .then(response => {
         console.log("------------ Async Data  -----------");
         let data = response.data;
         console.log(data);
         return {
-          eventElasticId: data.eventElasticId,
+          elasticEventId: data.elasticEventId,
+          numberOfTicket: data.numberOfTicket,
           eventName: data.eventName,
           eventDetail: data.eventDetail,
           eventPictureCover: data.eventPictureCover,
@@ -185,7 +188,7 @@ export default {
       });
   },
   mounted() {
-    console.log(this.$route.params.eventElasticId);
+    console.log(this.$route.params.elasticEventId);
     console.log(this.getUser.uid);
     this.userViewEvent();
   },
@@ -197,18 +200,28 @@ export default {
     userViewEvent: function() {
       axios.post(`${process.env.EVENT_SERVICE}/event/view`, {
         uid: this.getUser.uid,
-        elasticEventId: this.$route.params.eventElasticId
+        elasticEventId: this.$route.params.elasticEventId
       });
     },
     userReserveTicket: function() {
       console.log("User Reserve Ticket Event!");
-
-      let userJoinEventBody = {
+      let reserveTicket = {
         uid: this.getUser.uid,
-        eventElasticId: this.$route.params.eventElasticId
+        elasticEventId: this.$route.params.elasticEventId
       };
-      this.qrCodeSrc = JSON.stringify(userJoinEventBody);
-      //axios.post(`${process.env.EVENT_SERVICE}/event/ticket`, userJoinEventBody)
+      this.qrCodeSrc = JSON.stringify(reserveTicket);
+      console.log(reserveTicket)
+      axios.post(`${process.env.EVENT_SERVICE}/event/reserve`, reserveTicket)
+      .then(reserveTicket=>{
+        console.log(reserveTicket)
+      })
+      .catch(err =>{
+        this.$swal({
+          type: "error",
+          title: "Ticket Sold Out !!!",
+          text: `Ticket had been sold or Error`
+        });
+      })
     },
     findEventInArea: async function() {
       let geolocation = {

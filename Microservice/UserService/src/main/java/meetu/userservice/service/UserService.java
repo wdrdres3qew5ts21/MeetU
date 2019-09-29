@@ -19,6 +19,7 @@ import meetu.userservice.model.InterestGenreBehavior;
 import meetu.userservice.model.Persona;
 import meetu.userservice.repository.UserRepository;
 import meetu.userservice.model.User;
+import meetu.userservice.model.UserJoinEvent;
 import meetu.userservice.model.UserNotification;
 import meetu.userservice.model.UserViewEvent;
 import meetu.userservice.repository.UserNotificationRepository;
@@ -156,8 +157,8 @@ public class UserService {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
     }
 
-    public ResponseEntity updateUserInterestPersonaFromJoinEvent(UserViewEvent userViewEvent) {
-        User userInDatabase = userRepository.findByUid(userViewEvent.getUid());
+    public ResponseEntity updateUserInterestPersonaFromJoinEvent(UserJoinEvent userJoinEvent) {
+        User userInDatabase = userRepository.findByUid(userJoinEvent.getUid());
         if (userInDatabase != null) {
             System.out.println("found user !!!");
             System.out.println(userInDatabase.getUid());
@@ -168,10 +169,13 @@ public class UserService {
             System.out.println(interestBehaviorList.toString());
             interestBehaviorList.forEach(interestBehavior -> {
                 String genre = interestBehavior.getGenre();
-                if (userViewEvent.getEventTags().contains(genre) == true) {
+                if (userJoinEvent.getEventTags().contains(genre) == true) {
                     int totalView = interestBehavior.getTotalView();
+                    int totalParticipate = interestBehavior.getTotalParticipate();
                     totalView++;
+                    totalParticipate++;
                     interestBehavior.setTotalView(totalView);
+                    interestBehavior.setTotalParticipate(totalParticipate);
                 }
             });
             System.out.println("After Update Interest Behavior");

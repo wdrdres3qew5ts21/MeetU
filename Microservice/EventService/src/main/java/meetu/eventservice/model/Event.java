@@ -6,6 +6,7 @@
 package meetu.eventservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.springframework.data.annotation.Id;
@@ -73,6 +74,10 @@ public class Event {
     }
 
     public List<String> getEventTags() {
+        if(eventTags == null){
+            eventTags = new ArrayList<String>();
+            return eventTags;
+        }
         return eventTags;
     }
 

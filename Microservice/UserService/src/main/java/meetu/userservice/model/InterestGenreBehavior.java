@@ -50,7 +50,7 @@ public class InterestGenreBehavior implements Comparable<InterestGenreBehavior> 
         return totalParticipate;
     }
 
-    public void setTotalParticipate(short totalParticipate) {
+    public void setTotalParticipate(int totalParticipate) {
         this.totalParticipate = totalParticipate;
     }
 

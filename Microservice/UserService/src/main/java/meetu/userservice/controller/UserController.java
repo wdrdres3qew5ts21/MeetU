@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 import meetu.userservice.service.UserService;
 import meetu.userservice.model.Badge;
 import meetu.userservice.model.User;
+import meetu.userservice.model.UserJoinEvent;
 import meetu.userservice.model.UserNotification;
 import meetu.userservice.model.UserViewEvent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,8 +112,8 @@ public class UserController {
     }
     
     @PostMapping("/user/interest")
-    public ResponseEntity updateUserInterestPersonaFromJoinEvent(@RequestBody UserViewEvent userViewEvent) {
-        return userService.updateUserInterestPersonaFromJoinEvent(userViewEvent);
+    public ResponseEntity updateUserInterestPersonaFromJoinEvent(@RequestBody UserJoinEvent userJoinEvent) {
+        return userService.updateUserInterestPersonaFromJoinEvent(userJoinEvent);
     }
 
     @PatchMapping

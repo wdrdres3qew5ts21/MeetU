@@ -5,7 +5,9 @@
  */
 package meetu.eventservice.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -15,19 +17,32 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Document(collection = "userEventTicket")
 public class UserEventTicket {
-    
+
     @Id
     private String id;
-    
+
     private String uid;
 
     private String elasticEventId;
-    
+
     private String ticketKey;
-    
+
+    private List<String> eventTags;
+
     private boolean isParticipate = false;
 
     private Date participateDate;
+
+    public List<String> getEventTags() {
+        if (eventTags == null) {
+            eventTags = new ArrayList<>();
+        }
+        return eventTags;
+    }
+
+    public void setEventTags(List<String> eventTags) {
+        this.eventTags = eventTags;
+    }
 
     public String getId() {
         return id;
@@ -60,7 +75,7 @@ public class UserEventTicket {
     public void setTicketKey(String ticketKey) {
         this.ticketKey = ticketKey;
     }
-    
+
     public boolean isIsParticipate() {
         return isParticipate;
     }
@@ -81,7 +96,5 @@ public class UserEventTicket {
     public String toString() {
         return "UserEventTicket{" + "id=" + id + ", uid=" + uid + ", eventElasticId=" + elasticEventId + ", ticketKey=" + ticketKey + ", isParticipate=" + isParticipate + ", participateDate=" + participateDate + '}';
     }
-
-   
 
 }

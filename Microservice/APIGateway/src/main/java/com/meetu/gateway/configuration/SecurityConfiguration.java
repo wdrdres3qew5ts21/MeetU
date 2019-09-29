@@ -63,8 +63,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .antMatchers(HttpMethod.PUT,"/userservice/user/{uid}").authenticated()
                     .antMatchers(HttpMethod.POST,"/eventservice/event/join").authenticated()
-                    .antMatchers(HttpMethod.POST,"/eventservice/event/reserve").authenticated()
-                    .antMatchers("/backend/guest").authenticated();
+                    .antMatchers(HttpMethod.POST,"/eventservice/event/reserve").authenticated();
     }
 
 }
