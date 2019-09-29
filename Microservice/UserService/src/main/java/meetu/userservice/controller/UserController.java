@@ -115,6 +115,11 @@ public class UserController {
     public ResponseEntity updateUserInterestPersonaFromJoinEvent(@RequestBody UserJoinEvent userJoinEvent) {
         return userService.updateUserInterestPersonaFromJoinEvent(userJoinEvent);
     }
+    
+    @PostMapping("/user/interest/preference")
+    public ResponseEntity updateUserPreference(@RequestBody User updatedUserInterest) {
+        return userService.updateUserPreference(updatedUserInterest);
+    }
 
     @PatchMapping
     public ResponseEntity<User> giveExpFromEventToBadge(@RequestBody HashMap<String, Object> expForBadge) {

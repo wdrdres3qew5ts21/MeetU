@@ -228,4 +228,19 @@ public class UserService {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
     }
 
+    public ResponseEntity updateUserPreference(User updatedUserInterest) {
+        System.out.println("Fuck update");
+        User userInDatabase = userRepository.findByUid(updatedUserInterest.getUid());
+        if (userInDatabase != null) {
+            userInDatabase.setInterest(updatedUserInterest.getInterest());
+            User savedUserIntest = userRepository.save(userInDatabase);
+            if (savedUserIntest != null) {
+                return ResponseEntity.status(HttpStatus.CREATED).body(savedUserIntest);
+            }
+        }
+        HashMap<String, String> message = new HashMap<>();
+        message.put("response", "Failed to update user interest !");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
+    }
+
 }

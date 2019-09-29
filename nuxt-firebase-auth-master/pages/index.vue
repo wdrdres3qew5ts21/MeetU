@@ -6,12 +6,12 @@
         <v-carousel-item sm6 xs2 v-for="(item,i) in carouselsPhoto" :src="item.src" :key="i"></v-carousel-item>
       </v-carousel>
       <br />
-      <br />
-      <nuxt-link to="/selectGenres">
-        <h3>Setting Recommedation</h3>
-      </nuxt-link>
+
       <!-- Event List -->
       <div v-if="getUser.uid!=null">
+        <nuxt-link to="/selectGenres">
+          <h3>Setting Recommedation</h3>
+        </nuxt-link>
         <h1>Recomended Event</h1>
         <client-only>
           <carousel :perPage="1" :paginationEnabled="false">
@@ -19,24 +19,24 @@
               <event-card :event="event"></event-card>
             </slide>
             <slide>
-           <v-flex xs12 sm6 offset-sm 3   >
-             <nuxt-link  :event="event" :to="`/event?`">
-            <v-card width="350px" height="320px">
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <center>
-                <v-icon large>add</v-icon>
-              </center>
-              <center>
-                <h2>View More</h2>
-              </center>
-            </v-card>
-             </nuxt-link>
-          </v-flex>
-        </slide>
+              <v-flex 3 xs12 sm6 offset-sm>
+                <nuxt-link :event="event" :to="`/event?`">
+                  <v-card width="350px" height="320px">
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <center>
+                      <v-icon large>add</v-icon>
+                    </center>
+                    <center>
+                      <h2>View More</h2>
+                    </center>
+                  </v-card>
+                </nuxt-link>
+              </v-flex>
+            </slide>
           </carousel>
         </client-only>
         <!-- <event-list :eventList="recentlyEventList" link="/event"></event-list> -->
@@ -49,22 +49,22 @@
           <event-card :event="event"></event-card>
         </slide>
         <slide>
-          <v-flex xs12 sm6 offset-sm 3   >
-             <nuxt-link :event="event" :to="`/event?`">
-            <v-card width="350px" height="320px">
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <center>
-                <v-icon large>add</v-icon>
-              </center>
-              <center>
-                <h2>View More</h2>
-              </center>
-            </v-card>
-             </nuxt-link>
+          <v-flex 3 xs12 sm6 offset-sm>
+            <nuxt-link :event="event" :to="`/event?`">
+              <v-card width="350px" height="320px">
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <center>
+                  <v-icon large>add</v-icon>
+                </center>
+                <center>
+                  <h2>View More</h2>
+                </center>
+              </v-card>
+            </nuxt-link>
           </v-flex>
         </slide>
       </carousel>
@@ -74,27 +74,26 @@
       <h1>New Event</h1>
       <carousel :perPage="1" :paginationEnabled="false">
         <slide v-for="(event, index) in recentlyEventList" :key="index">
-          <event-card :event="event"></event-card>        
+          <event-card :event="event"></event-card>
         </slide>
         <slide>
-          <v-flex xs12 sm6 offset-sm 3   >
-             <nuxt-link  :event="event" :to="`/event?`">
-            <v-card width="350px" height="320px">
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <center>
-                <v-icon large>add</v-icon>
-              </center>
-              <center>
-                <h2>View More</h2>
-              </center>
-            </v-card>
-             </nuxt-link>
+          <v-flex 3 xs12 sm6 offset-sm>
+            <nuxt-link :event="event" :to="`/event?`">
+              <v-card width="350px" height="320px">
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <center>
+                  <v-icon large>add</v-icon>
+                </center>
+                <center>
+                  <h2>View More</h2>
+                </center>
+              </v-card>
+            </nuxt-link>
           </v-flex>
-
         </slide>
       </carousel>
       <!-- <event-list :eventList="recentlyEventList" link="/event"></event-list> -->

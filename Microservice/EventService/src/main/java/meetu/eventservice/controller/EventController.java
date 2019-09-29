@@ -142,6 +142,12 @@ public class EventController {
     public ResponseEntity getAllEventCatagory() {
         return eventService.getAllEventCategory();
     }
+    
+    @DeleteMapping("/category/{categoryId}")
+    public ResponseEntity deleteCategoryById(@PathVariable String categoryId) {
+        System.out.println("---- User View Event -----");
+        return eventService.deleteCategoryById(categoryId);
+    }
 
     @PostMapping("/category")
     public ResponseEntity createEventCatagory(@RequestBody Category category) {
