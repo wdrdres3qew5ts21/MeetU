@@ -1,5 +1,6 @@
 <template>
-  <div>
+<div>
+  <div v-if = "isViewTicketDetail ">
     <v-carousel hide-delimiters hide-controls xs6 sm12 height="200px;">
       <v-carousel-item v-for="(pic,i) in eventPictureLists" :key="i" :src="pic"></v-carousel-item>
     </v-carousel>
@@ -75,16 +76,20 @@
         <v-select :items="numberOfTicket" label="numberOfTicket"></v-select>
       </v-flex>-->
     </v-layout>
+   
+       <!-- <nuxt-link :to="`/ticket?`" > -->
+       <!-- @click="userReserveTicket()" -->
     <v-btn
-      @click="userReserveTicket()"
+      @click="isViewTicketDetail = false "
       block
       :disabled="!isTicketSelected"
       color="primary"
       id="ticketSection"
     >GET TICKET</v-btn>
-    <center>
+       <!-- </nuxt-link> -->
+    <!-- <center>
       <qrcode :value="qrCodeSrc" :options="{ width: 200 }"></qrcode>
-    </center>
+    </center> -->
 
     <h3>Contract</h3>
     <p>Contract the oraganizer for more information</p>
@@ -109,17 +114,28 @@
       </v-card-actions>
     </v-card>
   </div>
+
+  <div v-else> 
+<confirmTicket> </confirmTicket>
+    </div>
+
+</div>
 </template> 
  
 <script>
 import { eventNotFound } from "~/utils/errorMessage";
+import confirmTicket from "@/components/confirmTicket";
 import axios from "axios";
 import { mapMutations, mapActions, mapGetters } from "vuex";
 export default {
+  components: {
+      confirmTicket
+  },
   data() {
     return {
       qrCodeSrc: "demo",
       isTicketSelected: true,
+      isViewTicketDetail: true,
       eventName: "",
       numberOfTicket: 0,
       eventDetail: "",
@@ -214,6 +230,7 @@ export default {
       axios.post(`${process.env.EVENT_SERVICE}/event/reserve`, reserveTicket)
       .then(reserveTicket=>{
         console.log(reserveTicket)
+        this.isViewTicketDetail = false
       })
       .catch(err =>{
         this.$swal({
