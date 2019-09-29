@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import meetu.userservice.model.Admin;
 import meetu.userservice.model.Organize;
+import meetu.userservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,12 +26,21 @@ public class OrganizeService {
     @Autowired
     private OrganizeRepository organizeRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     public Organize createOrganize(String uid, Organize organize) {
-        Admin organizeOwner = new Admin();
-        organizeOwner.setUid(uid);
-        organize.setOrganizeOwner(organizeOwner);
-        organize.getAdminList();
-        return organizeRepository.save(organize);
+//        Organize organizeInDatabase = organizeRepository.findById(organize.getOrganizeId()).get();
+//        if (organizeInDatabase == null) {
+//            System.out.println("upgrade ");
+            Admin organizeOwner = new Admin();
+            organizeOwner.setUid(uid);
+            organize.setOrganizeOwner(organizeOwner);
+            organize.getAdminList();
+            return organizeRepository.save(organize);
+//        }
+//        organizeInDatabase.setOrganizeName(organize.getOrganizeName());
+//        return organizeRepository.save(organizeInDatabase);
     }
 
     public Organize addAdminOrganize(Admin[] adminList, Organize organize) {
@@ -47,7 +57,7 @@ public class OrganizeService {
 
     public ResponseEntity findOrganizeById(String organizeId) {
         return ResponseEntity.status(HttpStatus.OK).body(organizeRepository.findById(organizeId));
-        
+
     }
 
 }

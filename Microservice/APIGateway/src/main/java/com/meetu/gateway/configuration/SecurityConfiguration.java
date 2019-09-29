@@ -51,19 +51,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .formLogin().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                    .anonymous()
+                .anonymous()
                 .and()
-                    .exceptionHandling().authenticationEntryPoint(
-                            (req, rsp, e) -> rsp.sendError(HttpServletResponse.SC_UNAUTHORIZED))
+                .exceptionHandling().authenticationEntryPoint(
+                        (req, rsp, e) -> rsp.sendError(HttpServletResponse.SC_UNAUTHORIZED))
                 .and()
-                    .addFilterAfter(new JwtTokenAuthenticationFilter(config),
-                            UsernamePasswordAuthenticationFilter.class).exceptionHandling().authenticationEntryPoint(
-                            (req, rsp, e) -> rsp.sendError(HttpServletResponse.SC_UNAUTHORIZED))
+                .addFilterAfter(new JwtTokenAuthenticationFilter(config),
+                        UsernamePasswordAuthenticationFilter.class).exceptionHandling().authenticationEntryPoint(
+                        (req, rsp, e) -> rsp.sendError(HttpServletResponse.SC_UNAUTHORIZED))
                 .and()
                 .authorizeRequests()
-                    .antMatchers(HttpMethod.PUT,"/userservice/user/{uid}").authenticated()
-                    .antMatchers(HttpMethod.POST,"/eventservice/event/join").authenticated()
-                    .antMatchers(HttpMethod.POST,"/eventservice/event/reserve").authenticated();
+                .antMatchers(HttpMethod.PUT, "/userservice/user/{uid}").authenticated()
+                .antMatchers(HttpMethod.POST, "/eventservice/event/join").authenticated()
+                .antMatchers(HttpMethod.POST, "/eventservice/event/reserve").authenticated();
+
     }
+    
 
 }

@@ -89,5 +89,39 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
             }
         }
         filterChain.doFilter(req, rsp);
+//        
+//        String token = req.getHeader(config.getHeader());
+//        System.out.println("fuq filter");
+//        System.out.println(token);
+//        if (token == null || token.isBlank()) {
+//            System.out.println("null header fuq you");
+//            filterChain.doFilter(req, rsp);
+//            return;
+//        }
+//
+//        if ((token != null && token.startsWith(config.getPrefix() + " "))) {
+//            try {
+//                token = token.replace(config.getPrefix() + " ", "");
+//                System.out.println(token);
+//                FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
+//                if (decodedToken != null) {
+//                    System.out.println("Decodeed success !!!");
+//                    String uid = decodedToken.getUid();
+//                    String email = decodedToken.getEmail();
+//                    List<String> authorities = new ArrayList<>();
+//                    authorities.add("user");
+//                    authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+//                    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(email, "jwt", authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
+//                    SecurityContextHolder.getContext().setAuthentication(auth);
+//                    System.out.println("Authenicated : " + SecurityContextHolder.getContext().getAuthentication().isAuthenticated());
+//                    System.out.println(SecurityContextHolder.getContext().getAuthentication());
+//                }
+//            } catch (FirebaseAuthException ex) {
+//                System.out.println("Firebase JWT Authen fail !");
+//                SecurityContextHolder.clearContext();
+//                Logger.getLogger(JwtTokenAuthenticationFilter.class.getName()).log(Level.SEVERE, null, ex);
+//                return;
+//            }
+//        }
     }
 }

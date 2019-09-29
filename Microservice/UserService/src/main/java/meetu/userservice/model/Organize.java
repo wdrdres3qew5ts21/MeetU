@@ -33,7 +33,17 @@ public class Organize {
     private Admin organizeOwner;
 
     private List<Admin> adminList;
+    
+    private String phone;
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+    
     public String getOrganizeId() {
         return organizeId;
     }

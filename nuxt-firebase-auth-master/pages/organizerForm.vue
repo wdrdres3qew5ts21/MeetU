@@ -6,21 +6,20 @@
       <br />
       <br />
       <p>You are signed in as :</p>
-      {{names}}
+      {{getUser.displayName}}
       <br />
       <br />
 
       <center>
-        <nuxt-link :to="`/?`" style="text-decoration-line:none;">
-          <v-btn
-            block
-            class="switchAccount #341646--text"
-            color="#fff"
-            depressed
-            large
-            height="40"
-          >Switch Account</v-btn>
-        </nuxt-link>
+        <v-btn
+          @click="logout()"
+          block
+          class="switchAccount #341646--text"
+          color="#fff"
+          depressed
+          large
+          height="40"
+        >Switch Account</v-btn>
       </center>
       <br />
 
@@ -72,6 +71,7 @@
 
 <script>
 import organizerAccountCreate from "~/components/organizerAccountCreate";
+import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
 import { error } from "util";
 export default {
@@ -106,10 +106,19 @@ export default {
       ]
     };
   },
+  computed: {
+    ...mapGetters(["getUser"])
+  },
   methods: {
-    upgradeOrganize: function() {
-      axios
-        .get(`${process.env.USER_SERVICE}/organize/${this.getUser.uid}`)
+    ...mapActions(["signOut"]),
+    logout: function() {
+      this.$router.push("/userProfile");
+    },
+    upgradeOrganize: async function() {
+      await axios.post(`${process.env.USER_SERVICE}/organize/${this.getUser.uid}`, {
+          organizeName: this.organizeName,
+          phone: this.phone
+        })
         .then(upgradeResponse => {
           this.isUpgradeSuccess = true;
           this.$swal({
@@ -129,8 +138,6 @@ export default {
   }
 };
 </script>
-
-
 
 
 <style lang="css">
