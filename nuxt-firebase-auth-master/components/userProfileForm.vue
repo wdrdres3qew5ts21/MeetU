@@ -25,27 +25,23 @@
     <br />
 
     <v-layout column>
-      <v-form ref="form" v-model="valid" :lazy-validation="false">
+      <v-form ref="form" v-model="valid" >
         <h2>Information</h2>
 
         <br />
         <v-text-field
           :disabled="isEditing"
-          v-model="userForm.firstname"
+          v-model="userForm.firstName"
           :rules="nameRules"
-          :counter="10"
           label="First name"
-          required
         ></v-text-field>
         <br />
 
         <v-text-field
-          v-model="userForm.lastname"
+          v-model="userForm.lastName"
           :rules="nameRules"
           :disabled="isEditing"
-          :counter="10"
           label="Last name"
-          required
         ></v-text-field>
 
         <br />
@@ -101,7 +97,6 @@
           :rules="emailRules"
           label="E-mail"
           :disabled="isEditing"
-          required
         ></v-text-field>
         <br />
         <v-text-field
@@ -119,7 +114,7 @@
         <h2>Credentials</h2>
 
         <v-text-field
-          v-model="password"
+          v-model="userForm.password"
           type="password"
           :rules="passwordRule"
           label="* Password"
@@ -128,7 +123,7 @@
         ></v-text-field>
 
         <v-text-field
-          v-model="confirmPassword"
+          v-model="userForm.confirmPassword"
           type="password"
           :rules="passwordRules"
           label="* Password Confirmation"
@@ -143,7 +138,7 @@
 
         <v-text-field
           class="textfield"
-          v-model="website"
+          v-model="userForm.website"
           label="Website"
           placeholder="http://"
           :disabled="isEditing"
@@ -151,7 +146,7 @@
 
         <v-text-field
           class="textfield"
-          v-model="line"
+          v-model="userForm.line"
           label="Line"
           placeholder="@"
           :disabled="isEditing"
@@ -159,7 +154,7 @@
 
         <v-text-field
           class="textfield"
-          v-model="facebook"
+          v-model="userForm.facebook"
           label="Facebook"
           placeholder="http://"
           :disabled="isEditing"
@@ -167,7 +162,7 @@
 
         <v-text-field
           class="textfield"
-          v-model="twitter"
+          v-model="userForm.twitter"
           label="Twitter"
           placeholder="@"
           :disabled="isEditing"
@@ -175,7 +170,7 @@
 
         <v-text-field
           class="textfield"
-          v-model="instagram"
+          v-model="userForm.instagram"
           label="Instagram"
           placeholder="@"
           :disabled="isEditing"
@@ -192,7 +187,7 @@
       <v-btn
         class="saveButton white--text"
         color="#341646"
-        :disabled="!valid"
+        :disabled="isEditing"
         @click="updateProfile()"
         depressed
         large
@@ -218,13 +213,7 @@ export default {
     return {
       date: null,
       menu: false,
-      password: "",
-      confirmPassword: "",
-      website: "",
-      line: "",
-      facebook: "",
-      twitter: "",
-      instagram: "",
+
       genderList: ["Male", "Female", "Unspecified"],
 
       numberRules: [
@@ -271,7 +260,13 @@ export default {
         telephone: "",
         email: "",
         password: "",
-        confirmPassword: ""
+        confirmPassword: "",
+        password: "",
+        website: "",
+        line: "",
+        facebook: "",
+        twitter: "",
+        instagram: ""
       }
     };
   },
@@ -286,16 +281,18 @@ export default {
     initUserProfile: function() {
       axios
         .get(`${process.env.USER_SERVICE}/user/${this.getUser.uid}`)
-        .then(userProfile => {
+        .then(userProfileForm => {
           console.log("haate my self");
-          let userProfileForm = userProfile.data;
-          console.log(userProfile);
+          userProfileForm = userProfileForm.data;
+          console.log(userProfileForm);
+          this.userForm.firstName = userProfileForm.firstName;
+          this.userForm.lastName = userProfileForm.lastName;
           this.userForm.email = userProfileForm.email;
           this.userForm.gender = userProfileForm.gender;
-          this.facebook = userProfileForm.facebook;
-          this.line = userProfileForm.line;
-          this.twitter = userProfileForm.twitter;
-          this.instagram = userProfileForm.instagram;
+          this.userForm.facebook = userProfileForm.facebook;
+          this.userForm.line = userProfileForm.line;
+          this.userForm.twitter = userProfileForm.twitter;
+          this.userForm.instagram = userProfileForm.instagram;
           this.userForm.telephone = userProfileForm.phone || "";
         })
         .catch(err => {});
@@ -349,17 +346,32 @@ export default {
       this.userForm.gender = this.genderList.values;
     },
     updateProfile: function() {
-
-      if (this.isEditing === true) {
-        console.log({
-          email: this.userForm.email,
-          password: this.userForm.password,
-          birthDate: this.userForm.dateOfBirth,
-          firstName: this.userForm.firstname,
-          lastName: this.userForm.lastname,
-          gender: this.userForm.gender
+      console.log(this.userForm);
+      axios.put(`${process.env.USER_SERVICE}/user/${this.getUser.uid}`,this.userForm)
+      .then(updateResponse=>{
+        this.$swal({
+          type: "success",
+          title: "Update Profile success !",
+          text: `Update Profile success`
         });
-      }
+      })
+      .catch(err=>{
+        console.log(err)
+        this.$swal({
+          type: "error",
+          title: "Update Profile fail !",
+          text: err
+        });
+      })
+
+      // console.log({
+      //   email: this.userForm.email,
+      //   password: this.userForm.password,
+      //   birthDate: this.userForm.dateOfBirth,
+      //   firstName: this.userForm.firstname,
+      //   lastName: this.userForm.lastname,
+      //   gender: this.userForm.gender
+      // });
     }
   },
   watch: {

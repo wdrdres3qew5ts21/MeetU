@@ -57,8 +57,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                             (req, rsp, e) -> rsp.sendError(HttpServletResponse.SC_UNAUTHORIZED))
                 .and()
                     .addFilterAfter(new JwtTokenAuthenticationFilter(config),
-                            UsernamePasswordAuthenticationFilter.class)
+                            UsernamePasswordAuthenticationFilter.class).exceptionHandling().authenticationEntryPoint(
+                            (req, rsp, e) -> rsp.sendError(HttpServletResponse.SC_UNAUTHORIZED))
+                .and()
                 .authorizeRequests()
+                    .antMatchers(HttpMethod.PUT,"/userservice/user/{uid}").authenticated()
                     .antMatchers(HttpMethod.POST,"/eventservice/event/join").authenticated()
                     .antMatchers(HttpMethod.POST,"/eventservice/event/reserve").authenticated()
                     .antMatchers("/backend/guest").authenticated();

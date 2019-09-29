@@ -215,7 +215,7 @@ public class UserService {
             userInDatabase.setLine(editedUserProfile.getLine());
             userInDatabase.setFacebook(editedUserProfile.getFacebook());
             userInDatabase.setTwitter(editedUserProfile.getTwitter());
-            userInDatabase.setInstragram(editedUserProfile.getInstragram());
+            userInDatabase.setInstagram(editedUserProfile.getInstagram());
             User savedUserProfile = userRepository.save(userInDatabase);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedUserProfile);
         }

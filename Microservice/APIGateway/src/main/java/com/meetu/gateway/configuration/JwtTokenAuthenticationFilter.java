@@ -45,16 +45,18 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
                 token = token.replace(config.getPrefix() + " ", "");
                 System.out.println(token);
                 FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
-                String uid = decodedToken.getUid();
-                String email = decodedToken.getEmail();
-                List<String> authorities = new ArrayList<>();
-                authorities.add("user");
-                authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
-                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(email, "jwt", authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
-                SecurityContextHolder.getContext().setAuthentication(auth);
-                System.out.println("Authenicated : " + SecurityContextHolder.getContext().getAuthentication().isAuthenticated());
-                System.out.println(SecurityContextHolder.getContext().getAuthentication());
-
+                if (decodedToken != null) {
+                    System.out.println("Decodeed success !!!");
+                    String uid = decodedToken.getUid();
+                    String email = decodedToken.getEmail();
+                    List<String> authorities = new ArrayList<>();
+                    authorities.add("user");
+                    authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+                    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(email, "jwt", authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
+                    SecurityContextHolder.getContext().setAuthentication(auth);
+                    System.out.println("Authenicated : " + SecurityContextHolder.getContext().getAuthentication().isAuthenticated());
+                    System.out.println(SecurityContextHolder.getContext().getAuthentication());
+                }
 //            try {
 //                Claims claims = Jwts.parser()
 //                        .setSigningKey(config.getSecret().getBytes())
@@ -72,7 +74,9 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
 //                SecurityContextHolder.clearContext();
 //            }
             } catch (FirebaseAuthException ex) {
+                System.out.println("Firebase JWT Authen fail !");
                 SecurityContextHolder.clearContext();
+                rsp.sendError(HttpServletResponse.SC_UNAUTHORIZED);
                 Logger.getLogger(JwtTokenAuthenticationFilter.class.getName()).log(Level.SEVERE, null, ex);
             }
         }

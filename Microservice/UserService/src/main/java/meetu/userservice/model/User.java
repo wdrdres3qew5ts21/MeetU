@@ -72,7 +72,7 @@ public class User {
     
     private String facebook;
     
-    private String instragram;
+    private String instagram;
 
     public User() {
 
@@ -119,12 +119,12 @@ public class User {
         this.facebook = facebook;
     }
 
-    public String getInstragram() {
-        return instragram;
+    public String getInstagram() {
+        return instagram;
     }
 
-    public void setInstragram(String instragram) {
-        this.instragram = instragram;
+    public void setInstagram(String instagram) {
+        this.instagram = instagram;
     }
     
     public void setPersona(Persona persona) {
@@ -307,7 +307,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" + "userId=" + userId + ", username=" + username + ", password=" + password + ", role=" + role + ", persona=" + persona + ", uid=" + uid + ", email=" + email + ", emailVerified=" + emailVerified + ", displayName=" + displayName + ", firstName=" + firstName + ", lastName=" + lastName + ", birthDate=" + birthDate + ", gender=" + gender + ", photoURL=" + photoURL + ", interest=" + interest + ", province=" + province + ", country=" + country + ", phone=" + phone + ", badgeList=" + badgeList + ", notificationToken=" + notificationToken + ", website=" + website + ", line=" + line + ", twitter=" + twitter + ", facebook=" + facebook + ", instragram=" + instragram + '}';
+        return "User{" + "userId=" + userId + ", username=" + username + ", password=" + password + ", role=" + role + ", persona=" + persona + ", uid=" + uid + ", email=" + email + ", emailVerified=" + emailVerified + ", displayName=" + displayName + ", firstName=" + firstName + ", lastName=" + lastName + ", birthDate=" + birthDate + ", gender=" + gender + ", photoURL=" + photoURL + ", interest=" + interest + ", province=" + province + ", country=" + country + ", phone=" + phone + ", badgeList=" + badgeList + ", notificationToken=" + notificationToken + ", website=" + website + ", line=" + line + ", twitter=" + twitter + ", facebook=" + facebook + ", instragram=" + instagram + '}';
     }
     
     
