@@ -79,6 +79,7 @@ export default {
   },
   data() {
     return {
+      isCameraOpen: false,
       ticketEvent: {
         ticketDetail: [{ eventName: "E-Ticket" }]
       },
@@ -103,10 +104,14 @@ export default {
         .then(ticketResponse => {
           this.ticketEvent = ticketResponse.data[0];
           let ticketEvent = ticketResponse.data[0];
-          console.log(ticketResponse.data);
+          let test = ticketEvent.ticketId
+
+          console.log(ticketEvent);
           this.qrCodeSrc = JSON.stringify({
+            ticketId: ticketEvent.ticketId,
             elasticEventId: ticketEvent.elasticEventId,
-            ticketKey: ticketEvent.ticketKey
+            ticketKey: ticketEvent.ticketKey,
+            uid: this.getUser.uid
           });
         });
     },

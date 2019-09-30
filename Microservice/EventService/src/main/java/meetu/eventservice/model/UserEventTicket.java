@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -20,6 +21,9 @@ public class UserEventTicket {
 
     @Id
     private String id;
+    
+    @Indexed
+    private String ticketId;
 
     private String uid;
 
@@ -32,6 +36,14 @@ public class UserEventTicket {
     private boolean isParticipate = false;
 
     private Date participateDate;
+
+    public String getTicketId() {
+        return ticketId;
+    }
+
+    public void setTicketId(String ticketId) {
+        this.ticketId = ticketId;
+    }
 
     public List<String> getEventTags() {
         if (eventTags == null) {

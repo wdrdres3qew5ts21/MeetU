@@ -434,7 +434,7 @@ public class EventService {
     public ResponseEntity userJoinEvent(UserEventTicket userJoinEvent) {
         HashMap<String, Object> responseBody = new HashMap<>();
         System.out.println("------ Rest Template ------");
-        UserEventTicket userEventTicketInDatabase = userEventTicketRespository.findById(userJoinEvent.getId()).get();
+        UserEventTicket userEventTicketInDatabase = userEventTicketRespository.findByTicketId(userJoinEvent.getTicketId());
         if (userEventTicketInDatabase != null) {
             System.out.println("!! userEventTicket !!");
             System.out.println(userEventTicketInDatabase);
@@ -451,7 +451,7 @@ public class EventService {
             }
         }
         responseBody.put("response", "This ticket is wrong perhaps not our ticket !!!");
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseBody);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
 
     public ResponseEntity userReserveTicket(UserEventTicket userReserveTicket) {
@@ -463,6 +463,7 @@ public class EventService {
                     byte[] array = new byte[8]; // length is bounded by 7
                     new Random().nextBytes(array);
                     String generateTicketKey = new String(array, Charset.forName("UTF-8"));
+                    userReserveTicket.setTicketId(System.currentTimeMillis()+"");
 //                userReserveTicket.setTicketKey(UUID.randomUUID().toString());
                     userReserveTicket.setEventTags(eventInDatabase.getEventTags());
                     userReserveTicket.setTicketKey(RandomStringUtils.randomAlphanumeric(8));

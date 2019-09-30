@@ -3,12 +3,11 @@
     <h2>Ticket(s)</h2>
     <br />
     <v-flex v-for="(eventTicket, index) in userEventTicketList" :key="index" xs12>
-      <v-card min-width="370" height="180" color="white">
+      <v-card min-width="370"  color="white">
         <v-layout>
           <v-flex xs8>
             <v-img
               :src="eventTicket.ticketDetail[0].eventPictureCover"
-              height="180px"
               width="170px"
             ></v-img>
           </v-flex>
@@ -24,6 +23,7 @@
                   <br />
                   <b color="deep-purple darken-3">View Detail</b>
                 </nuxt-link>
+                <div>Used: {{eventTicket.isParticipate}}</div>
               </div>
             </v-card-title>
           </v-flex>

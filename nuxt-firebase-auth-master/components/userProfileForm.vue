@@ -29,9 +29,19 @@
         <h2>Information</h2>
         <v-flex xs12>
           <center>
-            <h3><router-link to="/selectGenres" style="color:red">Edit</router-link> Preference: {{userForm.interest}} : {{userForm.interest.length}}/{{limitedSelectNumber}}</h3>
+            <h3>
+              <router-link to="/selectGenres" style="color:red">Edit</router-link>
+              Preference: {{userForm.interest}} : {{userForm.interest.length}}/{{limitedSelectNumber}}
+            </h3>
           </center>
         </v-flex>
+
+        <v-btn @click="isCameraOpen = !isCameraOpen" block primary>Open camera</v-btn>
+        <div v-if="isCameraOpen">
+          <no-ssr placeholder="loading...">
+            <qrcode-stream @decode="onDecode"></qrcode-stream>
+          </no-ssr>
+        </div>
 
         <br />
         <v-text-field
@@ -216,6 +226,7 @@ export default {
   components: {},
   data() {
     return {
+      isCameraOpen: false,
       limitedSelectNumber: 3,
 
       date: null,
@@ -286,6 +297,27 @@ export default {
   },
   methods: {
     ...mapActions(["testContext"]),
+    onDecode: function(decodedString) {
+      let parsedTicket = JSON.parse(decodedString)
+      console.log(parsedTicket)
+      axios
+        .post(`${process.env.EVENT_SERVICE}/event/join`,parsedTicket)
+        .then(scanResponse => {
+          console.log(scanResponse)
+          this.$swal({
+            type: "success",
+            title: "Success to scan QR Code!!!",
+            text: "Success to scan QR Code !!!"
+          });
+        })
+        .catch(err=>{
+          his.$swal({
+            type: "error",
+            title: "Error to scan QR Code !!!",
+            text: "Error to scan QR Code"
+          });
+        });
+    },
     initUserProfile: function() {
       axios
         .get(`${process.env.USER_SERVICE}/user/${this.getUser.uid}`)
