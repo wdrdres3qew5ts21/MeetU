@@ -28,7 +28,7 @@
       <v-spacer></v-spacer>
     </v-layout>
     <v-fab-transition>
-      <v-btn large dark fab fixed bottom right color="#4CAF50" @click="saveInterestIdea()">
+      <v-btn large dark fab fixed bottom right color="#F81A93" @click="saveInterestIdea()">
         <v-icon>arrow_forward</v-icon>
       </v-btn>
     </v-fab-transition>
