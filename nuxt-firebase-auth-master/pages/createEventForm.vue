@@ -44,7 +44,7 @@
       </v-menu>
     </v-col>
 
-    <v-col cols="11" sm="5">
+    <!-- <v-col cols="11" sm="5">
       <v-menu
         ref="menuTime"
         v-model="menuTime1"
@@ -67,7 +67,7 @@
           @click:minute="$refs.menu.save(time)"
         ></v-time-picker>
       </v-menu>
-    </v-col>
+    </v-col> -->
 
     <v-col cols="12" sm="6" md="4">
       <v-menu
@@ -91,7 +91,7 @@
       </v-menu>
     </v-col>
 
-    <v-col cols="11" sm="5">
+    <!-- <v-col cols="11" sm="5">
       <v-menu
         ref="menuTime"
         v-model="menuTime2"
@@ -114,7 +114,7 @@
           @click:minute="$refs.menu.save(time)"
         ></v-time-picker>
       </v-menu>
-    </v-col>
+    </v-col> -->
 
     <br />
 
