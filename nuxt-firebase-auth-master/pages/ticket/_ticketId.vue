@@ -25,7 +25,7 @@
       >QR Code Generate</v-btn>-->
 
       <div class="text-center">
-        <v-btn block round="16px;" color="#341646" class="mb-2 white--text">DOWNLOAD MY TICKET</v-btn>
+        <v-btn block color="#341646" class="mb-2 white--text">DOWNLOAD MY TICKET</v-btn>
       </div>
       <br />
       <br />
