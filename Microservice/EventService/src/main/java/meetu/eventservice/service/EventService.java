@@ -90,6 +90,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import meetu.eventservice.repository.CategoryRepository;
+import org.apache.commons.lang.RandomStringUtils;
 import org.elasticsearch.action.update.UpdateRequest;
 import static org.elasticsearch.common.xcontent.XContentFactory.*;
 import org.elasticsearch.index.get.GetResult;
@@ -137,26 +138,29 @@ public class EventService {
         // Create a list containing up to 100 messages.
         List<UserNotification> userNotifications = userNotificationRepository.findAll();
         List<Message> messages = new ArrayList<>();
-        for (UserNotification userNotification : userNotifications) {
-            messages = Arrays.asList(
-                    Message.builder()
-                            .setNotification(new Notification(
-                                    eventName,
-                                    eventDetail))
-                            .setToken(userNotification.getNotificationToken())
-                            .build()
-            );
-        }
-        BatchResponse response = null;
-        try {
-            response = FirebaseMessaging.getInstance().sendAll(messages);
-        } catch (FirebaseMessagingException ex) {
-            Logger.getLogger(EventService.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        if (userNotifications != null) {
+            for (UserNotification userNotification : userNotifications) {
+                messages = Arrays.asList(
+                        Message.builder()
+                                .setNotification(new Notification(
+                                        eventName,
+                                        eventDetail))
+                                .setToken(userNotification.getNotificationToken())
+                                .build()
+                );
+            }
+            BatchResponse response = null;
+            try {
+                response = FirebaseMessaging.getInstance().sendAll(messages);
+            } catch (FirebaseMessagingException ex) {
+                Logger.getLogger(EventService.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
 // See the BatchResponse reference documentation
 // for the contents of response.
-        System.out.println(response.getSuccessCount() + " messages were sent successfully");
+            System.out.println(response.getSuccessCount() + " messages were sent successfully");
+        }
+
     }
 
     public Event createEvent(Event event) {
@@ -272,7 +276,7 @@ public class EventService {
         System.out.println(user);
         String uid = user.getUid();
         if (uid != null) {
-            User userInDatabase = restTemplate.getForObject(USERSERVICE_URL+"/user/"+uid, User.class);
+            User userInDatabase = restTemplate.getForObject(USERSERVICE_URL + "/user/" + uid, User.class);
             System.out.println("------ User From Database -------");
             System.out.println(userInDatabase);
             System.out.println("-----User Personalize ---------");
@@ -430,15 +434,15 @@ public class EventService {
     public ResponseEntity userJoinEvent(UserEventTicket userJoinEvent) {
         HashMap<String, Object> responseBody = new HashMap<>();
         System.out.println("------ Rest Template ------");
-        String testValue = this.restTemplate.getForObject(this.USERSERVICE_URL + "/test", String.class);
-        System.out.println(testValue);
-        UserEventTicket userEventTicketInDatabase = userEventTicketRespository.findById(userJoinEvent.getId()).get();
+        UserEventTicket userEventTicketInDatabase = userEventTicketRespository.findByTicketId(userJoinEvent.getTicketId());
         if (userEventTicketInDatabase != null) {
+            System.out.println("!! userEventTicket !!");
+            System.out.println(userEventTicketInDatabase);
             if (userEventTicketInDatabase.isIsParticipate() == false) {
                 if (userEventTicketInDatabase.getTicketKey().equals(userJoinEvent.getTicketKey()) && userEventTicketInDatabase.getUid().equals(userJoinEvent.getUid())) {
                     userEventTicketInDatabase.setIsParticipate(true);
                     userEventTicketInDatabase.setParticipateDate(new Timestamp(System.currentTimeMillis()));
-                    restTemplate.postForEntity(USERSERVICE_URL + "/user/interest", new UserJoinEvent(true), UserViewEvent.class);
+                    restTemplate.postForEntity(USERSERVICE_URL + "/user/interest", userEventTicketInDatabase, UserJoinEvent.class);
                     return ResponseEntity.status(HttpStatus.CREATED).body(userEventTicketRespository.save(userEventTicketInDatabase));
                 }
             } else {
@@ -447,7 +451,7 @@ public class EventService {
             }
         }
         responseBody.put("response", "This ticket is wrong perhaps not our ticket !!!");
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseBody);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
 
     public ResponseEntity userReserveTicket(UserEventTicket userReserveTicket) {
@@ -455,16 +459,30 @@ public class EventService {
         Event eventInDatabase = eventRepository.findByElasticEventId(userReserveTicket.getElasticEventId());
         if (eventInDatabase != null) {
             if (eventInDatabase.getNumberOfTicket() > 0) {
-                byte[] array = new byte[15]; // length is bounded by 7
-                new Random().nextBytes(array);
-                String generateTicketKey = new String(array, Charset.forName("UTF-8"));
-                userReserveTicket.setTicketKey(UUID.randomUUID().toString());
-                System.out.println(userReserveTicket);
-                int numberOfTicket = eventInDatabase.getNumberOfTicket();
-                numberOfTicket--;
-                eventInDatabase.setNumberOfTicket(numberOfTicket);
-                eventRepository.save(eventInDatabase);
-                return ResponseEntity.status(HttpStatus.CREATED).body(userEventTicketRespository.save(userReserveTicket));
+                if (eventInDatabase.getUserLists().contains(userReserveTicket.getUid()) == false) {
+                    byte[] array = new byte[8]; // length is bounded by 7
+                    new Random().nextBytes(array);
+                    String generateTicketKey = new String(array, Charset.forName("UTF-8"));
+                    userReserveTicket.setTicketId(System.currentTimeMillis()+"");
+//                userReserveTicket.setTicketKey(UUID.randomUUID().toString());
+                    userReserveTicket.setEventTags(eventInDatabase.getEventTags());
+                    userReserveTicket.setTicketKey(RandomStringUtils.randomAlphanumeric(8));
+                    System.out.println(userReserveTicket);
+                    int numberOfTicket = eventInDatabase.getNumberOfTicket();
+                    numberOfTicket--;
+
+                    List<String> userLists = eventInDatabase.getUserLists();
+                    userLists.add(userReserveTicket.getUid());
+                    eventInDatabase.setUserLists(userLists);
+                    eventInDatabase.setNumberOfTicket(numberOfTicket);
+                    eventRepository.save(eventInDatabase);
+                    System.out.println("Saved User Event Tikcet");
+                    UserEventTicket savedUserEventTicket = userEventTicketRespository.save(userReserveTicket);
+                    return ResponseEntity.status(HttpStatus.CREATED).body(savedUserEventTicket);
+                } else {
+                    responseBody.put("response", "You already have ticket !!");
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+                }
             } else {
                 responseBody.put("response", "Ticket had been sold out !");
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responseBody);
@@ -474,8 +492,13 @@ public class EventService {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
     }
 
-    public UserNotification saveuserNotification(UserNotification userNotification) {
-        return userNotificationRepository.save(userNotification);
+    public ResponseEntity saveuserNotification(UserNotification userNotification) {
+        UserNotification userNotificationInDatabase = userNotificationRepository.findByUid(userNotification.getUid());
+        if (userNotificationInDatabase == null) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(userNotificationRepository.save(userNotification));
+        }
+        userNotificationInDatabase.setNotificationToken(userNotification.getNotificationToken());
+        return ResponseEntity.status(HttpStatus.CREATED).body(userNotificationInDatabase);
     }
 
 //    @HystrixCommand(fallbackMethod = "fuckYouFallback")
@@ -537,7 +560,7 @@ public class EventService {
                 .from("events")
                 .localField("elasticEventId")
                 .foreignField("elasticEventId")
-                .as("ticketHistory");
+                .as("ticketDetail");
         AggregationOperation match = Aggregation.match(Criteria.where("uid").is(uid));
         Aggregation aggregation = Aggregation.newAggregation(lookupOperation, match);
         List<BasicDBObject> results = mongoTemplate.aggregate(aggregation, "userEventTicket", BasicDBObject.class).getMappedResults();
@@ -563,6 +586,29 @@ public class EventService {
 
     public ResponseEntity findAllPopularEvent() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public ResponseEntity deleteCategoryById(String categoryId) {
+        categoryRepository.deleteById(categoryId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    public ResponseEntity findUserTicketHistoryByElasticEventId(String uid, String elasticEventId) {
+       LookupOperation lookupOperation = LookupOperation.newLookup()
+                .from("events")
+                .localField("elasticEventId")
+                .foreignField("elasticEventId")
+                .as("ticketDetail");
+        AggregationOperation uidMatch = Aggregation.match(Criteria.where("uid").is(uid));
+        AggregationOperation elasticMatch = Aggregation.match(Criteria.where("elasticEventId").is(elasticEventId));
+        List<AggregationOperation> aggregateList= new ArrayList<>();
+        aggregateList.add(uidMatch);
+        aggregateList.add(elasticMatch);
+        Aggregation aggregation = Aggregation.newAggregation(lookupOperation, uidMatch,elasticMatch);
+        List<BasicDBObject> results = mongoTemplate.aggregate(aggregation, "userEventTicket", BasicDBObject.class).getMappedResults();
+        System.out.println("----------------------");
+        System.out.println(results);
+        return ResponseEntity.status(HttpStatus.OK).body(results);
     }
 
 }

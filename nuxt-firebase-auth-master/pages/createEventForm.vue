@@ -5,17 +5,16 @@
     <br />
 
     <v-form>
-      <v-text-field v-model="eventName" :rules="eventNameRules" label="* Event Name" required></v-text-field>
+      <v-text-field v-model="event.eventName" :rules="eventNameRules" label="* Event Name" required></v-text-field>
     </v-form>
 
     <v-flex xs12 sm5 d-flex>
       <v-select :items="categoryEventList" label="Category" v-model="categoryEvent"></v-select>
     </v-flex>
 
-    <v-flex xs12 sm5 d-flex>
+    <!-- <v-flex xs12 sm5 d-flex>
       <v-select :items="eventTypes" label="Event Types" v-model="eventTypes"></v-select>
-    </v-flex>
-
+    </v-flex> -->
 
     <v-col cols="12" sm="6" md="4">
       <v-menu
@@ -29,16 +28,21 @@
         min-width="290px"
       >
         <template v-slot:activator="{ on }">
-          <v-text-field v-model="date" label="* Event Starts" prepend-icon="event" readonly v-on="on"></v-text-field>
+          <v-text-field
+            v-model="event.eventStartDate"
+            label="* Event Starts"
+            prepend-icon="event"
+            readonly
+            v-on="on"
+          ></v-text-field>
         </template>
-        <v-date-picker v-model="date" no-title scrollable>
+        <v-date-picker v-model="menuDate1" no-title scrollable>
           <div class="flex-grow-1"></div>
           <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
           <v-btn text color="primary" @click="$refs.menu.save(date)">OK</v-btn>
         </v-date-picker>
       </v-menu>
     </v-col>
-
 
     <v-col cols="11" sm="5">
       <v-menu
@@ -54,13 +58,7 @@
         min-width="290px"
       >
         <template v-slot:activator="{ on }">
-          <v-text-field
-            v-model="time"
-            label="Time :"
-            prepend-icon="access_time"
-            readonly
-            v-on="on"
-          ></v-text-field>
+          <v-text-field v-model="time" label="Time :" prepend-icon="access_time" readonly v-on="on"></v-text-field>
         </template>
         <v-time-picker
           v-if="menuTime1"
@@ -71,7 +69,7 @@
       </v-menu>
     </v-col>
 
-<v-col cols="12" sm="6" md="4">
+    <v-col cols="12" sm="6" md="4">
       <v-menu
         ref="menuDate2"
         v-model="menu"
@@ -83,16 +81,15 @@
         min-width="290px"
       >
         <template v-slot:activator="{ on }">
-          <v-text-field v-model="date" label="* Event Ends" prepend-icon="event" readonly v-on="on"></v-text-field>
+          <v-text-field v-model="event.eventEndDate" label="* Event Ends" prepend-icon="event" readonly v-on="on"></v-text-field>
         </template>
-        <v-date-picker v-model="date" no-title scrollable>
+        <v-date-picker v-model="menuDate2" no-title scrollable>
           <div class="flex-grow-1"></div>
           <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
-          <v-btn text color="primary" @click="$refs.menu.save(date)">OK</v-btn>
+          <v-btn text color="primary" @click="$refs.menu.save(event.eventEndDate)">OK</v-btn>
         </v-date-picker>
       </v-menu>
     </v-col>
-
 
     <v-col cols="11" sm="5">
       <v-menu
@@ -108,13 +105,7 @@
         min-width="290px"
       >
         <template v-slot:activator="{ on }">
-          <v-text-field
-            v-model="time"
-            label="Time :"
-            prepend-icon="access_time"
-            readonly
-            v-on="on"
-          ></v-text-field>
+          <v-text-field v-model="time" label="Time :" prepend-icon="access_time" readonly v-on="on"></v-text-field>
         </template>
         <v-time-picker
           v-if="menuTime2"
@@ -125,50 +116,49 @@
       </v-menu>
     </v-col>
 
-<br>
+    <br />
 
     <span class="location">Location</span>
-    <p class="locationDescription">Add a location of your event and a short description of how to get there.</p>
+    <p
+      class="locationDescription"
+    >Add a location of your event and a short description of how to get there.</p>
 
     <v-btn class="addLocationButton" color="white">Add Location</v-btn>
 
-    <br><br><br>
-<!-- 
+    <br />
+    <br />
+    <br />
+    <!-- 
         <v-file-input
     label="File input"
     filled
     prepend-icon="mdi-camera"
-  ></v-file-input> -->
+    ></v-file-input>-->
 
+    <nuxt-link class="uploadPosterImg" to="/uploadPosterImg?">Upload poster image</nuxt-link>
 
-    <nuxt-link class="uploadPosterImg" to="/uploadPosterImg?">Upload poster image </nuxt-link>
-    
-    <br>
-    <nuxt-link class="createTicket" to="/createNewTicket?">Create ticket </nuxt-link>
+    <br />
+    <nuxt-link class="createTicket" to="/createNewTicket?">Create ticket</nuxt-link>
 
     <br />
     <br />
-    <br>
+    <br />
 
     <center>
       <nuxt-link :to="`/?`" style="text-decoration-line:none;">
-        <v-btn
-          block
-          class="saveButton white--text"
-          color="#341646"
-          depressed
-          large
-          height="50"
-        >Save</v-btn>
+        <v-btn block class="saveButton white--text" color="#341646" depressed large height="50">Save</v-btn>
       </nuxt-link>
     </center>
 
-    <br><br>
+    <br />
+    <br />
   </div>
 </template>
 
 
 <script>
+import axios from "axios";
+import { mapGetters } from "vuex";
 export default {
   name: "createEventForm",
   data() {
@@ -186,19 +176,40 @@ export default {
         "Social",
         "Technology"
       ],
-
-      date: new Date().toISOString().substr(0, 10),
+      event: {
+        eventName: "",
+        eventDetail: "",
+        eventStartDate: new Date().toISOString().substr(0, 10),
+        eventEndDate: new Date().toISOString().substr(0, 10),
+        endRegisterDate: new Date().toISOString().substr(0, 10),
+      },
       menuDate1: false,
-      menuDate2:false,
-      time:null,
-      menuTime1:false,
-      menuTime2:false,
-      eventNameRules: [
-      v => !!v || "Event name is required",
-      
-    ],
-    
+      menuDate2: false,
+      time: null,
+      menuTime1: false,
+      menuTime2: false,
+      eventNameRules: [v => !!v || "Event name is required"]
     };
+  },
+  computed: {
+    ...mapGetters(["getCategory"])
+  },
+  mounted() {
+    axios.get('http://localhost:4000/userservice/users').then(value=>{
+      console.log(value)
+    })
+  },
+  methods: {
+    loadCategory() {
+      axios
+        .get(`${process.env.EVENT_SERVICE}/category`)
+        .then(categoryResponse => {
+          this.categoryEventList = categoryResponse.data
+        });
+    },
+    createEvent(){
+      axios.post(`${process.env.EVENT_SERVICE}/event`,)
+    }
   }
 };
 </script>
@@ -222,38 +233,34 @@ export default {
   color: #341646;
 }
 
-.location{
-    font-family: Roboto !important;
-    font-size: 18px;
-    color: #341646 !important;
-    font-weight: bold !important;
+.location {
+  font-family: Roboto !important;
+  font-size: 18px;
+  color: #341646 !important;
+  font-weight: bold !important;
 }
 
-
-.locationDescription{
-    color: #707070 !important;
+.locationDescription {
+  color: #707070 !important;
 }
 
-.addLocationButton{
-border: solid 1px #341646 !important;
+.addLocationButton {
+  border: solid 1px #341646 !important;
 }
 
-
-
-.uploadPosterImg{
-    font-family: Roboto;
-    font-size: 18px;
-    font-weight: bold;
-    color: #100C4B;
-    text-decoration: underline;
+.uploadPosterImg {
+  font-family: Roboto;
+  font-size: 18px;
+  font-weight: bold;
+  color: #100c4b;
+  text-decoration: underline;
 }
 
-
-.createTicket{
-    font-family: Roboto;
-    font-size: 18px;
-    font-weight: bold;
-    color: #100C4B;
-    text-decoration: underline;
+.createTicket {
+  font-family: Roboto;
+  font-size: 18px;
+  font-weight: bold;
+  color: #100c4b;
+  text-decoration: underline;
 }
 </style>

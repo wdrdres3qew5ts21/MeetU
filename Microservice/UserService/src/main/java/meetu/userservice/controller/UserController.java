@@ -22,6 +22,8 @@ import java.util.logging.Logger;
 import meetu.userservice.service.UserService;
 import meetu.userservice.model.Badge;
 import meetu.userservice.model.User;
+import meetu.userservice.model.UserJoinEvent;
+import meetu.userservice.model.UserNotification;
 import meetu.userservice.model.UserViewEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -110,8 +112,13 @@ public class UserController {
     }
     
     @PostMapping("/user/interest")
-    public ResponseEntity updateUserInterestPersonaFromJoinEvent(@RequestBody UserViewEvent userViewEvent) {
-        return userService.updateUserInterestPersonaFromJoinEvent(userViewEvent);
+    public ResponseEntity updateUserInterestPersonaFromJoinEvent(@RequestBody UserJoinEvent userJoinEvent) {
+        return userService.updateUserInterestPersonaFromJoinEvent(userJoinEvent);
+    }
+    
+    @PostMapping("/user/interest/preference")
+    public ResponseEntity updateUserPreference(@RequestBody User updatedUserInterest) {
+        return userService.updateUserPreference(updatedUserInterest);
     }
 
     @PatchMapping
@@ -124,7 +131,7 @@ public class UserController {
     }
 
     @PostMapping("/notification/token")
-    public User saveNotificationToken(@RequestBody User notificationBody) {
+    public ResponseEntity saveNotificationToken(@RequestBody UserNotification notificationBody) {
         return userService.saveNotificationToken(notificationBody);
     }
 
@@ -133,9 +140,9 @@ public class UserController {
         return userService.findByUId(uid);
     }
 
-    @PutMapping("/user/{id}")
-    public ResponseEntity<?> put(@PathVariable String id, @RequestBody Object input) {
-        return null;
+    @PutMapping("/user/{uid}")
+    public ResponseEntity editUserProfile(@PathVariable String uid, @RequestBody User editedUserProfile) {
+        return userService.editUserProfile(uid, editedUserProfile);
     }
 
     @DeleteMapping("/users/{id}")

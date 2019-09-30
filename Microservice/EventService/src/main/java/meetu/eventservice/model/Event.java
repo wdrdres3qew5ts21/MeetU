@@ -6,6 +6,7 @@
 package meetu.eventservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.springframework.data.annotation.Id;
@@ -37,6 +38,8 @@ public class Event {
     private String eventPictureCover;
 
     private List<String> eventPictureLists;
+    
+    private List<String> userLists;
 
     private List<Post> postLists;
     
@@ -64,6 +67,17 @@ public class Event {
         this.eventId = eventId;
     }
 
+    public List<String> getUserLists() {
+        if(userLists == null){
+            userLists = new ArrayList<String>();
+        }
+        return userLists;
+    }
+
+    public void setUserLists(List<String> userLists) {
+        this.userLists = userLists;
+    }
+
     public String getEventName() {
         return eventName;
     }
@@ -73,6 +87,10 @@ public class Event {
     }
 
     public List<String> getEventTags() {
+        if(eventTags == null){
+            eventTags = new ArrayList<String>();
+            return eventTags;
+        }
         return eventTags;
     }
 
@@ -186,7 +204,8 @@ public class Event {
 
     @Override
     public String toString() {
-        return "Event{" + "eventId=" + eventId + ", elasticEventId=" + elasticEventId + ", eventName=" + eventName + ", eventTags=" + eventTags + ", eventDetail=" + eventDetail + ", eventPictureCover=" + eventPictureCover + ", eventPictureLists=" + eventPictureLists + ", postLists=" + postLists + ", totalView=" + totalView + ", createEventDate=" + createEventDate + ", endRegisterDate=" + endRegisterDate + ", eventEndDate=" + eventEndDate + ", eventStartDate=" + eventStartDate + ", location=" + location + ", organize=" + organize + '}';
+        return "Event{" + "eventId=" + eventId + ", elasticEventId=" + elasticEventId + ", eventName=" + eventName + ", eventTags=" + eventTags + ", eventDetail=" + eventDetail + ", eventPictureCover=" + eventPictureCover + ", eventPictureLists=" + eventPictureLists + ", userLists=" + userLists + ", postLists=" + postLists + ", totalView=" + totalView + ", numberOfTicket=" + numberOfTicket + ", createEventDate=" + createEventDate + ", endRegisterDate=" + endRegisterDate + ", eventEndDate=" + eventEndDate + ", eventStartDate=" + eventStartDate + ", location=" + location + ", organize=" + organize + '}';
     }
 
+  
 }

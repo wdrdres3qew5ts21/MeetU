@@ -1,0 +1,18 @@
+server:
+  port: 4000
+boot:
+    test: ${test:http://localhost1234}
+spring:
+  application:
+    name: apigateway
+  profiles:
+    active: dev
+    
+  cloud:
+    config:
+      uri: ${spring_cloud_config:http://localhost:8585}
+      retry:
+        max-attempts: 8
+        max-interval: 2000
+        initial-interval: 60000
+      request-read-timeout: 60000

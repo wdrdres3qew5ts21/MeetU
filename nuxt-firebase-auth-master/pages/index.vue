@@ -6,17 +6,36 @@
         <v-carousel-item sm6 xs2 v-for="(item,i) in carouselsPhoto" :src="item.src" :key="i"></v-carousel-item>
       </v-carousel>
       <br />
-      <br />
-      <nuxt-link to="/selectGenres">
-        <h3>Setting Recommedation</h3>
-      </nuxt-link>
+
       <!-- Event List -->
       <div v-if="getUser.uid!=null">
+        <nuxt-link to="/selectGenres">
+          <h3>Setting Recommedation</h3>
+        </nuxt-link>
         <h1>Recomended Event</h1>
         <client-only>
           <carousel :perPage="1" :paginationEnabled="false">
             <slide v-for="(event, index) in recentlyEventList" :key="index">
               <event-card :event="event"></event-card>
+            </slide>
+            <slide>
+              <v-flex 3 xs12 sm6 offset-sm>
+                <nuxt-link :event="event" :to="`/event?`">
+                  <v-card width="350px" height="320px">
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <center>
+                      <v-icon large>add</v-icon>
+                    </center>
+                    <center>
+                      <h2>View More</h2>
+                    </center>
+                  </v-card>
+                </nuxt-link>
+              </v-flex>
             </slide>
           </carousel>
         </client-only>
@@ -29,6 +48,25 @@
         <slide v-for="(event, index) in recentlyEventList" :key="index">
           <event-card :event="event"></event-card>
         </slide>
+        <slide>
+          <v-flex 3 xs12 sm6 offset-sm>
+            <nuxt-link :event="event" :to="`/event?`">
+              <v-card width="350px" height="320px">
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <center>
+                  <v-icon large>add</v-icon>
+                </center>
+                <center>
+                  <h2>View More</h2>
+                </center>
+              </v-card>
+            </nuxt-link>
+          </v-flex>
+        </slide>
       </carousel>
       <!-- <event-list :eventList="recentlyEventList" link="/event"></event-list> -->
       <br />
@@ -37,6 +75,25 @@
       <carousel :perPage="1" :paginationEnabled="false">
         <slide v-for="(event, index) in recentlyEventList" :key="index">
           <event-card :event="event"></event-card>
+        </slide>
+        <slide>
+          <v-flex 3 xs12 sm6 offset-sm>
+            <nuxt-link :event="event" :to="`/event?`">
+              <v-card width="350px" height="320px">
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <center>
+                  <v-icon large>add</v-icon>
+                </center>
+                <center>
+                  <h2>View More</h2>
+                </center>
+              </v-card>
+            </nuxt-link>
+          </v-flex>
         </slide>
       </carousel>
       <!-- <event-list :eventList="recentlyEventList" link="/event"></event-list> -->
@@ -129,8 +186,8 @@ export default {
     this.communityList = mockCommunityList;
     this.isLogin = isLogin();
     this.getRecentlyEvent();
-    this.getArtsEvent();
-    if(this.isLogin){
+    this.getPopularEvent();
+    if (this.isLogin) {
       this.getRecommendEvent();
     }
   },
@@ -151,6 +208,7 @@ export default {
       this.recommendedEventList = recommendEventList.data;
     },
     getPopularEvent: async function() {
+      let concentPerPage = 6;
       await axios
         .get(
           `${process.env.EVENT_SERVICE}/events?isPopular=true&contentPerPage=${concentPerPage}`
@@ -164,7 +222,7 @@ export default {
         });
     },
     getRecentlyEvent: async function() {
-      let concentPerPage = 3;
+      let concentPerPage = 6;
       let recentlyEventList = await axios
         .get(
           `${process.env.EVENT_SERVICE}/events?isRecently=true&contentPerPage=${concentPerPage}`
@@ -178,34 +236,6 @@ export default {
         });
 
       //      console.log(this.recentlyEventList)
-    },
-    getArtsEvent: async function() {
-      let concentPerPage = 3;
-      let artsEventList = await axios(`${process.env.EVENT_SERVICE}/events?isRecently=true
-      &contentPerPage=${concentPerPage}
-      &eventTags=art`);
-      artsEventList = artsEventList.data;
-      this.artsEventList = artsEventList;
-    },
-    createArt: function() {
-      for (let i = 0; i < this.artsEvent.length; i++) {
-        console.log(this.artsEvent[i]);
-        axios.post(`${process.env.EVENT_SERVICE}/event`, {
-          eventPictureCover: this.artsEvent[i].eventPictureCover,
-          eventName: this.artsEvent[i].eventName,
-          eventTags: ["Art"]
-        });
-      }
-    },
-    createBook: function() {
-      for (let i = 0; i < this.bookEvent.length; i++) {
-        console.log(this.bookEvent[i]);
-        axios.post(`${process.env.EVENT_SERVICE}/event`, {
-          eventPictureCover: this.bookEvent[i].eventPictureCover,
-          eventName: this.bookEvent[i].eventName,
-          eventTags: ["Book"]
-        });
-      }
     }
   }
 };

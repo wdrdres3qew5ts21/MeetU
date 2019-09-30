@@ -12,7 +12,8 @@
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "precommit": "npm run lint",
-    "deploy": "yarn generate && firebase deploy"
+    "deploy": "yarn generate && firebase deploy",
+    "deploy2": "yarn build && firebase deploy"
   },
   "dependencies": {
     "@chenfengyuan/vue-qrcode": "^1.0.1",

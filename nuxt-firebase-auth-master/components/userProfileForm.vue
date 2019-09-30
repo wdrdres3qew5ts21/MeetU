@@ -1,6 +1,15 @@
 <template>
   <div>
-    <h1 style="color:#341646">My Profile</h1>
+    <v-layout>
+      <h2 style="color:#341646">My Profile</h2>
+      <span></span>
+      <v-flex class="text-xs-right">
+        <v-btn depressed flat @click=" isEditing= !isEditing">
+          <v-icon color="#341646" medium>edit</v-icon>
+        </v-btn>
+      </v-flex>
+    </v-layout>
+
     <br />
     <v-layout justify-center row wrap>
       <v-flex xs12>
@@ -8,132 +17,199 @@
           <v-img :aspect-ratio="1/1" :src="getUser.photoURL"></v-img>
         </v-card>
       </v-flex>
-      <v-flex xs12>
-        <center>
-          <nuxt-link to>
-            <br />
-            <p style="font-weight:bold">Edit Profile</p>
-          </nuxt-link>
-        </center>
-      </v-flex>
     </v-layout>
     <v-btn class="black--text" outline color="red" depressed large block @click="logout()">LOG OUT</v-btn>
     <br />
     <h2>Level:</h2>
     <br />
     <br />
-    <v-flex xs12>
-      <h2>Information</h2>
-      <v-text-field v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
 
-      <br />
-      <v-text-field
-        v-model="firstname"
-        :rules="nameRules"
-        :counter="10"
-        label="First name"
-        required
-      ></v-text-field>
-      <br />
+    <v-layout column>
+      <v-form ref="form" v-model="valid">
+        <h2>Information</h2>
+        <v-flex xs12>
+          <center>
+            <h3>
+              <router-link to="/selectGenres" style="color:red">Edit</router-link>
+              Preference: {{userForm.interest}} : {{userForm.interest.length}}/{{limitedSelectNumber}}
+            </h3>
+          </center>
+        </v-flex>
 
-      <v-text-field v-model="lastname" :rules="nameRules" :counter="10" label="Last name" required></v-text-field>
-    </v-flex>
-    <br />
-    <v-menu
-      ref="menu"
-      v-model="menu"
-      :close-on-content-click="false"
-      transition="scale-transition"
-      offset-y
-      full-width
-      min-width="290px"
-    >
-      <template v-slot:activator="{ on }">
-        <v-text-field v-model="date" label="Birthday date" prepend-icon="event" readonly v-on="on"></v-text-field>
-      </template>
-      <v-date-picker
-        ref="picker"
-        v-model="date"
-        :max="new Date().toISOString().substr(0, 10)"
-        min="1950-01-01"
-        @change="save"
-      ></v-date-picker>
-    </v-menu>
-    <br />
-    <br />
-    <h3>Gender</h3>
+        <v-btn @click="isCameraOpen = !isCameraOpen" block primary>Open camera</v-btn>
+        <div v-if="isCameraOpen">
+          <no-ssr placeholder="loading...">
+            <qrcode-stream @decode="onDecode"></qrcode-stream>
+          </no-ssr>
+        </div>
 
-    <v-radio-group v-model="column" column>
-      <v-radio label="Male" value="radio-1"></v-radio>
-      <v-radio label="Female" value="radio-2"></v-radio>
-      <v-radio label="Unspecified" value="radio-3"></v-radio>
-    </v-radio-group>
-    <br />
-    <h2>Contacts</h2>
-    <br />
-    <v-text-field v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
-    <br />
-    <v-text-field label="Phone number" prepend-icon="phone"></v-text-field>
-    <br />
-    <h2>Credentials</h2>
-    <br />
+        <br />
+        <v-text-field
+          :disabled="isEditing"
+          v-model="userForm.firstName"
+          :rules="nameRules"
+          label="First name"
+        ></v-text-field>
+        <br />
 
-    <v-text-field
-      v-model="password"
-      :append-icon="show1 ? 'visibility' : 'visibility_off'"
-      :rules="[rules.required]"
-      :type="show1 ? 'text' : 'password'"
-      name="input-10-1"
-      label="Normal with hint text"
-      counter
-      @click:append="show1 = !show1"
-    ></v-text-field>
+        <v-text-field
+          v-model="userForm.lastName"
+          :rules="nameRules"
+          :disabled="isEditing"
+          label="Last name"
+        ></v-text-field>
 
-    <v-text-field
-      v-model="passwordConfirm"
-      :append-icon="show1 ? 'visibility' : 'visibility_off'"
-      :rules="[rules.required]"
-      :type="show3 ? 'text' : 'password'"
-      name="input-10-1"
-      label="Normal with hint text"
-      counter
-      @click:append="show1 = !show1"
-    ></v-text-field>
+        <br />
+        <v-menu
+          ref="menu"
+          v-model="menu"
+          :disabled="isEditing"
+          :close-on-content-click="false"
+          transition="scale-transition"
+          offset-y
+          full-width
+          min-width="290px"
+        >
+          <template v-slot:activator="{ on }">
+            <v-text-field
+              :disabled="isEditing"
+              v-model="userForm.dateOfBirth"
+              label="Birthday date"
+              prepend-icon="today"
+              readonly
+              v-on="on"
+            ></v-text-field>
+          </template>
+          <v-date-picker
+            ref="picker"
+            v-model="userForm.dateOfBirth"
+            :max="new Date().toISOString().substr(0, 10)"
+            min="1950-01-01"
+            @change="save"
+          ></v-date-picker>
+        </v-menu>
 
-    <br />
+        <br />
+        <br />
 
-    <h3 class="h3">User Social Networks</h3>
-    <br />
+        <h3>Gender</h3>
+        <!-- <v-radio-group> 
+           <v-radio v-for="gender in genderList" :key="gender" :label="`${gender}`" value="gender"
+          v-model="userForm.gender"
+          ></v-radio>
+        </v-radio-group>-->
+        <v-select
+          :items="genderList"
+          v-model="userForm.gender"
+          label="Select gender"
+          :disabled="isEditing"
+        ></v-select>
 
-    <v-form>
-      <v-text-field class="textfield" v-model="website" label="Website" placeholder="http://"></v-text-field>
-    </v-form>
+        <h2>Contacts</h2>
+        <br />
+        <v-text-field
+          v-model="userForm.email"
+          :rules="emailRules"
+          label="E-mail"
+          :disabled="isEditing"
+        ></v-text-field>
+        <br />
+        <v-text-field
+          label="Phone number"
+          :rules="phoneRules"
+          placeholder="phone number"
+          counter="10"
+          prepend-icon="phone"
+          v-model="userForm.phone"
+          :disabled="isEditing"
+          type="number"
+        ></v-text-field>
+        <br />
 
-    <v-form>
-      <v-text-field class="textfield" v-model="line" label="Line" placeholder="@"></v-text-field>
-    </v-form>
+        <h2>Credentials</h2>
 
-    <v-form>
-      <v-text-field class="textfield" v-model="facebook" label="Facebook" placeholder="http://"></v-text-field>
-    </v-form>
+        <v-text-field
+          v-model="userForm.password"
+          type="password"
+          :rules="passwordRule"
+          label="* Password"
+          required
+          :disabled="isEditing"
+        ></v-text-field>
 
-    <v-form>
-      <v-text-field class="textfield" v-model="twitter" label="Twitter" placeholder="@"></v-text-field>
-    </v-form>
+        <v-text-field
+          v-model="userForm.confirmPassword"
+          type="password"
+          :rules="passwordRules"
+          label="* Password Confirmation"
+          required
+          :disabled="isEditing"
+        ></v-text-field>
 
-    <v-form>
-      <v-text-field class="textfield" v-model="instagram" label="Instagram" placeholder="@"></v-text-field>
-    </v-form>
+        <br />
 
+        <h3 class="h3">User Social Networks</h3>
+        <br />
+
+        <v-text-field
+          class="textfield"
+          v-model="userForm.website"
+          label="Website"
+          placeholder="http://"
+          :disabled="isEditing"
+        ></v-text-field>
+
+        <v-text-field
+          class="textfield"
+          v-model="userForm.line"
+          label="Line"
+          placeholder="@"
+          :disabled="isEditing"
+        ></v-text-field>
+
+        <v-text-field
+          class="textfield"
+          v-model="userForm.facebook"
+          label="Facebook"
+          placeholder="http://"
+          :disabled="isEditing"
+        ></v-text-field>
+
+        <v-text-field
+          class="textfield"
+          v-model="userForm.twitter"
+          label="Twitter"
+          placeholder="@"
+          :disabled="isEditing"
+        ></v-text-field>
+
+        <v-text-field
+          class="textfield"
+          v-model="userForm.instagram"
+          label="Instagram"
+          placeholder="@"
+          :disabled="isEditing"
+        ></v-text-field>
+      </v-form>
+    </v-layout>
     <br />
     <center>
       <nuxt-link :to="`/?`" style="text-decoration-line:none;">
         <v-btn class="cancelButton white--text" color="#AEAEAE" depressed large height="50">Cancel</v-btn>
       </nuxt-link>
 
-      <nuxt-link :to="`/?`" style="text-decoration-line:none;">
-        <v-btn class="saveButton white--text" color="#341646" depressed large height="50">Save</v-btn>
-      </nuxt-link>
+      <!-- <nuxt-link :to="`/?`" style="text-decoration-line:none;"> -->
+      <v-btn
+        class="saveButton white--text"
+        color="#341646"
+        :disabled="isEditing"
+        @click="updateProfile()"
+        depressed
+        large
+        height="50"
+      >Save</v-btn>
+      <!-- </nuxt-link> -->
+      <!-- <v-btn color="primary" :disabled="!valid" @click="onSubmit()">ถัดไป</v-btn> -->
     </center>
     <br />
     <br />
@@ -142,49 +218,127 @@
  
  
 <script>
+import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
+import userProfileVue from "../pages/userProfile.vue";
 export default {
   name: "userProfileForm",
   components: {},
   data() {
     return {
+      isCameraOpen: false,
+      limitedSelectNumber: 3,
+
       date: null,
       menu: false,
-      show1: false,
-      show2: true,
-      show3: false,
-      show4: false,
-      password: "Password",
-      passwordConfirm: "passwordConfirm",
-      website: "",
-      line: "",
-      facebook: "",
-      twitter: "",
-      instagram: "",
-      column: "",
-      firstname: "",
-      lastname: "",
-      nameRules: [
-        v => !!v || "Name is required",
-        v => v.length <= 10 || "Name must be less than 10 characters"
+
+      genderList: ["Male", "Female", "Unspecified"],
+
+      numberRules: [
+        v => !!v || "This field is required",
+        v => (v && !Number.isNaN(v)) || "Please insert only number"
       ],
-      email: "",
+      genderRules: [v => !!v || "Please select from choice"],
+      textRules: [v => !!v || "This field is required"],
+      phoneRules: [
+        v => !!v || "Phone Number is required",
+        v => (v && v.length === 10) || "Phone Number msut be 10 digit"
+      ],
       emailRules: [
         v => !!v || "E-mail is required",
-        v => /.+@.+/.test(v) || "E-mail must be valid"
+        v => /.+@.+\..+/.test(v) || "E-mail must be valid"
       ],
-      rules: {
-        required: value => !!value || "Required.",
-        min: v => v.length >= 8 || "Min 8 characters",
-        emailMatch: () => "The email and password you entered don't match"
+      nameRules: [
+        v => !!v || "Name is required",
+        v => (v && v.length >= 2) || "Name must be more than 2 characters"
+      ],
+      lastnameRules: [
+        v => !!v || "Lastname is required",
+        v => (v && v.length >= 2) || "Lastname must be more than 2 characters"
+      ],
+      passwordRules: [
+        v => !!v || "Password is required",
+        v => v.length >= 8 || "Password must be 8 character",
+        v =>
+          this.password === this.confirmPassword ||
+          "Password and Confirm Password need to be match"
+      ],
+      passwordRule: [
+        v => !!v || "Password is required",
+        v => v.length >= 8 || "Password must be 8 character"
+      ],
+      valid: true,
+      isEditing: true,
+      userForm: {
+        interest: [],
+        firstName: "",
+        lastName: "",
+        gender: "",
+        dateArray: [],
+        dateOfBirth: "",
+        phone: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        password: "",
+        website: "",
+        line: "",
+        facebook: "",
+        twitter: "",
+        instagram: ""
       }
     };
   },
   computed: {
     ...mapGetters(["getUser"])
   },
+  mounted() {
+    this.initUserProfile();
+  },
   methods: {
     ...mapActions(["testContext"]),
+    onDecode: function(decodedString) {
+      let parsedTicket = JSON.parse(decodedString)
+      console.log(parsedTicket)
+      axios
+        .post(`${process.env.EVENT_SERVICE}/event/join`,parsedTicket)
+        .then(scanResponse => {
+          console.log(scanResponse)
+          this.$swal({
+            type: "success",
+            title: "Success to scan QR Code!!!",
+            text: "Success to scan QR Code !!!"
+          });
+        })
+        .catch(err=>{
+          his.$swal({
+            type: "error",
+            title: "Error to scan QR Code !!!",
+            text: "Error to scan QR Code"
+          });
+        });
+    },
+    initUserProfile: function() {
+      axios
+        .get(`${process.env.USER_SERVICE}/user/${this.getUser.uid}`)
+        .then(userProfileForm => {
+          console.log("haate my self");
+          userProfileForm = userProfileForm.data;
+          console.log(userProfileForm);
+          this.userForm.interest = userProfileForm.interest;
+          this.userForm.firstName = userProfileForm.firstName;
+          this.userForm.lastName = userProfileForm.lastName;
+          this.userForm.email = userProfileForm.email;
+          this.userForm.gender = userProfileForm.gender;
+          this.userForm.facebook = userProfileForm.facebook;
+          this.userForm.line = userProfileForm.line;
+          this.userForm.website = userProfileForm.website;
+          this.userForm.twitter = userProfileForm.twitter;
+          this.userForm.instagram = userProfileForm.instagram;
+          this.userForm.phone = userProfileForm.phone || "";
+        })
+        .catch(err => {});
+    },
     onFileChanged(event) {
       this.selectedFile = event.target.files[0];
     },
@@ -203,6 +357,67 @@ export default {
     },
     save(date) {
       this.$refs.menu.save(date);
+    },
+    activateInEditMode() {
+      this.isEditing = false;
+    },
+    deActivateInEditMode() {
+      this.isEditing = true;
+    },
+    editProfile() {
+      this.edit = false;
+    },
+    validate() {
+      console.log(this.userForm);
+
+      if (this.$refs.form.validate()) {
+        console.log("correct fuq you");
+        this.snackbar = true;
+      } else {
+        console.log("stupid please correct");
+      }
+    },
+    resetValidation() {
+      this.$refs.form.resetValidation();
+    },
+    onSubmit() {
+      console.log(this.userForm);
+
+      let rawTel = this.userForm.telephone;
+      this.userForm.telephone = rawTel.replace(/^0/g, "+66");
+      this.userForm.gender = this.genderList.values;
+    },
+    updateProfile: function() {
+      console.log(this.userForm);
+      axios
+        .put(
+          `${process.env.USER_SERVICE}/user/${this.getUser.uid}`,
+          this.userForm
+        )
+        .then(updateResponse => {
+          this.$swal({
+            type: "success",
+            title: "Update Profile success !",
+            text: `Update Profile success`
+          });
+        })
+        .catch(err => {
+          console.log(err);
+          this.$swal({
+            type: "error",
+            title: "Update Profile fail !",
+            text: err
+          });
+        });
+
+      // console.log({
+      //   email: this.userForm.email,
+      //   password: this.userForm.password,
+      //   birthDate: this.userForm.dateOfBirth,
+      //   firstName: this.userForm.firstname,
+      //   lastName: this.userForm.lastname,
+      //   gender: this.userForm.gender
+      // });
     }
   },
   watch: {

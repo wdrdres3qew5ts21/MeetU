@@ -8,6 +8,7 @@ package meetu.userservice.service;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,10 @@ import meetu.userservice.model.InterestGenreBehavior;
 import meetu.userservice.model.Persona;
 import meetu.userservice.repository.UserRepository;
 import meetu.userservice.model.User;
+import meetu.userservice.model.UserJoinEvent;
+import meetu.userservice.model.UserNotification;
 import meetu.userservice.model.UserViewEvent;
+import meetu.userservice.repository.UserNotificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +41,9 @@ public class UserService {
 
     @Autowired
     private TokenAuthenticationService tokenAuthenticationService;
+
+    @Autowired
+    private UserNotificationRepository userNotificationRepository;
 
     public User createUserFromFirebaase(User user) {
         System.out.println("----- Create User/ Update User -------");
@@ -115,11 +122,10 @@ public class UserService {
         return null;
     }
 
-    public User saveNotificationToken(User notificationBody) {
+    public ResponseEntity saveNotificationToken(UserNotification notificationBody) {
         System.out.println("---- ------------------------");
         System.out.println("Notification Token //" + notificationBody.getUid() + " /// token: " + notificationBody.getNotificationToken());
-
-        return null;
+        return ResponseEntity.status(HttpStatus.CREATED).body(userNotificationRepository.save(notificationBody));
     }
 
     public ResponseEntity userViewEvent(UserViewEvent userViewEvent) {
@@ -151,8 +157,8 @@ public class UserService {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
     }
 
-    public ResponseEntity updateUserInterestPersonaFromJoinEvent(UserViewEvent userViewEvent) {
-        User userInDatabase = userRepository.findByUid(userViewEvent.getUid());
+    public ResponseEntity updateUserInterestPersonaFromJoinEvent(UserJoinEvent userJoinEvent) {
+        User userInDatabase = userRepository.findByUid(userJoinEvent.getUid());
         if (userInDatabase != null) {
             System.out.println("found user !!!");
             System.out.println(userInDatabase.getUid());
@@ -163,10 +169,13 @@ public class UserService {
             System.out.println(interestBehaviorList.toString());
             interestBehaviorList.forEach(interestBehavior -> {
                 String genre = interestBehavior.getGenre();
-                if (userViewEvent.getEventTags().contains(genre) == true) {
+                if (userJoinEvent.getEventTags().contains(genre) == true) {
                     int totalView = interestBehavior.getTotalView();
+                    int totalParticipate = interestBehavior.getTotalParticipate();
                     totalView++;
+                    totalParticipate++;
                     interestBehavior.setTotalView(totalView);
+                    interestBehavior.setTotalParticipate(totalParticipate);
                 }
             });
             System.out.println("After Update Interest Behavior");
@@ -194,6 +203,44 @@ public class UserService {
             Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    public ResponseEntity editUserProfile(String uid, User editedUserProfile) {
+        User userInDatabase = userRepository.findByUid(uid);
+        if (userInDatabase != null) {
+            userInDatabase.setEmail(editedUserProfile.getEmail());
+            userInDatabase.setFirstName(editedUserProfile.getFirstName());
+            userInDatabase.setLastName(editedUserProfile.getLastName());
+            userInDatabase.setPhone(editedUserProfile.getPhone());
+            userInDatabase.setGender(editedUserProfile.getGender());
+            userInDatabase.setCounry(editedUserProfile.getCountry());
+            userInDatabase.setBirthDate(editedUserProfile.getBirthDate());
+            userInDatabase.setWebsite(editedUserProfile.getWebsite());
+            userInDatabase.setLine(editedUserProfile.getLine());
+            userInDatabase.setFacebook(editedUserProfile.getFacebook());
+            userInDatabase.setTwitter(editedUserProfile.getTwitter());
+            userInDatabase.setInstagram(editedUserProfile.getInstagram());
+            User savedUserProfile = userRepository.save(userInDatabase);
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedUserProfile);
+        }
+        HashMap<String, String> message = new HashMap();
+        message.put("response", "Cannt update profile");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
+    }
+
+    public ResponseEntity updateUserPreference(User updatedUserInterest) {
+        System.out.println("Fuck update");
+        User userInDatabase = userRepository.findByUid(updatedUserInterest.getUid());
+        if (userInDatabase != null) {
+            userInDatabase.setInterest(updatedUserInterest.getInterest());
+            User savedUserIntest = userRepository.save(userInDatabase);
+            if (savedUserIntest != null) {
+                return ResponseEntity.status(HttpStatus.CREATED).body(savedUserIntest);
+            }
+        }
+        HashMap<String, String> message = new HashMap<>();
+        message.put("response", "Failed to update user interest !");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
     }
 
 }

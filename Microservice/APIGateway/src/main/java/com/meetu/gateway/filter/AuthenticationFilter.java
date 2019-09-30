@@ -15,7 +15,9 @@ import java.util.Enumeration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 /**
@@ -52,13 +54,9 @@ public class AuthenticationFilter extends ZuulFilter {
 
     @Override
     public Object run() throws ZuulException {
-        
         RequestContext ctx = RequestContext.getCurrentContext();
         HttpServletRequest request = ctx.getRequest();
-        System.out.println("---------------  Authentication Filter --------------- ");
-        System.out.println(request.getHeader("Authorization"));
-//           FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(request.getHeader("Authorization"));
-//            String uid = decodedToken.getUid();
+        
         log.info(String.format("%s RequetTo: %s RemoteIP: %s RemotePort: %s", request.getMethod(), request.getRequestURL().toString(), request.getRemoteAddr(), request.getRemotePort()));
         return null;
     }

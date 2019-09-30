@@ -26,87 +26,90 @@ export default (context) => {
   if (process.client) {
     console.log("Fuq client Side !!!")
     authen = firebase.auth()
-    messaging = firebase.messaging()
-
-    try{
-      let userJwt = jwtDecode(localStorage.getItem("jwtToken"))
-      console.log(userJwt)
-      if(userJwt){
-        store.commit('setUser', {
-          displayName: userJwt.name,
-          email: userJwt.email,
-          emailVerified: userJwt.email_verified,
-          photoURL: userJwt.picture,
-          uid: userJwt.user_id,
-          jwtToken: localStorage.getItem("jwtToken")
-        })
-      }
-    }catch(err){
-      console.log(err)
+    if (firebase.messaging.isSupported()){
+      messaging = firebase.messaging()
     }
-
-
-    authen.onAuthStateChanged(user => {
-      authen.getRedirectResult().then((result) => {
-        console.log("stupid")
-        if (result.credential) {
-          // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-          let token = result.credential.accessToken;
-          let isNewUser = result.additionalUserInfo.isNewUser
-          console.log(result)
-          if (isNewUser) {
-            console.log("---------- First Time sign up ----------")
-            axios.post(`${process.env.USER_SERVICE}/user`, result.user)
-          }
-
-        }
-      }).catch(function (error) {
-
-      });
-      console.log("state change")
-      authen.currentUser.getIdToken(/* forceRefresh */ true)
-        .then((jwtToken) => {
-          // Send token to your backend via HTTPS
-          localStorage.setItem("jwtToken", jwtToken)
-          console.log("current user !")
-          // Set Vuex State After Success login
-          store.commit('setUser', {
-            displayName: user.displayName,
-            email: user.email,
-            emailVerified: user.emailVerified,
-            isAnonymous: user.isAnonymous,
-            photoURL: user.photoURL,
-            uid: user.uid,
-            jwtToken: jwtToken
-          })
-          // Request Permission Will work only user login Success
-
-          messaging.usePublicVapidKey("BJsK20EGvD7TRip8YI_DP-sxYxeNK65jwuK6v_Mek8birN_doChyesgPAmAuXMiu81TJOkejoypqvz9Pl7TWhe0");
-          // Request Permission of Notifications
-          messaging.requestPermission().then(() => {
-            console.log('Notification permission granted.');
-            // Get Token
-            messaging.getToken().then((notificationToken) => {
-              let notificationBody = {
-                notificationToken,
-                uid: store.getters.getUser.uid,
-              }
-              axios.post(`${process.env.EVENT_SERVICE}/notification/token`, notificationBody)
-              console.log(notificationToken)
-            }).catch(err => {
-              console.log(err)
-            })
-          }).catch((err) => {
-            console.log('Unable to get permission to notify.', err);
-          });
-
-        }).catch((error) => {
-          // login failed
-          console.log(error)
-        })
-    })
   }
+
+  try {
+    let userJwt = jwtDecode(localStorage.getItem("jwtToken"))
+    console.log(userJwt)
+    if (userJwt) {
+      store.commit('setUser', {
+        displayName: userJwt.name,
+        email: userJwt.email,
+        emailVerified: userJwt.email_verified,
+        photoURL: userJwt.picture,
+        uid: userJwt.user_id,
+        jwtToken: localStorage.getItem("jwtToken")
+      })
+    }
+  } catch (err) {
+    console.log(err)
+  }
+
+
+  authen.onAuthStateChanged(user => {
+    authen.getRedirectResult().then((result) => {
+      console.log("stupid")
+      if (result.credential) {
+        // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+        let token = result.credential.accessToken;
+        let isNewUser = result.additionalUserInfo.isNewUser
+        console.log(result)
+        if (isNewUser) {
+          console.log("---------- First Time sign up ----------")
+          axios.post(`${process.env.USER_SERVICE}/user`, result.user)
+        }
+
+      }
+    }).catch(function (error) {
+
+    });
+    console.log("state change")
+    authen.currentUser.getIdToken(/* forceRefresh */ true)
+      .then((jwtToken) => {
+        // Send token to your backend via HTTPS
+        localStorage.setItem("jwtToken", jwtToken)
+        console.log("current user !")
+        // Set Vuex State After Success login
+        store.commit('setUser', {
+          displayName: user.displayName,
+          email: user.email,
+          emailVerified: user.emailVerified,
+          isAnonymous: user.isAnonymous,
+          photoURL: user.photoURL,
+          uid: user.uid,
+          jwtToken: jwtToken
+        })
+        // Request Permission Will work only user login Success
+
+        messaging.usePublicVapidKey("BJsK20EGvD7TRip8YI_DP-sxYxeNK65jwuK6v_Mek8birN_doChyesgPAmAuXMiu81TJOkejoypqvz9Pl7TWhe0");
+        // Request Permission of Notifications
+        messaging.requestPermission().then(() => {
+          console.log('Notification permission granted.');
+          // Get Token
+          messaging.getToken().then((notificationToken) => {
+            let notificationBody = {
+              notificationToken,
+              uid: store.getters.getUser.uid,
+            }
+            axios.post(`${process.env.EVENT_SERVICE}/notification/token`, notificationBody)
+            console.log(notificationToken)
+          }).catch(err => {
+            console.log(err)
+          })
+        }).catch((err) => {
+          console.log('Unable to get permission to notify.', err);
+        });
+
+      }).catch((error) => {
+        // login failed
+        console.log(error)
+      })
+  })
 }
+
 
 
 

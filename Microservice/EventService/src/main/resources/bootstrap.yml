@@ -7,26 +7,26 @@ spring:
     name: eventservice
   profiles:
     active: dev
-  data:
-      mongodb:
-#          host: ${mongodb_host:localhost}
-#          port: 27017
-          uri: mongodb+srv://meetuAdmin:popsonfonmeetu@cluster0-uuw7c.mongodb.net/test?retryWrites=true&w=majority
-          authentication-database: admin
-          database: meetu
-#          username: meetuAdmin
-#          password: popsonfonmeetu
+#  data:
+#      mongodb:
+##          host: ${mongodb_host:localhost}
+##          port: 27017
+#          uri: mongodb+srv://meetuAdmin:popsonfonmeetu@cluster0-uuw7c.mongodb.net/test?retryWrites=true&w=majority
+#          authentication-database: admin
+#          database: meetu
+##          username: meetuAdmin
+##          password: popsonfonmeetu
   cloud:
     config:
       uri: ${spring_cloud_config:http://localhost:8585}
       retry:
-        max-attempts: 8
+        max-attempts: 60
         max-interval: 2000
-        initial-interval: 10000
-      request-read-timeout: 10000
-elasticsearch:
-    host: ${elastic_host:localhost}
-    port: 9200
+        initial-interval: 60000
+      request-read-timeout: 60000
+#elasticsearch:
+#    host: ${elastic_host:localhost}
+#    port: 9200
     
 #eureka:
 #  instance:

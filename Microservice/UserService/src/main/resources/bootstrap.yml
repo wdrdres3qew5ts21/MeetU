@@ -5,11 +5,11 @@ spring:
     name: userservice
   profiles:
     active: dev
-  data:
-      mongodb:
-           uri: mongodb+srv://meetuAdmin:popsonfonmeetu@cluster0-uuw7c.mongodb.net/test?retryWrites=true&w=majority
-           authentication-database: admin
-           database: meetu
+#  data:
+#      mongodb:
+#           uri: mongodb+srv://meetuAdmin:popsonfonmeetu@cluster0-uuw7c.mongodb.net/test?retryWrites=true&w=majority
+#           authentication-database: admin
+#           database: meetu
 #          host: 13.229.138.243
 #          port: 27017
 #          authentication-database: admin
@@ -19,12 +19,12 @@ spring:
           
   cloud:
     config:
-      request-read-timeout: 10000
-      uri: http://localhost:8585  
+      uri: ${spring_cloud_config:http://localhost:8585}
       retry:
         max-attempts: 8
         max-interval: 2000
         initial-interval: 10000
+        
 eureka:
   instance:
     appname: userservice

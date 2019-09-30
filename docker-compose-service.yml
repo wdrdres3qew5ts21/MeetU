@@ -1,0 +1,55 @@
+version: '3.3'
+services:
+  configserver:
+    image: linxianer12/configserver:latest
+    container_name: configserver
+    restart: always
+    environment: 
+      git.username: 
+      git.password: ''
+    ports:
+      - 8585:8585
+    network_mode: "host"
+
+  eurekaserver:
+    depends_on: 
+      - configserver
+    image: linxianer12/eurekaserver:latest
+    container_name: eurekaserver
+    restart: always
+    ports:
+      - 8761:8761
+    network_mode: "host"
+
+  apigateway:
+    depends_on: 
+      - eurekaserver
+    image: linxianer12/apigateway:latest
+    container_name: apigateway
+    restart: always
+    ports:
+      - 4000:4000
+    network_mode: "host"
+
+  userservice:
+    depends_on: 
+     - apigateway
+    image: linxianer12/userservice:latest
+    container_name: userservice
+    restart: always
+    ports:
+      - 3001:3001
+    network_mode: "host"
+
+  eventservice:
+    depends_on: 
+     - apigateway
+    image: linxianer12/eventservice:latest
+    container_name: eventservice
+    restart: always
+    ports:
+      - 3002:3002
+    network_mode: "host"
+
+
+
