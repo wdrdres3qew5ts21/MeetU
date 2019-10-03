@@ -40,17 +40,15 @@
       <!-- <qrcode-stream :camera="camera" @init="onCameraChange"></qrcode-stream> -->
 
       <div align="left">
-        <h3>Event</h3>
+        <!-- <h3>Event</h3> -->
         <br />
-        Event name : {{eventName}}
-        <br />
-        <br />
-        <h3>Price</h3>
+        <h3>Event : {{ticketEvent.ticketDetail[0].eventName}}</h3> 
+        <!-- <h3>Price</h3>
         <br />Free
+        <br /> -->
         <br />
-        <br />
-        <h3>Owner</h3>
-        <br />Username
+        <h3>Organize</h3>
+        <br /><h3>{{ticketEvent.ticketDetail[0].organize.organizeName}}</h3>
         <br />Email
         <br />Mobile phone
         <br />
@@ -62,7 +60,7 @@
         </v-avatar>
         <br />
         <br />
-        <h3>Organize Name</h3>
+        <h3>{{ticketEvent.ticketDetail[0].organize.organizeName}}</h3>
       </div>
     </div>
   </v-container>
@@ -81,7 +79,7 @@ export default {
     return {
       isCameraOpen: false,
       ticketEvent: {
-        ticketDetail: [{ eventName: "E-Ticket" }]
+        ticketDetail: [{ eventName: "E-Ticket", organize: {organizeName:""} }]
       },
       qrCodeSrc: {}
     };

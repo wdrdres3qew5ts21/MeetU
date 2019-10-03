@@ -11,7 +11,7 @@ spring:
 #      mongodb:
 ##          host: ${mongodb_host:localhost}
 ##          port: 27017
-#          uri: mongodb+srv://meetuAdmin:popsonfonmeetu@cluster0-uuw7c.mongodb.net/test?retryWrites=true&w=majority
+#          uri: 
 #          authentication-database: admin
 #          database: meetu
 ##          username: meetuAdmin

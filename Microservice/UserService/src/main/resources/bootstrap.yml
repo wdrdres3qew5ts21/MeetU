@@ -7,10 +7,10 @@ spring:
     active: dev
 #  data:
 #      mongodb:
-#           uri: mongodb+srv://meetuAdmin:popsonfonmeetu@cluster0-uuw7c.mongodb.net/test?retryWrites=true&w=majority
+#           uri: 
 #           authentication-database: admin
 #           database: meetu
-#          host: 13.229.138.243
+#          host: localhost
 #          port: 27017
 #          authentication-database: admin
 #          database: meetu
