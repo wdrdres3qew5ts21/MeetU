@@ -16,27 +16,26 @@
       <v-select :items="eventTypes" label="Event Types" v-model="eventTypes"></v-select>
     </v-flex>-->
 
-    <v-col cols="12" sm="6" md="4">
+<v-col cols="12" sm="6" md="4">
       <v-menu
-        ref="menuDate1"
+        ref="menu"
         v-model="menu"
         :close-on-content-click="false"
         :return-value.sync="date"
         transition="scale-transition"
         offset-y
-        full-width
         min-width="290px"
       >
         <template v-slot:activator="{ on }">
           <v-text-field
-            v-model="event.eventStartDate"
-            label="* Event Starts"
+            v-model="date"
+            label="Start Date: "
             prepend-icon="event"
             readonly
             v-on="on"
           ></v-text-field>
         </template>
-        <v-date-picker v-model="menuDate1" no-title scrollable>
+        <v-date-picker v-model="date" no-title scrollable>
           <div class="flex-grow-1"></div>
           <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
           <v-btn text color="primary" @click="$refs.menu.save(date)">OK</v-btn>
@@ -44,40 +43,14 @@
       </v-menu>
     </v-col>
 
-    <v-col cols="11" sm="5">
+<!-- <v-col cols="12" sm="6" md="4">
       <v-menu
-        ref="menuTime"
-        v-model="menuTime1"
-        :close-on-content-click="false"
-        :nudge-right="40"
-        :return-value.sync="time"
-        transition="scale-transition"
-        offset-y
-        full-width
-        max-width="290px"
-        min-width="290px"
-      >
-        <template v-slot:activator="{ on }">
-          <v-text-field v-model="time" label="Time :" prepend-icon="access_time" readonly v-on="on"></v-text-field>
-        </template>
-        <v-time-picker
-          v-if="menuTime1"
-          v-model="time"
-          full-width
-          @click:minute="$refs.menu.save(time)"
-        ></v-time-picker>
-      </v-menu>
-    </v-col>
-
-    <v-col cols="12" sm="6" md="4">
-      <v-menu
-        ref="menuDate2"
-        v-model="menu"
+        ref="menu"
+        v-model="menu2"
         :close-on-content-click="false"
         :return-value.sync="date"
         transition="scale-transition"
         offset-y
-        full-width
         min-width="290px"
       >
         <template v-slot:activator="{ on }">
@@ -89,38 +62,17 @@
             v-on="on"
           ></v-text-field>
         </template>
-        <v-date-picker v-model="menuDate2" no-title scrollable>
+        <v-date-picker v-model="date" no-title scrollable>
           <div class="flex-grow-1"></div>
           <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
-          <v-btn text color="primary" @click="$refs.menu.save(event.eventEndDate)">OK</v-btn>
+          <v-btn text color="primary" @click="$refs.menu.save(date)">OK</v-btn>
         </v-date-picker>
       </v-menu>
-    </v-col>
+    </v-col> -->
 
-    <v-col cols="11" sm="5">
-      <v-menu
-        ref="menuTime"
-        v-model="menuTime2"
-        :close-on-content-click="false"
-        :nudge-right="40"
-        :return-value.sync="time"
-        transition="scale-transition"
-        offset-y
-        full-width
-        max-width="290px"
-        min-width="290px"
-      >
-        <template v-slot:activator="{ on }">
-          <v-text-field v-model="time" label="Time :" prepend-icon="access_time" readonly v-on="on"></v-text-field>
-        </template>
-        <v-time-picker
-          v-if="menuTime2"
-          v-model="time"
-          full-width
-          @click:minute="$refs.menu.save(time)"
-        ></v-time-picker>
-      </v-menu>
-    </v-col>
+    
+
+
 
     <br />
 
@@ -152,7 +104,17 @@
 
     <center>
       <nuxt-link :to="`/?`" style="text-decoration-line:none;">
-        <v-btn block class="saveButton white--text" color="#341646" depressed large height="50">Save</v-btn>
+        <v-btn 
+        block 
+        class="saveButton white--text" 
+        color="#341646" 
+        depressed 
+        large 
+        height="50"
+        @click="createEventSave()"
+        >Save
+        
+        </v-btn>
       </nuxt-link>
     </center>
 
@@ -189,23 +151,31 @@ export default {
         eventEndDate: new Date().toISOString().substr(0, 10),
         endRegisterDate: new Date().toISOString().substr(0, 10)
       },
-      menuDate1: false,
-      menuDate2: false,
-      time: null,
-      menuTime1: false,
-      menuTime2: false,
-      eventNameRules: [v => !!v || "Event name is required"]
+      date:new Date().toISOString().substr(0, 10),
+     
+      menu:false,
+      eventNameRules: [v => !!v || "Event name is required"],
+      location:"",
     };
   },
   computed: {
     ...mapGetters(["getCategory"])
   },
+  watch: {
+      menu (val) {
+        val && setTimeout(() => (this.$refs.picker.activePicker = 'YEAR'))
+      },
+    },
+
   mounted() {
     axios.get("http://localhost:4000/userservice/users").then(value => {
       console.log(value);
     });
   },
   methods: {
+    save (date) {
+        this.$refs.menu.save(date)
+      },
     loadCategory() {
       axios
         .get(`${process.env.EVENT_SERVICE}/category`)
@@ -217,6 +187,15 @@ export default {
       axios.post(`${process.env.EVENT_SERVICE}/event`);
     }
   }
+
+      // console.log({
+      //   email: this.userForm.email,
+      //   password: this.userForm.password,
+      //   birthDate: this.userForm.dateOfBirth,
+      //   firstName: this.userForm.firstname,
+      //   lastName: this.userForm.lastname,
+      //   gender: this.userForm.gender
+  
 };
 </script>
 
