@@ -2,9 +2,7 @@
   <div>
     <v-btn @click="isCameraOpen = !isCameraOpen">Open camera</v-btn>
     <div v-if="isCameraOpen">
-      <no-ssr placeholder="loading...">
-        <qrcode-stream @decode="onDecode"></qrcode-stream>
-      </no-ssr>
+   
     </div>
   </div>
 </template>

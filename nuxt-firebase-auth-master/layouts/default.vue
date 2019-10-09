@@ -2,17 +2,17 @@
   <v-app>
     <v-navigation-drawer v-model="drawer" fixed app right style="background-color: #fff">
       <v-list>
-        <v-list-tile v-if="getUser.jwtToken == null">
-          <v-spacer></v-spacer>
-          <v-list-tile-content>
-            <nuxt-link to="/login">Log In</nuxt-link>
-          </v-list-tile-content>
-          <v-list-tile-content>|</v-list-tile-content>
-          <v-list-tile-content>
-            <nuxt-link to="/signup">Sign Up</nuxt-link>
-          </v-list-tile-content>
-        </v-list-tile>
-        <v-list v-else>
+        <client-only>
+          <v-list-tile v-if="getUser.jwtToken == null">
+            <v-spacer></v-spacer>
+            <v-list-tile-content>
+              <nuxt-link to="/login">Log In</nuxt-link>
+            </v-list-tile-content>
+            <v-list-tile-content>|</v-list-tile-content>
+            <v-list-tile-content>
+              <nuxt-link to="/signup">Sign Up</nuxt-link>
+            </v-list-tile-content>
+          </v-list-tile>
           <v-list-tile avatar>
             <v-list-tile-avatar>
               <img :src="getUser.photoURL" />
@@ -23,7 +23,7 @@
               </v-list-tile-content>
             </nuxt-link>
           </v-list-tile>
-        </v-list>
+        </client-only>
 
         <v-list-tile avatar>
           <v-list-tile-avatar>

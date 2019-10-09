@@ -41,7 +41,6 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         String token = req.getHeader(config.getHeader());
         
-        System.out.println("fuq filter");
         System.out.println(token);
         if (token != null && token.startsWith(config.getPrefix() + " ")) {
             try {

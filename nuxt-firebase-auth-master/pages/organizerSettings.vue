@@ -1,6 +1,6 @@
 <template>
   <div>
-    <br />
+    <!-- <br />
     <h2 class="h2">Organizer Settings</h2>
     <br />
     <h3 class="h3">Profile</h3>
@@ -35,11 +35,14 @@
 
     <v-btn class="chooseFileButton" color="white" @click="$refs.inputUpload.click()">Choose file</v-btn>
     <input v-show="false" ref="inputUpload" type="file" @change="fileFunction" />
-    <br><br>
+    <br><br> -->
   </div>
 </template>
 
 <script>
+export default {
+
+}
 </script>
 
 

@@ -14,7 +14,7 @@
 
     <!-- <v-flex xs12 sm5 d-flex>
       <v-select :items="eventTypes" label="Event Types" v-model="eventTypes"></v-select>
-    </v-flex> -->
+    </v-flex>-->
 
     <v-col cols="12" sm="6" md="4">
       <v-menu
@@ -81,7 +81,13 @@
         min-width="290px"
       >
         <template v-slot:activator="{ on }">
-          <v-text-field v-model="event.eventEndDate" label="* Event Ends" prepend-icon="event" readonly v-on="on"></v-text-field>
+          <v-text-field
+            v-model="event.eventEndDate"
+            label="* Event Ends"
+            prepend-icon="event"
+            readonly
+            v-on="on"
+          ></v-text-field>
         </template>
         <v-date-picker v-model="menuDate2" no-title scrollable>
           <div class="flex-grow-1"></div>
@@ -181,7 +187,7 @@ export default {
         eventDetail: "",
         eventStartDate: new Date().toISOString().substr(0, 10),
         eventEndDate: new Date().toISOString().substr(0, 10),
-        endRegisterDate: new Date().toISOString().substr(0, 10),
+        endRegisterDate: new Date().toISOString().substr(0, 10)
       },
       menuDate1: false,
       menuDate2: false,
@@ -195,20 +201,20 @@ export default {
     ...mapGetters(["getCategory"])
   },
   mounted() {
-    axios.get('http://localhost:4000/userservice/users').then(value=>{
-      console.log(value)
-    })
+    axios.get("http://localhost:4000/userservice/users").then(value => {
+      console.log(value);
+    });
   },
   methods: {
     loadCategory() {
       axios
         .get(`${process.env.EVENT_SERVICE}/category`)
         .then(categoryResponse => {
-          this.categoryEventList = categoryResponse.data
+          this.categoryEventList = categoryResponse.data;
         });
     },
-    createEvent(){
-      axios.post(`${process.env.EVENT_SERVICE}/event`,)
+    createEvent() {
+      axios.post(`${process.env.EVENT_SERVICE}/event`);
     }
   }
 };

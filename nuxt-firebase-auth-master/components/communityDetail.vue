@@ -1,6 +1,6 @@
 <template>
   <div>
-
+    
     <v-row align="center" justify="center">
       <v-img
         :src="imageUrl"
@@ -11,8 +11,9 @@
       ></v-img>
     </v-row>
 
-    <v-btn color="#341646" class="mb-2 white--text" @click="onPickFile" >Upload image 
-      <v-icon> add_a_photo </v-icon>
+    <v-btn color="#341646" class="mb-2 white--text" @click="onPickFile">
+      Upload image
+      <v-icon>add_a_photo</v-icon>
     </v-btn>
     <input
       type="file"
@@ -21,9 +22,8 @@
       accept="image/*"
       @change="onFilePicked"
     />
-   
-   <v-layout>
-  
+
+    <v-layout>
       <v-col cols="12" sm="6" class="d-flex align-center">
         <v-overflow-btn
           class="pr-2"
@@ -43,9 +43,7 @@
           target="#dropdown-example"
         ></v-overflow-btn>
       </v-col>
-  
-   </v-layout>
-    
+    </v-layout>
   </div>
 </template> 
  

@@ -1,79 +1,61 @@
 <template>
-    <div>
-      
-  <v-carousel :show-arrows="false" xs6 lg12 
-  :height="350" >
-    <v-carousel-item
-      v-for="(item,i) in items"
-      :key="i"
-      :src="item.src"
-      
-    ></v-carousel-item>
-  </v-carousel>
+  <div>
+    <v-carousel :show-arrows="false" xs6 lg12 :height="350">
+      <v-carousel-item v-for="(item,i) in items" :key="i" :src="item.src"></v-carousel-item>
+    </v-carousel>
 
-  <br><br>
+    <br />
+    <br />
 
-<center>
-<nuxt-link :to="`/organizerForm?`" style="text-decoration-line:none;">
-          <v-btn
-            class="getStartButton white--text"
-            depressed
-            large
-            height="50"
-            color="#341646"
-            
-          >Get Started Now</v-btn>
-        </nuxt-link>
+    <center>
+      <nuxt-link :to="`/organizerForm?`" style="text-decoration-line:none;">
+        <v-btn
+          class="getStartButton white--text"
+          depressed
+          large
+          height="50"
+          color="#341646"
+        >Get Started Now</v-btn>
+      </nuxt-link>
 
-        <br><br>
-        <h3>or</h3>
+      <br />
+      <br />
+      <h3>or</h3>
 
-        <nuxt-link class="linkToContactUs" :to="`/?`" >
-   <br>
-   <h2 class="contactUs">Contact Us</h2></nuxt-link>
-   
-   <p>For more information</p>
-   </center>
+      <nuxt-link class="linkToContactUs" :to="`/?`">
+        <br />
+        <h2 class="contactUs">Contact Us</h2>
+      </nuxt-link>
 
-  <!-- <v-img src="https://kvillagebkk.com/wp-content/uploads/2019/05/YARD-SALE-001-1030x687.jpg"></v-img> -->
+      <p>For more information</p>
+    </center>
 
-        
-     
-   
-
-   
-
-   
-        
-    </div>
+    <!-- <v-img src="https://kvillagebkk.com/wp-content/uploads/2019/05/YARD-SALE-001-1030x687.jpg"></v-img> -->
+  </div>
 </template>
 
 
 <script>
 export default {
-    name:"becomeOrganizer",
-    data () {
-      return {
-        items: [
-          {
-            src: 'https://blogmedia.evbstatic.com/wp-content/uploads/wpmulti/sites/8/2018/01/15155312/iStock-667709450.jpg',
-          },
-          {
-            src: 'https://venues.be/website/image/bm.place/19/visual4_id/752x478',
-          },
-          {
-            src: 'https://kvillagebkk.com/wp-content/uploads/2019/05/YARD-SALE-001-1030x687.jpg',
-          },
-          
-        ],
-      
-          
-        
-      }
-    },
-  
-    
-}
+  name: "becomeOrganizer",
+  data() {
+    return {
+      items: [
+        {
+          src:
+            "https://blogmedia.evbstatic.com/wp-content/uploads/wpmulti/sites/8/2018/01/15155312/iStock-667709450.jpg"
+        },
+        {
+          src: "https://venues.be/website/image/bm.place/19/visual4_id/752x478"
+        },
+        {
+          src:
+            "https://kvillagebkk.com/wp-content/uploads/2019/05/YARD-SALE-001-1030x687.jpg"
+        }
+      ]
+    };
+  }
+};
 </script>
 
 
@@ -82,14 +64,13 @@ export default {
   max-width: 100%;
   background-color: #eeeeee;
 }
-.linkToContactUs{
-color:#100C4B;
+.linkToContactUs {
+  color: #100c4b;
 }
-.linkToContactUs:hover{
-    text-decoration: underline #100C4B;
+.linkToContactUs:hover {
+  text-decoration: underline #100c4b;
 }
-.getStartedButton{
+.getStartedButton {
   font-family: Roboto !important;
-  
 }
 </style>

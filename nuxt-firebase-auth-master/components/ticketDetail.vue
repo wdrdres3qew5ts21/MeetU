@@ -10,7 +10,9 @@
     <br />
     <br />
     <center>
-      <qrcode :value="qrCodeSrc" :options="{ width: 230 }"></qrcode>
+      <client-only>
+        <qrcode :value="qrCodeSrc" :options="{ width: 230 }"></qrcode>
+      </client-only>
     </center>
 
     <!-- <v-btn
@@ -26,19 +28,9 @@
     </div>
     <br />
     <br />
-   
-  <v-btn @click="isCameraOpen = !isCameraOpen">Open camera</v-btn>
-    <div v-if="isCameraOpen">
-     <no-ssr placeholder="loading...">
-          <qrcode-stream @decode="onDecode"></qrcode-stream>
-        </no-ssr> 
-         </div>
-   <div>
 
-
-   </div> 
     <!-- <qrcode-stream :camera="camera" @init="onCameraChange"></qrcode-stream> -->
-   
+
     <div align="left">
       <h3>Event</h3>
       <br />

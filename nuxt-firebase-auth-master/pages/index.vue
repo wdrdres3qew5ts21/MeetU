@@ -20,7 +20,7 @@
             </slide>
             <slide>
               <v-flex 3 xs12 sm6 offset-sm>
-                <nuxt-link :event="event" :to="`/event?`">
+                <nuxt-link :to="`/event?`">
                   <v-card width="350px" height="320px">
                     <br />
                     <br />
@@ -44,13 +44,14 @@
       </div>
 
       <h1>Popular Event</h1>
+      <client-only>
       <carousel :perPage="1" :paginationEnabled="false">
         <slide v-for="(event, index) in recentlyEventList" :key="index">
           <event-card :event="event"></event-card>
         </slide>
         <slide>
           <v-flex 3 xs12 sm6 offset-sm>
-            <nuxt-link :event="event" :to="`/event?`">
+            <nuxt-link :to="`/event?`">
               <v-card width="350px" height="320px">
                 <br />
                 <br />
@@ -68,17 +69,19 @@
           </v-flex>
         </slide>
       </carousel>
+      </client-only>
       <!-- <event-list :eventList="recentlyEventList" link="/event"></event-list> -->
       <br />
 
       <h1>New Event</h1>
+      <client-only>
       <carousel :perPage="1" :paginationEnabled="false">
         <slide v-for="(event, index) in recentlyEventList" :key="index">
           <event-card :event="event"></event-card>
         </slide>
         <slide>
           <v-flex 3 xs12 sm6 offset-sm>
-            <nuxt-link :event="event" :to="`/event?`">
+            <nuxt-link :to="`/event?`">
               <v-card width="350px" height="320px">
                 <br />
                 <br />
@@ -96,6 +99,7 @@
           </v-flex>
         </slide>
       </carousel>
+      </client-only>
       <!-- <event-list :eventList="recentlyEventList" link="/event"></event-list> -->
       <br />
       <!-- Community -->
