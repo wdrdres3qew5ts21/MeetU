@@ -40,7 +40,6 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse rsp, FilterChain filterChain)
             throws ServletException, IOException {
         String token = req.getHeader(config.getHeader());
-        
         System.out.println(token);
         if (token != null && token.startsWith(config.getPrefix() + " ")) {
             try {
@@ -59,22 +58,6 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
                     System.out.println("Authenicated : " + SecurityContextHolder.getContext().getAuthentication().isAuthenticated());
                     System.out.println(SecurityContextHolder.getContext().getAuthentication());
                 }
-//            try {
-//                Claims claims = Jwts.parser()
-//                        .setSigningKey(config.getSecret().getBytes())
-//                        .parseClaimsJws(token)
-//                        .getBody();
-//                String username = claims.getSubject();
-//                @SuppressWarnings("unchecked")
-//                List<String> authorities = claims.get("authorities", List.class);
-//                if (username != null) {
-//                    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(username, null,
-//                            authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
-//                    SecurityContextHolder.getContext().setAuthentication(auth);
-//                }
-//            } catch (Exception ignore) {
-//                SecurityContextHolder.clearContext();
-//            }
             } catch (FirebaseAuthException ex) {
                 System.out.println("Firebase JWT Authen fail !");
                 SecurityContextHolder.clearContext();
@@ -89,39 +72,5 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
             }
         }
         filterChain.doFilter(req, rsp);
-//        
-//        String token = req.getHeader(config.getHeader());
-//        System.out.println("fuq filter");
-//        System.out.println(token);
-//        if (token == null || token.isBlank()) {
-//            System.out.println("null header fuq you");
-//            filterChain.doFilter(req, rsp);
-//            return;
-//        }
-//
-//        if ((token != null && token.startsWith(config.getPrefix() + " "))) {
-//            try {
-//                token = token.replace(config.getPrefix() + " ", "");
-//                System.out.println(token);
-//                FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
-//                if (decodedToken != null) {
-//                    System.out.println("Decodeed success !!!");
-//                    String uid = decodedToken.getUid();
-//                    String email = decodedToken.getEmail();
-//                    List<String> authorities = new ArrayList<>();
-//                    authorities.add("user");
-//                    authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
-//                    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(email, "jwt", authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
-//                    SecurityContextHolder.getContext().setAuthentication(auth);
-//                    System.out.println("Authenicated : " + SecurityContextHolder.getContext().getAuthentication().isAuthenticated());
-//                    System.out.println(SecurityContextHolder.getContext().getAuthentication());
-//                }
-//            } catch (FirebaseAuthException ex) {
-//                System.out.println("Firebase JWT Authen fail !");
-//                SecurityContextHolder.clearContext();
-//                Logger.getLogger(JwtTokenAuthenticationFilter.class.getName()).log(Level.SEVERE, null, ex);
-//                return;
-//            }
-//        }
     }
 }

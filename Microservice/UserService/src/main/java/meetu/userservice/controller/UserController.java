@@ -84,6 +84,12 @@ public class UserController {
         //return new ResponseEntity<HashMap<String, Object>>(this.userService.verifyJwtToken(jwtRequestBody),HttpStatus.OK);
         return this.userService.createCustomToken();
     }
+    
+    @GetMapping("/user/jwt")
+    public ResponseEntity getCustomJWTViaAuthentication() {
+        //return new ResponseEntity<HashMap<String, Object>>(this.userService.verifyJwtToken(jwtRequestBody),HttpStatus.OK);
+        return this.userService.createCustomToken();
+    }
 
     @PostMapping("/user/verify/jwt")
     public ResponseEntity<HashMap<String, Object>> verifyJwtToken(@RequestBody HashMap<String, Object> jwtRequestBody) {
