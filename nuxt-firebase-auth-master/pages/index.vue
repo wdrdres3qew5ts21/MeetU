@@ -8,7 +8,7 @@
       <br />
 
       <!-- Event List -->
-      <div v-if="getUser.uid!=null">
+      <div v-show="getUser.uid!=null">
         <nuxt-link to="/selectGenres">
           <h3>Setting Recommedation</h3>
         </nuxt-link>
