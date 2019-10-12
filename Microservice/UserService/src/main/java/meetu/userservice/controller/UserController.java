@@ -88,7 +88,7 @@ public class UserController {
     @GetMapping("/user/jwt")
     public ResponseEntity getCustomJWTViaAuthentication() {
         //return new ResponseEntity<HashMap<String, Object>>(this.userService.verifyJwtToken(jwtRequestBody),HttpStatus.OK);
-        return this.userService.createCustomToken();
+        return this.userService.createCustomClaims();
     }
 
     @PostMapping("/user/verify/jwt")
