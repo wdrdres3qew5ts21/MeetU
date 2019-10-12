@@ -33,7 +33,7 @@
       <center>
         <v-container>
           <v-layout row wrap>
-            <client-only>
+            <no-ssr>
               <GmapMap
                 :center="marker.position"
                 :zoom="14"
@@ -58,7 +58,7 @@
                   @click="toggleInfoWindow(marker,0)"
                 />
               </GmapMap>
-            </client-only>
+            </no-ssr>
           </v-layout>
         </v-container>
         <br />

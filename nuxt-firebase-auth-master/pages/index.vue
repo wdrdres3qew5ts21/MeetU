@@ -20,7 +20,7 @@
             </slide>
             <slide>
               <v-flex 3 xs12 sm6 offset-sm>
-                <nuxt-link :event="event" :to="`/event?`">
+                <nuxt-link :to="`/event?`">
                   <v-card width="350px" height="320px">
                     <br />
                     <br />
@@ -44,58 +44,62 @@
       </div>
 
       <h1>Popular Event</h1>
-      <carousel :perPage="1" :paginationEnabled="false">
-        <slide v-for="(event, index) in recentlyEventList" :key="index">
-          <event-card :event="event"></event-card>
-        </slide>
-        <slide>
-          <v-flex 3 xs12 sm6 offset-sm>
-            <nuxt-link :event="event" :to="`/event?`">
-              <v-card width="350px" height="320px">
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <center>
-                  <v-icon large>add</v-icon>
-                </center>
-                <center>
-                  <h2>View More</h2>
-                </center>
-              </v-card>
-            </nuxt-link>
-          </v-flex>
-        </slide>
-      </carousel>
+      <client-only>
+        <carousel :perPage="1" :paginationEnabled="false">
+          <slide v-for="(event, index) in recentlyEventList" :key="index">
+            <event-card :event="event"></event-card>
+          </slide>
+          <slide>
+            <v-flex 3 xs12 sm6 offset-sm>
+              <nuxt-link :to="`/event?`">
+                <v-card width="350px" height="320px">
+                  <br />
+                  <br />
+                  <br />
+                  <br />
+                  <br />
+                  <center>
+                    <v-icon large>add</v-icon>
+                  </center>
+                  <center>
+                    <h2>View More</h2>
+                  </center>
+                </v-card>
+              </nuxt-link>
+            </v-flex>
+          </slide>
+        </carousel>
+      </client-only>
       <!-- <event-list :eventList="recentlyEventList" link="/event"></event-list> -->
       <br />
 
       <h1>New Event</h1>
-      <carousel :perPage="1" :paginationEnabled="false">
-        <slide v-for="(event, index) in recentlyEventList" :key="index">
-          <event-card :event="event"></event-card>
-        </slide>
-        <slide>
-          <v-flex 3 xs12 sm6 offset-sm>
-            <nuxt-link :event="event" :to="`/event?`">
-              <v-card width="350px" height="320px">
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <center>
-                  <v-icon large>add</v-icon>
-                </center>
-                <center>
-                  <h2>View More</h2>
-                </center>
-              </v-card>
-            </nuxt-link>
-          </v-flex>
-        </slide>
-      </carousel>
+      <client-only>
+        <carousel :perPage="1" :paginationEnabled="false">
+          <slide v-for="(event, index) in recentlyEventList" :key="index">
+            <event-card :event="event"></event-card>
+          </slide>
+          <slide>
+            <v-flex 3 xs12 sm6 offset-sm>
+              <nuxt-link :to="`/event?`">
+                <v-card width="350px" height="320px">
+                  <br />
+                  <br />
+                  <br />
+                  <br />
+                  <br />
+                  <center>
+                    <v-icon large>add</v-icon>
+                  </center>
+                  <center>
+                    <h2>View More</h2>
+                  </center>
+                </v-card>
+              </nuxt-link>
+            </v-flex>
+          </slide>
+        </carousel>
+      </client-only>
       <!-- <event-list :eventList="recentlyEventList" link="/event"></event-list> -->
       <br />
       <!-- Community -->
@@ -132,12 +136,11 @@
       </center>
     </v-container>
   </div>
-  <!-- </transition> -->
 </template>
 
 <script>
-import Carousel from "vue-carousel/src/Carousel.vue";
-import Slide from "vue-carousel/src/Slide.vue";
+// import Carousel from "vue-carousel/src/Carousel.vue";
+// import Slide from "vue-carousel/src/Slide.vue";
 import { mapGetters } from "vuex";
 //import CarouselCard from '../components/CarouselCard.vue';
 import axios from "axios";
@@ -155,8 +158,8 @@ import { error } from "util";
 
 export default {
   components: {
-    Carousel,
-    Slide,
+    // Carousel,
+    // Slide,
     EventList,
     CommunityCard,
     EventCard
@@ -164,6 +167,7 @@ export default {
   },
   data() {
     return {
+      isRendered: false,
       isLogin: false,
       carouselsPhoto: [],
       recommendedEventList: [],
@@ -190,6 +194,7 @@ export default {
     if (this.isLogin) {
       this.getRecommendEvent();
     }
+    this.isRendered = true;
   },
   computed: {
     ...mapGetters(["getUser"])
