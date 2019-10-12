@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
+import com.meetu.gateway.filter.AuthenticationFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,6 +16,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Role;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,6 +31,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
  * @author raj
  */
 public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
+    
+    private static org.slf4j.Logger log = LoggerFactory.getLogger(JwtTokenAuthenticationFilter.class);
 
     private final JwtAuthenticationConfig config;
 
@@ -55,6 +59,7 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
                     authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
                     UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(email, "jwt", authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
                     SecurityContextHolder.getContext().setAuthentication(auth);
+                    log.info(String.format("email: %s pass: true", email));
                     System.out.println("Authenicated : " + SecurityContextHolder.getContext().getAuthentication().isAuthenticated());
                     System.out.println(SecurityContextHolder.getContext().getAuthentication());
                 }

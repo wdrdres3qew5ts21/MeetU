@@ -5,6 +5,7 @@
  */
 package meetu.userservice.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
@@ -241,6 +242,34 @@ public class UserService {
         HashMap<String, String> message = new HashMap<>();
         message.put("response", "Failed to update user interest !");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
+    }
+
+    public ResponseEntity createCustomClaims() {
+        Map<String, Object> claims = new HashMap<>();
+       // claims.put("admin", true);
+        String uid = "JdNBfUjngGZEedP8wr9XhY0V15q1";
+
+        User userFromDatabase = userRepository.findByUid(uid);
+        System.out.println(userFromDatabase);
+        claims.put("persona", "fuq you");
+        String[] group = new String[5];
+        group[0] = "redhat";
+        group[1] = "ibm";
+        group[2] = "pivotal";
+        claims.put("admin list", group);
+        ObjectMapper object = new ObjectMapper();
+        Map<String, Object> user = object.convertValue(userFromDatabase.getPersona(), Map.class);
+        
+//        user.put("key", "ddd");
+//        user.put("dasdas", "sadasd");
+        claims.put("personaaaa", user);
+        try {
+            FirebaseAuth.getInstance().setCustomUserClaims(uid, claims);
+            System.out.println("!!! Update");
+        } catch (FirebaseAuthException ex) {
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
 }
