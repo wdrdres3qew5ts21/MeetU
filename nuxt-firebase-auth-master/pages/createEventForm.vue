@@ -4,82 +4,84 @@
     <h2 class="h2">Create New Events</h2>
     <br />
 
-    <v-form>
-      <v-text-field v-model="event.eventName" :rules="eventNameRules" label="* Event Name" required></v-text-field>
-    </v-form>
+ 
+      <v-text-field v-model="eventForm.eventName" label="* Event Name" required></v-text-field>
+      <!-- <v-text-field v-model="eventForm.eventDetail"  placeholder="Event Detail" required></v-text-field> -->
+     <br />
+      <v-layout class="mb-4">
+      <v-textarea
+        name="description"
+        label="Description"
+        v-model="eventForm.eventDetail"
+   
+        rows="3"
+      ></v-textarea>
+    </v-layout>
 
     <v-flex xs12 sm5 d-flex>
-      <v-select :items="categoryEventList" label="Category" v-model="categoryEvent"></v-select>
+      <v-select :items="categoryEventList" label="Category" v-model="eventForm.selectedCategory"></v-select>
     </v-flex>
 
-    <!-- <v-flex xs12 sm5 d-flex>
-      <v-select :items="eventTypes" label="Event Types" v-model="eventTypes"></v-select>
-    </v-flex>-->
-
-<v-col cols="12" sm="6" md="4">
-      <v-menu
-        ref="menu"
-        v-model="menu"
-        :close-on-content-click="false"
-        :return-value.sync="date"
-        transition="scale-transition"
-        offset-y
-        min-width="290px"
-      >
-        <template v-slot:activator="{ on }">
-          <v-text-field
-            v-model="date"
-            label="Start Date: "
-            prepend-icon="event"
-            readonly
-            v-on="on"
-          ></v-text-field>
-        </template>
-        <v-date-picker v-model="date" no-title scrollable>
-          <div class="flex-grow-1"></div>
-          <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
-          <v-btn text color="primary" @click="$refs.menu.save(date)">OK</v-btn>
-        </v-date-picker>
-      </v-menu>
-    </v-col>
-
-<!-- <v-col cols="12" sm="6" md="4">
-      <v-menu
-        ref="menu"
-        v-model="menu2"
-        :close-on-content-click="false"
-        :return-value.sync="date"
-        transition="scale-transition"
-        offset-y
-        min-width="290px"
-      >
-        <template v-slot:activator="{ on }">
-          <v-text-field
-            v-model="event.eventEndDate"
-            label="* Event Ends"
-            prepend-icon="event"
-            readonly
-            v-on="on"
-          ></v-text-field>
-        </template>
-        <v-date-picker v-model="date" no-title scrollable>
-          <div class="flex-grow-1"></div>
-          <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
-          <v-btn text color="primary" @click="$refs.menu.save(date)">OK</v-btn>
-        </v-date-picker>
-      </v-menu>
-    </v-col> -->
-
-    
 
 
+        <v-menu
+          ref="menu"
+          v-model="menuEventStartDate"
+          :close-on-content-click="false"
+          transition="scale-transition"
+          offset-y
+          full-width
+          min-width="290px"
+        >
+          <template v-slot:activator="{ on }">
+            <v-text-field           
+              v-model="eventForm.eventStartDate"
+              label="eventStartDate"
+              prepend-icon="today"
+              readonly
+              v-on="on"
+            ></v-text-field>
+          </template>
+          <v-date-picker
+            ref="picker"
+            v-model="eventForm.eventStartDate"
+            min="1950-01-01"
+            @change="save"
+          ></v-date-picker>
+        </v-menu>
+
+
+
+        <v-menu
+          ref="menu"
+          v-model="menuEventEndDate"
+          :close-on-content-click="false"
+          transition="scale-transition"
+          offset-y
+          full-width
+          min-width="290px"
+        >
+          <template v-slot:activator="{ on }">
+            <v-text-field
+              v-model="eventForm.eventEndDate"
+              label="eventEndDate"
+              prepend-icon="today"
+              readonly
+              v-on="on"
+            ></v-text-field>
+          </template>
+          <v-date-picker
+            ref="picker"
+            v-model="eventForm.eventEndDate"       
+            min="1950-01-01"
+            @change="save"
+          ></v-date-picker>
+        </v-menu>
 
     <br />
 
     <span class="location">Location</span>
-    <p
-      class="locationDescription"
-    >Add a location of your event and a short description of how to get there.</p>
+
 
     <v-btn class="addLocationButton" color="white">Add Location</v-btn>
 
@@ -103,7 +105,7 @@
     <br />
 
     <center>
-      <nuxt-link :to="`/?`" style="text-decoration-line:none;">
+      <!-- <nuxt-link :to="`/?`" style="text-decoration-line:none;"> -->
         <v-btn 
         block 
         class="saveButton white--text" 
@@ -111,11 +113,11 @@
         depressed 
         large 
         height="50"
-        @click="createEventSave()"
+        @click="onSubmit()"
         >Save
         
         </v-btn>
-      </nuxt-link>
+      <!-- </nuxt-link> -->
     </center>
 
     <br />
@@ -131,6 +133,17 @@ export default {
   name: "createEventForm",
   data() {
     return {
+      menuEventStartDate: false,
+      menuEventEndDate: false,
+      eventForm: {
+        eventName: "",
+        eventDetail: "" ,
+        location: "",
+        // eventStartDate: "",
+        eventEndDate: "",
+        selectedCategory:"",
+
+      },
       categoryEventList: [
         "Arts",
         "Business",
@@ -144,18 +157,6 @@ export default {
         "Social",
         "Technology"
       ],
-      event: {
-        eventName: "",
-        eventDetail: "",
-        eventStartDate: new Date().toISOString().substr(0, 10),
-        eventEndDate: new Date().toISOString().substr(0, 10),
-        endRegisterDate: new Date().toISOString().substr(0, 10)
-      },
-      date:new Date().toISOString().substr(0, 10),
-     
-      menu:false,
-      eventNameRules: [v => !!v || "Event name is required"],
-      location:"",
     };
   },
   computed: {
@@ -168,14 +169,28 @@ export default {
     },
 
   mounted() {
-    axios.get("http://localhost:4000/userservice/users").then(value => {
-      console.log(value);
-    });
+    // axios.get("http://localhost:4000/userservice/users").then(value => {
+    //   console.log(value);
+    // });
+
   },
   methods: {
-    save (date) {
+      save (date) {
         this.$refs.menu.save(date)
       },
+
+    onSubmit() {
+    console.log({
+      eventname: this.eventForm.eventName,
+      eventdetail: this.eventForm.eventDetail,
+      eventStartDate: this.eventForm.eventStartDate,
+      eventEndDate: this.eventForm.eventEndDate,
+      location: this.location,
+      category: this.eventForm.selectedCategoryList
+    }) 
+    },
+
+
     loadCategory() {
       axios
         .get(`${process.env.EVENT_SERVICE}/category`)
