@@ -1,7 +1,6 @@
 <template>
   <div>
     <br />
-
     <v-layout>
       <v-flex text-xs-center xs12 sm6 offset-sm3>
         <h1 class="title">Sign Up</h1>
@@ -25,27 +24,11 @@
       </v-flex>
     </v-layout>
     <br />
-
     <hr />
-
     <br />
-    <!-- <v-card class="elevation-0 mx-auto" color="transparent" max-width="150">
-      <v-img
-        :aspect-ratio="1/1"
-        src="https://image.flaticon.com/icons/png/512/64/64572.png"
-        background-color="info"
-      ></v-img>
-
-      <v-card-text class="pt-4" style="position: relative;">
-        <v-btn absolute color="#341646" class="white--text" fab normal right top>
-          <v-icon>add_a_photo</v-icon>
-        </v-btn>
-      </v-card-text>
-    </v-card>-->
 
     <v-form ref="form" v-model="valid" lazy-validation>
       <v-text-field v-model="email" :rules="emailRules" label="* E-mail" required></v-text-field>
-
       <v-text-field
         v-model="password"
         type="password"
@@ -57,7 +40,7 @@
       <v-text-field
         v-model="confirmPassword"
         type="password"
-        :rules="passwordRules"
+        :rules="[passwordConfirmationRule]"
         label="* Password Confirmation"
         required
       ></v-text-field>
@@ -95,15 +78,12 @@
               <v-btn flat color="primary" @click="$refs.menu.save(birthDate)">OK</v-btn>
             </v-date-picker>
           </v-menu>
-        </v-flex>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <v-radio-group v-model="gender" row>
+        </v-flex>
+        <v-radio-group v-model="gender" row style="justify-content:center">
           Gender: &nbsp;&nbsp;&nbsp;
           <v-radio label="Male" value="male"></v-radio>
           <v-radio label="Female" value="female"></v-radio>
-          <!-- <v-radio label="Unspecific" value="radio-3"></v-radio> -->
         </v-radio-group>
-
-        <!-- <v-container> -->
 
         <v-flex xs12 sm5 d-flex>
           <v-select :items="locationList" label="Location" prepend-icon="place" v-model="location"></v-select>
@@ -130,7 +110,7 @@
 
       <v-btn
         block
-        round="16px;"
+        :round="true"
         color="#341646"
         class="signIn mb-2 white--text"
         @click="emailSignUp"
@@ -141,9 +121,7 @@
       <center>
         <h3>
           Already member ?
-          <nuxt-link :to="`/login`" style="text-decoration-line:none;">
-            <a class="linkSignup">Log In</a>
-          </nuxt-link>
+          <nuxt-link to="/login" style="text-decoration-line:none;" class="linkSignup">Log In</nuxt-link>
         </h3>
       </center>
     </v-form>
@@ -156,7 +134,7 @@ import Swal from "sweetalert2";
 export default {
   name: "signupForm",
   data: () => ({
-    phone: "",
+    phone: ["TH", "EN"],
     gender: "",
     email: "",
     emailRules: [
@@ -169,14 +147,12 @@ export default {
       v => !!v || "Password is required",
       v => v.length >= 8 || "Password must be 8 character",
       v =>
-        this.password === this.confirmPassword ||
+        v.password === v.confirmPassword ||
         "Password and Confirm Password need to be match"
     ],
     confirmPassword: "",
-    // passwordRules: [
-    //   v => !!v || "Password is required",
-    //   v => v.length >= 8 || "Password must be 8 character",
-    // ],
+
+    checkbox: false,
 
     valid: true,
     firstname: "",
@@ -272,9 +248,12 @@ export default {
     ]
     //   checkbox: false
   }),
-
-  // forgotPassword:'Forgot your password?',
-
+  computed: {
+    passwordConfirmationRule() {
+      return () =>
+        this.password === this.confirmPassword || "Password must match";
+    }
+  },
   methods: {
     validate: function(e) {
       if (this.$refs.form.validate()) {
