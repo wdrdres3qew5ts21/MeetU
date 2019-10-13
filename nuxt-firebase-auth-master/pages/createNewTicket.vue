@@ -3,25 +3,19 @@
     <br />
     <h2 class="h2">Create a New Tickets</h2>
     <br />
-    <h3 class="h3">Pricing</h3>
-    <v-flex>
-      <v-select :items="priceTicket" v-model="priceTicket"></v-select>
-    </v-flex>
-
     <br />
 
-    <h3 class="h3">Ticket Type Details</h3>
-    <v-form>
+    <!-- <v-form>
       <v-text-field
         v-model="ticketTypeName"
         :rules="ticketTypeNameRules"
         label="* Ticket Type Name"
         required
       ></v-text-field>
-    </v-form>
+    </v-form>-->
 
     <v-text-field
-      v-model="rows"
+      v-model="ticketForm.quantityOfTicket"
       type="number"
       label="* Quantity Available"
       max="100000"
@@ -31,42 +25,95 @@
 
     <br />
     <h3 class="h3">Sale Period</h3>
+    <v-menu
+      ref="menu"
+      v-model="menuSaleStartDate"
+      :close-on-content-click="false"
+      transition="scale-transition"
+      offset-y
+      full-width
+      min-width="290px"
+    >
+      <template v-slot:activator="{ on }">
+        <v-text-field
+          v-model="ticketForm.saleStartDate"
+          label="saleStartDate"
+          prepend-icon="today"
+          readonly
+          v-on="on"
+        ></v-text-field>
+      </template>
+      <v-date-picker
+        ref="picker"
+        v-model="ticketForm.saleStartDate"
+        min="1950-01-01"
+        @change="save"
+      ></v-date-picker>
+    </v-menu>
 
-    <v-col cols="12" sm="6" md="4">
+     <v-layout row wrap>
+    <v-flex xs11 sm5>
       <v-menu
-        ref="menuDate1"
-        v-model="menu"
+        ref="menu"
+        v-model="menu2"
         :close-on-content-click="false"
-        :return-value.sync="date"
+        :nudge-right="40"
+        :return-value.sync="time"
+        lazy
         transition="scale-transition"
         offset-y
         full-width
+        max-width="290px"
         min-width="290px"
       >
         <template v-slot:activator="{ on }">
           <v-text-field
-            v-model="date"
-            label="* Sale Starts"
-            prepend-icon="event"
+            v-model="ticketForm.startTime"
+            label="Start Time"
+            prepend-icon="access_time"
             readonly
             v-on="on"
           ></v-text-field>
         </template>
-        <v-date-picker v-model="date" no-title scrollable>
-          <div class="flex-grow-1"></div>
-          <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
-          <v-btn text color="primary" @click="$refs.menu.save(date)">OK</v-btn>
-        </v-date-picker>
+        <v-time-picker
+          v-if="menu2"
+          v-model="ticketForm.startTime"
+          full-width
+          @click:minute="$refs.menu.save(time)"
+        ></v-time-picker>
       </v-menu>
-    </v-col>
+    </v-flex>
+  </v-layout>
 
-    <v-col cols="11" sm="5">
+    <v-menu
+      ref="menu"
+      v-model="menuSaleEndDate"
+      :close-on-content-click="false"
+      transition="scale-transition"
+      offset-y
+      full-width
+      min-width="290px"
+    >
+      <template v-slot:activator="{ on }">
+        <v-text-field
+          v-model="ticketForm.saleEndDate"
+          label="saleEndDate"
+          prepend-icon="today"
+          readonly
+          v-on="on"
+        ></v-text-field>
+      </template>
+      <v-date-picker ref="picker" v-model="ticketForm.saleEndDate" min="1950-01-01" @change="save"></v-date-picker>
+    </v-menu>
+
+<v-flex xs11 sm5>
       <v-menu
-        ref="menuTime"
-        v-model="menuTime1"
+        ref="menu"
+        v-model="menu1"
         :close-on-content-click="false"
         :nudge-right="40"
         :return-value.sync="time"
+        lazy
         transition="scale-transition"
         offset-y
         full-width
@@ -74,91 +121,56 @@
         min-width="290px"
       >
         <template v-slot:activator="{ on }">
-          <v-text-field v-model="time" label="Time :" prepend-icon="access_time" readonly v-on="on"></v-text-field>
+          <v-text-field
+            v-model="ticketForm.endTime"
+            label="Start Time"
+            prepend-icon="access_time"
+            readonly
+            v-on="on"
+          ></v-text-field>
         </template>
         <v-time-picker
-          v-if="menuTime1"
-          v-model="time"
+          v-if="menu1"
+          v-model="ticketForm.endTime"
           full-width
           @click:minute="$refs.menu.save(time)"
         ></v-time-picker>
       </v-menu>
-    </v-col>
+    </v-flex>
 
-    <v-col cols="12" sm="6" md="4">
-      <v-menu
-        ref="menuDate2"
-        v-model="menu"
-        :close-on-content-click="false"
-        :return-value.sync="date"
-        transition="scale-transition"
-        offset-y
-        full-width
-        min-width="290px"
-      >
-        <template v-slot:activator="{ on }">
-          <v-text-field v-model="date" label="* Sale Ends" prepend-icon="event" readonly v-on="on"></v-text-field>
-        </template>
-        <v-date-picker v-model="date" no-title scrollable>
-          <div class="flex-grow-1"></div>
-          <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
-          <v-btn text color="primary" @click="$refs.menu.save(date)">OK</v-btn>
-        </v-date-picker>
-      </v-menu>
-    </v-col>
-
-    <v-col cols="11" sm="5">
-      <v-menu
-        ref="menuTime"
-        v-model="menuTime2"
-        :close-on-content-click="false"
-        :nudge-right="40"
-        :return-value.sync="time"
-        transition="scale-transition"
-        offset-y
-        full-width
-        max-width="290px"
-        min-width="290px"
-      >
-        <template v-slot:activator="{ on }">
-          <v-text-field v-model="time" label="Time :" prepend-icon="access_time" readonly v-on="on"></v-text-field>
-        </template>
-        <v-time-picker
-          v-if="menuTime2"
-          v-model="time"
-          full-width
-          @click:minute="$refs.menu.save(time)"
-        ></v-time-picker>
-      </v-menu>
-    </v-col>
 
     <br />
     <h3 class="h3">Age Restriction</h3>
-    <span class="minAge">Minimum Age</span>
+    Minimum Age
     <p class="minAgeDescription">Restrict attendees age must be at least</p>
     <v-form>
-      <v-text-field v-model="rows" type="number" max="100" min="1" step="1"></v-text-field>
+      <v-text-field type="number" max="100" min="1" step="1" v-model="ticketForm.minAge">
+
+      </v-text-field>
     </v-form>
 
     <br />
 
-    <span class="minAge">Maximum Age</span>
+    Maximum Age
     <p class="maxAgeDescription">Restrict attendees age must be under</p>
     <v-form>
-      <v-text-field v-model="rows" type="number" max="100" min="1" step="1"></v-text-field>
+      <v-text-field type="number" max="100" min="1" step="1"
+      v-model="ticketForm.maxAge"></v-text-field>
     </v-form>
-    <br><br>
+    <br />
+    <br />
 
     <center>
-      <nuxt-link :to="`/?`" style="text-decoration-line:none;">
+      <!-- <nuxt-link :to="`/?`" style="text-decoration-line:none;"> -->
         <v-btn class="cancelButton white--text" color="#AEAEAE" depressed large height="50">Cancel</v-btn>
-      </nuxt-link>
+      <!-- </nuxt-link> -->
 
-      <nuxt-link :to="`/?`" style="text-decoration-line:none;">
-        <v-btn class="saveButton white--text" color="#341646" depressed large height="50">Save</v-btn>
-      </nuxt-link>
+      <!-- <nuxt-link :to="`/?`" style="text-decoration-line:none;"> -->
+        <v-btn class="saveButton white--text" color="#341646" depressed large height="50"
+        @click="onSubmit()">Save</v-btn>
+      <!-- </nuxt-link> -->
     </center>
-    <br>
+    <br />
   </div>
 </template>
 
@@ -168,19 +180,49 @@ export default {
   data() {
     return {
       date: new Date().toISOString().substr(0, 10),
-      menuDate1: false,
-      menuDate2: false,
-      time: null,
-      menuTime1: false,
-      menuTime2: false
+      menuSaleStartDate: false,
+      menuSaleEndDate: false,
+    
+        time: null,
+        menu2: false,
+        menu1: false,
+        modal2: false,
+      startTime:'',
+      ticketForm: {
+        quantityOfTicket: "",
+        saleStartDate: "",
+        startTime: "",
+        saleEndDate: "",
+        minAge: "",
+        maxAge: "",
+        endTime: ""
+      }
     };
+  },
+  watch: {
+    menu(val) {
+      val && setTimeout(() => (this.$refs.picker.activePicker = "YEAR"));
+    }
+  },
+  methods: {
+    save(date) {
+      this.$refs.menu.save(date);
+    },
+    onSubmit() {
+      console.log({
+        quantity: this.ticketForm.quantityOfTicket,
+        saleStartDate: this.ticketForm.saleStartDate,
+        saleEndDate: this.ticketForm.saleEndDate,
+        startTime: this.ticketForm.startTime,
+        endTime: this.ticketForm.endTime
+      });
+    },
+    
   }
 };
 </script>
 
 <style lang="css">
-
-
 .v-content {
   max-width: 100%;
   background-color: #eeeeee;
