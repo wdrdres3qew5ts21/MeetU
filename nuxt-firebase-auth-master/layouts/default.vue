@@ -60,28 +60,11 @@
             </v-list-tile>
             <v-list-tile-content class="categoryIcon" style="color:#341646;">Community</v-list-tile-content>
           </v-list-tile>
-          <v-list-tile v-for="(category, i) in categoryList" :key="i" ripple>
+          <v-list-tile v-for="(communityMenu, i) in communityMenuList" :key="i" ripple>
             <v-list-tile-action></v-list-tile-action>
             <v-list-tile-content>
-              <nuxt-link class="categoryLink" :to="`/event?category=${category.categoryName}`">
-                <v-list-tile-title>{{ category.categoryLabel }}</v-list-tile-title>
-              </nuxt-link>
-            </v-list-tile-content>
-          </v-list-tile>
-        </v-list-group>
-
-        <v-list-group>
-          <v-list-tile slot="activator">
-            <v-list-tile>
-              <v-icon class="icon">category</v-icon>
-            </v-list-tile>
-            <v-list-tile-content class="categoryIcon" style="color:#341646;">About Us</v-list-tile-content>
-          </v-list-tile>
-          <v-list-tile v-for="(category, i) in categoryList" :key="i" ripple>
-            <v-list-tile-action></v-list-tile-action>
-            <v-list-tile-content>
-              <nuxt-link class="categoryLink" :to="`/event?category=${category.categoryName}`">
-                <v-list-tile-title>{{ category.categoryLabel }}</v-list-tile-title>
+              <nuxt-link class="categoryLink" :to="communityMenu.link">
+                <v-list-tile-title>{{ communityMenu.label }}</v-list-tile-title>
               </nuxt-link>
             </v-list-tile-content>
           </v-list-tile>
@@ -94,38 +77,22 @@
             </v-list-tile>
             <v-list-tile-content class="categoryIcon" style="color:#341646;">For Organizer</v-list-tile-content>
           </v-list-tile>
-          <v-list-tile v-for="(category, i) in categoryList" :key="i" ripple>
+          <v-list-tile v-for="(organizeMenu, i) in organizeMenuList" :key="i" ripple>
             <v-list-tile-action></v-list-tile-action>
             <v-list-tile-content>
-              <nuxt-link class="categoryLink" :to="`/event?category=${category.categoryName}`">
-                <v-list-tile-title>{{ category.categoryLabel }}</v-list-tile-title>
+              <nuxt-link class="categoryLink" :to="organizeMenu.link">
+                <v-list-tile-title>{{ organizeMenu.label }}</v-list-tile-title>
               </nuxt-link>
             </v-list-tile-content>
           </v-list-tile>
         </v-list-group>
 
-        <v-list-group>
-          <v-list-tile slot="activator">
-            <v-list-tile>
-              <v-icon class="icon">category</v-icon>
-            </v-list-tile>
-            <v-list-tile-content class="categoryIcon" style="color:#341646;">Services</v-list-tile-content>
-          </v-list-tile>
-          <v-list-tile v-for="(category, i) in categoryList" :key="i" ripple>
-            <v-list-tile-action></v-list-tile-action>
-            <v-list-tile-content>
-              <nuxt-link class="categoryLink" :to="`/event?category=${category.categoryName}`">
-                <v-list-tile-title>{{ category.categoryLabel }}</v-list-tile-title>
-              </nuxt-link>
-            </v-list-tile-content>
-          </v-list-tile>
-        </v-list-group>
         <v-divider :inset="true"></v-divider>
       </v-list>
     </v-navigation-drawer>
 
     <v-toolbar color="#fff" app style="color:#fff;" id="toolbar">
-      <nuxt-link to="/?" style="text-decoration-line:none;">
+      <nuxt-link to="/" style="text-decoration-line:none;">
         <!-- <v-toolbar-title style="text-decoration-line:none;color: #341646">
           <v-img
       :src="logoImage"
@@ -134,9 +101,9 @@
     ></v-img>
         </v-toolbar-title>-->
 
-        <v-toolbar-items>
+        <v-toolbar-title>
           <img :src="logoToolbarImage" height="110" />
-        </v-toolbar-items>
+        </v-toolbar-title>
       </nuxt-link>
 
       <v-spacer></v-spacer>
@@ -148,31 +115,28 @@
       </nuxt-link>
 
       <div>
-        
-          <v-btn icon @click="drawer= !drawer"> 
-            <v-icon class="menuButton" color="#341646;">menu</v-icon>
-          </v-btn>
-        
+        <v-btn icon @click="drawer= !drawer">
+          <v-icon class="menuButton" color="#341646;">menu</v-icon>
+        </v-btn>
       </div>
 
       <!-- <v-btn icon @click.native.stop="drawer = !drawer" class="hidden-lg-and-up">
         <v-icon class="menuButton" color="#341646;">menu</v-icon>
-      </v-btn> -->
+      </v-btn>-->
 
+      <v-menu :bottom="true" offset-y>
+        <template v-slot:activator="{ on }">
+          <v-btn dark icon v-on="on">
+            <v-icon class="menuButton" color="#341646;">menu</v-icon>
+          </v-btn>
+        </template>
 
-        <v-menu :bottom="true"  offset-y> 
-          <template v-slot:activator="{ on }" >
-            <v-btn dark icon v-on="on">
-              <v-icon class="menuButton" color="#341646;">menu</v-icon>
-            </v-btn>
-          </template>
-
-          <v-list>
-            <v-list-tile v-for="(item, i) in linksFooter" :key="i">
-              <v-list-tile-title>{{ item }}</v-list-tile-title>
-            </v-list-tile>
-          </v-list>
-        </v-menu>
+        <v-list>
+          <v-list-tile v-for="(menu, i) in linksFooter" :key="i">
+            <v-list-tile-title>{{ menu.label }}</v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+      </v-menu>
 
       <!-- <v-text-field
         class="hidden-xs-only"
@@ -219,7 +183,9 @@
 
     <v-footer height="auto" color="#341646">
       <v-layout row wrap justify-center>
-        <v-btn v-for="link in linksFooter" :key="link" color="#fff" flat>{{ link }}</v-btn>
+        <nuxt-link v-for="(link, index) in linksFooter" :key="index" :to="link.link" >
+          <v-btn color="#fff" flat>{{ link.label }}</v-btn>
+        </nuxt-link>
         <v-flex xs12 py-3 text-xs-center white--text>
           &copy;2019 —
           <strong>Meet U</strong>
@@ -253,14 +219,20 @@ export default {
       categoryList: [],
       menu: false,
       linksFooter: [
-        "Home",
-        "About Us",
-        "Community",
-        "Team",
-        "Services",
-        "Blog",
-        "Contact Us"
-      ]
+        { label: "Home", link: "/" },
+        { label: "Event", link: "/event" },
+        { label: "Community", link: "/community" },
+        { label: "About Us", link: "/" },
+        { label: "Contact Us", link: "/" }
+      ],
+      communityMenuList: [
+        { label: "Create Community", link: "/community/createCommunity" },
+        { label: "View Community", link: "/community" },
+      ],
+      organizeMenuList: [
+        { label: "Create Organize", link: "/organizerForm" },
+        { label: "Create Event", link: "/createEventForm" },
+      ],
     };
   },
   mounted() {

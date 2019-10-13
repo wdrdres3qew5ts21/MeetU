@@ -15,7 +15,7 @@
         <h1>Recomended Event</h1>
         <client-only>
           <carousel :perPage="1" :paginationEnabled="false">
-            <slide v-for="(event, index) in recentlyEventList" :key="index">
+            <slide v-for="(event, index) in recommendedEventList" :key="index">
               <event-card :event="event"></event-card>
             </slide>
             <slide>
@@ -209,7 +209,7 @@ export default {
       );
       console.log("-- recommend ---");
       console.log(recommendEventList.data);
-      this.recommendedEventList = recommendEventList.data;
+      this.recommendedEventList = recommendEventList.data.body;
     },
     getPopularEvent: async function() {
       let concentPerPage = 6;
