@@ -12,7 +12,7 @@
         color="white"
         @click="$refs.coverPictureUpload.click()"
       >Choose file</v-btn>
-      <input v-show="false" ref="coverPictureUpload" type="file" @change="onCoverPictureUpload" />
+      <input v-show="false" ref="coverPictureUpload" type="file" @change="onCoverPictureUpload" accept="image/*" />
       <p v-if="eventPictureCover">{{eventPictureCover.name}}</p>
     </span>
 
@@ -26,7 +26,7 @@
         color="white"
         @click="$refs.pictureListUpload.click()"
       >Choose file</v-btn>
-      <input v-show="false" ref="pictureListUpload" type="file" @change="imgFunction" />
+      <input v-show="false" ref="pictureListUpload" type="file" @change="imgFunction" accept="image/*" />
     </span>
 
     <br />
