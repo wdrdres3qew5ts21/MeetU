@@ -1,29 +1,21 @@
 <template>
   <v-container>
-    <community-detail></community-detail>
-    <br />
-
-  
-   
-
+  <div>
+    <todo-list></todo-list>
+  </div>
   </v-container>
 </template>
 
 <script>
-import communityDetail from "~/components/communityDetail";
-
+import TodoList from './TodoList'
 
 export default {
-  data() {
-    return {
-      lists: [{ postInput: '' }]
-    };
-  },
+    name: "LayoutList",
   components: {
-    communityDetail
-  }};
+    TodoList
+  }
+}
 </script>
-
 <style lang="css">
 .v-content {
   max-width: 100%;
@@ -35,4 +27,8 @@ export default {
   background-size: cover;
   background: transparent; */
 }
+
+
+
 </style>
+

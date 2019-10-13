@@ -9,7 +9,6 @@
         </v-btn>
       </v-flex>
     </v-layout>
-
     <br />
     <v-layout justify-center row wrap>
       <v-flex xs12>
@@ -23,15 +22,18 @@
     <h2>Level:</h2>
     <br />
     <br />
-
     <v-layout column>
       <v-form ref="form" v-model="valid">
         <h2>Information</h2>
+        <br/>
+        <h3>Your interest : </h3>
         <v-flex xs12>
           <center>
-            <h3>
-              <router-link to="/selectGenres" style="color:red">Edit</router-link>
-              Preference: {{userForm.interest}} : {{userForm.interest.length}}/{{limitedSelectNumber}}
+            <h3>             
+              
+               {{userForm.interest}} 
+               <!-- : {{userForm.interest.length}}/{{limitedSelectNumber}} -->
+               <router-link to="/selectGenres" style="color:red"> <v-icon color="#341646" medium>edit</v-icon></router-link>
             </h3>
           </center>
         </v-flex>

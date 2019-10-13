@@ -48,6 +48,8 @@
                             :selected="data.selected"
                             close
                             @input="remove(data.item.categoryName)"
+                            value="filterForm.category"
+                            v-model="categorySelected"
                           >
                             <strong>{{ data.item.categoryName}}</strong>&nbsp;
                           </v-chip>
@@ -56,11 +58,11 @@
                     </v-layout>
                     <v-subheader>Sort by Date</v-subheader>
                     <v-layout class="mb-4">
-                      <v-select :items="sortDate" label="Last Update" solo></v-select>
+                      <v-select :items="sortDate" label="Last Update" v-model="filterForm.sortByDate" solo></v-select>
                     </v-layout>
-
+         
                     <v-subheader>Near your location</v-subheader>
-                    <v-text-field label="Distance ... Kilometer"></v-text-field>
+                    <v-text-field type="number" v-model="filterForm.distance"> </v-text-field>
                   </v-list>
 
                   <center>
@@ -69,7 +71,7 @@
                       depressed
                       large
                       color="#341646"
-                      @click="dialog = false"
+                      @click="searchByFilter()"
                     >Search</v-btn>
                   </center>
                 </v-card>
@@ -98,12 +100,12 @@
         </v-flex>
         <br />
 
-        <!-- <event-list v-if="searchedEventList.length>0" :eventList="searchedEventList"></event-list>
-        <v-flex xs12 v-else>
+        <event-list v-if="searchedEventList.length>0" :eventList="searchedEventList"></event-list>
+        <!-- <v-flex xs12 v-else>
           <h3>
             <center>You can search event ;)</center>
           </h3>
-        </v-flex>-->
+        </v-flex> -->
 
         <!-- <v-btn
             color="#fc5577"
@@ -136,13 +138,19 @@ export default {
       notifications: false,
       sound: true,
       widgets: false,
-      sortDate: ["Last Update", "First Update"],
       search: "",
+      sortDate: ["Last Update", "First Update"],
       isRecently: false,
       isShowEventTag: false,
       categoryList: [],
       searchedEventList: [],
-      selectedCategoryList: []
+      selectedCategoryList: [],
+      filterForm: {
+        distance: '',
+        sortByDate: '',
+        categorySelected: []
+        
+      }
     };
   },
   computed: {
@@ -194,6 +202,11 @@ export default {
       searchedEventList = searchedEventList.data;
       this.searchedEventList = searchedEventList;
       console.log(this.searchedEventList);
+    },
+    searchByFilter(){
+      console.log(this.filterForm.sortByDate);
+      console.log(this.filterForm.distance);
+      console.log(this.filterForm.categorySelected);
     }
   }
 };

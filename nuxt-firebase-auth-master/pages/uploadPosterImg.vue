@@ -7,6 +7,7 @@
     <span>
       Cover image (single picture/ landscape)
       <br />
+
       <v-btn
         class="chooseFileButton"
         color="white"
@@ -117,6 +118,7 @@ export default {
       let storage = firebase.storage();
       let storageRef = storage.ref();
       let setupFile = storageRef.child(fileName);
+
       try {
         setupFile.put(this.eventPictureCover).then(snapshot => {
           snapshot.ref.getDownloadURL().then(downloadURL => {

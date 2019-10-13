@@ -27,7 +27,7 @@
     </v-layout>
     <nuxt-link :to="`/community/communityId/?`" style="text-decoration-line:none;">
       <br />
-      <v-btn block round="16px;" color="#341646" class="mb-2 white--text">Create Community</v-btn>
+      <v-btn block  color="#341646" class="mb-2 white--text">Create Community</v-btn>
     </nuxt-link>
   </div>
 </template> 
