@@ -124,7 +124,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-toolbar color="#fff" app style="color:#fff;">
+    <v-toolbar color="#fff" app style="color:#fff;" id="toolbar">
       <nuxt-link to="/?" style="text-decoration-line:none;">
         <!-- <v-toolbar-title style="text-decoration-line:none;color: #341646">
           <v-img
@@ -141,23 +141,38 @@
 
       <v-spacer></v-spacer>
 
-      <!-- <nuxt-link :to="`/search`" style="text-decoration-line:none;">
+      <nuxt-link :to="`/search`" style="text-decoration-line:none;">
         <v-btn icon>
           <v-icon color="#341646;">search</v-icon>
         </v-btn>
-      </nuxt-link>-->
+      </nuxt-link>
 
       <div>
-        <nuxt-link to="/search">
-          <v-btn icon>
-            <v-icon color="#341646;">search</v-icon>
+        
+          <v-btn icon @click="drawer= !drawer"> 
+            <v-icon class="menuButton" color="#341646;">menu</v-icon>
           </v-btn>
-        </nuxt-link>
+        
       </div>
 
-      <v-btn icon @click.native.stop="drawer = !drawer" class="hidden-lg-and-up">
+      <!-- <v-btn icon @click.native.stop="drawer = !drawer" class="hidden-lg-and-up">
         <v-icon class="menuButton" color="#341646;">menu</v-icon>
-      </v-btn>
+      </v-btn> -->
+
+
+        <v-menu :bottom="true"  offset-y> 
+          <template v-slot:activator="{ on }" >
+            <v-btn dark icon v-on="on">
+              <v-icon class="menuButton" color="#341646;">menu</v-icon>
+            </v-btn>
+          </template>
+
+          <v-list>
+            <v-list-tile v-for="(item, i) in linksFooter" :key="i">
+              <v-list-tile-title>{{ item }}</v-list-tile-title>
+            </v-list-tile>
+          </v-list>
+        </v-menu>
 
       <!-- <v-text-field
         class="hidden-xs-only"

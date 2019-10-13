@@ -1,6 +1,7 @@
 import * as firebase from "firebase/app";
 import 'firebase/messaging';
 import 'firebase/auth';
+import 'firebase/storage'
 import axios from "axios"
 import jwtDecode from "jwt-decode"
 
@@ -47,6 +48,7 @@ export default (context) => {
   } catch (err) {
     console.log(err)
   }
+
 
 
   authen.onAuthStateChanged(user => {
@@ -109,9 +111,6 @@ export default (context) => {
       })
   })
 }
-
-
-
 
 
 export const FacebookProvider = new firebase.auth.FacebookAuthProvider()

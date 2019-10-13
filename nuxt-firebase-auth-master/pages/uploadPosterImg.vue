@@ -5,54 +5,93 @@
     <br />
 
     <span>
-      Poster Image
+      Cover image (single picture/ landscape)
       <br />
-      <v-btn class="chooseFileButton" color="white" @click="$refs.inputUpload.click()">Choose file</v-btn>
-      <input v-show="false" ref="inputUpload" type="file" @change="imgFunction" />
-    </span>
-    <br />
-    <br />
-    <span>
-      Cover image
-      <br />
-      <v-btn class="chooseFileButton" color="white" @click="$refs.inputUpload.click()">Choose file</v-btn>
-      <input v-show="false" ref="inputUpload" type="file" @change="imgFunction" />
+      <v-btn
+        class="chooseFileButton"
+        color="white"
+        @click="$refs.coverPictureUpload.click()"
+      >Choose file</v-btn>
+      <input v-show="false" ref="coverPictureUpload" type="file" @change="onCoverPictureUpload" />
     </span>
 
     <br />
     <br />
     <span>
-      Square poster image
+      Preview Event Image (picture list)
       <br />
-      <v-btn class="chooseFileButton" color="white" @click="$refs.inputUpload.click()">Choose file</v-btn>
-      <input v-show="false" ref="inputUpload" type="file" @change="imgFunction" />
+      <v-btn
+        class="chooseFileButton"
+        color="white"
+        @click="$refs.pictureListUpload.click()"
+      >Choose file</v-btn>
+      <input v-show="false" ref="pictureListUpload" type="file" @change="imgFunction" />
     </span>
 
     <br />
     <br />
-    <span>
-      Background image
-      <br />
-      <v-btn class="chooseFileButton" color="white" @click="$refs.inputUpload.click()">Choose file</v-btn>
-      <input v-show="false" ref="inputUpload" type="file" @change="imgFunction" />
-    </span>
-
-        <br><br><br>
+    <br />
     <center>
       <nuxt-link :to="`/?`" style="text-decoration-line:none;">
         <v-btn class="cancelButton white--text" color="#AEAEAE" depressed large height="50">Cancel</v-btn>
       </nuxt-link>
 
-      <nuxt-link :to="`/?`" style="text-decoration-line:none;">
+      <v-btn
+        class="saveButton white--text"
+        color="#341646"
+        depressed
+        large
+        height="50"
+        @click="onUpload"
+      >Save</v-btn>
+      <!-- <nuxt-link :to="`/?`" style="text-decoration-line:none;">
         <v-btn class="saveButton white--text" color="#341646" depressed large height="50">Save</v-btn>
-      </nuxt-link>
+      </nuxt-link>-->
     </center>
-    <br><br>
+    <br />
+    <br />
   </div>
 </template>
 
 
 <script>
+import * as firebase from "firebase/app";
+import "firebase/storage";
+export default {
+  name: "createEventForm",
+  data() {
+    return {
+      eventPictureCover: null,
+      eventPictureLists: []
+    };
+  },
+  methods: {
+    onCoverPictureUpload(event) {
+      console.log("uplaod din");
+      this.eventPictureCover = event.target.files[0];
+      
+
+    },
+    imgFunction() {},
+    onUpload() {
+      let dateobj = new Date(); 
+      let fileName = this.eventPictureCover.name +'_'+ dateobj.toISOString();
+      let storage = firebase.storage();
+      let storageRef = storage.ref();
+      let setupFile = storageRef.child(fileName);
+      try {
+        setupFile.put(this.eventPictureCover).then(snapshot => {
+          console.log("Uploaded a blob or file!");
+          snapshot.ref.getDownloadURL().then((downloadURL) =>{
+            console.log('File available at', downloadURL);
+          });
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }
+};
 </script>
 
 
