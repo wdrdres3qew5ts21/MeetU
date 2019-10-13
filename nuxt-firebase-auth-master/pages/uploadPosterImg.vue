@@ -21,6 +21,15 @@
         accept="image/*"
       />
       <p v-if="eventPictureCover">{{eventPictureCover.name}}</p>
+      <div v-if="eventPictureCover">
+        <v-img
+          :src="eventPictureCoverUrl"
+          aspect-ratio="1"
+          class="grey lighten-2"
+          max-width="1250"
+          max-height="200"
+        ></v-img>
+      </div>
     </span>
 
     <br />
@@ -43,7 +52,18 @@
       />
       <p v-if="eventPictureLists">
         <span v-for="(eventPicture, index) in eventPictureLists" :key="index">{{eventPicture.name}},</span>
+     
       </p>
+     <div v-if="eventPictureLists" >
+
+       <v-img v-for="(image, index) in eventPictureListsUrl " :key="index"
+          :src="image"
+          aspect-ratio="1"
+          class="grey lighten-2"
+          max-width="1250"
+          max-height="200"
+        ></v-img>
+     </div>
     </span>
 
     <br />
@@ -79,6 +99,8 @@ export default {
   name: "createEventForm",
   data() {
     return {
+      eventPictureCoverUrl: "",
+      eventPictureListsUrl: [],
       eventPictureCover: null,
       eventPictureLists: null
     };
@@ -87,11 +109,26 @@ export default {
     onCoverPictureUpload(event) {
       console.log("uplaod din");
       this.eventPictureCover = event.target.files[0];
+
+      const fileReader = new FileReader();
+      fileReader.addEventListener("load", () => {
+        this.eventPictureCoverUrl = fileReader.result;
+      });
+      fileReader.readAsDataURL(this.eventPictureCover);
     },
     onPictureListUpload(event) {
       console.log("uplaod din");
       this.eventPictureLists = event.target.files;
+
+      for (let i = 0; i < this.eventPictureLists.length; i++) {
+        const fileReader = new FileReader();
+        fileReader.addEventListener("load", () => {
+          this.eventPictureListsUrl.push(fileReader.result) ;
+        });
+        fileReader.readAsDataURL(this.eventPictureLists[i]);
+      }
     },
+
     async uploadPictureListToFirebase() {
       let pictureFiles = this.eventPictureLists;
       for (let i = 0; i < pictureFiles.length; i++) {

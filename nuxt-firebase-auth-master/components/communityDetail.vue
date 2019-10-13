@@ -52,7 +52,7 @@
               </v-btn>
             </v-flex>
             <v-flex xs class="text-xs-right">
-              <v-btn text color="#341646" class="mb-2 white--text">Post</v-btn>
+              <v-btn text color="#341646" class="mb-2 white--text" @click="addPost()">Post</v-btn>
             </v-flex>
 
             
@@ -105,7 +105,7 @@ export default {
       });
       fileReader.readAsDataURL(files[0]);
       this.image = files[0];
-    }
+    },
   }
 };
 </script> 
