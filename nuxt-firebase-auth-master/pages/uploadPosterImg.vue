@@ -13,6 +13,7 @@
         @click="$refs.coverPictureUpload.click()"
       >Choose file</v-btn>
       <input v-show="false" ref="coverPictureUpload" type="file" @change="onCoverPictureUpload" />
+      <p v-if="eventPictureCover">{{eventPictureCover.name}}</p>
     </span>
 
     <br />
@@ -69,8 +70,6 @@ export default {
     onCoverPictureUpload(event) {
       console.log("uplaod din");
       this.eventPictureCover = event.target.files[0];
-      
-
     },
     imgFunction() {},
     onUpload() {
