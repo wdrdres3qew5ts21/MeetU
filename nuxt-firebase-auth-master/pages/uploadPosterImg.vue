@@ -12,7 +12,13 @@
         color="white"
         @click="$refs.coverPictureUpload.click()"
       >Choose file</v-btn>
-      <input v-show="false" ref="coverPictureUpload" type="file" @change="onCoverPictureUpload" accept="image/*" />
+      <input
+        v-show="false"
+        ref="coverPictureUpload"
+        type="file"
+        @change="onCoverPictureUpload"
+        accept="image/*"
+      />
       <p v-if="eventPictureCover">{{eventPictureCover.name}}</p>
     </span>
 
@@ -26,7 +32,17 @@
         color="white"
         @click="$refs.pictureListUpload.click()"
       >Choose file</v-btn>
-      <input v-show="false" ref="pictureListUpload" type="file" @change="imgFunction" accept="image/*" />
+      <input
+        v-show="false"
+        ref="pictureListUpload"
+        multiple
+        type="file"
+        @change="onPictureListUpload"
+        accept="image/*"
+      />
+      <p v-if="eventPictureLists">
+        <span v-for="(eventPicture, index) in eventPictureLists" :key="index">{{eventPicture.name}},</span>
+      </p>
     </span>
 
     <br />
@@ -63,7 +79,7 @@ export default {
   data() {
     return {
       eventPictureCover: null,
-      eventPictureLists: []
+      eventPictureLists: null
     };
   },
   methods: {
@@ -71,23 +87,49 @@ export default {
       console.log("uplaod din");
       this.eventPictureCover = event.target.files[0];
     },
-    imgFunction() {},
-    onUpload() {
-      let dateobj = new Date(); 
-      let fileName = this.eventPictureCover.name +'_'+ dateobj.toISOString();
+    onPictureListUpload(event) {
+      console.log("uplaod din");
+      this.eventPictureLists = event.target.files;
+    },
+    async uploadPictureListToFirebase() {
+      let pictureFiles = this.eventPictureLists;
+      for (let i = 0; i < pictureFiles.length; i++) {
+        let pictureFile = pictureFiles[i];
+        let dateobj = new Date();
+        let fileName = pictureFile.name + "_" + dateobj.toISOString();
+        let storage = firebase.storage();
+        let storageRef = storage.ref();
+        let setupFile = storageRef.child(fileName);
+        try {
+          setupFile.put(this.eventPictureCover).then(snapshot => {
+            snapshot.ref.getDownloadURL().then(downloadURL => {
+              console.log(`Picture List ${i + 1} : `, downloadURL);
+            });
+          });
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    },
+    async uploadCoverToFirebase() {
+      let dateobj = new Date();
+      let fileName = this.eventPictureCover.name + "_" + dateobj.toISOString();
       let storage = firebase.storage();
       let storageRef = storage.ref();
       let setupFile = storageRef.child(fileName);
       try {
         setupFile.put(this.eventPictureCover).then(snapshot => {
-          console.log("Uploaded a blob or file!");
-          snapshot.ref.getDownloadURL().then((downloadURL) =>{
-            console.log('File available at', downloadURL);
+          snapshot.ref.getDownloadURL().then(downloadURL => {
+            console.log("Picture Cover", downloadURL);
           });
         });
       } catch (err) {
         console.log(err);
       }
+    },
+    onUpload() {
+      this.uploadCoverToFirebase();
+      this.uploadPictureListToFirebase();
     }
   }
 };
