@@ -25,7 +25,7 @@ if (!firebase.apps.length) {
 export default (context) => {
   const { store } = context
   if (process.client) {
-    console.log("Fuq client Side !!!")
+    console.log("Client Side !!!")
     authen = firebase.auth()
     if (firebase.messaging.isSupported()){
       messaging = firebase.messaging()
@@ -53,7 +53,7 @@ export default (context) => {
 
   authen.onAuthStateChanged(user => {
     authen.getRedirectResult().then((result) => {
-      console.log("stupid")
+      console.log("Auth status change")
       if (result.credential) {
         // This gives you a Facebook Access Token. You can use it to access the Facebook API.
         let token = result.credential.accessToken;

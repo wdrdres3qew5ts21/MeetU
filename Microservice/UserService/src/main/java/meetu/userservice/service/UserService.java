@@ -251,7 +251,6 @@ public class UserService {
 
         User userFromDatabase = userRepository.findByUid(uid);
         System.out.println(userFromDatabase);
-        claims.put("persona", "fuq you");
         String[] group = new String[5];
         group[0] = "redhat";
         group[1] = "ibm";
@@ -259,10 +258,7 @@ public class UserService {
         claims.put("admin list", group);
         ObjectMapper object = new ObjectMapper();
         Map<String, Object> user = object.convertValue(userFromDatabase.getPersona(), Map.class);
-        
-//        user.put("key", "ddd");
-//        user.put("dasdas", "sadasd");
-        claims.put("personaaaa", user);
+        claims.put("persona", user);
         try {
             FirebaseAuth.getInstance().setCustomUserClaims(uid, claims);
             System.out.println("!!! Update");

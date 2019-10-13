@@ -87,22 +87,6 @@
           </v-list-tile>
         </v-list-group>
 
-        <v-list-group>
-          <v-list-tile slot="activator">
-            <v-list-tile>
-              <v-icon class="icon">category</v-icon>
-            </v-list-tile>
-            <v-list-tile-content class="categoryIcon" style="color:#341646;">Services</v-list-tile-content>
-          </v-list-tile>
-          <v-list-tile v-for="(category, i) in categoryList" :key="i" ripple>
-            <v-list-tile-action></v-list-tile-action>
-            <v-list-tile-content>
-              <nuxt-link class="categoryLink" :to="`/event?category=${category.categoryName}`">
-                <v-list-tile-title>{{ category.categoryLabel }}</v-list-tile-title>
-              </nuxt-link>
-            </v-list-tile-content>
-          </v-list-tile>
-        </v-list-group>
         <v-divider :inset="true"></v-divider>
       </v-list>
     </v-navigation-drawer>
