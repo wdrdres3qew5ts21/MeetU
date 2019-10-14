@@ -1,16 +1,15 @@
 <template>
   <div>
- 
-  <v-flex align="center" >
-     <v-carousel hide-delimiters hide-controls xs6 sm12 height="200px;">
-      <v-img
-        :src="imageUrl"
-        aspect-ratio="1"
-        class="grey lighten-2"
-        max-width="1250"
-        max-height="200"
-      ></v-img>
-     </v-carousel>
+    <v-flex align="center">
+      <v-carousel hide-delimiters hide-controls xs6 sm12 height="200px;">
+        <v-img
+          :src="imageUrl"
+          aspect-ratio="1"
+          class="grey lighten-2"
+          max-width="1250"
+          max-height="200"
+        ></v-img>
+      </v-carousel>
     </v-flex>
 
     <v-btn color="#341646" class="mb-2 white--text" @click="onPickFile">
@@ -24,16 +23,16 @@
       accept="image/*"
       @change="onFilePicked"
     />
-  
-  <br />
-  <br />
+
+    <br />
+    <br />
 
     <v-card rounded outlined class="mx-auto">
       <div class="px-3">
         <form>
           <v-layout>
             <v-flex xs12>
-            <v-text-field></v-text-field>
+              <v-text-field v-model="newPost" name="newPost" id="newPost" value></v-text-field>
             </v-flex>
           </v-layout>
           <v-layout>
@@ -54,15 +53,27 @@
             <v-flex xs class="text-xs-right">
               <v-btn text color="#341646" class="mb-2 white--text" @click="addPost()">Post</v-btn>
             </v-flex>
-
-            
           </v-layout>
         </form>
       </div>
     </v-card>
+
+    <br />
+    <h3>{{post}}</h3>
+
+    <v-card v-for="(todo,index ) in postList " :key="index">
+      <span :class="{ done: todo.done }">{{todo.post}}</span>
+      <br />
+      <br />
+      <v-btn
+        @click="removePost(todo)"
+        color="#341646"
+        class="mb-2 white--text"
+        type="button"
+        name="button"
+      >Remove</v-btn>
+    </v-card>
   </div>
-
-
 </template> 
  
  
@@ -76,6 +87,9 @@ export default {
       imageUrl: "",
       image: null,
       items: ["Unfollow", "Leave group"],
+      post: "",
+      newPost: "",
+      postList: [],
       name: "",
       rules: [
         value =>
@@ -106,6 +120,18 @@ export default {
       fileReader.readAsDataURL(files[0]);
       this.image = files[0];
     },
+    addPost() {
+      this.postList.push({
+        post: this.newPost,
+        done: false
+      });
+      this.newPost = "";
+    },
+    removePost(todo) {
+      const postIndex = this.postList.indexOf(todo);
+      this.postList.splice(postIndex, 1);
+    
+    }
   }
 };
 </script> 
