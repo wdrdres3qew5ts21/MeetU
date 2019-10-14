@@ -128,10 +128,11 @@ export default {
           });
         })
         .catch(error => {
+          console.log(error.response)
           this.$swal({
             type: "error",
             title: "Failed to upgrade !!!",
-            text: `Failed to upgrade`
+            text: `${error.response.data.response}`
           });
         });
     }

@@ -9,6 +9,9 @@ import java.util.List;
 import meetu.userservice.model.Admin;
 import meetu.userservice.model.Organize;
 import meetu.userservice.service.OrganizeService;
+import meetu.userservice.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,11 +35,10 @@ public class OrganizeController {
     private OrganizeService organizeService;
 
     @PostMapping("/organize/{userId}")
-    public ResponseEntity<Organize> createOrganize(@PathVariable String userId, @RequestBody Organize organize) {
-        System.out.println("fuq !");
-        return new ResponseEntity<Organize>(organizeService.createOrganize(userId, organize), HttpStatus.CREATED);
+    public ResponseEntity createOrganize(@PathVariable String userId, @RequestBody Organize organize) {
+        return organizeService.createOrganize(userId, organize);
     }
-    
+
     public ResponseEntity addAdminOrganize(@PathVariable Admin adminList[], @RequestBody Organize organize) {
         return new ResponseEntity<Organize>(organizeService.addAdminOrganize(adminList, organize), HttpStatus.CREATED);
     }
@@ -48,7 +50,7 @@ public class OrganizeController {
         }
         return new ResponseEntity<List<Organize>>(organizeService.findByOrganizeName(organizeName), HttpStatus.OK);
     }
-    
+
     @GetMapping("/organize/{organizeId}")
     public ResponseEntity findOrganizeById(@PathVariable String organizeId) {
         return new ResponseEntity(organizeService.findOrganizeById(organizeId), HttpStatus.OK);

@@ -19,6 +19,8 @@ public interface OrganizeRepository extends MongoRepository<Organize, String>{
 
     public List<Organize> findByOrganizeNameLike(String organizeName);
     
+    public Organize findByOrganizeName(String organizeName);
+    
 //    public List<User> findByFirstName(String firstName);
 //    
 //    public List<User> findByEmailLike(String emailKeyWord);

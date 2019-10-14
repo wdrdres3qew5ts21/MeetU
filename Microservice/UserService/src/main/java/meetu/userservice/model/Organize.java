@@ -8,6 +8,7 @@ package meetu.userservice.model;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -20,6 +21,7 @@ public class Organize {
     @Id
     private String organizeId;
 
+    @Indexed(unique = true)
     private String organizeName;
 
     private String organizeDetail;
