@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import meetu.userservice.filters.TokenAuthenticationService;
 import meetu.userservice.model.InterestGenreBehavior;
+import meetu.userservice.model.Organize;
 import meetu.userservice.model.Persona;
 import meetu.userservice.repository.UserRepository;
 import meetu.userservice.model.User;
@@ -244,27 +245,18 @@ public class UserService {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
     }
 
-    public ResponseEntity createCustomClaims() {
+    public ResponseEntity updateUserOrganizeRoleClaim(String uid) {
         Map<String, Object> claims = new HashMap<>();
-       // claims.put("admin", true);
-        String uid = "JdNBfUjngGZEedP8wr9XhY0V15q1";
+        ObjectMapper objectMapper = new ObjectMapper();
 
-        User userFromDatabase = userRepository.findByUid(uid);
-        System.out.println(userFromDatabase);
-        String[] group = new String[5];
-        group[0] = "redhat";
-        group[1] = "ibm";
-        group[2] = "pivotal";
-        claims.put("admin list", group);
-        ObjectMapper object = new ObjectMapper();
-        Map<String, Object> user = object.convertValue(userFromDatabase.getPersona(), Map.class);
-        claims.put("persona", user);
-        try {
-            FirebaseAuth.getInstance().setCustomUserClaims(uid, claims);
-            System.out.println("!!! Update");
-        } catch (FirebaseAuthException ex) {
-            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
+//        try {
+//            FirebaseAuth.getInstance().setCustomUserClaims(uid, claims);
+//            System.out.println("!!! Update");
+//            return ResponseEntity.status(HttpStatus.CREATED).body("");
+//        } catch (FirebaseAuthException ex) {
+//            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+//        }
         return null;
     }
 

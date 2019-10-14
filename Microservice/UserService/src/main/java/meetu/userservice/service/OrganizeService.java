@@ -6,11 +6,17 @@
 package meetu.userservice.service;
 
 import meetu.userservice.repository.OrganizeRepository;
+import meetu.userservice.repository.UserCommunityRoleRepository;
+import meetu.userservice.repository.UserOrganizeRoleRepository;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import meetu.userservice.model.Admin;
 import meetu.userservice.model.Organize;
+import meetu.userservice.model.UserOrganizeRole;
 import meetu.userservice.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,22 +31,39 @@ public class OrganizeService {
 
     @Autowired
     private OrganizeRepository organizeRepository;
+    
+    @Autowired
+    private UserOrganizeRoleRepository userOrganizeRoleRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
-    public Organize createOrganize(String uid, Organize organize) {
-//        Organize organizeInDatabase = organizeRepository.findById(organize.getOrganizeId()).get();
-//        if (organizeInDatabase == null) {
-//            System.out.println("upgrade ");
+    private static Logger log = LoggerFactory.getLogger(OrganizeService.class);
+
+    public ResponseEntity createOrganize(String uid, Organize organize) {
+        Organize organizeInDatabase = organizeRepository.findByOrganizeName(organize.getOrganizeName());
+        if (organizeInDatabase == null) {
             Admin organizeOwner = new Admin();
             organizeOwner.setUid(uid);
             organize.setOrganizeOwner(organizeOwner);
-            organize.getAdminList();
-            return organizeRepository.save(organize);
-//        }
-//        organizeInDatabase.setOrganizeName(organize.getOrganizeName());
-//        return organizeRepository.save(organizeInDatabase);
+            
+            Organize savedOrganize = organizeRepository.save(organize);
+            UserOrganizeRole userOrganizeRole = new UserOrganizeRole();
+            userOrganizeRole.setOrganizeId(savedOrganize.getOrganizeId());
+            userOrganizeRole.setUid(uid);
+            ArrayList<String> roles= new ArrayList();
+            roles.add("owner");
+            userOrganizeRole.setRoles(roles);       
+            userOrganizeRoleRepository.save(userOrganizeRole);
+            
+            userService.updateUserOrganizeRoleClaim(uid);
+            return ResponseEntity.status(HttpStatus.CREATED).body(organizeRepository.save(savedOrganize));
+        } else {
+            System.out.println("organize name duplciate");
+            HashMap<String, Object> response = new HashMap<String, Object>();
+            response.put("response", "Organize Name Duplicate with existing name !");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
     }
 
     public Organize addAdminOrganize(Admin[] adminList, Organize organize) {

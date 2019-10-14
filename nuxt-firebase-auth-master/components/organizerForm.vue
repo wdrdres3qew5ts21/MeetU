@@ -152,6 +152,8 @@ export default {
       // upload file, get it from this.selectedFile
     },
     upgradeAccountPopup: function(e) {
+
+      
       this.$swal.fire({
         title: "Are you sure?",
         type: "warning",
@@ -168,7 +170,7 @@ export default {
             confirmButtonColor: "#4BB543"
           });
         }
-      });
+      })
     }
   }
 };

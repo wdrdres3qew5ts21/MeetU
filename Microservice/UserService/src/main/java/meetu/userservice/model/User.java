@@ -73,7 +73,7 @@ public class User {
     private String facebook;
     
     private String instagram;
-
+    
     public User() {
 
     }
