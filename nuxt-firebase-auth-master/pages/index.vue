@@ -1,12 +1,15 @@
 <template>
   <div>
     <!-- <transition name="router-anim"  leave-active-class="animated slideOutLeft"> -->
+    <v-carousel class="mycarousel">
+      <nuxt-link :to="`/event/${popularEvent.elasticEventId}`" v-for="(popularEvent,i) in popularEventList" :key="i">
+        <v-carousel-item
+          :src="popularEvent.eventPictureCover"
+        ></v-carousel-item>
+      </nuxt-link>
+    </v-carousel>
     <v-container class="bg">
-      <v-carousel class="mycarousel">
-        <v-carousel-item sm6 xs2 v-for="(item,i) in carouselsPhoto" :src="item.src" :key="i"></v-carousel-item>
-      </v-carousel>
       <br />
-
       <!-- Event List -->
       <div v-show="getUser.uid!=null">
         <nuxt-link to="/selectGenres">
@@ -45,60 +48,60 @@
 
       <h1>Popular Event</h1>
       <client-only>
-      <carousel :perPage="1" :paginationEnabled="false">
-        <slide v-for="(event, index) in recentlyEventList" :key="index">
-          <event-card :event="event"></event-card>
-        </slide>
-        <slide>
-          <v-flex 3 xs12 sm6 offset-sm>
-            <nuxt-link :to="`/event?`">
-              <v-card width="350px" height="320px">
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <center>
-                  <v-icon large>add</v-icon>
-                </center>
-                <center>
-                  <h2>View More</h2>
-                </center>
-              </v-card>
-            </nuxt-link>
-          </v-flex>
-        </slide>
-      </carousel>
+        <carousel :perPage="1" :paginationEnabled="false">
+          <slide v-for="(event, index) in recentlyEventList" :key="index">
+            <event-card :event="event"></event-card>
+          </slide>
+          <slide>
+            <v-flex 3 xs12 sm6 offset-sm>
+              <nuxt-link :to="`/event?`">
+                <v-card width="350px" height="320px">
+                  <br />
+                  <br />
+                  <br />
+                  <br />
+                  <br />
+                  <center>
+                    <v-icon large>add</v-icon>
+                  </center>
+                  <center>
+                    <h2>View More</h2>
+                  </center>
+                </v-card>
+              </nuxt-link>
+            </v-flex>
+          </slide>
+        </carousel>
       </client-only>
       <!-- <event-list :eventList="recentlyEventList" link="/event"></event-list> -->
       <br />
 
       <h1>New Event</h1>
       <client-only>
-      <carousel :perPage="1" :paginationEnabled="false">
-        <slide v-for="(event, index) in recentlyEventList" :key="index">
-          <event-card :event="event"></event-card>
-        </slide>
-        <slide>
-          <v-flex 3 xs12 sm6 offset-sm>
-            <nuxt-link :to="`/event?`">
-              <v-card width="350px" height="320px">
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <center>
-                  <v-icon large>add</v-icon>
-                </center>
-                <center>
-                  <h2>View More</h2>
-                </center>
-              </v-card>
-            </nuxt-link>
-          </v-flex>
-        </slide>
-      </carousel>
+        <carousel :perPage="1" :paginationEnabled="false">
+          <slide v-for="(event, index) in recentlyEventList" :key="index">
+            <event-card :event="event"></event-card>
+          </slide>
+          <slide>
+            <v-flex 3 xs12 sm6 offset-sm>
+              <nuxt-link :to="`/event?`">
+                <v-card width="350px" height="320px">
+                  <br />
+                  <br />
+                  <br />
+                  <br />
+                  <br />
+                  <center>
+                    <v-icon large>add</v-icon>
+                  </center>
+                  <center>
+                    <h2>View More</h2>
+                  </center>
+                </v-card>
+              </nuxt-link>
+            </v-flex>
+          </slide>
+        </carousel>
       </client-only>
       <!-- <event-list :eventList="recentlyEventList" link="/event"></event-list> -->
       <br />
