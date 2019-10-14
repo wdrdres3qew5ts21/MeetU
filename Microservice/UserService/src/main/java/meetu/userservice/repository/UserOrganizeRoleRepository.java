@@ -5,8 +5,10 @@
  */
 package meetu.userservice.repository;
 
+import java.util.List;
 import meetu.userservice.model.UserOrganizeRole;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -15,6 +17,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserOrganizeRoleRepository extends MongoRepository<UserOrganizeRole, String>{
+    
+    public List<UserOrganizeRole> findAllByUid(String uid);
     
     
 }

@@ -85,11 +85,11 @@ public class UserController {
         return this.userService.createCustomToken();
     }
     
-//    @GetMapping("/user/jwt/{uid")
-//    public ResponseEntity getCustomJWTViaAuthentication(@PathVariable String uid) {
-//        //return new ResponseEntity<HashMap<String, Object>>(this.userService.verifyJwtToken(jwtRequestBody),HttpStatus.OK);
-//        return this.userService.addOrganizeClaimToUser(uid);
-//    }
+    @GetMapping("/user/jwt/{uid}")
+    public ResponseEntity getCustomJWTViaAuthentication(@PathVariable String uid) {
+        //return new ResponseEntity<HashMap<String, Object>>(this.userService.verifyJwtToken(jwtRequestBody),HttpStatus.OK);
+        return this.userService.updateUserOrganizeRoleClaim(uid);
+    }
 
     @PostMapping("/user/verify/jwt")
     public ResponseEntity<HashMap<String, Object>> verifyJwtToken(@RequestBody HashMap<String, Object> jwtRequestBody) {

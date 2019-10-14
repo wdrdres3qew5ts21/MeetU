@@ -4,7 +4,7 @@
     <br />
     <v-flex v-for="(eventTicket, index) in userEventTicketList" :key="index" xs12>
       <v-card min-width="370"  color="white">
-        <v-layout>
+        <v-layout v-if="eventTicket.ticketDetail[0]" >
           <v-flex xs8>
             <v-img
               :src="eventTicket.ticketDetail[0].eventPictureCover"
@@ -14,9 +14,9 @@
           <v-flex xs7>
             <v-card-title primary-title>
               <div>
-                <div
-                  class="headline"
-                >{{eventTicket.ticketDetail[0].eventName.length > 10 ? eventTicket.ticketDetail[0].eventName.substr(0,10)+"..." : eventTicket.ticketDetail[0].eventName }}</div>
+                <div class="headline">
+                  {{eventTicket.ticketDetail[0].eventName.length > 10 ? eventTicket.ticketDetail[0].eventName.substr(0,10)+"..." : eventTicket.ticketDetail[0].eventName }}
+                </div>
                 <div>{{new Date().toISOString() || eventTicket.ticketDetail[0].eventStartDate.substr(0,10) }}</div>
                 <div>{{eventTicket.ticketDetail[0].location.province+", " +eventTicket.ticketDetail[0].location.country}}</div>
                 <nuxt-link :to="`/ticket/${eventTicket.elasticEventId}`">
@@ -28,6 +28,13 @@
             </v-card-title>
           </v-flex>
         </v-layout>
+        <!-- <v-layout v-else>
+          <v-flex xs8>
+            <p  width="170px">Event Had Been deleted</p>
+          </v-flex>
+          <v-flex xs7>
+          </v-flex>
+        </v-layout> -->
       </v-card>
     </v-flex>
     <br />

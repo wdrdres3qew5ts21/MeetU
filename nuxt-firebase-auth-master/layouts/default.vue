@@ -123,7 +123,7 @@
       <!-- <v-btn icon @click.native.stop="drawer = !drawer" class="hidden-lg-and-up">
         <v-icon class="menuButton" color="#341646;">menu</v-icon>
       </v-btn>-->
-
+<!-- 
       <v-menu :bottom="true" offset-y>
         <template v-slot:activator="{ on }">
           <v-btn dark icon v-on="on">
@@ -136,7 +136,7 @@
             <v-list-tile-title>{{ menu.label }}</v-list-tile-title>
           </v-list-tile>
         </v-list>
-      </v-menu>
+      </v-menu> -->
 
       <!-- <v-text-field
         class="hidden-xs-only"

@@ -5,26 +5,33 @@
  */
 package meetu.userservice.service;
 
+import aj.org.objectweb.asm.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
+import com.google.gson.JsonArray;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import meetu.userservice.filters.TokenAuthenticationService;
 import meetu.userservice.model.InterestGenreBehavior;
 import meetu.userservice.model.Organize;
 import meetu.userservice.model.Persona;
+import meetu.userservice.model.RoleList;
 import meetu.userservice.repository.UserRepository;
 import meetu.userservice.model.User;
 import meetu.userservice.model.UserJoinEvent;
 import meetu.userservice.model.UserNotification;
+import meetu.userservice.model.UserOrganizeRole;
 import meetu.userservice.model.UserViewEvent;
 import meetu.userservice.repository.UserNotificationRepository;
+import meetu.userservice.repository.UserOrganizeRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,6 +53,9 @@ public class UserService {
 
     @Autowired
     private UserNotificationRepository userNotificationRepository;
+
+    @Autowired
+    private UserOrganizeRoleRepository userOrganizeRoleRepository;
 
     public User createUserFromFirebaase(User user) {
         System.out.println("----- Create User/ Update User -------");
@@ -247,9 +257,19 @@ public class UserService {
 
     public ResponseEntity updateUserOrganizeRoleClaim(String uid) {
         Map<String, Object> claims = new HashMap<>();
-        ObjectMapper objectMapper = new ObjectMapper();
-
-
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        List<UserOrganizeRole> userOrganizeRole = userOrganizeRoleRepository.findAllByUid(uid);
+//        System.out.println(userOrganizeRole);
+//        Map<String, Object> init = new HashMap<>();
+//        init.put("role", userOrganizeRole);
+//        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+//
+//        //Map<String, Object> userOrganizeRoleMap = objectMapper.convertValue(userOrganizeRole,  new com.fasterxml.jackson.core.type.TypeReference<Map<String, Object>>() {} );
+////        Map userOrganizeRoleMap = userOrganizeRole.stream().collect(
+////                Collectors.toMap(x -> x.getOrganizeId(), x -> x.getRoles()));
+//        Map<String, Object> userOrganizeRoleMap = objectMapper.convertValue(init, Map.class);
+//        System.out.println(userOrganizeRoleMap);
+//        claims.put("organizeRole", userOrganizeRoleMap);
 //        try {
 //            FirebaseAuth.getInstance().setCustomUserClaims(uid, claims);
 //            System.out.println("!!! Update");
@@ -257,6 +277,28 @@ public class UserService {
 //        } catch (FirebaseAuthException ex) {
 //            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
 //        }
+//        return null;
+
+        uid = "JdNBfUjngGZEedP8wr9XhY0V15q1";
+        List<UserOrganizeRole> userOrganizeRole = userOrganizeRoleRepository.findAllByUid(uid);
+        System.out.println(userOrganizeRole);
+        User userFromDatabase = userRepository.findByUid(uid);
+        System.out.println(userFromDatabase);
+        
+        RoleList roleList = new RoleList();
+        roleList.setRoles(userOrganizeRole);
+        ObjectMapper object = new ObjectMapper();
+        Map<String, Object> roleMap = object.convertValue(roleList, Map.class);
+        
+        User test = new User();
+        test.setEmail("dsadasdad@mail.com");
+        claims.put("role", roleMap);
+        try {
+            FirebaseAuth.getInstance().setCustomUserClaims(uid, claims);
+            System.out.println("!!! Update");
+        } catch (FirebaseAuthException ex) {
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return null;
     }
 
