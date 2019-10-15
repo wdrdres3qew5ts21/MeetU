@@ -257,45 +257,31 @@ public class UserService {
 
     public ResponseEntity updateUserOrganizeRoleClaim(String uid) {
         Map<String, Object> claims = new HashMap<>();
-//        ObjectMapper objectMapper = new ObjectMapper();
+        claims.put("isOrganize", true);
+        claims.put("naruam", true);
 //        List<UserOrganizeRole> userOrganizeRole = userOrganizeRoleRepository.findAllByUid(uid);
 //        System.out.println(userOrganizeRole);
-//        Map<String, Object> init = new HashMap<>();
-//        init.put("role", userOrganizeRole);
-//        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-//
-//        //Map<String, Object> userOrganizeRoleMap = objectMapper.convertValue(userOrganizeRole,  new com.fasterxml.jackson.core.type.TypeReference<Map<String, Object>>() {} );
-////        Map userOrganizeRoleMap = userOrganizeRole.stream().collect(
-////                Collectors.toMap(x -> x.getOrganizeId(), x -> x.getRoles()));
-//        Map<String, Object> userOrganizeRoleMap = objectMapper.convertValue(init, Map.class);
-//        System.out.println(userOrganizeRoleMap);
-//        claims.put("organizeRole", userOrganizeRoleMap);
-//        try {
-//            FirebaseAuth.getInstance().setCustomUserClaims(uid, claims);
-//            System.out.println("!!! Update");
-//            return ResponseEntity.status(HttpStatus.CREATED).body("");
-//        } catch (FirebaseAuthException ex) {
-//            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return null;
-
-        uid = "JdNBfUjngGZEedP8wr9XhY0V15q1";
-        List<UserOrganizeRole> userOrganizeRole = userOrganizeRoleRepository.findAllByUid(uid);
-        System.out.println(userOrganizeRole);
-        User userFromDatabase = userRepository.findByUid(uid);
-        System.out.println(userFromDatabase);
-        
-        RoleList roleList = new RoleList();
-        roleList.setRoles(userOrganizeRole);
-        ObjectMapper object = new ObjectMapper();
-        Map<String, Object> roleMap = object.convertValue(roleList, Map.class);
-        
-        User test = new User();
-        test.setEmail("dsadasdad@mail.com");
-        claims.put("role", roleMap);
+//        User userFromDatabase = userRepository.findByUid(uid);
+//        System.out.println(userFromDatabase);
+//        RoleList roleList = new RoleList();
+//        roleList.setRoles(userOrganizeRole);
+//        ObjectMapper object = new ObjectMapper();
+//        Map<String, Object> roleMap = object.convertValue(roleList, Map.class);
         try {
             FirebaseAuth.getInstance().setCustomUserClaims(uid, claims);
-            System.out.println("!!! Update");
+            System.out.println("!!! Update Claims");
+        } catch (FirebaseAuthException ex) {
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    public ResponseEntity updateUserCommunityRoleClaim(String uid) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("isCommunity", true);
+        try {
+            FirebaseAuth.getInstance().setCustomUserClaims(uid, claims);
+            System.out.println("!!! Update Claims");
         } catch (FirebaseAuthException ex) {
             Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
         }

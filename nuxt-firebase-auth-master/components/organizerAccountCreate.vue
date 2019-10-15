@@ -20,7 +20,7 @@
       </h2>
 
       <br />
-      <nuxt-link :to="`/startedEvent?`" style="text-decoration-line:none;">
+      <nuxt-link :to="`/organize/event/${organizeId}`" style="text-decoration-line:none;">
         <v-btn
           class="getStartedEvents white--text"
           color="#341646"
@@ -35,7 +35,13 @@
 
 <script>
 export default {
-  name: "organizerAccountCreate"
+  name: "organizerAccountCreate",
+  props:{
+    organizeId: {
+      type: String,
+      default: "uid31234grw"
+    }
+  }
 };
 </script>
 

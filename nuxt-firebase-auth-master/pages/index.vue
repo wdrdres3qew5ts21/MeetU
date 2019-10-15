@@ -9,7 +9,6 @@
       </nuxt-link>
     </v-carousel>
     <v-container class="bg">
-      <br />
       <!-- Event List -->
       <div v-show="getUser.uid!=null">
         <nuxt-link to="/selectGenres">
@@ -128,7 +127,7 @@
           <br />next events & activities.
         </h2>
         <br />
-        <nuxt-link :to="`/becomeOrganizer?`" style="text-decoration-line:none;">
+        <nuxt-link to="/organize/becomeOrganizer" style="text-decoration-line:none;">
           <v-btn
             class="upgradeToOrganizerButton white--text"
             depressed

@@ -1,30 +1,11 @@
 <template>
   <div>
-    <br />
-    <h2 class="h2">Create a New Tickets</h2>
-    <br />
-    <br />
-
-    <!-- <v-form>
-      <v-text-field
-        v-model="ticketTypeName"
-        :rules="ticketTypeNameRules"
-        label="* Ticket Type Name"
-        required
-      ></v-text-field>
-    </v-form>-->
-
-    <v-text-field
-      v-model="ticketForm.quantityOfTicket"
-      type="number"
-      label="* Quantity Available"
-      max="100000"
-      min="1"
-      step="1"
-    ></v-text-field>
 
     <br />
     <h3 class="h3">Sale Period</h3>
+
+    <br />
+
     <v-menu
       ref="menu"
       v-model="menuSaleStartDate"
@@ -34,6 +15,7 @@
       full-width
       min-width="290px"
     >
+    
       <template v-slot:activator="{ on }">
         <v-text-field
           v-model="ticketForm.saleStartDate"
@@ -50,6 +32,7 @@
         @change="save"
       ></v-date-picker>
     </v-menu>
+    
 
      <v-layout row wrap>
     <v-flex xs11 sm5>
@@ -138,9 +121,7 @@
       </v-menu>
     </v-flex>
 
-
-    <br />
-    <h3 class="h3">Age Restriction</h3>
+    <!-- <h3 class="h3">Age Restriction</h3>
     Minimum Age
     <p class="minAgeDescription">Restrict attendees age must be at least</p>
     <v-form>
@@ -156,8 +137,7 @@
     <v-form>
       <v-text-field type="number" max="100" min="1" step="1"
       v-model="ticketForm.maxAge"></v-text-field>
-    </v-form>
-    <br />
+    </v-form> -->
     <br />
 
     <center>
