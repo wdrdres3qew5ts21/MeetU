@@ -10,13 +10,7 @@
         <span>Members :</span> -->
       </span>
     </v-card-text>
-    <v-card-actions>
-      <v-flex class="text-xs-right">
-        <v-btn class="white--text" color="#341646">View</v-btn>
-      </v-flex>
-    </v-card-actions>
   </v-card>
-  
 </template>
 
 <script>

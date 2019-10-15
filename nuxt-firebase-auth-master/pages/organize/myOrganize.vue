@@ -1,12 +1,23 @@
 <template>
   <div>
     <h1>My Organize</h1>
-    <organize-card v-for="(organize, index) in organizeList" :key="index" :organizeName="organize.organizeName">
-
-    </organize-card>
+    <div v-if="organizeList">
+      <nuxt-link
+        v-for="(organize, index) in organizeList"
+        :key="index"
+        :to="`/organize/event/${organize.organizeId}`"
+      >
+        <organize-card :organizeName="organize.organizeName" />
+      </nuxt-link>
+    </div>
+    <div v-else>
+      <center>
+        <br />
+        <p style="color:grey">You not own any Organize.</p>
+      </center>
+    </div>
   </div>
 </template>
-
 
 <script>
 import organizeCard from "~/components/organizeCard";
@@ -19,7 +30,7 @@ export default {
   },
   data() {
     return {
-      organizeList: []
+      organizeList: null
     };
   },
   computed: {
