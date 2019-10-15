@@ -1,8 +1,7 @@
 <template>
   <div>
     <br />
-    <h1 style="color:#341646">All Events</h1>
-
+    <h1>{{organize.organizeName}}</h1>
     <br />
     <br />
     <center>
@@ -32,7 +31,12 @@ export default {
   name: "startedEvent",
   data(){
     return{
-      organizeId: ''
+      organizeId: '',
+      organize: {
+        oraganizeName: '',
+        organizeImageCover: '',
+        organizeImageProfile: '',
+      },
     }
   },
   mounted(){
@@ -44,8 +48,8 @@ export default {
     loadOrganizeDetail: async function(){
       axios.get(`${process.env.USER_SERVICE}/organize/${this.organizeId}`)
       .then(organizeResponse=>{
-        console.log(organizeResponse.data)
-
+        console.log(organizeResponse.data.body)
+        this.organize = organizeResponse.data.body
       })
       .catch(error=>{
 

@@ -38,7 +38,12 @@ public class OrganizeController {
     public ResponseEntity createOrganize(@PathVariable String userId, @RequestBody Organize organize) {
         return organizeService.createOrganize(userId, organize);
     }
-
+    
+    @GetMapping("/organize/user/{uid}")
+    public ResponseEntity findAllOrganizeOfUser(@PathVariable String uid) {
+        return organizeService.findAllOrganizeOfUser(uid);
+    }
+ 
     public ResponseEntity addAdminOrganize(@PathVariable Admin adminList[], @RequestBody Organize organize) {
         return new ResponseEntity<Organize>(organizeService.addAdminOrganize(adminList, organize), HttpStatus.CREATED);
     }

@@ -58,6 +58,11 @@ public class EventController {
     public ResponseEntity<Event> createEvent(@RequestBody Event event) {
         return new ResponseEntity<Event>(eventService.createEvent(event), HttpStatus.CREATED);
     }
+    
+    @GetMapping("/events/organize/{organizeId}")
+    public ResponseEntity findAllEventOfOrganize(@PathVariable String organizeId) {
+        return eventService.findAllEventOfOrganize(organizeId);
+    }
 
     @PostMapping("/notification/token")
     public ResponseEntity saveUserNotificationToken(@RequestBody UserNotification userNotification) {

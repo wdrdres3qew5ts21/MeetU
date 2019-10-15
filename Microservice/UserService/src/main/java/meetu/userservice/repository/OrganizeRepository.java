@@ -8,6 +8,7 @@ package meetu.userservice.repository;
 import java.util.List;
 import meetu.userservice.model.Organize;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -15,18 +16,17 @@ import org.springframework.stereotype.Repository;
  * @author POPPULAR
  */
 @Repository
-public interface OrganizeRepository extends MongoRepository<Organize, String>{
+public interface OrganizeRepository extends MongoRepository<Organize, String> {
 
     public List<Organize> findByOrganizeNameLike(String organizeName);
-    
+
     public Organize findByOrganizeName(String organizeName);
-    
+
+    public List<Organize> findByOrganizeOwnerUid(String uid);
+
 //    public List<User> findByFirstName(String firstName);
 //    
 //    public List<User> findByEmailLike(String emailKeyWord);
 //  
 //    public User findByUsername(String username);
-    
-    
 }
-

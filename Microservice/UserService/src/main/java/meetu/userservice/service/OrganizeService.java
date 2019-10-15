@@ -83,9 +83,15 @@ public class OrganizeService {
     public ResponseEntity findOrganizeById(String organizeId) {
         Organize organizeInDatabase = organizeRepository.findById(organizeId).get();
         if (organizeInDatabase != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(organizeRepository.findById(organizeId));
+            return new ResponseEntity(organizeInDatabase, HttpStatus.OK);
         }
-        return null;
+        HashMap<String, String> response = new HashMap<>();
+        response.put("response", "Not found Any Organize");
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+    
+    public ResponseEntity findAllOrganizeOfUser(String uid) {
+        return new ResponseEntity(organizeRepository.findByOrganizeOwnerUid(uid), HttpStatus.OK);
     }
 
 }
