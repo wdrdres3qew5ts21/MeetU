@@ -81,7 +81,7 @@
     <nuxt-link class="uploadPosterImg" to="/organize/event/uploadPosterImg">Upload poster image</nuxt-link>
 
     <br />
-    <nuxt-link class="createTicket" to="/organize/event/createNewTicket">Create ticket</nuxt-link>
+    <nuxt-link class="eventCondition" to="/organize/event/eventCondition">Event Conditions Setting</nuxt-link>
 
     <br />
     <br />
@@ -233,7 +233,7 @@ export default {
   text-decoration: underline;
 }
 
-.createTicket {
+.eventCondition {
   font-family: Roboto;
   font-size: 18px;
   font-weight: bold;

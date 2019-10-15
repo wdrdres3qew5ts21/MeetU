@@ -1,4 +1,7 @@
 <template >
+
+<div>
+  <link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel="stylesheet" type="text/css">
   <transition name="router-anim" enter-active-class="animated slideInRight">
     <v-layout row wrap>
       <v-flex xs12>
@@ -107,7 +110,6 @@
 
       <event-list v-if="searchedEventList.length>0" :eventList="searchedEventList"></event-list>
       <center v-else>
-        <p>You can search event here ;)</p>
       </center>
       <!-- <v-flex xs12 v-else>
           <h3>
@@ -126,7 +128,34 @@
       </v-btn>-->
     </v-layout>
   </transition>
+
+<br><br>
+
+<center><div>
+  <v-icon size="50" @click="showTest = !showTest">insert_emoticon</v-icon>
+  <transition
+    name="custom-classes-transition"
+    enter-active-class="animated tada"
+    leave-active-class="animated tada"
+  >
+
+   
+    <h3 v-if="showTest">You can search event!</h3>
+    <br>
+   
+        <v-img v-if="showTest" :src="emotionImg" max-width="60"></v-img>
+
+  </transition>
+</div>
+</center>
+
+</div>
+
+
+
+
 </template>
+
 
 <script>
 import EventList from "@/components/eventList";
@@ -138,6 +167,7 @@ import { mockCategoryList } from "@/utils/categoryJson";
 
 export default {
   components: { EventList },
+
   data() {
     return {
       chips: [],
@@ -156,9 +186,13 @@ export default {
         distance: "",
         sortByDate: "",
         categorySelected: []
-      }
+        
+      },
+      showTest:true,
+      emotionImg:require('@/assets/smile.png')
     };
   },
+  
   computed: {
     ...mapGetters(["getCategory"])
   },
@@ -221,6 +255,7 @@ export default {
     }
   }
 };
+
 </script>
 
 <style lang="css">
@@ -243,4 +278,6 @@ export default {
   background-size: cover;
   background: transparent; */
 }
+
+
 </style>
