@@ -222,7 +222,7 @@
 <script>
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
-import userProfileVue from "../pages/userProfile.vue";
+
 export default {
   name: "userProfileForm",
   components: {},

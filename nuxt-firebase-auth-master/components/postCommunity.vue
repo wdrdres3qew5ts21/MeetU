@@ -25,7 +25,7 @@
       <v-container grid-list-xs fluid style="padding:10px">
         <br />
         <v-layout wrap>
-          <v-flex v-for="n in 2" :key="n" xs6>
+          <!-- <v-flex v-for="n in 2" :key="n" xs6>
             <v-card flat tile>
               <v-img
                 :src="`https://picsum.photos/500/300?image=${n * 5 + 10}`"
@@ -40,7 +40,7 @@
                 </template>
               </v-img>
             </v-card>
-          </v-flex>
+          </v-flex> -->
         </v-layout>
       </v-container>
       <v-card-text rounded outlined class="mx-auto">
@@ -57,7 +57,10 @@
                   <template v-slot:activator="{ on }">
                     <v-btn v-on="on" text block  flat >
                       <!-- class="btn" @click="activeButton = 1" v-bind:class="{'greenBtn':true, 'blackBtn': activeButton == 1}" -->
-                      <v-icon class="icon" @click="activeButton = 1" v-bind:class="{'blackBtn':true, 'purpleBtn': activeButton == 1}">thumb_up_alt</v-icon>Like
+                      <!-- <v-icon class="icon" @click="activeButton = 1" v-bind:class="{'blackBtn':true, 'purpleBtn': activeButton == 1}">thumb_up_alt</v-icon>Like -->
+                  <!-- <v-btn flat icon color="blue lighten-2"> -->
+        <v-icon>thumb_up</v-icon>
+      <!-- </v-btn> -->
                     </v-btn>
                   </template>
                   <span>Like this post</span>
@@ -117,6 +120,7 @@
 <script>
 import { types } from "util";
 export default {
+  name: "postCommunity",
   data() {
     return{
        activeButton: 0
