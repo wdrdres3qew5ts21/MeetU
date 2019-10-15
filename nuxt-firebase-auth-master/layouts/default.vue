@@ -232,7 +232,7 @@ export default {
       organizeMenuList: [
         { label: "Create Organize", link: "/organize/organizerForm" },
         { label: "Create Event", link: "/organize/event/createEventForm" },
-        { label: "View Organize", link: "/organize/startedEvent" }
+        { label: "View Organize", link: "/organize/myOrganize" }
       ]
     };
   },

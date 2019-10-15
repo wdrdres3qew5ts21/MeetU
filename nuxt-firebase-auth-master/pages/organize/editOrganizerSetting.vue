@@ -10,7 +10,7 @@
     <div>
       <v-form>
         <v-text-field
-          v-model="organizerName"
+          v-model="organizeForm.organizerName"
           :rules="organizerNameRules"
           label="* Organizer Name"
           required
@@ -41,7 +41,7 @@
     </center>
 
     <v-form>
-      <v-text-field v-model="email" :rules="emailRules" label="* Email" required></v-text-field>
+      <v-text-field v-model="organizeForm.email" :rules="emailRules" label="* Email" required></v-text-field>
     </v-form>
 
     <v-layout row wrap>
@@ -59,27 +59,46 @@
     <br />
 
     <v-form>
-      <v-text-field class="textfield" v-model="website" label="Website" placeholder="http://"></v-text-field>
+      <v-text-field
+        class="textfield"
+        v-model="organizeForm.website"
+        label="Website"
+        placeholder="http://"
+      ></v-text-field>
     </v-form>
 
     <v-form>
-      <v-text-field class="textfield" v-model="line" label="Line" placeholder="@"></v-text-field>
+      <v-text-field class="textfield" v-model="organizeForm.line" label="Line" placeholder="@"></v-text-field>
     </v-form>
 
     <v-form>
-      <v-text-field class="textfield" v-model="facebook" label="Facebook" placeholder="http://"></v-text-field>
+      <v-text-field
+        class="textfield"
+        v-model="organizeForm.facebook"
+        label="Facebook"
+        placeholder="http://"
+      ></v-text-field>
     </v-form>
 
     <v-form>
-      <v-text-field class="textfield" v-model="twitter" label="Twitter" placeholder="@"></v-text-field>
+      <v-text-field
+        class="textfield"
+        v-model="organizeForm.twitter"
+        label="Twitter"
+        placeholder="@"
+      ></v-text-field>
     </v-form>
 
     <v-form>
-      <v-text-field class="textfield" v-model="instagram" label="Instagram" placeholder="@"></v-text-field>
+      <v-text-field
+        class="textfield"
+        v-model="organizeForm.instagram"
+        label="Instagram"
+        placeholder="@"
+      ></v-text-field>
     </v-form>
 
-
-    <br>
+    <br />
     <center>
       <nuxt-link :to="`/?`" style="text-decoration-line:none;">
         <v-btn class="cancelButton white--text" color="#AEAEAE" depressed large height="50">Cancel</v-btn>
@@ -89,23 +108,41 @@
         <v-btn class="saveButton white--text" color="#341646" depressed large height="50">Save</v-btn>
       </nuxt-link>
     </center>
-    <br><br>
-
-    
+    <br />
+    <br />
   </div>
 </template>
 
 <script>
 export default {
-  name:"editOrganizerSettings",
-  data: () => ({
-    organizerNameRules: [v => !!v || "Name is required"],
-    emailRules: [
-      v => !!v || "E-mail is required",
-      v => /.+@.+/ || "E-mail must be valid"
-    ],
-    phoneRules: [v => !!v || "Phone is required"]
-  })
+  name: "editOrganizerSettings",
+  data() {
+    return {
+      organizerNameRules: [v => !!v || "Name is required"],
+      emailRules: [v => /.+@.+/ || "E-mail must be valid"],
+      phoneRules: [v => !!v || "Phone is required"],
+      phone: ["TH", "EN"],
+      organizeForm: {
+        organizerName: "",
+        interest: [],
+        firstName: "",
+        lastName: "",
+        gender: "",
+        dateArray: [],
+        dateOfBirth: "",
+        phone: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        password: "",
+        website: "",
+        line: "",
+        facebook: "",
+        twitter: "",
+        instagram: ""
+      }
+    };
+  }
 };
 </script>
 

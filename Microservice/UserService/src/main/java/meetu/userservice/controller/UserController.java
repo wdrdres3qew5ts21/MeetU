@@ -78,13 +78,13 @@ public class UserController {
     public ResponseEntity<String> getTestMessage() {
         return new ResponseEntity<String>(testMessage, HttpStatus.OK);
     }
-    
+
     @GetMapping("/user/create/jwt")
     public ResponseEntity customJWT() {
         //return new ResponseEntity<HashMap<String, Object>>(this.userService.verifyJwtToken(jwtRequestBody),HttpStatus.OK);
         return this.userService.createCustomToken();
     }
-    
+
     @GetMapping("/user/jwt/{uid}")
     public ResponseEntity getCustomJWTViaAuthentication(@PathVariable String uid) {
         //return new ResponseEntity<HashMap<String, Object>>(this.userService.verifyJwtToken(jwtRequestBody),HttpStatus.OK);
@@ -111,17 +111,17 @@ public class UserController {
     public ResponseEntity<String> login(@RequestBody User user) {
         return new ResponseEntity<String>(userService.login(user), HttpStatus.OK);
     }
-    
+
     @PostMapping("/user/view")
     public ResponseEntity updateUserViewInterest(@RequestBody UserViewEvent userViewEvent) {
         return userService.userViewEvent(userViewEvent);
     }
-    
+
     @PostMapping("/user/interest")
     public ResponseEntity updateUserInterestPersonaFromJoinEvent(@RequestBody UserJoinEvent userJoinEvent) {
         return userService.updateUserInterestPersonaFromJoinEvent(userJoinEvent);
     }
-    
+
     @PostMapping("/user/interest/preference")
     public ResponseEntity updateUserPreference(@RequestBody User updatedUserInterest) {
         return userService.updateUserPreference(updatedUserInterest);
