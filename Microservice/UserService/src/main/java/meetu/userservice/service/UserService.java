@@ -30,6 +30,7 @@ import meetu.userservice.model.UserJoinEvent;
 import meetu.userservice.model.UserNotification;
 import meetu.userservice.model.UserOrganizeRole;
 import meetu.userservice.model.UserViewEvent;
+import meetu.userservice.repository.OrganizeRepository;
 import meetu.userservice.repository.UserNotificationRepository;
 import meetu.userservice.repository.UserOrganizeRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,9 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private OrganizeRepository organizeRepository;
 
     @Autowired
     private TokenAuthenticationService tokenAuthenticationService;
@@ -275,7 +279,7 @@ public class UserService {
         }
         return null;
     }
-    
+
     public ResponseEntity updateUserCommunityRoleClaim(String uid) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("isCommunity", true);
@@ -287,5 +291,7 @@ public class UserService {
         }
         return null;
     }
+
+    
 
 }

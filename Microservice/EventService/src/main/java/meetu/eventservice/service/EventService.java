@@ -463,7 +463,7 @@ public class EventService {
                     byte[] array = new byte[8]; // length is bounded by 7
                     new Random().nextBytes(array);
                     String generateTicketKey = new String(array, Charset.forName("UTF-8"));
-                    userReserveTicket.setTicketId(System.currentTimeMillis()+"");
+                    userReserveTicket.setTicketId(System.currentTimeMillis() + "");
 //                userReserveTicket.setTicketKey(UUID.randomUUID().toString());
                     userReserveTicket.setEventTags(eventInDatabase.getEventTags());
                     userReserveTicket.setTicketKey(RandomStringUtils.randomAlphanumeric(8));
@@ -594,21 +594,26 @@ public class EventService {
     }
 
     public ResponseEntity findUserTicketHistoryByElasticEventId(String uid, String elasticEventId) {
-       LookupOperation lookupOperation = LookupOperation.newLookup()
+        LookupOperation lookupOperation = LookupOperation.newLookup()
                 .from("events")
                 .localField("elasticEventId")
                 .foreignField("elasticEventId")
                 .as("ticketDetail");
         AggregationOperation uidMatch = Aggregation.match(Criteria.where("uid").is(uid));
         AggregationOperation elasticMatch = Aggregation.match(Criteria.where("elasticEventId").is(elasticEventId));
-        List<AggregationOperation> aggregateList= new ArrayList<>();
+        List<AggregationOperation> aggregateList = new ArrayList<>();
         aggregateList.add(uidMatch);
         aggregateList.add(elasticMatch);
-        Aggregation aggregation = Aggregation.newAggregation(lookupOperation, uidMatch,elasticMatch);
+        Aggregation aggregation = Aggregation.newAggregation(lookupOperation, uidMatch, elasticMatch);
         List<BasicDBObject> results = mongoTemplate.aggregate(aggregation, "userEventTicket", BasicDBObject.class).getMappedResults();
         System.out.println("----------------------");
         System.out.println(results);
         return ResponseEntity.status(HttpStatus.OK).body(results);
+    }
+
+    public ResponseEntity findAllEventOfOrganize(String organizeId) {
+        List<Event> allEventOfOrganize = eventRepository.findByOrganizeOrganizeId(organizeId);
+        return new ResponseEntity(allEventOfOrganize, HttpStatus.OK);
     }
 
 }
