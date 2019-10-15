@@ -54,7 +54,7 @@
     </v-card>
 
     <br />
-    <h3>{{post}}</h3>
+
     <v-card rounded outlined v-for="(todo,index ) in postList " :key="index">
       <br />
       <div>
@@ -92,60 +92,90 @@
         <v-divider></v-divider>
         <v-flex class="text-right">
           <v-layout wrap justify-end>
-
-            <v-tooltip top>
+            <v-dialog
+              v-model="dialog"
+              fullscreen
+              hide-overlay
+              transition="dialog-bottom-transition"
+            >
               <template v-slot:activator="{ on }">
-
                 <v-btn v-on="on" text block flat>
                   <v-icon>comment</v-icon>Comment
                 </v-btn>
-                <!-- <v-btn
+              </template>
+              <v-card>
+                <v-toolbar dark color="primary">
+                  <v-btn icon dark @click="dialog = false">
+                    <v-icon>close</v-icon>
+                  </v-btn>
+                  <v-toolbar-title>comment</v-toolbar-title>
+                </v-toolbar>
+                <v-card rounded outlined v-for="(todo,index ) in commentList " :key="index">
+                  <v-container grid-list-xs fluid style="padding:10px">
+                    <v-flex xs12 class="text-xs-left">
+                      <v-avatar size="30">
+                        <v-img :aspect-ratio="1/1" :src="getUser.photoURL"></v-img>
+                      </v-avatar>
+                      {{ getUser.displayName}}
+                      <br />
+                      <span></span>
+                      <span :class="{ done: todo.done }">{{todo.commentInPost}}</span>
+                    </v-flex>
+                  </v-container>
+
+                  <br />
+                </v-card>
+                <form >
+                  <v-layout ma-3>
+                    <v-flex xs12>
+                      <v-flex lass="text-xs-left">
+                        <v-text-field
+                          v-model="newComment"
+                          name="newComment"
+                          id="newComment"
+                          value
+                          label="write something..."
+                        ></v-text-field>
+                      </v-flex>
+                    </v-flex>
+                    <v-flex class="text-xs-right" pa-2>
+                      <v-btn text small @click="addComment()">post</v-btn>
+                    </v-flex>
+                  </v-layout>
+                </form>
+              </v-card>
+            </v-dialog>
+
+            <!-- <v-btn
                   @click="removePost(todo)"
                   color="#341646"
                   class="mb-2 white--text"
                   type="button"
                   name="button"
-                >Remove</v-btn>-->
-              </template>
-
-              <span>Write comment</span>
-
-            
-            </v-tooltip>
-            
+            >Remove</v-btn>-->
           </v-layout>
         </v-flex>
         <v-divider></v-divider>
         <v-layout>
-          <v-flex xs12>
-            <v-text-field v-model="newComment" name="newComment" id="newComment" value></v-text-field>
-          </v-flex>
-          <v-flex class="text-xs-right">
-            <v-btn text small @click="addComment()">post</v-btn>
-          </v-flex>
-
           <br />
-
-         
         </v-layout>
       </v-card-text>
 
-       <v-card rounded outlined v-for="(todo,index ) in commentList " :key="index">
-           
-           <v-container grid-list-xs fluid style="padding:10px">
-            <v-flex xs12 class="text-xs-left">
-              <v-avatar size="30">
-                <v-img :aspect-ratio="1/1" :src="getUser.photoURL"></v-img>
-              </v-avatar>
-              {{ getUser.displayName}} <br />
-              <span>    </span> 
-              <span :class="{ done: todo.done }">{{todo.commentInPost}}</span>
+      <v-card rounded outlined v-for="(todo,index ) in commentList " :key="index">
+        <v-container grid-list-xs fluid style="padding:10px">
+          <v-flex xs12 class="text-xs-left">
+            <v-avatar size="30">
+              <v-img :aspect-ratio="1/1" :src="getUser.photoURL"></v-img>
+            </v-avatar>
+            {{ getUser.displayName}}
+            <br />
+            <span></span>
+            <span :class="{ done: todo.done }">{{todo.commentInPost}}</span>
+          </v-flex>
+        </v-container>
 
-            </v-flex>
-          </v-container>
-        
-          <br />
-          </v-card>
+        <br />
+      </v-card>
     </v-card>
   </div>
 </template> 
@@ -214,7 +244,6 @@ export default {
       this.image = files[0];
     },
 
-
     addPost() {
       this.postList.push({
         post: this.newPost,
@@ -227,13 +256,13 @@ export default {
       this.postList.splice(postIndex, 1);
     },
 
-
     addComment() {
       this.commentList.push({
         commentInPost: this.newComment,
         done: false
       });
       this.newComment = "";
+      this.dialog = false;
     },
     removePost(todo) {
       const commentIndex = this.commentList.indexOf(todo);
