@@ -110,7 +110,6 @@
 
       <event-list v-if="searchedEventList.length>0" :eventList="searchedEventList"></event-list>
       <center v-else>
-        <p>You can search event here ;)</p>
       </center>
       <!-- <v-flex xs12 v-else>
           <h3>
