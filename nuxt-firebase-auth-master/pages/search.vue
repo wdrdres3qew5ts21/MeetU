@@ -129,7 +129,7 @@
     </v-layout>
   </transition>
 
-
+<br><br>
 
 <center><div>
   <v-icon size="50" @click="showTest = !showTest">insert_emoticon</v-icon>
