@@ -1,4 +1,7 @@
 <template >
+
+<div>
+  <link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel="stylesheet" type="text/css">
   <transition name="router-anim" enter-active-class="animated slideInRight">
     <v-container fluid grid-list-md>
       <v-layout row wrap>
@@ -116,10 +119,38 @@
             Click to search nearby event for {{areaOfEvent}}
             
         </v-btn>-->
+
       </v-layout>
     </v-container>
   </transition>
+
+
+
+<center><div>
+  <v-icon size="50" @click="showTest = !showTest">insert_emoticon</v-icon>
+  <transition
+    name="custom-classes-transition"
+    enter-active-class="animated tada"
+    leave-active-class="animated tada"
+  >
+
+   
+    <h3 v-if="showTest">You can search event!</h3>
+    <br>
+   
+        <v-img v-if="showTest" :src="emotionImg" max-width="60"></v-img>
+
+  </transition>
+</div>
+</center>
+
+</div>
+
+
+
+
 </template>
+
 
 <script>
 import EventList from "@/components/eventList";
@@ -131,6 +162,7 @@ import { mockCategoryList } from "@/utils/categoryJson";
 
 export default {
   components: { EventList },
+
   data() {
     return {
       chips: [],
@@ -150,9 +182,12 @@ export default {
         sortByDate: '',
         categorySelected: []
         
-      }
+      },
+      showTest:true,
+      emotionImg:require('@/assets/smile.png')
     };
   },
+  
   computed: {
     ...mapGetters(["getCategory"])
   },
@@ -210,6 +245,7 @@ export default {
     }
   }
 };
+
 </script>
 
 <style lang="css">
@@ -232,4 +268,6 @@ export default {
   background-size: cover;
   background: transparent; */
 }
+
+
 </style>
