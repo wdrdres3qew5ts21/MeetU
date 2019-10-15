@@ -3,114 +3,122 @@
 <div>
   <link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel="stylesheet" type="text/css">
   <transition name="router-anim" enter-active-class="animated slideInRight">
-    <v-container fluid grid-list-md>
-      <v-layout row wrap>
-        <v-flex xs12>
-          <!-- <v-card class="mx-auto" elevation="0" outlined width="100%"> -->
-          <div class="px-3">
-            <v-layout>
-              <v-dialog
-                v-model="dialog"
-                fullscreen
-                hide-overlay
-                transition="dialog-bottom-transition"
-              >
-                <template v-slot:activator="{ on }">
-                  <v-btn flat icon color="#341646" v-on="on">
-                    <v-icon>filter_list</v-icon>
+    <v-layout row wrap>
+      <v-flex xs12>
+        <!-- <v-card class="mx-auto" elevation="0" outlined width="100%"> -->
+        <div>
+          <v-layout>
+            <v-dialog
+              v-model="dialog"
+              fullscreen
+              hide-overlay
+              transition="dialog-bottom-transition"
+            >
+              <template v-slot:activator="{ on }">
+                <v-btn flat icon color="#341646" v-on="on">
+                  <v-icon>filter_list</v-icon>
+                </v-btn>
+              </template>
+              <v-card>
+                <v-toolbar dark color="primary">
+                  <v-btn icon dark @click="dialog = false">
+                    <v-icon>navigate_before</v-icon>
                   </v-btn>
-                </template>
-                <v-card>
-                  <v-toolbar dark color="primary">
-                    <v-btn icon dark @click="dialog = false">
-                      <v-icon>navigate_before</v-icon>
-                    </v-btn>
-                    <v-toolbar-title>Filter</v-toolbar-title>
-                    <v-spacer></v-spacer>
-                  </v-toolbar>
+                  <v-toolbar-title>Filter</v-toolbar-title>
+                  <v-spacer></v-spacer>
+                </v-toolbar>
 
-                  <v-list three-line subheader>
-                    <br />
+                <v-list three-line subheader>
+                  <br />
 
-                    <v-subheader>Filter by category</v-subheader>
-                    <v-layout class="mb-4">
-                      <v-combobox
-                        :items="categoryList"
-                        item-text="categoryLabel"
-                        item-value="categoryName"
-                        label="category"
-                        chips
-                        clearable
-                        solo
-                        multiple
-                        sm6
-                        xs2
-                      >
-                        <template v-slot:selection="data">
-                          <v-chip
-                            :selected="data.selected"
-                            close
-                            @input="remove(data.item.categoryName)"
-                            value="filterForm.category"
-                            v-model="categorySelected"
-                          >
-                            <strong>{{ data.item.categoryName}}</strong>&nbsp;
-                          </v-chip>
-                        </template>
-                      </v-combobox>
-                    </v-layout>
-                    <v-subheader>Sort by Date</v-subheader>
-                    <v-layout class="mb-4">
-                      <v-select :items="sortDate" label="Last Update" v-model="filterForm.sortByDate" solo></v-select>
-                    </v-layout>
-         
-                    <v-subheader>Near your location</v-subheader>
-                    <v-text-field type="number" v-model="filterForm.distance"> </v-text-field>
-                  </v-list>
+                  <v-subheader>Filter by category</v-subheader>
+                  <v-layout class="mb-4">
+                    <v-combobox
+                      :items="categoryList"
+                      item-text="categoryLabel"
+                      item-value="categoryName"
+                      label="category"
+                      @input="updateCategoryFilter"
+                      chips
+                      clearable
+                      solo
+                      multiple
+                      sm6
+                      xs2
+                    >
+                      <template v-slot:selection="data">
+                        <v-chip
+                          :selected="data.selected"
+                          close
+                          @input="remove(data.item.categoryName)"
+                        >
+                          <strong>{{ data.item.categoryName}}</strong>&nbsp;
+                        </v-chip>
+                      </template>
+                    </v-combobox>
+                  </v-layout>
+                  
+                  <v-subheader>Sort by Date</v-subheader>
+                  <v-layout class="mb-4">
+                    <v-select
+                      :items="sortDate"
+                      label="Last Update"
+                      v-model="filterForm.sortByDate"
+                      solo
+                    ></v-select>
+                  </v-layout>
 
-                  <center>
-                    <v-btn
-                      class="white--text"
-                      depressed
-                      large
-                      color="#341646"
-                      @click="searchByFilter()"
-                    >Search</v-btn>
-                  </center>
-                </v-card>
-              </v-dialog>
+                  <v-subheader>Near your location</v-subheader>
+                  <v-text-field type="number" v-model="filterForm.distance"></v-text-field>
+                </v-list>
 
-              <v-text-field
-                class="questrial no-top-padding"
-                height="20px"
-                placeholder="Search..."
-                v-model="search"
-                @keyup.enter="searchEventByFilter()"
-              ></v-text-field>
-              <v-flex class="text-xs-right">
                 <v-btn
                   class="white--text"
                   depressed
-                  small
+                  large
+                  block
                   color="#341646"
-                  ref="searchButton"
-                  @click="searchEventByFilter()"
+                  @click="searchByFilter()"
                 >Search</v-btn>
-              </v-flex>
-            </v-layout>
-          </div>
-          <!-- </v-card> -->
-        </v-flex>
-        <br />
+              {{filterForm.categorySelected}}
 
-        <event-list v-if="searchedEventList.length>0" :eventList="searchedEventList"></event-list>
-        <!-- <v-flex xs12 v-else>
+              </v-card>
+            </v-dialog>
+
+            <v-text-field
+              class="questrial no-top-padding"
+              height="20px"
+              placeholder="Search..."
+              v-model="search"
+              @keyup.enter="searchEventByFilter()"
+            ></v-text-field>
+            <v-flex class="text-xs-right">
+              <v-btn
+                class="white--text"
+                depressed
+                small
+                color="#341646"
+                ref="searchButton"
+                @click="searchEventByFilter()"
+              >Search</v-btn>
+            </v-flex>
+          </v-layout>
+        </div>
+        <!-- </v-card> -->
+      </v-flex>
+      <br />
+
+      <event-list v-if="searchedEventList.length>0" :eventList="searchedEventList"></event-list>
+      <center v-else>
+        <p>You can search event here ;)</p>
+      </center>
+      <!-- <v-flex xs12 v-else>
           <h3>
             <center>You can search event ;)</center>
           </h3>
-        </v-flex> -->
+      </v-flex>-->
 
-        <!-- <v-btn
+      <!-- <v-btn
             color="#fc5577"
             
             :round="true"
@@ -118,10 +126,8 @@
             @click="findEventInArea()">
             Click to search nearby event for {{areaOfEvent}}
             
-        </v-btn>-->
-
-      </v-layout>
-    </v-container>
+      </v-btn>-->
+    </v-layout>
   </transition>
 
 
@@ -178,8 +184,8 @@ export default {
       searchedEventList: [],
       selectedCategoryList: [],
       filterForm: {
-        distance: '',
-        sortByDate: '',
+        distance: "",
+        sortByDate: "",
         categorySelected: []
         
       },
@@ -219,8 +225,13 @@ export default {
       });
     },
     remove: function(item) {
+      console.log(item)
       this.chips.splice(this.chips.indexOf(item), 1);
       this.chips = [...this.chips];
+    },
+    updateCategoryFilter: async function(category){
+      console.log(JSON.parse(JSON.stringify(category)))
+     // this.filterForm.categorySelected.push(categoryO)
     },
     searchEventByFilter: async function() {
       let query = `${process.env.EVENT_SERVICE}/events?isRecently=${
@@ -238,7 +249,7 @@ export default {
       this.searchedEventList = searchedEventList;
       console.log(this.searchedEventList);
     },
-    searchByFilter(){
+    searchByFilter() {
       console.log(this.filterForm.sortByDate);
       console.log(this.filterForm.distance);
       console.log(this.filterForm.categorySelected);

@@ -92,19 +92,19 @@
     </v-navigation-drawer>
 
     <v-toolbar color="#fff" app style="color:#fff;" id="toolbar">
-      <nuxt-link to="/" style="text-decoration-line:none;">
-        <!-- <v-toolbar-title style="text-decoration-line:none;color: #341646">
+      <v-toolbar-title>
+        <nuxt-link to="/" style="text-decoration-line:none;">
+          <!-- <v-toolbar-title style="text-decoration-line:none;color: #341646">
           <v-img
       :src="logoImage"
       height="40"
 
     ></v-img>
-        </v-toolbar-title>-->
+          </v-toolbar-title>-->
 
-        <v-toolbar-title>
           <img :src="logoToolbarImage" height="110" />
-        </v-toolbar-title>
-      </nuxt-link>
+        </nuxt-link>
+      </v-toolbar-title>
 
       <v-spacer></v-spacer>
 
@@ -123,7 +123,7 @@
       <!-- <v-btn icon @click.native.stop="drawer = !drawer" class="hidden-lg-and-up">
         <v-icon class="menuButton" color="#341646;">menu</v-icon>
       </v-btn>-->
-<!-- 
+      <!-- 
       <v-menu :bottom="true" offset-y>
         <template v-slot:activator="{ on }">
           <v-btn dark icon v-on="on">
@@ -136,7 +136,7 @@
             <v-list-tile-title>{{ menu.label }}</v-list-tile-title>
           </v-list-tile>
         </v-list>
-      </v-menu> -->
+      </v-menu>-->
 
       <!-- <v-text-field
         class="hidden-xs-only"
@@ -183,7 +183,7 @@
 
     <v-footer height="auto" color="#341646">
       <v-layout row wrap justify-center>
-        <nuxt-link v-for="(link, index) in linksFooter" :key="index" :to="link.link" >
+        <nuxt-link v-for="(link, index) in linksFooter" :key="index" :to="link.link">
           <v-btn color="#fff" flat>{{ link.label }}</v-btn>
         </nuxt-link>
         <v-flex xs12 py-3 text-xs-center white--text>
@@ -222,17 +222,18 @@ export default {
         { label: "Home", link: "/" },
         { label: "Event", link: "/event" },
         { label: "Community", link: "/community" },
-        { label: "About Us", link: "/" },
+        { label: "Organize", link: "/organize/organizerForm" },
         { label: "Contact Us", link: "/" }
       ],
       communityMenuList: [
         { label: "Create Community", link: "/community/createCommunity" },
-        { label: "View Community", link: "/community" },
+        { label: "View Community", link: "/community" }
       ],
       organizeMenuList: [
-        { label: "Create Organize", link: "/organizerForm" },
-        { label: "Create Event", link: "/createEventForm" },
-      ],
+        { label: "Create Organize", link: "/organize/organizerForm" },
+        { label: "Create Event", link: "/organize/event/createEventForm" },
+        { label: "View Organize", link: "/organize/startedEvent" }
+      ]
     };
   },
   mounted() {

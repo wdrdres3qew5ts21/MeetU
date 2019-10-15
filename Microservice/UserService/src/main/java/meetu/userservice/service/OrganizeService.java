@@ -11,6 +11,7 @@ import meetu.userservice.repository.UserOrganizeRoleRepository;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import meetu.userservice.model.Admin;
 import meetu.userservice.model.Organize;
 import meetu.userservice.model.UserOrganizeRole;
@@ -31,7 +32,7 @@ public class OrganizeService {
 
     @Autowired
     private OrganizeRepository organizeRepository;
-    
+
     @Autowired
     private UserOrganizeRoleRepository userOrganizeRoleRepository;
 
@@ -46,17 +47,18 @@ public class OrganizeService {
             Admin organizeOwner = new Admin();
             organizeOwner.setUid(uid);
             organize.setOrganizeOwner(organizeOwner);
-            
+
             Organize savedOrganize = organizeRepository.save(organize);
             UserOrganizeRole userOrganizeRole = new UserOrganizeRole();
             userOrganizeRole.setOrganizeId(savedOrganize.getOrganizeId());
             userOrganizeRole.setUid(uid);
-            ArrayList<String> roles= new ArrayList();
+            ArrayList<String> roles = new ArrayList();
             roles.add("owner");
-            userOrganizeRole.setRoles(roles);       
+            userOrganizeRole.setRoles(roles);
             userOrganizeRoleRepository.save(userOrganizeRole);
-            
+
             userService.updateUserOrganizeRoleClaim(uid);
+            System.out.println(savedOrganize);
             return ResponseEntity.status(HttpStatus.CREATED).body(organizeRepository.save(savedOrganize));
         } else {
             System.out.println("organize name duplciate");
@@ -79,8 +81,11 @@ public class OrganizeService {
     }
 
     public ResponseEntity findOrganizeById(String organizeId) {
-        return ResponseEntity.status(HttpStatus.OK).body(organizeRepository.findById(organizeId));
-
+        Organize organizeInDatabase = organizeRepository.findById(organizeId).get();
+        if (organizeInDatabase != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(organizeRepository.findById(organizeId));
+        }
+        return null;
     }
 
 }
