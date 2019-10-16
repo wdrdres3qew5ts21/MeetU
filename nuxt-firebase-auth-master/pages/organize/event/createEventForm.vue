@@ -70,7 +70,6 @@
 
     <br />
     <br />
-    <br />
     <!-- 
         <v-file-input
     label="File input"
@@ -78,10 +77,15 @@
     prepend-icon="mdi-camera"
     ></v-file-input>-->
 
+    <nuxt-link class="eventCondition" to="/organize/event/eventCondition">Event Conditions Setting</nuxt-link>
+
+    <br>
+    
     <nuxt-link class="uploadPosterImg" to="/organize/event/uploadPosterImg">Upload poster image</nuxt-link>
 
     <br />
-    <nuxt-link class="eventCondition" to="/organize/event/eventCondition">Event Conditions Setting</nuxt-link>
+
+    <nuxt-link class="uploadBadge" to="/organize/event/uploadBadge">Upload Badge</nuxt-link>
 
     <br />
     <br />
@@ -234,6 +238,14 @@ export default {
 }
 
 .eventCondition {
+  font-family: Roboto;
+  font-size: 18px;
+  font-weight: bold;
+  color: #100c4b;
+  text-decoration: underline;
+}
+
+.uploadBadge {
   font-family: Roboto;
   font-size: 18px;
   font-weight: bold;
