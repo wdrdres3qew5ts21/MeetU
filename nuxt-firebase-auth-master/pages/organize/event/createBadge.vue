@@ -5,9 +5,9 @@
     <br />
 
     <span>
-        <v-text-field label="* Badge Name" required></v-text-field>
+      <v-text-field label="* Badge Name" required></v-text-field>
     </span>
-    <br>
+    <br />
     <span>
       Badge image
       <br />
@@ -39,15 +39,13 @@
     <br />
     <br />
 
-
-    
     <span>Badge Tag</span>
 
     <v-layout row wrap align-center>
       <v-flex xs12 sm6>
         <v-select
           v-model="selectBadgeTag"
-          :items="categoryEvent"
+          :items="categoryEventList"
           :menu-props="{ maxHeight: '400' }"
           label="Select"
           multiple
@@ -56,6 +54,7 @@
         ></v-select>
       </v-flex>
     </v-layout>
+
 
     <!-- <v-chip label color="#F81A93" text-color="white">
       <v-icon left>label</v-icon>Tags
@@ -123,7 +122,7 @@ export default {
       eventPictureCover: null,
       eventPictureLists: null,
       selectBadgeTag: [],
-      categoryEvent: [
+      categoryEventList: [
         "Art",
         "Beauty",
         "Book",
@@ -135,7 +134,9 @@ export default {
         "Photography",
         "Social",
         "Technology"
-      ]
+      ],
+      items:['Test','Testtttt','112222']
+
     };
   },
   methods: {

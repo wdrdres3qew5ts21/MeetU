@@ -12,8 +12,47 @@
     </v-layout>
 
     <v-flex xs12 sm5 d-flex>
-      <v-select :items="categoryEventList" label="Category" v-model="eventForm.selectedCategory"></v-select>
+      <v-select
+        :items="categoryEventList"
+        :menu-props="{ maxHeight: '400' }"
+        label="Category"
+        v-model="eventForm.selectedCategory"
+        multiple
+        persistent-hint
+      ></v-select>
     </v-flex>
+
+    <!-- test -->
+
+    <!-- <br />
+
+    <v-btn color="primary" dark @click="badgeSelect = true">Select Badge</v-btn>
+
+    <v-dialog v-model="badgeSelect" max-width="500px">
+        <v-card>
+          <v-card-title>
+            <span>Dialog 3</span>
+            <v-spacer></v-spacer>
+            <v-menu bottom left>
+              <template v-slot:activator="{ on }">
+                <v-btn icon v-on="on">
+                  <v-icon>more_vert</v-icon>
+                </v-btn>
+              </template>
+              <v-list>
+                <v-list-tile v-for="(item, i) in items" :key="i">
+                  <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+                </v-list-tile>
+              </v-list>
+            </v-menu>
+          </v-card-title>
+          <v-card-actions>
+            <v-btn color="primary" flat @click="badgeSelect=false">Close</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog> -->
+      <br>
+
 
     <v-menu
       ref="menu"
@@ -68,6 +107,11 @@
 
     <v-btn class="addLocationButton" color="white">Add Location</v-btn>
 
+    <!-- <span class="selectBadge">Badge :</span> -->
+    <!-- <v-btn class="selectBudgeButton" color="white">Select</v-btn> -->
+
+
+    <br />
     <br />
     <br />
     <!-- 
@@ -79,13 +123,13 @@
 
     <nuxt-link class="eventCondition" to="/organize/event/eventCondition">Event Conditions Setting</nuxt-link>
 
-    <br>
-    
-    <nuxt-link class="uploadPosterImg" to="/organize/event/uploadPosterImg">Upload poster image</nuxt-link>
-
     <br />
 
+    <nuxt-link class="uploadPosterImg" to="/organize/event/uploadPosterImg">Upload poster image</nuxt-link>
+
+<br>
     <nuxt-link class="createBadge" to="/organize/event/createBadge">Create Badge</nuxt-link>
+
 
     <br />
     <br />
@@ -140,7 +184,9 @@ export default {
         "Photography",
         "Social",
         "Technology"
-      ]
+      ],
+      badgeSelect:false,
+      
     };
   },
   computed: {
@@ -221,11 +267,22 @@ export default {
   font-weight: bold !important;
 }
 
+.selectBadge {
+  font-family: Roboto !important;
+  font-size: 18px;
+  color: #341646 !important;
+  font-weight: bold !important;
+}
+
 .locationDescription {
   color: #707070 !important;
 }
 
 .addLocationButton {
+  border: solid 1px #341646 !important;
+}
+
+.selectBudgeButton {
   border: solid 1px #341646 !important;
 }
 
