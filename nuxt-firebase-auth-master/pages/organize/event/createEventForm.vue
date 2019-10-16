@@ -85,7 +85,7 @@
 
     <br />
 
-    <nuxt-link class="uploadBadge" to="/organize/event/uploadBadge">Upload Badge</nuxt-link>
+    <nuxt-link class="createBadge" to="/organize/event/createBadge">Create Badge</nuxt-link>
 
     <br />
     <br />
@@ -245,7 +245,7 @@ export default {
   text-decoration: underline;
 }
 
-.uploadBadge {
+.createBadge {
   font-family: Roboto;
   font-size: 18px;
   font-weight: bold;
