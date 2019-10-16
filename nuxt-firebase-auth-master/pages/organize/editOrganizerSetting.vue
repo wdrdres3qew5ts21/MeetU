@@ -1,6 +1,5 @@
 <template>
   <div>
-    <br />
     <h2 class="h2">Edit Organizer Settings</h2>
     <br />
 
@@ -25,7 +24,7 @@
     <h3 class="h3">Profile</h3>
 
     <center>
-      <v-avatar color="#DEDEDE" size="120">
+      <v-avatar color="#DEDEDE" size="152">
         <span class="black--text">Image</span>
       </v-avatar>
 
