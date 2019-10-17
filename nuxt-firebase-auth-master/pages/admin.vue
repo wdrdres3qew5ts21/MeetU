@@ -11,7 +11,6 @@
     <v-flex id="adminChild" xs12>
       <nuxt-child :key="$router.fullPath"></nuxt-child>
     </v-flex>
-
   </section>
 </template>
 
