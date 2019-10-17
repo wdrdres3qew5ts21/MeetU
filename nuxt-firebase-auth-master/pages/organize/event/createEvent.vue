@@ -35,7 +35,7 @@
       </nuxt-link>
     </center>
 
-    <br />
+    <!-- <br />
     <br />
     <h2 class="h2">Ticket Types</h2>
 
@@ -54,9 +54,9 @@
       </nuxt-link>
     </center>
 
-    <!-- Table test -->
 
-    <br />
+
+
 
     <v-data-table :headers="headers" :items="tickets" class="table-1">
       <template v-slot:header.name="{ headers }">{{ header.text.toUpperCase() }}</template>
@@ -74,11 +74,11 @@
     <br />
     <br />
     <h2>Summary</h2>
-    <br />
+    <br /> --> 
 
-    <v-data-table :headersTotalTickets="headersTotalTickets" :items="totalTickets" class="table-2">
+    <!-- <v-data-table :headersTotalTickets="headersTotalTickets" :items="totalTickets" class="table-2">
       <template v-slot:header.name="{ header }">{{ header.text.toUpperCase() }}</template>
-    </v-data-table>
+    </v-data-table> -->
   </div>
 </template>
 
