@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Music</h1>
+    <h1>{{categoryLabel}}</h1>
     <event-list :eventList="eventList"></event-list>
     <input type="text" v-model="areaOfEvent" placeholder="input area" />
     <v-btn color="info" @click="findEventInArea()">Click to search nearby event for {{areaOfEvent}}</v-btn>
@@ -16,11 +16,13 @@ export default {
   },
   watch: {
     "$route.query.category"(){
+      this.loadCategory()
       this.findAllEvent()
     }
   },
   data() {
     return {
+      categoryLabel: '',
       eventList: [],
       position: {},
       infoTitle: "",
@@ -54,13 +56,23 @@ export default {
     this.getLocation();
   },
   computed: {
-    ...mapGetters(["getCurrentLocation","getUser"])
+    ...mapGetters(["getCurrentLocation","getUser","getCategory"])
   },
   mounted() {
     this.findAllEvent();
+    this.loadCategory()
   },
   methods: {
     ...mapActions(["updateCurrentLocation"]),
+    loadCategory: function(){
+      console.log(this.getCategory)
+      for(let i=0; i<this.getCategory.length;i++){
+        if(this.$route.query.category ===  this.getCategory[i].categoryName){
+          this.categoryLabel = this.getCategory[i].categoryLabel
+          return
+        }
+      }
+    },
     findAllEvent: async function() {
       let category = this.$route.query.category;
       axios

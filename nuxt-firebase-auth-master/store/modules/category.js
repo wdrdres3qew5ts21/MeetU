@@ -1,5 +1,9 @@
 const state = () => ({
-    category: {}
+    category: [{
+        categoryId: '',
+        categoryName: '',
+        categoryLabel: ''
+    }]
 });
 
 const getters = {

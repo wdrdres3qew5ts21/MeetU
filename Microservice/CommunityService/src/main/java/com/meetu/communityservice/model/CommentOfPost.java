@@ -16,14 +16,26 @@ public class CommentOfPost {
 
     private String commentOfPostId;
 
-    private String userId;
+    private String uid;
 
-    private String userName;
+    private String displayName;
+    
+    private String picture;
 
     private String commentOfPostDetail;
     
     private Date commentOfPostDate;
 
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
+    
+    
     public String getCommentOfPostId() {
         return commentOfPostId;
     }
@@ -32,20 +44,20 @@ public class CommentOfPost {
         this.commentOfPostId = commentOfPostId;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUid() {
+        return uid;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public String getCommentOfPostDetail() {
@@ -66,7 +78,7 @@ public class CommentOfPost {
 
     @Override
     public String toString() {
-        return "CommentOfPost{" + "commentOfPostId=" + commentOfPostId + ", userId=" + userId + ", userName=" + userName + ", commentOfPostDetail=" + commentOfPostDetail + ", commentOfPostDate=" + commentOfPostDate + '}';
+        return "CommentOfPost{" + "commentOfPostId=" + commentOfPostId + ", userId=" + uid + ", userName=" + displayName + ", commentOfPostDetail=" + commentOfPostDetail + ", commentOfPostDate=" + commentOfPostDate + '}';
     }
     
 

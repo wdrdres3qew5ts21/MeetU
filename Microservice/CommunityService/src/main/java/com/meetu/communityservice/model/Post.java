@@ -15,6 +15,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.IndexDirection;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -28,18 +29,31 @@ public class Post {
 
     private String postId;
 
-    private String userId;
+    private String uid;
 
-    private String userName;
+    private String displayName;
+    
+    private String picture;
 
     private String postDetail;
 
     private PollChoices pollVoteChoices;
 
+    @DBRef
     private List<CommentOfPost> commentOfPost;
 
     private Date postOfDate;
 
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
+    
+    
     public String getPostId() {
         return postId;
     }
@@ -67,20 +81,20 @@ public class Post {
         this.commentOfPost = commentOfPost;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUid() {
+        return uid;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public PollChoices getPollVoteChoices() {
@@ -101,7 +115,7 @@ public class Post {
 
     @Override
     public String toString() {
-        return "Post{" + "postId=" + postId + ", userId=" + userId + ", userName=" + userName + ", postDetail=" + postDetail + ", pollVoteChoices=" + pollVoteChoices + ", commentOfPost=" + commentOfPost + ", postOfDate=" + postOfDate + '}';
+        return "Post{" + "postId=" + postId + ", userId=" + uid + ", userName=" + displayName + ", postDetail=" + postDetail + ", pollVoteChoices=" + pollVoteChoices + ", commentOfPost=" + commentOfPost + ", postOfDate=" + postOfDate + '}';
     }
 
 }
