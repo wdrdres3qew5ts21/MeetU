@@ -9,7 +9,6 @@
         max-height="200"
       ></v-img>
     </v-flex>
-
     <v-btn color="#341646" class="mb-2 white--text" @click="onPickFile">
       Upload image
       <v-icon>add_a_photo</v-icon>
@@ -21,15 +20,14 @@
       accept="image/*"
       @change="onFilePicked"
     />
-
     <br />
     <br />
-
     <v-card rounded outlined class="mx-auto">
       <div class="px-3">
         <form>
           <v-layout>
             <v-flex xs12>
+              <br />
               <v-text-field v-model="newPost" name="newPost" id="newPost" value></v-text-field>
             </v-flex>
           </v-layout>
@@ -77,9 +75,14 @@
         </div>
         <v-container grid-list-xs fluid style="padding:10px">
           <br />
-          <v-layout wrap>
-            <span :class="{ done: todo.done }">{{todo.post}}</span>
-            <h1>{{postIndex}}</h1>
+        <v-layout row wrap>
+             <v-flex d-flex xs12 order-xs5>
+        <v-layout column wrap>
+          <v-flex d-flex>
+            {{todo.post}} 
+          </v-flex>
+        </v-layout>
+             </v-flex>
           </v-layout>
         </v-container>
         <v-card-text rounded outlined class="mx-auto">
@@ -88,7 +91,6 @@
             <v-btn text block flat @click="getCommentFromPost(postIndex)">
               <v-icon>comment</v-icon>Comment
             </v-btn>
-            <v-layout wrap justify-end>
               <!-- <v-btn
                   @click="removePost(todo)"
                   color="#341646"
@@ -96,13 +98,9 @@
                   type="button"
                   name="button"
               >Remove</v-btn>-->
-            </v-layout>
           </v-flex>
-          <v-divider></v-divider>
-          <v-layout>
-            <br />
-          </v-layout>
         </v-card-text>
+         <v-list>
 
         <v-card
           rounded
@@ -110,25 +108,31 @@
           v-for="(comment,commentIndex ) in postList[postIndex].commentList "
           :key="commentIndex"
         >
-          <v-container grid-list-xs fluid style="padding:10px">
-            <v-flex xs12 class="text-xs-left">
-              <v-avatar size="30">
+           <v-container grid-list-xs xs4 fluid style="padding:20px">
+              <v-list-tile xs4>
+                <v-list-tile-avatar>
                 <v-img :aspect-ratio="1/1" :src="getUser.photoURL"></v-img>
-              </v-avatar>
-              {{ getUser.displayName}}
-              <br />
-              <span></span>
-              <span :class="{ done: todo.done }">{{comment}}</span>
-            </v-flex>
+                </v-list-tile-avatar>
+               <v-list-tile>
+              <div>
+              <v-list-tile-content>
+               <v-card color="grey lighten-3"  class="rounded-card" >
+                <v-list-tile-title class="margin-name">{{ getUser.displayName}}</v-list-tile-title>
+                <v-list-tile-sub-title class="margin-comment">
+                  <p >{{comment}} </p>
+                  </v-list-tile-sub-title>
+               </v-card>
+              </v-list-tile-content>
+              
+             </div>
+               </v-list-tile>
+              </v-list-tile>
           </v-container>
-
-          <br />
         </v-card>
-        <br />
-        <br />
+
+         </v-list>
       </v-card>
-      <br />
-      <br />
+      <br>
     </div>
 
     <div v-if="postList.length != 0">
@@ -152,36 +156,65 @@
             v-for="(comment,commentIndex ) in  postList[postIndex].commentList "
             :key="commentIndex"
           >
-            <v-container grid-list-xs fluid style="padding:10px">
-              <v-flex xs12 class="text-xs-left">
-                <v-avatar size="30">
-                  <v-img :aspect-ratio="1/1" :src="getUser.photoURL"></v-img>
-                </v-avatar>
-                {{ getUser.displayName}}
-                <br />
-                <span></span>
-                <span>{{comment}}</span>
-                <span>{{postList}}</span>
-              </v-flex>
-            </v-container>
+
+          <!-- grid-list-xs -->
+             <v-container grid-list-xs xs4 fluid style="padding:20px">
+              <v-list-tile xs4>
+                <v-list-tile-avatar>
+                <v-img :aspect-ratio="1/1" :src="getUser.photoURL"></v-img>
+                </v-list-tile-avatar>
+               <v-list-tile>
+              <div>
+              <v-list-tile-content>
+               <v-card color="grey lighten-3"  class="rounded-card" >
+                <v-list-tile-title class="margin-name">{{ getUser.displayName}}</v-list-tile-title>
+                <v-list-tile-sub-title class="margin-comment">
+                  <p >{{comment}} </p>
+                  </v-list-tile-sub-title>
+               </v-card>
+              </v-list-tile-content>
+              
+             </div>
+               </v-list-tile>
+              </v-list-tile>
+          </v-container>
           </v-card>
           <form>
-            {{postIndex}}
             <v-layout ma-3>
-              <v-flex xs12>
+              <v-layout row wrap>
+        <v-flex xs12>
+            <!-- :append-icon="marker ? 'map-marker' : 'map-marker-off'" -->
+          <v-text-field
+            :append-outer-icon="comment ? 'send' : 'send'"
+            box
+            value
+            v-model="comment"
+            clear-icon="close"
+            clearable
+            label="Write comment..."
+            type="text"
+            @click:append="toggleMarker"
+            @click:append-outer="addComment(postIndex)"
+            @click:clear="clearMessage"
+          ></v-text-field>
+        </v-flex>
+      </v-layout>
+              <!-- <v-flex xs12>
                 <v-flex lass="text-xs-left">
                   <v-text-field
                     v-model="comment"
+                    box
+                    clearable
                     name="newComment"
                     id="newComment"
                     value
-                    label="write something..."
+                    label="write something..."+
                   ></v-text-field>
                 </v-flex>
-              </v-flex>
-              <v-flex class="text-xs-right" pa-2>
-                <v-btn text small @click="addComment(postIndex)">Comment</v-btn>
-              </v-flex>
+              </v-flex> -->
+              <!-- <v-flex class="text-xs-right" pa-2>
+                <v-btn icon text large @click="addComment(postIndex)"><v-icon large>send</v-icon></v-btn>
+              </v-flex> -->
             </v-layout>
           </form>
         </v-card>
@@ -219,6 +252,10 @@ export default {
           value.size < 2000000 ||
           "Avatar size should be less than 2 MB!"
       ],
+      show: false,
+      message: 'Hey!',
+      marker: true,
+      iconIndex: 0
     };
   },
   components: {
@@ -228,12 +265,17 @@ export default {
     this.initUserProfile();
   },
   computed: {
-    ...mapGetters(["getUser"])
+    ...mapGetters(["getUser"]),
+ 
+      icon () {
+        return this.icons[this.iconIndex]
+      }
+   
   },
   methods: {
     initUserProfile: function() {
       axios
-        .get(`${process.env.USER_SERVICE}/user/${this.getUser.uid}`)
+        .get(`${process.env.USER_SERVICEg}/user/${this.getUser.uid}`)
         .catch(err => {});
     },
     onFileChanged(event) {
@@ -257,7 +299,7 @@ export default {
     },
     getCommentFromPost(postIndex) {
       this.dialog = true;
-      this.postIndex = postIndex
+      this.postIndex = postIndex;
       console.log(
         "--------------------postIndex get comment from post ----------------------"
       );
@@ -281,9 +323,9 @@ export default {
     addComment(postIndex) {
       console.log("------ ADD Comment ----");
       console.log(postIndex);
-      console.log("-------- Post List ------")
-      console.log(this.postList)
-      console.log("------------------")
+      console.log("-------- Post List ------");
+      console.log(this.postList);
+      console.log("------------------");
       this.postIndex = postIndex;
       let isCommentList = this.postList[postIndex].commentList;
       console.log(isCommentList);
@@ -298,7 +340,23 @@ export default {
       this.comment = "";
       this.dialog = false;
       console.log(postIndex);
-    }
+    },
+     toggleMarker () {
+        this.marker = !this.marker
+      },
+      sendMessage () {
+        this.resetIcon()
+        this.clearMessage()
+      },
+      clearMessage () {
+        this.message = ''
+      },
+      resetIcon () {
+        this.iconIndex = 0
+      }
+
+
+
     // addComment() {
     //     this.postList.commentList.push({
     //     // commentList: this.commentList.push({
@@ -314,4 +372,19 @@ export default {
 };
 </script> 
  
- 
+ <style >
+ .rounded-card{
+    border-radius:12px;
+    padding:8px;
+    margin: -1px; 
+}
+
+.margin-name{
+  margin-right: 9px;
+  margin-left: 3px;
+}
+.margin-comment{
+  margin: -5px; 
+   margin-left: 3px;
+}
+ </style>
