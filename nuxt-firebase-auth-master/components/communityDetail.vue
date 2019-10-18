@@ -54,10 +54,10 @@
     <br />
 
     <div v-for="(todo,postIndex ) in postList " :key="postIndex">
-      <v-card rounded outlined>
+      <v-card rounded outlined >
         <br />
         <div>
-          <v-layout>
+          <v-layout >
             <v-container grid-list-xs fluid style="padding:10px">
               <v-flex xs12 class="text-xs-left">
                 <v-avatar size="60">
@@ -73,18 +73,16 @@
             </v-flex>
           </v-layout>
         </div>
+      
         <v-container grid-list-xs fluid style="padding:10px">
           <br />
-        <v-layout row wrap>
-             <v-flex d-flex xs12 order-xs5>
-        <v-layout column wrap>
-          <v-flex d-flex>
+          <v-list>
+              <v-list-tile-content>
             {{todo.post}} 
-          </v-flex>
-        </v-layout>
-             </v-flex>
-          </v-layout>
+              </v-list-tile-content>
+          </v-list>
         </v-container>
+   
         <v-card-text rounded outlined class="mx-auto">
           <v-divider></v-divider>
           <v-flex class="text-right">
@@ -101,14 +99,14 @@
           </v-flex>
         </v-card-text>
          <v-list>
-
         <v-card
           rounded
           outlined
           v-for="(comment,commentIndex ) in postList[postIndex].commentList "
           :key="commentIndex"
+          max-width="500px"
         >
-           <v-container grid-list-xs xs4 fluid style="padding:20px">
+           <v-container grid-list-xs xs4 fluid style="padding:10px" >
               <v-list-tile xs4>
                 <v-list-tile-avatar>
                 <v-img :aspect-ratio="1/1" :src="getUser.photoURL"></v-img>
@@ -116,10 +114,11 @@
                <v-list-tile>
               <div>
               <v-list-tile-content>
-               <v-card color="grey lighten-3"  class="rounded-card" >
-                <v-list-tile-title class="margin-name">{{ getUser.displayName}}</v-list-tile-title>
+               <v-card color="grey lighten-3"  class="rounded-card" max-width="240px" >
+                <v-list-tile-title class="margin-name">
+                  <font size="2">{{ getUser.displayName}}</font></v-list-tile-title>
                 <v-list-tile-sub-title class="margin-comment">
-                  <p >{{comment}} </p>
+                   <font size="2">{{comment}}</font>
                   </v-list-tile-sub-title>
                </v-card>
               </v-list-tile-content>
@@ -136,7 +135,7 @@
     </div>
 
     <div v-if="postList.length != 0">
-      <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
+      <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition" >
         <!-- <template v-slot:activator="{ on }">
                 <v-btn v-on="on" text block flat @click="getCommentFromPost(postIndex)">
                   <v-icon>comment</v-icon>Comment
@@ -155,10 +154,11 @@
             outlined
             v-for="(comment,commentIndex ) in  postList[postIndex].commentList "
             :key="commentIndex"
+            max-width="auto"
           >
 
           <!-- grid-list-xs -->
-             <v-container grid-list-xs xs4 fluid style="padding:20px">
+             <v-container grid-list-xs xs4 fluid style="padding:10px">
               <v-list-tile xs4>
                 <v-list-tile-avatar>
                 <v-img :aspect-ratio="1/1" :src="getUser.photoURL"></v-img>
@@ -166,14 +166,14 @@
                <v-list-tile>
               <div>
               <v-list-tile-content>
-               <v-card color="grey lighten-3"  class="rounded-card" >
-                <v-list-tile-title class="margin-name">{{ getUser.displayName}}</v-list-tile-title>
+               <v-card color="grey lighten-3"  class="rounded-card" max-width="270px">
+                <v-list-tile-title class="margin-name">
+                  <font size="2">{{ getUser.displayName}} </font></v-list-tile-title>
                 <v-list-tile-sub-title class="margin-comment">
-                  <p >{{comment}} </p>
+                <font size="2">{{comment}} </font>
                   </v-list-tile-sub-title>
                </v-card>
               </v-list-tile-content>
-              
              </div>
                </v-list-tile>
               </v-list-tile>
@@ -374,8 +374,8 @@ export default {
  
  <style >
  .rounded-card{
-    border-radius:12px;
-    padding:8px;
+    border-radius:13px;
+    padding: 8px;
     margin: -1px; 
 }
 
