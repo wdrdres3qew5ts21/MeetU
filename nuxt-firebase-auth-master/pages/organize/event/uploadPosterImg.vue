@@ -52,27 +52,25 @@
       />
       <p v-if="eventPictureLists">
         <span v-for="(eventPicture, index) in eventPictureLists" :key="index">{{eventPicture.name}},</span>
-     
       </p>
-     <div v-if="eventPictureLists" >
-
-       <v-img v-for="(image, index) in eventPictureListsUrl " :key="index"
+      <div v-if="eventPictureLists">
+        <v-img
+          v-for="(image, index) in eventPictureListsUrl "
+          :key="index"
           :src="image"
           aspect-ratio="1"
           class="grey lighten-2"
           max-width="1250"
           max-height="200"
         ></v-img>
-     </div>
+      </div>
     </span>
 
     <br />
     <br />
     <br />
     <center>
-      <nuxt-link :to="``" style="text-decoration-line:none;">
-        <v-btn class="cancelButton white--text" color="#AEAEAE" depressed large height="50">Cancel</v-btn>
-      </nuxt-link>
+      <v-btn @click="$router.back()" class="cancelButton white--text" color="#AEAEAE" depressed large height="50">Cancel</v-btn>
 
       <v-btn
         class="saveButton white--text"
@@ -93,6 +91,7 @@
 
 
 <script>
+import {mapGetters, mapActions} from "vuex"
 import * as firebase from "firebase/app";
 import "firebase/storage";
 export default {
@@ -105,7 +104,11 @@ export default {
       eventPictureLists: null
     };
   },
+  computed:{
+    ...mapGetters(['getEventTemplate'])
+  },
   methods: {
+    ...mapActions(['setPictureDetail']),
     onCoverPictureUpload(event) {
       console.log("uplaod din");
       this.eventPictureCover = event.target.files[0];
@@ -123,7 +126,7 @@ export default {
       for (let i = 0; i < this.eventPictureLists.length; i++) {
         const fileReader = new FileReader();
         fileReader.addEventListener("load", () => {
-          this.eventPictureListsUrl.push(fileReader.result) ;
+          this.eventPictureListsUrl.push(fileReader.result);
         });
         fileReader.readAsDataURL(this.eventPictureLists[i]);
       }
@@ -167,8 +170,14 @@ export default {
       }
     },
     onUpload() {
-      this.uploadCoverToFirebase();
-      this.uploadPictureListToFirebase();
+      // this.uploadCoverToFirebase();
+      // this.uploadPictureListToFirebase();
+      console.log("---------Upload --------------");
+      this.setPictureDetail({
+        eventPictureCoverBase: this.eventPictureCoverUrl,
+        eventPictureListsBase: this.eventPictureListsUrl
+      });
+      console.log(this.getEventTemplate);
     }
   }
 };

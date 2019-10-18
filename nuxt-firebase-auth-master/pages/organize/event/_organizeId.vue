@@ -1,8 +1,6 @@
 <template>
   <div>
     <h1>{{organize.organizeName}}</h1>
-    <event-card v-for="(event, index) in eventList" :key="index" :event="event" />
-    <br />
     <center>
       <nuxt-link :to="`/organize/event/createEventForm`" style="text-decoration-line:none;">
         <v-btn
@@ -16,7 +14,6 @@
     </center>
     <div v-if="eventList == null">
       <center>
-        <br />
         <p style="color:grey">No event, please create a new event.</p>
       </center>
     </div>
@@ -26,6 +23,19 @@
         <p style="color:grey">You can create new event.</p>
       </center>
     </div>
+    <event-card v-for="(event, index) in eventList" :key="index" :event="event" />
+    <br />
+    <center>
+      <nuxt-link :to="`/organize/event/createEventForm`" style="text-decoration-line:none;">
+        <v-btn
+          class="createEvent white--text"
+          color="#341646"
+          depressed
+          large
+          height="50"
+        >Create an Event</v-btn>
+      </nuxt-link>
+    </center>
   </div>
 </template>
 
@@ -54,7 +64,7 @@ export default {
     this.organizeId = this.$route.params.organizeId;
     console.log(this.$route.params.organizeId);
     this.loadAllEventOfOrganize();
-    this.loadOrganizeDetail()
+    this.loadOrganizeDetail();
   },
   methods: {
     loadAllEventOfOrganize: async function() {

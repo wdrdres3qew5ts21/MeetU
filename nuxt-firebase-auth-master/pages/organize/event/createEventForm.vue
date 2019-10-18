@@ -6,16 +6,14 @@
 
     <v-text-field v-model="eventForm.eventName" label="* Event Name" required></v-text-field>
     <!-- <v-text-field v-model="eventForm.eventDetail"  placeholder="Event Detail" required></v-text-field> -->
-    <br />
     <v-layout class="mb-4">
       <v-textarea name="description" label="Description" v-model="eventForm.eventDetail" rows="3"></v-textarea>
     </v-layout>
-
     <v-flex xs12 sm5 d-flex>
       <v-select
         :items="categoryEventList"
         :menu-props="{ maxHeight: '400' }"
-        label="Category"
+        label="Category (Limit to 3 tags only)"
         v-model="eventForm.selectedCategory"
         multiple
         persistent-hint
@@ -50,9 +48,7 @@
             <v-btn color="primary" flat @click="badgeSelect=false">Close</v-btn>
           </v-card-actions>
         </v-card>
-      </v-dialog> -->
-      <br>
-
+    </v-dialog>-->
 
     <v-menu
       ref="menu"
@@ -107,36 +103,16 @@
 
     <v-btn class="addLocationButton" color="white">Add Location</v-btn>
 
-    <!-- <span class="selectBadge">Badge :</span> -->
-    <!-- <v-btn class="selectBudgeButton" color="white">Select</v-btn> -->
-
-
     <br />
     <br />
-    <br />
-    <!-- 
-        <v-file-input
-    label="File input"
-    filled
-    prepend-icon="mdi-camera"
-    ></v-file-input>-->
-
     <nuxt-link class="eventCondition" to="/organize/event/eventCondition">Event Conditions Setting</nuxt-link>
-
     <br />
-
     <nuxt-link class="uploadPosterImg" to="/organize/event/uploadPosterImg">Upload poster image</nuxt-link>
-
-<br>
+    <br />
     <nuxt-link class="createBadge" to="/organize/event/createBadge">Create Badge</nuxt-link>
-
-
     <br />
     <br />
-    <br />
-
     <center>
-      <!-- <nuxt-link :to="`/?`" style="text-decoration-line:none;"> -->
       <v-btn
         block
         class="saveButton white--text"
@@ -146,7 +122,15 @@
         height="50"
         @click="onSubmit()"
       >Save</v-btn>
-      <!-- </nuxt-link> -->
+      <v-btn
+        block
+        color="#AEAEAE"
+        class="white--text"
+        depressed
+        large
+        height="50"
+        @click="$router.back()"
+      >Cancle</v-btn>
     </center>
 
     <br />
@@ -156,8 +140,8 @@
 
 
 <script>
+import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
-import { mapGetters } from "vuex";
 export default {
   name: "createEventForm",
   data() {
@@ -185,29 +169,37 @@ export default {
         "Social",
         "Technology"
       ],
-      badgeSelect:false,
-      
+      badgeSelect: false
     };
   },
   computed: {
-    ...mapGetters(["getCategory"])
+    ...mapGetters(["getCategory", "getEventTemplate"])
   },
   watch: {
     menu(val) {
       val && setTimeout(() => (this.$refs.picker.activePicker = "YEAR"));
     }
   },
-
   mounted() {
     // axios.get("http://localhost:4000/userservice/users").then(value => {
     //   console.log(value);
     // });
   },
   methods: {
+    ...mapActions(["setEventTemplate"]),
+    loadEventTemplate() {
+      console.log(this.getEventTemplate);
+      let eventTemplate = this.getEventTemplate;
+      this.eventForm.eventName = this.eventTemplate.eventName;
+      this.eventForm.eventDetail = this.eventTemplate.eventDetail;
+      this.eventForm.createEventDate = this.eventTemplate.createEventDate;
+      this.eventForm.endRegisterDate = this.eventTemplate.endRegisterDate;
+      this.eventForm.eventStartDate = this.eventTemplate.eventStartDate;
+      this.eventForm.eventEndDate = this.eventTemplate.eventEndDate;
+    },
     save(date) {
       this.$refs.menu.save(date);
     },
-
     onSubmit() {
       console.log({
         eventname: this.eventForm.eventName,
@@ -218,7 +210,6 @@ export default {
         category: this.eventForm.selectedCategoryList
       });
     },
-
     loadCategory() {
       axios
         .get(`${process.env.EVENT_SERVICE}/category`)
@@ -230,14 +221,6 @@ export default {
       axios.post(`${process.env.EVENT_SERVICE}/event`);
     }
   }
-
-  // console.log({
-  //   email: this.userForm.email,
-  //   password: this.userForm.password,
-  //   birthDate: this.userForm.dateOfBirth,
-  //   firstName: this.userForm.firstname,
-  //   lastName: this.userForm.lastname,
-  //   gender: this.userForm.gender
 };
 </script>
 
