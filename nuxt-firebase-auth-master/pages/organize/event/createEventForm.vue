@@ -88,7 +88,19 @@
                 scaleControl: true
             }"
         >
-          <GmapMarker :position="marker.position" :clickable="true" />
+          <gmap-info-window
+            :position="infoWindowPos"
+            :opened="infoWinOpen"
+            @closeclick="infoWinOpen=false"
+          >
+            <p>{{getEventTemplate.location.detail}}</p>
+          </gmap-info-window>
+
+          <GmapMarker
+            :position="marker.position"
+            @click="toggleInfoWindow(marker,0)"
+            :clickable="true"
+          />
         </GmapMap>
       </client-only>
     </v-layout>
@@ -173,11 +185,24 @@ export default {
         "Social",
         "Technology"
       ],
+         infoWindowPos: null,
+      infoWinOpen: false,
+      currentMidx: null,
+      areaOfEvent: "",
+      infoOptions: {
+        pixelOffset: {
+          width: 0,
+          height: -35
+        }
+      },
       badgeSelect: false,
       description: "",
       place: null,
       pinLocation: {},
-      center: {},
+      center: {
+        lat: 0,
+        lng: 0
+      },
       marker: {
         icon:
           "https://png2.kisspng.com/sh/5a457e82acb6e22a2ae8836f35448931/L0KzQYm3VMAzN6dBiZH0aYP2gLBuTfNwdaF6jNd7LXnmf7B6TfJ2e5pzfeV8LYfygrztjP94NZVuf9t9YXywhMPojwNnd6NyRd94dnWwRbLqUvQ2bGE3e9dqN0axQ4S8Vsc2OGc2TaQ7N0G7QYe3Ucg1NqFzf3==/kisspng-computer-icons-business-workflow-digital-transform-move-5ac2d5d02cea76.335675061522718160184.png",
@@ -270,7 +295,7 @@ export default {
 
       let geopoint = eventTemplate.location.geopoint;
 
-      if (geopoint.lat === 0 & geopoint.lon === 0) {
+      if ((geopoint.lat === 0) & (geopoint.lon === 0)) {
         navigator.geolocation.getCurrentPosition(location => {
           this.center = {
             lat: location.coords.latitude,
@@ -289,6 +314,21 @@ export default {
         lat: geopoint.lat,
         lng: geopoint.lon
       };
+    },
+    toggleInfoWindow: function(marker, idx) {
+      this.infoWindowPos = marker.position;
+      this.infoTitle = marker.title;
+      this.infoDetail = marker.detail;
+
+      //check if its the same marker that was selected if yes toggle
+      if (this.currentMidx == idx) {
+        this.infoWinOpen = !this.infoWinOpen;
+      }
+      //if different marker set infowindow to open and reset current marker index
+      else {
+        this.infoWinOpen = true;
+        this.currentMidx = idx;
+      }
     },
     goToPreviewEvent() {
       this.saveEventTemplate();
