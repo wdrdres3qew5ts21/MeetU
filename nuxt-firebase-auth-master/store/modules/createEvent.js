@@ -26,8 +26,9 @@ const mutations = {
         state.eventTemplate = eventTemplate;
     },
     setPictureDetail(state, pictureDetail) {
-        state.eventTemplate.eventPictureCoverBase = pictureDetail.eventPictureCover
-        state.eventTemplate.eventPictureListsBase = pictureDetail.eventPictureLists
+        state.eventTemplate.eventPictureCoverBase = pictureDetail.eventPictureCoverBase
+        state.eventTemplate.eventPictureListsBase = pictureDetail.eventPictureListsBase
+        console.log(state)
     }
 };
 
