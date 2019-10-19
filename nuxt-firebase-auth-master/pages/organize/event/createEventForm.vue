@@ -69,9 +69,10 @@
 
     <br />
 
-    <span class="location">Location</span>
-    <v-btn class="addLocationButton" color="white">Add Location</v-btn>
-    <v-layout row wrap>
+    <span class="location" id="locationMap">Location</span>
+    <p>{{getEventTemplate.location.detail}}</p>
+    <v-btn class="addLocationButton" color="white" @click="addLocation()">Add Location</v-btn>
+    <v-layout v-if="isShowLocation" row wrap>
       <client-only>
         <label>
           AutoComplete
@@ -150,6 +151,7 @@ export default {
   name: "createEventForm",
   data() {
     return {
+      isShowLocation: false,
       menuEventStartDate: false,
       menuEventEndDate: false,
       eventForm: {
@@ -329,6 +331,10 @@ export default {
         this.infoWinOpen = true;
         this.currentMidx = idx;
       }
+    },
+    addLocation(){
+      this.isShowLocation = true
+      this.$vuetify.goTo('#locationMap')
     },
     goToPreviewEvent() {
       this.saveEventTemplate();

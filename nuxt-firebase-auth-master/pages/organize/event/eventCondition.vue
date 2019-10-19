@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <br />
     <h3 class="h3">Sale Period</h3>
 
@@ -15,7 +14,6 @@
       full-width
       min-width="290px"
     >
-    
       <template v-slot:activator="{ on }">
         <v-text-field
           v-model="ticketForm.saleStartDate"
@@ -32,41 +30,40 @@
         @change="save"
       ></v-date-picker>
     </v-menu>
-    
 
-     <v-layout row wrap>
-    <v-flex xs11 sm5>
-      <v-menu
-        ref="menu"
-        v-model="menu2"
-        :close-on-content-click="false"
-        :nudge-right="40"
-        :return-value.sync="time"
-        lazy
-        transition="scale-transition"
-        offset-y
-        full-width
-        max-width="290px"
-        min-width="290px"
-      >
-        <template v-slot:activator="{ on }">
-          <v-text-field
-            v-model="ticketForm.startTime"
-            label="Start Time"
-            prepend-icon="access_time"
-            readonly
-            v-on="on"
-          ></v-text-field>
-        </template>
-        <v-time-picker
-          v-if="menu2"
-          v-model="ticketForm.startTime"
+    <v-layout row wrap>
+      <v-flex xs11 sm5>
+        <v-menu
+          ref="menu"
+          v-model="menu2"
+          :close-on-content-click="false"
+          :nudge-right="40"
+          :return-value.sync="time"
+          lazy
+          transition="scale-transition"
+          offset-y
           full-width
-          @click:minute="$refs.menu.save(time)"
-        ></v-time-picker>
-      </v-menu>
-    </v-flex>
-  </v-layout>
+          max-width="290px"
+          min-width="290px"
+        >
+          <template v-slot:activator="{ on }">
+            <v-text-field
+              v-model="ticketForm.startTime"
+              label="Start Time"
+              prepend-icon="access_time"
+              readonly
+              v-on="on"
+            ></v-text-field>
+          </template>
+          <v-time-picker
+            v-if="menu2"
+            v-model="ticketForm.startTime"
+            full-width
+            @click:minute="$refs.menu.save(time)"
+          ></v-time-picker>
+        </v-menu>
+      </v-flex>
+    </v-layout>
 
     <v-menu
       ref="menu"
@@ -89,7 +86,7 @@
       <v-date-picker ref="picker" v-model="ticketForm.saleEndDate" min="1950-01-01" @change="save"></v-date-picker>
     </v-menu>
 
-<v-flex xs11 sm5>
+    <v-flex xs11 sm5>
       <v-menu
         ref="menu"
         v-model="menu1"
@@ -137,17 +134,23 @@
     <v-form>
       <v-text-field type="number" max="100" min="1" step="1"
       v-model="ticketForm.maxAge"></v-text-field>
-    </v-form> -->
+    </v-form>-->
     <br />
 
     <center>
       <!-- <nuxt-link :to="`/?`" style="text-decoration-line:none;"> -->
-        <v-btn class="cancelButton white--text" color="#AEAEAE" depressed large height="50">Cancel</v-btn>
+      <v-btn @click="cancle()" class="cancelButton white--text" color="#AEAEAE" depressed large height="50">Cancel</v-btn>
       <!-- </nuxt-link> -->
 
       <!-- <nuxt-link :to="`/?`" style="text-decoration-line:none;"> -->
-        <v-btn class="saveButton white--text" color="#341646" depressed large height="50"
-        @click="onSubmit()">Save</v-btn>
+      <v-btn
+        class="saveButton white--text"
+        color="#341646"
+        depressed
+        large
+        height="50"
+        @click="onSubmit()"
+      >Save</v-btn>
       <!-- </nuxt-link> -->
     </center>
     <br />
@@ -162,12 +165,12 @@ export default {
       date: new Date().toISOString().substr(0, 10),
       menuSaleStartDate: false,
       menuSaleEndDate: false,
-    
-        time: null,
-        menu2: false,
-        menu1: false,
-        modal2: false,
-      startTime:'',
+
+      time: null,
+      menu2: false,
+      menu1: false,
+      modal2: false,
+      startTime: "",
       ticketForm: {
         quantityOfTicket: "",
         saleStartDate: "",
@@ -197,7 +200,9 @@ export default {
         endTime: this.ticketForm.endTime
       });
     },
-    
+    cancle(){
+      this.$router.push('/organize/event/createEventForm')
+    }
   }
 };
 </script>
