@@ -105,11 +105,14 @@
 
     <br />
     <br />
-    <nuxt-link class="eventCondition" to="/organize/event/eventCondition">Event Conditions Setting</nuxt-link>
+    <p style="margin:0" class="uploadPosterImg" @click="goToEventConditionPage()">Event Conditions Setting</p>
+    <p style="margin:0" class="uploadPosterImg" @click="goToUploadImagePage()">Upload poster image</p>
+    <p style="margin:0" class="uploadPosterImg" @click="goToBadgeSettingPage()">Create Badge</p>
+    <!-- <nuxt-link class="eventCondition" to="/organize/event/eventCondition" @click="saveEventTemplate()">Event Conditions Setting</nuxt-link>
     <br />
-    <nuxt-link class="uploadPosterImg" to="/organize/event/uploadPosterImg">Upload poster image</nuxt-link>
+    <nuxt-link class="uploadPosterImg" to="/organize/event/uploadPosterImg" @click="saveEventTemplate()">Upload poster image</nuxt-link>
     <br />
-    <nuxt-link class="createBadge" to="/organize/event/createBadge">Create Badge</nuxt-link>
+    <nuxt-link class="createBadge" to="/organize/event/createBadge" @click="saveEventTemplate()">Create Badge</nuxt-link> -->
     <br />
     <br />
     <center>
@@ -184,18 +187,36 @@ export default {
     // axios.get("http://localhost:4000/userservice/users").then(value => {
     //   console.log(value);
     // });
+    this.loadEventTemplate()
   },
   methods: {
     ...mapActions(["setEventTemplate"]),
     loadEventTemplate() {
       console.log(this.getEventTemplate);
       let eventTemplate = this.getEventTemplate;
-      this.eventForm.eventName = this.eventTemplate.eventName;
-      this.eventForm.eventDetail = this.eventTemplate.eventDetail;
-      this.eventForm.createEventDate = this.eventTemplate.createEventDate;
-      this.eventForm.endRegisterDate = this.eventTemplate.endRegisterDate;
-      this.eventForm.eventStartDate = this.eventTemplate.eventStartDate;
-      this.eventForm.eventEndDate = this.eventTemplate.eventEndDate;
+      this.eventForm.eventName = eventTemplate.eventName;
+      this.eventForm.eventDetail = eventTemplate.eventDetail;
+      this.eventForm.createEventDate = eventTemplate.createEventDate;
+      this.eventForm.endRegisterDate = eventTemplate.endRegisterDate;
+      this.eventForm.eventStartDate = eventTemplate.eventStartDate;
+      this.eventForm.eventEndDate = eventTemplate.eventEndDate;
+    },
+    goToUploadImagePage(){
+      this.saveEventTemplate()
+      this.$router.push('/organize/event/uploadPosterImg')
+    },
+    goToEventConditionPage(){
+      this.saveEventTemplate()
+      this.$router.push('/organize/event/eventCondition')
+    },
+    goToBadgeSettingPage(){
+      this.saveEventTemplate()
+      this.$router.push('/organize/event/createBadge')
+    },
+    saveEventTemplate(){
+      console.log("SAve Tempalte")
+      console.log(this.eventForm)
+      this.setEventTemplate(this.eventForm)
     },
     save(date) {
       this.$refs.menu.save(date);
