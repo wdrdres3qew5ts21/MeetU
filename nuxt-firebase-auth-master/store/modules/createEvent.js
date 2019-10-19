@@ -23,7 +23,11 @@ const getters = {
 
 const mutations = {
     setEventTemplate: function (state, eventTemplate) {
-        state.eventTemplate = eventTemplate;
+        state.eventTemplate.eventName = eventTemplate.eventName;
+        state.eventTemplate.eventDetail = eventTemplate.eventDetail;
+        state.eventTemplate.eventTags = eventTemplate.eventTags;
+        state.eventTemplate.eventStartDate = eventTemplate.eventStartDate;
+        state.eventTemplate.eventEndDate = eventTemplate.eventEndDate;
     },
     setPictureDetail(state, pictureDetail) {
         state.eventTemplate.eventPictureCoverBase = pictureDetail.eventPictureCoverBase

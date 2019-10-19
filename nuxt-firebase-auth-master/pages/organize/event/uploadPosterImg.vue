@@ -118,6 +118,7 @@ export default {
       console.log("----- preview image ----");
       let eventPictureCoverBase = this.getEventTemplate.eventPictureCoverBase;
       let eventPictureListsBase = this.getEventTemplate.eventPictureListsBase;
+      console.log(eventPictureListsBase)
       if (eventPictureCoverBase != "") {
         this.eventPictureCoverUrl = eventPictureCoverBase;
         console.log(this.eventPictureCoverUrl);
@@ -196,8 +197,6 @@ export default {
     onUpload() {
       // this.uploadCoverToFirebase();
       // this.uploadPictureListToFirebase();
-      console.log(this.eventPictureCoverUrl);
-      console.log(this.eventPictureListsUrl);
       console.log("---------Upload --------------");
       this.setPictureDetail({
         eventPictureCoverBase: this.eventPictureCoverUrl,

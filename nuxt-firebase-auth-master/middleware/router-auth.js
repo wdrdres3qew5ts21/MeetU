@@ -1,7 +1,7 @@
 export default function ({ store, redirect, route }) {
  // isHaveJwtToken() === true && route.name == 'login' ? redirect('/userProfile') : ''
   store.getters.getUser.uid != null && route.name == 'login' ? redirect('/userProfile') : ''
-  store.getters.getUser.uid == null && isAdminRoute(route) ? redirect('/login') : ''
+ // store.getters.getUser.uid == null && isAdminRoute(route) ? redirect('/login') : ''
 
 }
 
