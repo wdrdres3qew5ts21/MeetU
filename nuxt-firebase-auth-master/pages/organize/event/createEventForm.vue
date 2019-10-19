@@ -14,7 +14,7 @@
         :items="categoryEventList"
         :menu-props="{ maxHeight: '400' }"
         label="Category (Limit to 3 tags only)"
-        v-model="eventForm.selectedCategory"
+        v-model="eventForm.eventTags"
         multiple
         persistent-hint
       ></v-select>
@@ -123,8 +123,8 @@
         depressed
         large
         height="50"
-        @click="onSubmit()"
-      >Save</v-btn>
+        @click="goToPreviewEvent()"
+      >Preview Event</v-btn>
       <v-btn
         block
         color="#AEAEAE"
@@ -154,6 +154,7 @@ export default {
       eventForm: {
         eventName: "",
         eventDetail: "",
+        eventTags: [],
         location: "",
         eventStartDate: "",
         eventEndDate: "",
@@ -196,10 +197,15 @@ export default {
       let eventTemplate = this.getEventTemplate;
       this.eventForm.eventName = eventTemplate.eventName;
       this.eventForm.eventDetail = eventTemplate.eventDetail;
+      this.eventForm.eventTags = eventTemplate.eventTags;
       this.eventForm.createEventDate = eventTemplate.createEventDate;
       this.eventForm.endRegisterDate = eventTemplate.endRegisterDate;
       this.eventForm.eventStartDate = eventTemplate.eventStartDate;
       this.eventForm.eventEndDate = eventTemplate.eventEndDate;
+    },
+    goToPreviewEvent(){
+      this.saveEventTemplate()
+      this.$router.push('/organize/event/previewEvent')
     },
     goToUploadImagePage(){
       this.saveEventTemplate()
