@@ -20,10 +20,10 @@
         @change="onCoverPictureUpload"
         accept="image/*"
       />
-      <p v-if="eventPictureCover">{{eventPictureCover.name}}</p>
-      <div v-if="eventPictureCover">
+      <p v-if="eventPictureCoverUrl.name !=undefined  ">{{eventPictureCoverUrl.name}}</p>
+      <div v-if="eventPictureCoverUrl.url !=undefined  ">
         <v-img
-          :src="eventPictureCoverUrl"
+          :src="eventPictureCoverUrl.url"
           aspect-ratio="1"
           class="grey lighten-2"
           max-width="1250"
@@ -50,14 +50,14 @@
         @change="onPictureListUpload"
         accept="image/*"
       />
-      <p v-if="eventPictureLists">
-        <span v-for="(eventPicture, index) in eventPictureLists" :key="index">{{eventPicture.name}},</span>
+      <p v-if="eventPictureListsUrl.length>0">
+        <span v-for="(eventPicture, index) in eventPictureListsUrl" :key="index">{{eventPicture.name}},</span>
       </p>
-      <div v-if="eventPictureLists">
+      <div v-if="eventPictureListsUrl.length>0">
         <v-img
           v-for="(image, index) in eventPictureListsUrl "
           :key="index"
-          :src="image"
+          :src="image.url"
           aspect-ratio="1"
           class="grey lighten-2"
           max-width="1250"
@@ -70,7 +70,9 @@
     <br />
     <br />
     <center>
-      <v-btn @click="$router.back()" class="cancelButton white--text" color="#AEAEAE" depressed large height="50">Cancel</v-btn>
+      <nuxt-link to="/organize/event/createEventForm">
+        <v-btn class="cancelButton white--text" color="#AEAEAE" depressed large height="50">Cancel</v-btn>
+      </nuxt-link>
 
       <v-btn
         class="saveButton white--text"
@@ -91,42 +93,64 @@
 
 
 <script>
-import {mapGetters, mapActions} from "vuex"
+import { mapGetters, mapActions } from "vuex";
 import * as firebase from "firebase/app";
 import "firebase/storage";
 export default {
   name: "createEventForm",
   data() {
     return {
-      eventPictureCoverUrl: "",
+      eventPictureCoverUrl: {},
       eventPictureListsUrl: [],
       eventPictureCover: null,
       eventPictureLists: null
     };
   },
-  computed:{
-    ...mapGetters(['getEventTemplate'])
+  computed: {
+    ...mapGetters(["getEventTemplate"])
+  },
+  mounted() {
+    this.loadPreviewPicture();
   },
   methods: {
-    ...mapActions(['setPictureDetail']),
+    ...mapActions(["setPictureDetail"]),
+    loadPreviewPicture() {
+      console.log("----- preview image ----");
+      let eventPictureCoverBase = this.getEventTemplate.eventPictureCoverBase;
+      let eventPictureListsBase = this.getEventTemplate.eventPictureListsBase;
+      if (eventPictureCoverBase != "") {
+        this.eventPictureCoverUrl = eventPictureCoverBase;
+        console.log(this.eventPictureCoverUrl);
+      }
+      if (eventPictureListsBase.length > 0) {
+        this.eventPictureListsUrl = eventPictureListsBase;
+        console.log(this.eventPictureListsUrl)
+      }
+    },
     onCoverPictureUpload(event) {
       console.log("uplaod din");
       this.eventPictureCover = event.target.files[0];
-
+      this.eventPictureCoverUrl = {}
       const fileReader = new FileReader();
       fileReader.addEventListener("load", () => {
-        this.eventPictureCoverUrl = fileReader.result;
+        this.eventPictureCoverUrl = {
+          url: fileReader.result,
+          name: event.target.files[0].name
+        };
       });
       fileReader.readAsDataURL(this.eventPictureCover);
     },
     onPictureListUpload(event) {
       console.log("uplaod din");
       this.eventPictureLists = event.target.files;
-
+      this.eventPictureListsUrl = []
       for (let i = 0; i < this.eventPictureLists.length; i++) {
         const fileReader = new FileReader();
         fileReader.addEventListener("load", () => {
-          this.eventPictureListsUrl.push(fileReader.result);
+          this.eventPictureListsUrl.push({
+            url: fileReader.result,
+            name: event.target.files[i].name
+          });
         });
         fileReader.readAsDataURL(this.eventPictureLists[i]);
       }
@@ -172,14 +196,15 @@ export default {
     onUpload() {
       // this.uploadCoverToFirebase();
       // this.uploadPictureListToFirebase();
-      console.log(this.eventPictureCoverUrl)
-      console.log(this.eventPictureListsUrl)
+      console.log(this.eventPictureCoverUrl);
+      console.log(this.eventPictureListsUrl);
       console.log("---------Upload --------------");
       this.setPictureDetail({
         eventPictureCoverBase: this.eventPictureCoverUrl,
         eventPictureListsBase: this.eventPictureListsUrl
       });
       console.log(this.getEventTemplate);
+      this.$router.push("/organize/event/createEventForm");
     }
   }
 };
