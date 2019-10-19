@@ -152,6 +152,7 @@ export default {
         "https://www.blognone.com/sites/default/files/externals/41bbf3e3153999d8d2111d753cf1d5f2.jpg",
         description: '',
         place: null,
+        pinLocation: {}
 
     };
   },
@@ -170,14 +171,16 @@ export default {
     },
     usePlace(place) {
       if (this.place) {
-        this.markers.push({
-          position: {
+          this.pinLocation = {
             lat: this.place.geometry.location.lat(),
             lng: this.place.geometry.location.lng(),
           }
-        })
+        }
+        console.log("--- place ----")
+        console.log(place)
+        console.log("---- pin location ---- ")
+        console.log(this.pinLocation)
         this.place = null;
-      }
     },
     loadEventTemplate() {
       let eventTemplate = this.getEventTemplate;
