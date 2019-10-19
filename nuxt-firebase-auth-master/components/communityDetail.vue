@@ -28,7 +28,9 @@
           <v-layout>
             <v-flex xs12>
               <br />
-              <v-text-field v-model="newPost" name="newPost" id="newPost" value></v-text-field>
+              <v-text-field v-model="newPost" name="newPost" placeholder="Write Something..." 
+              id="newPost" 
+         ></v-text-field>
             </v-flex>
           </v-layout>
           <v-layout>
@@ -44,7 +46,7 @@
               </v-btn>
             </v-flex>
             <v-flex xs class="text-xs-right">
-              <v-btn text color="#341646" class="mb-2 white--text" @click="addPost()">Post</v-btn>
+              <v-btn text color="#341646" class="mb-2 white--text" @click="addPost()" >Post</v-btn>
             </v-flex>
           </v-layout>
         </form>
@@ -74,15 +76,26 @@
           </v-layout>
         </div>
       
-        <v-container grid-list-xs fluid style="padding:10px">
+        <v-container grid-list-xs fluid style="padding:5px">
           <br />
           <v-list>
               <v-list-tile-content>
-            {{todo.post}} 
+                  <div class="textarea"  contenteditable="false" >
+                <!-- <textarea  v-html="todo.post" disabled >
+  
+                </textarea> -->
+                 {{todo.post}}
+
+               </div> 
+
               </v-list-tile-content>
           </v-list>
         </v-container>
-   
+  
+
+
+
+
         <v-card-text rounded outlined class="mx-auto">
           <v-divider></v-divider>
           <v-flex class="text-right">
@@ -106,7 +119,7 @@
           :key="commentIndex"
           max-width="500px"
         >
-           <v-container grid-list-xs xs4 fluid style="padding:10px" >
+           <v-container grid-list-xs xs4 fluid style="padding:5px" >
               <v-list-tile xs4>
                 <v-list-tile-avatar>
                 <v-img :aspect-ratio="1/1" :src="getUser.photoURL"></v-img>
@@ -114,13 +127,22 @@
                <v-list-tile>
               <div>
               <v-list-tile-content>
+
                <v-card color="grey lighten-3"  class="rounded-card" max-width="240px" >
+               
+               
                 <v-list-tile-title class="margin-name">
                   <font size="2">{{ getUser.displayName}}</font></v-list-tile-title>
+               
+               
                 <v-list-tile-sub-title class="margin-comment">
                    <font size="2">{{comment}}</font>
                   </v-list-tile-sub-title>
+               
                </v-card>
+
+
+
               </v-list-tile-content>
               
              </div>
@@ -158,7 +180,7 @@
           >
 
           <!-- grid-list-xs -->
-             <v-container grid-list-xs xs4 fluid style="padding:10px">
+             <v-container grid-list-xs xs4 fluid style="padding:5px">
               <v-list-tile xs4>
                 <v-list-tile-avatar>
                 <v-img :aspect-ratio="1/1" :src="getUser.photoURL"></v-img>
@@ -308,6 +330,10 @@ export default {
     },
 
     addPost() {
+      var value = this.newPost && this.newPost.trim();
+      if (!value) {
+        return;
+      }
       this.postList.push({
         post: this.newPost,
         done: false
@@ -321,6 +347,10 @@ export default {
     // },
 
     addComment(postIndex) {
+      var value = this.comment && this.comment.trim();
+      if (!value) {
+        return;
+      }
       console.log("------ ADD Comment ----");
       console.log(postIndex);
       console.log("-------- Post List ------");
@@ -374,9 +404,9 @@ export default {
  
  <style >
  .rounded-card{
-    border-radius:13px;
-    padding: 8px;
-    margin: -1px; 
+    border-radius:12px;
+    padding: 6px;
+    margin: 1px; 
 }
 
 .margin-name{
@@ -384,7 +414,15 @@ export default {
   margin-left: 3px;
 }
 .margin-comment{
-  margin: -5px; 
+   margin: -5px; 
    margin-left: 3px;
+}
+
+.textarea  {
+width:330px;
+min-height:50px;
+height:auto;
+
+
 }
  </style>
