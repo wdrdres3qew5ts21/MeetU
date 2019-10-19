@@ -20,36 +20,6 @@
       ></v-select>
     </v-flex>
 
-    <!-- test -->
-
-    <!-- <br />
-
-    <v-btn color="primary" dark @click="badgeSelect = true">Select Badge</v-btn>
-
-    <v-dialog v-model="badgeSelect" max-width="500px">
-        <v-card>
-          <v-card-title>
-            <span>Dialog 3</span>
-            <v-spacer></v-spacer>
-            <v-menu bottom left>
-              <template v-slot:activator="{ on }">
-                <v-btn icon v-on="on">
-                  <v-icon>more_vert</v-icon>
-                </v-btn>
-              </template>
-              <v-list>
-                <v-list-tile v-for="(item, i) in items" :key="i">
-                  <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-                </v-list-tile>
-              </v-list>
-            </v-menu>
-          </v-card-title>
-          <v-card-actions>
-            <v-btn color="primary" flat @click="badgeSelect=false">Close</v-btn>
-          </v-card-actions>
-        </v-card>
-    </v-dialog>-->
-
     <v-menu
       ref="menu"
       v-model="menuEventStartDate"
@@ -99,20 +69,52 @@
 
     <br />
 
-    <span class="location">Location</span>
+    <span class="location" id="locationMap">Location</span>
+    <p>{{getEventTemplate.location.detail}}</p>
+    <v-btn class="addLocationButton" color="white" @click="addLocation()">Add Location</v-btn>
+    <v-layout v-if="isShowLocation" row wrap>
+      <client-only>
+        <label>
+          AutoComplete
+          <GmapAutocomplete @place_changed="setPlace"></GmapAutocomplete>
+          <button @click="usePlace">Add</button>
+        </label>
+        <br />
+        <GmapMap
+          :center="center"
+          :zoom="14"
+          map-type-id="terrain"
+          style="width: 500px; height: 300px"
+          :options="{
+                scaleControl: true
+            }"
+        >
+          <gmap-info-window
+            :position="infoWindowPos"
+            :opened="infoWinOpen"
+            @closeclick="infoWinOpen=false"
+          >
+            <p>{{getEventTemplate.location.detail}}</p>
+          </gmap-info-window>
 
-    <v-btn class="addLocationButton" color="white">Add Location</v-btn>
+          <GmapMarker
+            :position="marker.position"
+            @click="toggleInfoWindow(marker,0)"
+            :clickable="true"
+          />
+        </GmapMap>
+      </client-only>
+    </v-layout>
 
     <br />
     <br />
-    <p style="margin:0" class="uploadPosterImg" @click="goToEventConditionPage()">Event Conditions Setting</p>
+    <p
+      style="margin:0"
+      class="uploadPosterImg"
+      @click="goToEventConditionPage()"
+    >Event Conditions Setting</p>
     <p style="margin:0" class="uploadPosterImg" @click="goToUploadImagePage()">Upload poster image</p>
     <p style="margin:0" class="uploadPosterImg" @click="goToBadgeSettingPage()">Create Badge</p>
-    <!-- <nuxt-link class="eventCondition" to="/organize/event/eventCondition" @click="saveEventTemplate()">Event Conditions Setting</nuxt-link>
-    <br />
-    <nuxt-link class="uploadPosterImg" to="/organize/event/uploadPosterImg" @click="saveEventTemplate()">Upload poster image</nuxt-link>
-    <br />
-    <nuxt-link class="createBadge" to="/organize/event/createBadge" @click="saveEventTemplate()">Create Badge</nuxt-link> -->
     <br />
     <br />
     <center>
@@ -149,6 +151,7 @@ export default {
   name: "createEventForm",
   data() {
     return {
+      isShowLocation: false,
       menuEventStartDate: false,
       menuEventEndDate: false,
       eventForm: {
@@ -158,7 +161,18 @@ export default {
         location: "",
         eventStartDate: "",
         eventEndDate: "",
-        selectedCategory: ""
+        selectedCategory: "",
+        location: {
+          detail: "",
+          subDistrict: "",
+          distrct: "",
+          province: "",
+          country: "",
+          geopoint: {
+            lat: 0,
+            lon: 0
+          }
+        }
       },
       categoryEventList: [
         "Arts",
@@ -173,11 +187,39 @@ export default {
         "Social",
         "Technology"
       ],
-      badgeSelect: false
+         infoWindowPos: null,
+      infoWinOpen: false,
+      currentMidx: null,
+      areaOfEvent: "",
+      infoOptions: {
+        pixelOffset: {
+          width: 0,
+          height: -35
+        }
+      },
+      badgeSelect: false,
+      description: "",
+      place: null,
+      pinLocation: {},
+      center: {
+        lat: 0,
+        lng: 0
+      },
+      marker: {
+        icon:
+          "https://png2.kisspng.com/sh/5a457e82acb6e22a2ae8836f35448931/L0KzQYm3VMAzN6dBiZH0aYP2gLBuTfNwdaF6jNd7LXnmf7B6TfJ2e5pzfeV8LYfygrztjP94NZVuf9t9YXywhMPojwNnd6NyRd94dnWwRbLqUvQ2bGE3e9dqN0axQ4S8Vsc2OGc2TaQ7N0G7QYe3Ucg1NqFzf3==/kisspng-computer-icons-business-workflow-digital-transform-move-5ac2d5d02cea76.335675061522718160184.png",
+        title: "Digital Transformation 4.0 By IMC",
+        detail:
+          "พบกับผู้ที่คร่ำหวอดในวงการอุตสาหกรรมที่พร้อมจะมาพลิกโฉมอุตสาหกรรมของท่านให้ก้าวไปสู่ยุค Thailand 4.0",
+        position: {
+          lat: 13.6518128,
+          lng: 100.4937549
+        }
+      }
     };
   },
   computed: {
-    ...mapGetters(["getCategory", "getEventTemplate"])
+    ...mapGetters(["getCategory", "getEventTemplate", "getCurrentLocation"])
   },
   watch: {
     menu(val) {
@@ -188,10 +230,60 @@ export default {
     // axios.get("http://localhost:4000/userservice/users").then(value => {
     //   console.log(value);
     // });
-    this.loadEventTemplate()
+
+    this.loadEventTemplate();
   },
   methods: {
-    ...mapActions(["setEventTemplate"]),
+    ...mapActions(["setEventTemplate", "setEventLocation", "setGeopoint"]),
+    setDescription(description) {
+      this.description = description;
+    },
+    setPlace(place) {
+      this.place = place;
+      console.log("----set place----");
+      console.log(this.place);
+      let addresscomponents = this.place.address_components;
+      let detail = this.place.formatted_address;
+      let streetNumber = addresscomponents[0].long_name;
+      let road = addresscomponents[1].long_name;
+      let subDistrict = addresscomponents[2].long_name;
+      let distrct = addresscomponents[3].long_name;
+      let province = addresscomponents[4].long_name;
+      let country = addresscomponents[5].long_name;
+
+      this.setEventLocation({
+        place,
+        detail,
+        streetNumber,
+        road,
+        subDistrict,
+        distrct,
+        province,
+        country
+      });
+
+      this.usePlace(this.place);
+    },
+    usePlace(place) {
+      if (this.place) {
+        this.marker.position = {
+          lat: this.place.geometry.location.lat(),
+          lng: this.place.geometry.location.lng()
+        };
+        this.center = {
+          lat: this.place.geometry.location.lat(),
+          lng: this.place.geometry.location.lng()
+        };
+      }
+      console.log("--- place ----");
+      console.log("---- pin location ---- ");
+      console.log(this.marker);
+      this.setGeopoint({
+        lat: this.marker.position.lat,
+        lon: this.marker.position.lng
+      });
+      this.place = null;
+    },
     loadEventTemplate() {
       console.log(this.getEventTemplate);
       let eventTemplate = this.getEventTemplate;
@@ -202,27 +294,68 @@ export default {
       this.eventForm.endRegisterDate = eventTemplate.endRegisterDate;
       this.eventForm.eventStartDate = eventTemplate.eventStartDate;
       this.eventForm.eventEndDate = eventTemplate.eventEndDate;
+
+      let geopoint = eventTemplate.location.geopoint;
+
+      if ((geopoint.lat === 0) & (geopoint.lon === 0)) {
+        navigator.geolocation.getCurrentPosition(location => {
+          this.center = {
+            lat: location.coords.latitude,
+            lng: location.coords.longitude
+          };
+          console.log(location.coords.latitude);
+          console.log(location.coords.longitude);
+        });
+      } else {
+        this.center = {
+          lat: geopoint.lat,
+          lng: geopoint.lon
+        };
+      }
+      this.marker.position = {
+        lat: geopoint.lat,
+        lng: geopoint.lon
+      };
     },
-    goToPreviewEvent(){
-      this.saveEventTemplate()
-      this.$router.push('/organize/event/previewEvent')
+    toggleInfoWindow: function(marker, idx) {
+      this.infoWindowPos = marker.position;
+      this.infoTitle = marker.title;
+      this.infoDetail = marker.detail;
+
+      //check if its the same marker that was selected if yes toggle
+      if (this.currentMidx == idx) {
+        this.infoWinOpen = !this.infoWinOpen;
+      }
+      //if different marker set infowindow to open and reset current marker index
+      else {
+        this.infoWinOpen = true;
+        this.currentMidx = idx;
+      }
     },
-    goToUploadImagePage(){
-      this.saveEventTemplate()
-      this.$router.push('/organize/event/uploadPosterImg')
+    addLocation(){
+      this.isShowLocation = true
+      this.$vuetify.goTo('#locationMap')
     },
-    goToEventConditionPage(){
-      this.saveEventTemplate()
-      this.$router.push('/organize/event/eventCondition')
+    goToPreviewEvent() {
+      this.saveEventTemplate();
+      this.$router.push("/organize/event/previewEvent");
     },
-    goToBadgeSettingPage(){
-      this.saveEventTemplate()
-      this.$router.push('/organize/event/createBadge')
+    goToUploadImagePage() {
+      this.saveEventTemplate();
+      this.$router.push("/organize/event/uploadPosterImg");
     },
-    saveEventTemplate(){
-      console.log("SAve Tempalte")
-      console.log(this.eventForm)
-      this.setEventTemplate(this.eventForm)
+    goToEventConditionPage() {
+      this.saveEventTemplate();
+      this.$router.push("/organize/event/eventCondition");
+    },
+    goToBadgeSettingPage() {
+      this.saveEventTemplate();
+      this.$router.push("/organize/event/createBadge");
+    },
+    saveEventTemplate() {
+      console.log("SAve Tempalte");
+      console.log(this.eventForm);
+      this.setEventTemplate(this.eventForm);
     },
     save(date) {
       this.$refs.menu.save(date);

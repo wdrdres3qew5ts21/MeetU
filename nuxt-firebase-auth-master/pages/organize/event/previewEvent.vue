@@ -28,17 +28,11 @@
 
     <p>Location</p>
     <p>
-      <b>{{location.country}}, {{location.province}}</b>
+      <b>{{getEventTemplate.location.detail}}</b>
     </p>
     <center>
       <v-layout row wrap>
         <client-only>
-          <label>
-            AutoComplete
-            <GmapAutocomplete @place_changed="setPlace"></GmapAutocomplete>
-            <button @click="usePlace">Add</button>
-          </label>
-          <br />
           <GmapMap
             :center="marker.position"
             :zoom="14"
@@ -150,9 +144,9 @@ export default {
       eventPictureLists: [],
       eventPictureCover:
         "https://www.blognone.com/sites/default/files/externals/41bbf3e3153999d8d2111d753cf1d5f2.jpg",
-        description: '',
-        place: null,
-
+      description: "",
+      place: null,
+      pinLocation: {}
     };
   },
   computed: {
@@ -162,22 +156,39 @@ export default {
     this.loadEventTemplate();
   },
   methods: {
+    toggleInfoWindow: function(marker, idx) {
+      this.infoWindowPos = marker.position;
+      this.infoTitle = marker.title;
+      this.infoDetail = marker.detail;
+
+      //check if its the same marker that was selected if yes toggle
+      if (this.currentMidx == idx) {
+        this.infoWinOpen = !this.infoWinOpen;
+      }
+      //if different marker set infowindow to open and reset current marker index
+      else {
+        this.infoWinOpen = true;
+        this.currentMidx = idx;
+      }
+    },
     setDescription(description) {
       this.description = description;
     },
     setPlace(place) {
-      this.place = place
+      this.place = place;
     },
     usePlace(place) {
       if (this.place) {
-        this.markers.push({
-          position: {
-            lat: this.place.geometry.location.lat(),
-            lng: this.place.geometry.location.lng(),
-          }
-        })
-        this.place = null;
+        this.pinLocation = {
+          lat: this.place.geometry.location.lat(),
+          lng: this.place.geometry.location.lng()
+        };
       }
+      console.log("--- place ----");
+      console.log(place);
+      console.log("---- pin location ---- ");
+      console.log(this.pinLocation);
+      this.place = null;
     },
     loadEventTemplate() {
       let eventTemplate = this.getEventTemplate;
@@ -187,6 +198,28 @@ export default {
       this.eventPictureCover = eventTemplate.eventPictureCoverBase;
       this.eventPictureLists = eventTemplate.eventPictureListsBase;
       this.eventStartDate = eventTemplate.eventStartDate;
+
+      let geopoint = eventTemplate.location.geopoint;
+
+      // if ((geopoint.lat === 0) & (geopoint.lon === 0)) {
+      //   navigator.geolocation.getCurrentPosition(location => {
+      //     this.center = {
+      //       lat: location.coords.latitude,
+      //       lng: location.coords.longitude
+      //     };
+      //     console.log(location.coords.latitude);
+      //     console.log(location.coords.longitude);
+      //   });
+      // } else {
+      //   this.center = {
+      //     lat: geopoint.lat,
+      //     lng: geopoint.lon
+      //   };
+      // }
+      this.marker.position = {
+        lat: geopoint.lat,
+        lng: geopoint.lon
+      };
     }
   }
 };
