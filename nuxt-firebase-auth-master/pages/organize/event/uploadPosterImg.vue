@@ -172,6 +172,8 @@ export default {
     onUpload() {
       // this.uploadCoverToFirebase();
       // this.uploadPictureListToFirebase();
+      console.log(this.eventPictureCoverUrl)
+      console.log(this.eventPictureListsUrl)
       console.log("---------Upload --------------");
       this.setPictureDetail({
         eventPictureCoverBase: this.eventPictureCoverUrl,
