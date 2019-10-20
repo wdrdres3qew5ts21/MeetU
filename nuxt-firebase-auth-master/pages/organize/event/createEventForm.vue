@@ -1,9 +1,18 @@
 <template>
   <div>
-    <br />
     <h2 class="h2">Create New Events</h2>
     <br />
-
+    <v-flex xs12 sm5 d-flex >
+      <v-autocomplete
+        :items="organizeList"
+        item-text="organizeName"
+        item-value="organizeId"
+        :menu-props="{ maxHeight: '400' }"
+        label="* Select Organize"
+        v-model="eventForm.organizeId"
+        persistent-hint
+      ></v-autocomplete>
+    </v-flex>
     <v-text-field v-model="eventForm.eventName" label="* Event Name" required></v-text-field>
     <!-- <v-text-field v-model="eventForm.eventDetail"  placeholder="Event Detail" required></v-text-field> -->
     <v-layout class="mb-4">
@@ -171,7 +180,9 @@ export default {
       isShowLocation: false,
       menuEventStartDate: false,
       menuEventEndDate: false,
+      organizeList: [],
       eventForm: {
+        organizeId: "",
         eventName: "",
         eventDetail: "",
         eventTags: [],
@@ -239,7 +250,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["getCategory", "getEventTemplate", "getCurrentLocation"])
+    ...mapGetters(["getCategory", "getEventTemplate", "getCurrentLocation","getUser"])
   },
   watch: {
     menu(val) {
@@ -257,6 +268,7 @@ export default {
     // });
 
     this.loadEventTemplate();
+    this.loadOrganizeFromUser();
   },
   methods: {
     ...mapActions(["setEventTemplate", "setEventLocation", "setGeopoint"]),
@@ -283,6 +295,17 @@ export default {
 
       })
 
+    },
+    loadOrganizeFromUser() {
+      axios
+        .get(`${process.env.USER_SERVICE}/organize/user/${this.getUser.uid}`)
+        .then(organizeResponse => {
+          console.log(organizeResponse.data);
+          this.organizeList = organizeResponse.data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
     setPlace(place) {
       this.place = place;

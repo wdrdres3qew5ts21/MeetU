@@ -76,7 +76,6 @@
     </v-layout>
 
     <v-btn
-      @click="userReserveTicket()"
       block
       :disabled="!isTicketSelected"
       color="primary"
