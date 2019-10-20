@@ -18,7 +18,7 @@ public interface BadgeRepository extends MongoRepository<Badge, String>{
     
     public Badge findByBadgeNameEquals(String badgeName);
     
-    public List<Badge> findByBadgeTagIsIn(List<String> badgeTags, Pageable pageable);
+    public List<Badge> findByBadgeTagsIsIn(List<String> badgeTags, Pageable pageable);
             
     
 }

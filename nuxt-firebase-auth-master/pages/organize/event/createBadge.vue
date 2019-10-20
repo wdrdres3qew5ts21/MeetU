@@ -178,7 +178,7 @@ export default {
             console.log("Picture Cover", downloadURL);
             let badgeRequest = {
               badgeName: this.badgeName,
-              badgeTag: this.selectBadgeTags[0],
+              badgeTags: this.selectBadgeTags,
               badgePicture: downloadURL
             }
             console.log(badgeRequest)

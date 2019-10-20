@@ -638,7 +638,7 @@ public class EventService {
         }
         System.out.println("Filter some bade");
         System.out.println(badgeTags);
-        List<Badge> matchingBadge = badgeRepository.findByBadgeTagIsIn(badgeTags,PageRequest.of(page, contentPerPage));
+        List<Badge> matchingBadge = badgeRepository.findByBadgeTagsIsIn(badgeTags,PageRequest.of(page, contentPerPage));
         return ResponseEntity.status(HttpStatus.OK).body(matchingBadge);
     }
 
