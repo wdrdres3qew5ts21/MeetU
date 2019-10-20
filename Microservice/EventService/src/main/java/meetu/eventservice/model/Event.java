@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Reference;
 import org.springframework.data.mongodb.core.index.IndexDirection;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -58,7 +59,17 @@ public class Event {
     private Location location;
 
     private Organize organize;
+    
+    private BadgeReward badge;
 
+    public BadgeReward getBadge() {
+        return badge;
+    }
+
+    public void setBadge(BadgeReward badge) {
+        this.badge = badge;
+    }
+    
     public String getEventId() {
         return eventId;
     }

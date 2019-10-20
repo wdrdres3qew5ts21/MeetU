@@ -105,9 +105,28 @@
         <v-btn text>Click</v-btn>
       </v-card-actions>
     </v-card>
+    <v-btn
+        block
+        class="saveButton white--text"
+        color="#341646"
+        depressed
+        large
+        height="50"
+        @click="createEventAndUploadData()"
+      >Publish Event</v-btn>
+    <v-btn
+        block
+        color="#AEAEAE"
+        class="white--text"
+        depressed
+        large
+        height="50"
+        @click="$router.back()"
+      >Cancle</v-btn>
   </div>
 </template> 
 <script>
+import axios from "axios"
 import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
@@ -156,6 +175,10 @@ export default {
     this.loadEventTemplate();
   },
   methods: {
+    createEventAndUploadData(){
+      console.log(this.getEventTemplate)
+      //axios.post(`${process.env.EVENT_SERVICE}/event`)
+    },
     toggleInfoWindow: function(marker, idx) {
       this.infoWindowPos = marker.position;
       this.infoTitle = marker.title;

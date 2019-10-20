@@ -3,9 +3,12 @@ const state = () => ({
         eventName: '',
         eventDetail: '',
         eventTags: [],
+        exp: 0.0,
+        badge: {
+        },
         eventPictureCover: "",
         eventPictureLists: [],
-        numberOfTicket: 0,
+        numberOfTicket: 10,
         createEventDate: "",
         endRegisterDate: "",
         eventStartDate: "",
@@ -38,6 +41,8 @@ const mutations = {
         state.eventTemplate.eventName = eventTemplate.eventName;
         state.eventTemplate.eventDetail = eventTemplate.eventDetail;
         state.eventTemplate.eventTags = eventTemplate.eventTags;
+        state.eventTemplate.badge = eventTemplate.badge;
+        state.eventTemplate.exp = parseFloat(eventTemplate.exp);
         state.eventTemplate.eventStartDate = eventTemplate.eventStartDate;
         state.eventTemplate.eventEndDate = eventTemplate.eventEndDate;
     },

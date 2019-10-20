@@ -631,10 +631,13 @@ public class EventService {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
-    public ResponseEntity findEventThatMatchingBadge(List<String> badgeTags, int page, int contentPerPage) {
-        if (badgeTags == null) {
+    public ResponseEntity findEventThatMatchingBadge(List<String> badgeTags, String badgeName, int page, int contentPerPage) {
+        if (badgeTags == null & (badgeName.isEmpty() | badgeName == null )) {
             List<Badge> allBadge = badgeRepository.findAll();
             return ResponseEntity.status(HttpStatus.OK).body(allBadge);
+        }else if( badgeTags != null & !badgeName.isEmpty()) {
+              List<Badge> badgeFilterByTagsAndName = badgeRepository.findByBadgeTagsIsInAndBadgeNameLike(badgeTags, badgeName, PageRequest.of(page, contentPerPage));
+            return ResponseEntity.status(HttpStatus.OK).body(badgeFilterByTagsAndName);
         }
         System.out.println("Filter some bade");
         System.out.println(badgeTags);

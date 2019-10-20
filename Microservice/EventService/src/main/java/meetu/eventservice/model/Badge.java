@@ -20,7 +20,6 @@ public class Badge {
     @Id
     private String badgeId;
     
-    @Indexed(unique = true)
     private String badgeName;
     
     private String badgePicture;

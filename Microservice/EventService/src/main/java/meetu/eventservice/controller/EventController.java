@@ -64,9 +64,10 @@ public class EventController {
     @GetMapping("/badges")
     public ResponseEntity<Event> findEventThatMatchingBadge(
             @RequestParam(required = false) List<String> badgeTags,
+            @RequestParam(required = false, defaultValue = "") String badgeName,
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "20") int contentPerPage ) {
-        return eventService.findEventThatMatchingBadge(badgeTags,page,contentPerPage);
+        return eventService.findEventThatMatchingBadge(badgeTags, badgeName,page,contentPerPage);
     }
 
     @PostMapping("/event")

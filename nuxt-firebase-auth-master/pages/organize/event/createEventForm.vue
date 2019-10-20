@@ -110,17 +110,24 @@
 
     <br />
     <br />
+    <v-flex xs12>
+      <v-text-field
+        v-model="eventForm.exp"
+        placeholder="Exp of Event"
+        label="Exp Of Event"
+        type="number"
+      ></v-text-field>
+    </v-flex>
     <v-flex xs12 sm5 d-flex  @click="findMatchingBadge()" >
-      <v-select
+      <v-autocomplete
         :items="badgeList"
         item-text="badgeName"
         item-value="badgeId"
         :menu-props="{ maxHeight: '400' }"
         label="Select Existing Badge"
-        v-model="eventForm.eventTags"
-        multiple
+        v-model="eventForm.badge"
         persistent-hint
-      ></v-select>
+      ></v-autocomplete>
     </v-flex>
     <p style="margin:0" class="uploadPosterImg" @click="goToEventConditionPage()">Event Conditions Setting</p>
     <p style="margin:0" class="uploadPosterImg" @click="goToUploadImagePage()">Upload poster image</p>
@@ -182,7 +189,9 @@ export default {
             lat: 0,
             lon: 0
           }
-        }
+        },
+        exp: 0.0,
+        badge: {}
       },
       categoryEventList: [
         "Arts",
@@ -331,6 +340,8 @@ export default {
       this.eventForm.endRegisterDate = eventTemplate.endRegisterDate;
       this.eventForm.eventStartDate = eventTemplate.eventStartDate;
       this.eventForm.eventEndDate = eventTemplate.eventEndDate;
+      this.eventForm.badge = eventTemplate.badge;
+      this.eventForm.exp = eventTemplate.exp;
 
       let geopoint = eventTemplate.location.geopoint;
 
