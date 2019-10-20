@@ -81,7 +81,7 @@
         </label>
         <br />
         <GmapMap
-          :center="center"
+          :center="marker.position"
           :zoom="14"
           map-type-id="terrain"
           style="width: 500px; height: 300px"
@@ -298,24 +298,26 @@ export default {
       let geopoint = eventTemplate.location.geopoint;
 
       if ((geopoint.lat === 0) & (geopoint.lon === 0)) {
+        console.log("initital value")
         navigator.geolocation.getCurrentPosition(location => {
-          this.center = {
+          this.marker.position = {
             lat: location.coords.latitude,
             lng: location.coords.longitude
           };
           console.log(location.coords.latitude);
           console.log(location.coords.longitude);
         });
+
       } else {
-        this.center = {
+        this.marker.position = {
           lat: geopoint.lat,
           lng: geopoint.lon
         };
       }
-      this.marker.position = {
-        lat: geopoint.lat,
-        lng: geopoint.lon
-      };
+      // this.marker.position = {
+      //   lat: geopoint.lat,
+      //   lng: geopoint.lon
+      // };
     },
     toggleInfoWindow: function(marker, idx) {
       this.infoWindowPos = marker.position;

@@ -88,7 +88,7 @@
     <br />
     <br />
     <center>
-      <nuxt-link :to="``" style="text-decoration-line:none;">
+      <nuxt-link to="/organize/event/createEventForm" style="text-decoration-line:none;">
         <v-btn class="cancelButton white--text" color="#AEAEAE" depressed large height="50">Cancel</v-btn>
       </nuxt-link>
 
