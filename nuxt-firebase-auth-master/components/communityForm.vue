@@ -9,11 +9,37 @@
       required
     ></v-text-field>
     <v-layout class="mb-4">
-      <v-autocomplete label="Categorys" :items="Category" block></v-autocomplete>
+ <v-layout class="mb-4">
+                    <v-combobox
+                      :items="categoryList"
+                      item-text="categoryLabel"
+                      item-value="categoryName"
+                      label="Community Category"
+                      @input="updateCategoryFilter"
+                      chips
+                      clearable
+                      v-model="communityForm.categorySelected"
+                      multiple
+                      sm6
+                      xs2
+                    >
+                      <template v-slot:selection="data">
+                        <v-chip
+                          :selected="data.selected"
+                          close
+                          @input="remove(data.item.categoryName)"
+                        >
+                          <strong>{{ data.item.categoryName}}</strong>&nbsp;
+                        </v-chip>
+                      </template>
+                    </v-combobox>
+                  </v-layout>
+                   <!-- {{communityForm.categorySelected}} -->
+      <!-- <v-autocomplete label="Categorys" :items="categoryList" block></v-autocomplete> -->
     </v-layout>
-    <v-text-field label="Add some people" required></v-text-field>
+    
 
-    <br />
+    
     <v-layout class="mb-4">
       <v-text-field
         name="description"
@@ -34,7 +60,10 @@
  
  
 <script>
+import { mapActions, mapGetters } from "vuex";
+import axios from "axios";
 import Swal from "sweetalert2";
+import { mockCategoryList } from "@/utils/categoryJson";
 export default {
   name: "communityForm",
   data() {
@@ -43,12 +72,35 @@ export default {
       valid: true,
       communityName: "",
       communityNameRules: [v => !!v || "Community name is required"],
-      Category: ["Education"],
+      categoryList: [],
+      selectedCategoryList: [],
+      communityForm: {
+        categorySelected: [],
+      },
+      
       dialog1: false,
       dialog2: false
     };
   },
+  computed: {
+    ...mapGetters(["getCategory"])
+  },
+  mounted() {
+    this.loadCategoryList();
+  },
   methods: {
+     ...mapActions(["autoSignIn", "setCategory"]),
+     loadCategoryList() {
+      axios
+        .get(`${process.env.EVENT_SERVICE}/category`)
+        .then(categoryList => {
+          this.categoryList = categoryList.data;
+          this.setCategory(this.categoryList);
+        })
+        .catch(error => {
+          this.categoryList = mockCategoryList;
+        });
+    },
     onFileChanged(event) {
       this.selectedFile = event.target.files[0];
     },
