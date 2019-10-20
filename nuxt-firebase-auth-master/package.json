@@ -35,6 +35,7 @@
     "vue": "^2.6.10",
     "vue-carousel": "^0.18.0",
     "vue-flickity": "^1.1.2",
+    "vue-loading-overlay": "^3.2.0",
     "vue-picture-input": "^2.1.6",
     "vue-qrcode-reader": "^2.0.4",
     "vue-sweetalert2": "^1.6.4",

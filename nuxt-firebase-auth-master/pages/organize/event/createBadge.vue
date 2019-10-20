@@ -15,17 +15,17 @@
       <v-btn
         class="chooseFileButton"
         color="white"
-        @click="$refs.coverPictureUpload.click()"
+        @click="$refs.badgePictureUpload.click()"
       >Choose file</v-btn>
       <input
         v-show="false"
-        ref="coverPictureUpload"
+        ref="badgePictureUpload"
         type="file"
-        @change="onCoverPictureUpload"
+        @change="onBadgeUpload"
         accept="image/*"
       />
-      <p v-if="eventPictureCover">{{eventPictureCover.name}}</p>
-      <div v-if="eventPictureCover">
+      <p v-if="badgePicture">{{badgePicture.name}}</p>
+      <div v-if="badgePicture">
         <v-img
           :src="badgePictureUrl"
           aspect-ratio="1"
@@ -100,7 +100,7 @@
         depressed
         large
         height="50"
-        @click="saveBadge()"
+        @click="uploadBadgeToFirebase()"
       >Save</v-btn>
       <!-- <nuxt-link :to="`/?`" style="text-decoration-line:none;">
         <v-btn class="saveButton white--text" color="#341646" depressed large height="50">Save</v-btn>
@@ -108,11 +108,18 @@
     </center>
     <br />
     <br />
+    <!-- <v-progress-circular
+      :size="70"
+      :width="7"
+      color="purple"
+      indeterminate
+    ></v-progress-circular> -->
   </div>
 </template>
 
 
 <script>
+import axios from "axios"
 import {mapGetters} from "vuex"
 import * as firebase from "firebase/app";
 import "firebase/storage";
@@ -122,7 +129,7 @@ export default {
     return {
       badgeName: "",
       badgePictureUrl: "",
-      eventPictureCover: null,
+      badgePicture: null,
       selectBadgeTags: [],
       categoryEventList: [
         "Art",
@@ -145,31 +152,63 @@ export default {
     ...mapGetters(['getCategory'])
   },
   mounted(){
-
   
   },
   methods: {
-    onCoverPictureUpload(event) {
+    onBadgeUpload(event) {
       console.log("uplaod din");
-      this.eventPictureCover = event.target.files[0];
+      this.badgePicture = event.target.files[0];
 
       const fileReader = new FileReader();
       fileReader.addEventListener("load", () => {
         this.badgePictureUrl = fileReader.result;
       });
-      fileReader.readAsDataURL(this.eventPictureCover);
+      fileReader.readAsDataURL(this.badgePicture);
     },
-    async uploadCoverToFirebase() {
+    async uploadBadgeToFirebase() {
+      let loader = this.$loading.show()
       let dateobj = new Date();
-      let fileName = this.eventPictureCover.name + "_" + dateobj.toISOString();
+      let fileName = this.badgePicture.name + "_" + dateobj.toISOString();
       let storage = firebase.storage();
       let storageRef = storage.ref();
       let setupFile = storageRef.child(fileName);
 
       try {
-        setupFile.put(this.eventPictureCover).then(snapshot => {
+        setupFile.put(this.badgePicture).then(snapshot => {
           snapshot.ref.getDownloadURL().then(downloadURL => {
             console.log("Picture Cover", downloadURL);
+            let badgeRequest = {
+              badgeName: this.badgeName,
+              badgeTags: this.selectBadgeTags,
+              badgePicture: downloadURL
+            }
+            console.log(badgeRequest)
+            axios.post(`${process.env.EVENT_SERVICE}/badge`,badgeRequest,{
+                headers: {
+                  'Authorization': `Bearer ${localStorage.getItem('jwtToken') || ''}`
+              }
+            }).then(badgeResponse=>{
+              console.log(badgeResponse.data)
+              loader.hide()
+              this.$swal({
+                type: "success",
+                title: "Upload Badge success!!",
+                text: `Upload Badge success!!`
+              });
+            }).catch(error => {
+              this.$swal({
+                type: "error",
+                title: "Fail to Upload badge !!!",
+                text: `${error.response.data.response}`
+              });
+              loader.hide()
+              setupFile.delete().then(()=> {
+                // File deleted successfully
+                console.log("delete file success because upload fail")
+              }).catch((error)=> {
+                // Uh-oh, an error occurred!
+              });
+            });
           });
         });
       } catch (err) {
@@ -179,11 +218,7 @@ export default {
     saveBadge() {
       // this.uploadCoverToFirebase();
       // this.uploadPictureListToFirebase();
-      console.log({
-        badgeName: this.badgeName,
-        badgeTags: this.selectBadgeTags,
-        badgePicture: this.badgePictureUrl
-      })
+      
     },
     remove(item) {
       this.chips.splice(this.chips.indexOf(item), 1);
