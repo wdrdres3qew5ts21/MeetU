@@ -19,8 +19,15 @@
     </v-layout>
     <v-btn class="black--text" outline color="red" depressed large block @click="logout()">LOG OUT</v-btn>
     <br />
-    <h2>Level:</h2>
+    <h2>Badges :</h2>
     <br />
+    <v-layout>
+     <v-flex v-for="(item,index) in badges" :key="index" xs2>
+       <v-avatar size="50">
+           <v-img  :src="item.avatar"></v-img>
+       </v-avatar>      
+      </v-flex>
+    </v-layout>
     <br />
     <v-layout column>
       <v-form ref="form" v-model="valid">
@@ -30,7 +37,6 @@
         <v-flex xs12>
           <center>
             <h3>             
-              
                {{userForm.interest}} 
                <!-- : {{userForm.interest.length}}/{{limitedSelectNumber}} -->
                <nuxt-link to="/selectGenres" style="color:red"> <v-icon color="#341646" medium>edit</v-icon></nuxt-link>
@@ -230,7 +236,18 @@ export default {
     return {
       isCameraOpen: false,
       limitedSelectNumber: 3,
-
+      badges: [
+      {
+        avatar: "https://cdn.vuetifyjs.com/images/lists/1.jpg"
+      },
+      {
+        avatar: "https://cdn.vuetifyjs.com/images/lists/2.jpg"
+      },
+         {
+     
+        avatar: "https://cdn.vuetifyjs.com/images/lists/2.jpg"
+      }
+    ],
       date: null,
       menu: false,
 

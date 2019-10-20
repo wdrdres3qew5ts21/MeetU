@@ -19,6 +19,14 @@
       item-key="level"
       class="elevation-1"
     >
+    <template v-slot:no-data>
+    <v-alert :value="true" color="pink" icon="info"
+    >
+    <center>
+    Badge not found !
+    </center>
+    </v-alert>
+    </template>
       <template v-slot:items="props">
         <tr>
           <!-- <td>{{badges.index}} </td> -->

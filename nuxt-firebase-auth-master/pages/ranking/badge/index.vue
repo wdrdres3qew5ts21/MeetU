@@ -31,21 +31,57 @@
 
                     <v-list three-line subheader>
                       <br />
+
+                      <v-subheader>Filter by category</v-subheader>
+                      <v-layout class="mb-4">
+                        <v-combobox
+                          :items="categoryList"
+                          item-text="categoryLabel"
+                          item-value="categoryName"
+                          label="category"
+                          @input="updateCategoryFilter"
+                          chips
+                          clearable
+                          solo
+                          multiple
+                          sm6
+                          xs2
+                        >
+                          <template v-slot:selection="data">
+                            <v-chip
+                              :selected="data.selected"
+                              close
+                              @input="remove(data.item.categoryName)"
+                            >
+                              <strong>{{ data.item.categoryName}}</strong>&nbsp;
+                            </v-chip>
+                          </template>
+                        </v-combobox>
+                      </v-layout>
                     </v-list>
-                    <v-btn>Search</v-btn>
+                    <v-btn
+                      class="white--text"
+                      depressed
+                      large
+                      block
+                      color="#341646"
+                      @click="searchByFilter()"
+                    >Search</v-btn>
+                    {{filterForm.categorySelected}}
                   </v-card>
                 </v-dialog>
+
                 <v-flex class="text-xs-right">
                   <v-text-field
-                    v-model="message"
-                    :append-outer-icon="message ? 'search' : 'search'"
+                    v-model="badgeName"
+                    :append-outer-icon="badgeName ? 'search' : 'search'"
                     box
                     clear-icon="close"
                     clearable
                     placeholder="Search..."
                     type="text"
                     @click:append="toggleMarker"
-                    @click:append-outer="sendMessage"
+                    @click:append-outer="searchBadgeByName"
                     @click:clear="clearMessage"
                   ></v-text-field>
                 </v-flex>
@@ -60,31 +96,12 @@
       <h2>Top badge</h2>
     </center>
     <br />
-    <!-- <v-flex xs12 sm6 offset-sm3>
-      <v-card>
-        <v-list two-line >
-          <template v-for="(item, index) in items" >
-            <v-subheader v-if="item.header" :key="item.header">{{ item.header }}</v-subheader>
-            <v-divider v-else-if="item.divider" :key="index" :inset="item.inset"></v-divider>
-            <v-list-tile v-else :key="item.title" avatar>
-              <v-list-tile-avatar size="50px"  >
-                <img :src="item.avatar" />
-              </v-list-tile-avatar>
-              <v-list-tile-content>
-                <v-list-tile-title v-html="item.title"></v-list-tile-title>
-                <v-list-tile-sub-title v-html="item.subtitle"></v-list-tile-sub-title>
-              </v-list-tile-content>
-            </v-list-tile>
-          </template>
-        </v-list>
-      </v-card>
-    </v-flex>-->
-    <v-data-table
-      :items="badges"
-      :pagination.sync="pagination"
-      item-key="name"
-      class="elevation-1"
-    >
+    <v-data-table :items="badges" :pagination.sync="pagination" item-key="name" class="elevation-1">
+      <template v-slot:no-data>
+        <v-alert :value="true" color="pink" icon="info">
+          <center>Badge not found !</center>
+        </v-alert>
+      </template>
       <template v-slot:items="props">
         <tr>
           <td>
@@ -107,14 +124,23 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { mockCategoryList } from "@/utils/categoryJson";
 export default {
   data: () => ({
     show: false,
     dialog: false,
-    message: "",
     marker: true,
     iconIndex: 0,
+    categoryList: [],
     icons: ["filter_list"],
+    selectedCategoryList: [],
+    badgeName: "",
+    filterForm: {
+      categorySelected: []
+    },
 
     pagination: {
       sortBy: "name"
@@ -171,52 +197,48 @@ export default {
         avatar: "https://cdn.vuetifyjs.com/images/lists/3.jpg"
       }
     ]
-
-    // items: [
-    //   {
-    //     avatar: "https://cdn.vuetifyjs.com/images/lists/1.jpg",
-    //     title: "Brunch this weekend?",
-    //     subtitle:
-    //       "<span class='text--primary'>Ali Connors</span> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?"
-    //   },
-    //   { divider: true, inset: true },
-    //   {
-    //     avatar: "https://cdn.vuetifyjs.com/images/lists/2.jpg",
-    //     title: 'Summer BBQ <span class="grey--text text--lighten-1">4</span>',
-    //     subtitle:
-    //       "<span class='text--primary'>to Alex, Scott, Jennifer</span> &mdash; Wish I could come, but I'm out of town this weekend."
-    //   },
-    //   { divider: true, inset: true },
-    //   {
-    //     avatar: "https://cdn.vuetifyjs.com/images/lists/3.jpg",
-    //     title: "Oui oui",
-    //     subtitle:
-    //       "<span class='text--primary'>Sandra Adams</span> &mdash; Do you have Paris recommendations? Have you ever been?"
-    //   },
-    //   { divider: true, inset: true },
-    //   {
-    //     avatar: "https://cdn.vuetifyjs.com/images/lists/4.jpg",
-    //     title: "Birthday gift",
-    //     subtitle:
-    //       "<span class='text--primary'>Trevor Hansen</span> &mdash; Have any ideas about what we should get Heidi for her birthday?"
-    //   },
-    //   { divider: true, inset: true },
-    //   {
-    //     avatar: "https://cdn.vuetifyjs.com/images/lists/5.jpg",
-    //     title: "Recipe to try",
-    //     subtitle:
-    //       "<span class='text--primary'>Britta Holt</span> &mdash; We should eat this: Grate, Squash, Corn, and tomatillo Tacos."
-    //   }
-    // ]
   }),
 
   computed: {
+    ...mapGetters(["getCategory"]),
     icon() {
       return this.icons[this.iconIndex];
     }
   },
-
+  mounted() {
+    this.loadCategoryList();
+  },
   methods: {
+    ...mapActions(["autoSignIn", "setCategory"]),
+    loadCategoryList() {
+      axios
+        .get(`${process.env.EVENT_SERVICE}/category`)
+        .then(categoryList => {
+          this.categoryList = categoryList.data;
+          this.setCategory(this.categoryList);
+        })
+        .catch(error => {
+          this.categoryList = mockCategoryList;
+        });
+    },
+
+    // onItemClick(event, itemsCategory) {
+    //   if (event) {
+    //     this.selected = itemsCategory;
+    //   }
+    // },
+    remove: function(item) {
+      console.log(item);
+      this.chips.splice(this.chips.indexOf(item), 1);
+      this.chips = [...this.chips];
+    },
+    updateCategoryFilter: async function(category) {
+      console.log(JSON.parse(JSON.stringify(category)));
+      // this.filterForm.categorySelected.push(categoryO)
+    },
+    searchBadgeByName() {
+      console.log(this.badgeName);
+    },
     toggleMarker() {
       this.marker = !this.marker;
     },
