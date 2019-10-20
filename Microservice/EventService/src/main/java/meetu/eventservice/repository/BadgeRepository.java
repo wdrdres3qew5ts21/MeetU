@@ -5,7 +5,9 @@
  */
 package meetu.eventservice.repository;
 
+import java.util.List;
 import meetu.eventservice.model.Badge;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 /**
@@ -14,6 +16,9 @@ import org.springframework.data.mongodb.repository.MongoRepository;
  */
 public interface BadgeRepository extends MongoRepository<Badge, String>{
     
-    public Badge findByBadgeName(String badgeName);
+    public Badge findByBadgeNameEquals(String badgeName);
+    
+    public List<Badge> findByBadgeTagIsIn(List<String> badgeTags, Pageable pageable);
+            
     
 }

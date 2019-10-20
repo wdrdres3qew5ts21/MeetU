@@ -25,8 +25,8 @@ public class Badge {
     
     private String badgePicture;
     
-    private List<String> badgeTags;
-    
+    private String badgeTag;
+   
     private List<Event> eventList;
 
     public String getBadgeId() {
@@ -36,6 +36,16 @@ public class Badge {
     public void setBadgeId(String badgeId) {
         this.badgeId = badgeId;
     }
+
+    public String getBadgeTag() {
+        return badgeTag;
+    }
+
+    public void setBadgeTag(String badgeTag) {
+        this.badgeTag = badgeTag;
+    }
+    
+    
 
     public String getBadgeName() {
         return badgeName;
@@ -53,14 +63,6 @@ public class Badge {
         this.badgePicture = badgePicture;
     }
 
-    public List<String> getBadgeTags() {
-        return badgeTags;
-    }
-
-    public void setBadgeTags(List<String> badgeTags) {
-        this.badgeTags = badgeTags;
-    }
-
     public List<Event> getEventList() {
         return eventList;
     }
@@ -71,7 +73,7 @@ public class Badge {
 
     @Override
     public String toString() {
-        return "Badge{" + "badgeId=" + badgeId + ", badgeName=" + badgeName + ", badgePicture=" + badgePicture + ", badgeTags=" + badgeTags + ", eventList=" + eventList + '}';
+        return "Badge{" + "badgeId=" + badgeId + ", badgeName=" + badgeName + ", badgePicture=" + badgePicture + ", badgeTags=" + badgeTag + ", eventList=" + eventList + '}';
     }
     
 }

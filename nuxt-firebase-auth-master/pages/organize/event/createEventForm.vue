@@ -11,7 +11,9 @@
     </v-layout>
     <v-flex xs12 sm5 d-flex>
       <v-select
-        :items="categoryEventList"
+        :items="getCategory"
+        item-text="categoryLabel"
+        item-value="categoryName"
         :menu-props="{ maxHeight: '400' }"
         label="Category (Limit to 3 tags only)"
         v-model="eventForm.eventTags"

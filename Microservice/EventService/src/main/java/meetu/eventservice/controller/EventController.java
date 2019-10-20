@@ -60,6 +60,14 @@ public class EventController {
     public ResponseEntity createBadge(@RequestBody Badge badge) {
         return eventService.createBadge(badge);
     }
+    
+    @GetMapping("/badges")
+    public ResponseEntity<Event> findEventThatMatchingBadge(
+            @RequestParam(required = false) List<String> badgeTags,
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "20") int contentPerPage ) {
+        return eventService.findEventThatMatchingBadge(badgeTags,page,contentPerPage);
+    }
 
     @PostMapping("/event")
     public ResponseEntity<Event> createEvent(@RequestBody Event event) {

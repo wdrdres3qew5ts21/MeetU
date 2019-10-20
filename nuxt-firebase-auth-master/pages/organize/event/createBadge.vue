@@ -152,7 +152,6 @@ export default {
     ...mapGetters(['getCategory'])
   },
   mounted(){
-  
   },
   methods: {
     onBadgeUpload(event) {
@@ -179,7 +178,7 @@ export default {
             console.log("Picture Cover", downloadURL);
             let badgeRequest = {
               badgeName: this.badgeName,
-              badgeTags: this.selectBadgeTags,
+              badgeTag: this.selectBadgeTags[0],
               badgePicture: downloadURL
             }
             console.log(badgeRequest)

@@ -115,7 +115,7 @@ public class EventService {
 
     @Autowired
     private CategoryRepository categoryRepository;
-    
+
     @Autowired
     private BadgeRepository badgeRepository;
 
@@ -622,13 +622,24 @@ public class EventService {
     }
 
     public ResponseEntity createBadge(Badge badge) {
-        Badge badgeInDatabase = badgeRepository.findByBadgeName(badge.getBadgeName());
-        if(badgeInDatabase == null){
-            return ResponseEntity.status(HttpStatus.CREATED).body( badgeRepository.save(badge));
+        Badge badgeInDatabase = badgeRepository.findByBadgeNameEquals(badge.getBadgeName());
+        if (badgeInDatabase == null) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(badgeRepository.save(badge));
         }
-        HashMap<String, String> response= new HashMap();
+        HashMap<String, String> response = new HashMap();
         response.put("response", "Badge Name Duplicate !!!");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    public ResponseEntity findEventThatMatchingBadge(List<String> badgeTags, int page, int contentPerPage) {
+        if (badgeTags == null) {
+            List<Badge> allBadge = badgeRepository.findAll();
+            return ResponseEntity.status(HttpStatus.OK).body(allBadge);
+        }
+        System.out.println("Filter some bade");
+        System.out.println(badgeTags);
+        List<Badge> matchingBadge = badgeRepository.findByBadgeTagIsIn(badgeTags,PageRequest.of(page, contentPerPage));
+        return ResponseEntity.status(HttpStatus.OK).body(matchingBadge);
     }
 
 }
