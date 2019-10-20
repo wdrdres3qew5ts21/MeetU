@@ -14,6 +14,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
  */
 public interface BadgeRepository extends MongoRepository<Badge, String>{
     
-    public Badge findByBadgeName(String badgeName);
     
 }

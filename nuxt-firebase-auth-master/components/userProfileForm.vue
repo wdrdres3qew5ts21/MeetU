@@ -339,7 +339,11 @@ export default {
     },
     initUserProfile: function() {
       axios
-        .get(`${process.env.USER_SERVICE}/user/${this.getUser.uid}`)
+        .get(`${process.env.USER_SERVICE}/user/${this.getUser.uid}`,{
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('jwtToken') || ''}`
+          }
+        })
         .then(userProfileForm => {
           console.log("haate my self");
           userProfileForm = userProfileForm.data;
@@ -411,7 +415,12 @@ export default {
       axios
         .put(
           `${process.env.USER_SERVICE}/user/${this.getUser.uid}`,
-          this.userForm
+          this.userForm,
+          {
+            headers:{
+              'Authorization': `Bearer ${localStorage.getItem('jwtToken') || ''}`
+            }
+          }
         )
         .then(updateResponse => {
           this.$swal({

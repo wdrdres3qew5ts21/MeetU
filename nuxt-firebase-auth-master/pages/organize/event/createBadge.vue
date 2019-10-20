@@ -144,11 +144,8 @@ export default {
   computed: {
     ...mapGetters(['getCategory'])
   },
-  watch: {
-
-  },
   mounted(){
-    
+
   
   },
   methods: {
