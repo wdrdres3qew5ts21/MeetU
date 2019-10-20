@@ -5,7 +5,7 @@
     <br />
 
     <span>
-      <v-text-field label="* Badge Name" required></v-text-field>
+      <v-text-field label="* Badge Name" required v-model="badgeName"></v-text-field>
     </span>
     <br />
     <span>
@@ -27,7 +27,7 @@
       <p v-if="eventPictureCover">{{eventPictureCover.name}}</p>
       <div v-if="eventPictureCover">
         <v-img
-          :src="eventPictureCoverUrl"
+          :src="badgePictureUrl"
           aspect-ratio="1"
           class="grey lighten-2"
           max-width="1250"
@@ -44,9 +44,11 @@
     <v-layout row wrap align-center>
       <v-flex xs12 sm6>
         <v-select
-          v-model="selectBadgeTag"
-          :items="categoryEventList"
+          v-model="selectBadgeTags"
+          :items="getCategory"
           :menu-props="{ maxHeight: '400' }"
+          item-text="categoryLabel"
+          item-value="categoryName"
           label="Select"
           multiple
           hint="Select Badge Tag"
@@ -98,7 +100,7 @@
         depressed
         large
         height="50"
-        @click="onUpload"
+        @click="saveBadge()"
       >Save</v-btn>
       <!-- <nuxt-link :to="`/?`" style="text-decoration-line:none;">
         <v-btn class="saveButton white--text" color="#341646" depressed large height="50">Save</v-btn>
@@ -111,17 +113,17 @@
 
 
 <script>
+import {mapGetters} from "vuex"
 import * as firebase from "firebase/app";
 import "firebase/storage";
 export default {
   name: "createEventForm",
   data() {
     return {
-      eventPictureCoverUrl: "",
-      eventPictureListsUrl: [],
+      badgeName: "",
+      badgePictureUrl: "",
       eventPictureCover: null,
-      eventPictureLists: null,
-      selectBadgeTag: [],
+      selectBadgeTags: [],
       categoryEventList: [
         "Art",
         "Beauty",
@@ -139,6 +141,16 @@ export default {
 
     };
   },
+  computed: {
+    ...mapGetters(['getCategory'])
+  },
+  watch: {
+
+  },
+  mounted(){
+    
+  
+  },
   methods: {
     onCoverPictureUpload(event) {
       console.log("uplaod din");
@@ -146,42 +158,9 @@ export default {
 
       const fileReader = new FileReader();
       fileReader.addEventListener("load", () => {
-        this.eventPictureCoverUrl = fileReader.result;
+        this.badgePictureUrl = fileReader.result;
       });
       fileReader.readAsDataURL(this.eventPictureCover);
-    },
-    onPictureListUpload(event) {
-      console.log("uplaod din");
-      this.eventPictureLists = event.target.files;
-
-      for (let i = 0; i < this.eventPictureLists.length; i++) {
-        const fileReader = new FileReader();
-        fileReader.addEventListener("load", () => {
-          this.eventPictureListsUrl.push(fileReader.result);
-        });
-        fileReader.readAsDataURL(this.eventPictureLists[i]);
-      }
-    },
-
-    async uploadPictureListToFirebase() {
-      let pictureFiles = this.eventPictureLists;
-      for (let i = 0; i < pictureFiles.length; i++) {
-        let pictureFile = pictureFiles[i];
-        let dateobj = new Date();
-        let fileName = pictureFile.name + "_" + dateobj.toISOString();
-        let storage = firebase.storage();
-        let storageRef = storage.ref();
-        let setupFile = storageRef.child(fileName);
-        try {
-          setupFile.put(this.eventPictureCover).then(snapshot => {
-            snapshot.ref.getDownloadURL().then(downloadURL => {
-              console.log(`Picture List ${i + 1} : `, downloadURL);
-            });
-          });
-        } catch (err) {
-          console.log(err);
-        }
-      }
     },
     async uploadCoverToFirebase() {
       let dateobj = new Date();
@@ -200,9 +179,14 @@ export default {
         console.log(err);
       }
     },
-    onUpload() {
-      this.uploadCoverToFirebase();
-      this.uploadPictureListToFirebase();
+    saveBadge() {
+      // this.uploadCoverToFirebase();
+      // this.uploadPictureListToFirebase();
+      console.log({
+        badgeName: this.badgeName,
+        badgeTags: this.selectBadgeTags,
+        badgePicture: this.badgePictureUrl
+      })
     },
     remove(item) {
       this.chips.splice(this.chips.indexOf(item), 1);

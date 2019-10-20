@@ -23,12 +23,23 @@ if (!firebase.apps.length) {
 }
 
 export default (context) => {
+
+
   const { store } = context
   if (process.client) {
     console.log("Client Side !!!")
     authen = firebase.auth()
     if (firebase.messaging.isSupported()){
       messaging = firebase.messaging()
+    }
+
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then((registrations) => {
+        for (const worker of registrations) {
+          console.log('Service worker:', worker)
+        }
+      });
     }
   }
 
@@ -110,6 +121,7 @@ export default (context) => {
         console.log(error)
       })
   })
+
 }
 
 

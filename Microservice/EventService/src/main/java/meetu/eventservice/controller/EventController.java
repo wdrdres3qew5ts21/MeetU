@@ -11,6 +11,7 @@ import java.util.HashMap;
 import meetu.eventservice.service.EventService;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+import meetu.eventservice.model.Badge;
 import meetu.eventservice.model.Event;
 import meetu.eventservice.model.EventTicket;
 import meetu.eventservice.model.User;
@@ -53,6 +54,12 @@ public class EventController {
 
     @Autowired
     private QRCodeService qRCodeService;
+    
+    
+    @PostMapping("/badge")
+    public ResponseEntity createBadge(@RequestBody Badge badge) {
+        return eventService.createBadge(badge);
+    }
 
     @PostMapping("/event")
     public ResponseEntity<Event> createEvent(@RequestBody Event event) {
