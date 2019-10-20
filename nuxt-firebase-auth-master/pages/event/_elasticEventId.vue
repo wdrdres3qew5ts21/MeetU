@@ -243,8 +243,9 @@ export default {
           this.$swal({
             type: "error",
             title: "Fail to reserve ticket !",
-            text: `${error.response.data.response}`
+            text: `${error.response === undefined ? 'Please Login first!':error.response }`
           });
+          this.$router.push("/login")
         });
     },
     findEventInArea: async function() {
