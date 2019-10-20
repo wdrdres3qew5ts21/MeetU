@@ -18,6 +18,9 @@ module.exports = {
   mode: 'universal',
   loading: { color: '#3f51b5' },
   workbox: {
+    importScripts: [
+      'custom-sw.js'
+    ],
   },
   manifest: {
     "name": "MeetU",

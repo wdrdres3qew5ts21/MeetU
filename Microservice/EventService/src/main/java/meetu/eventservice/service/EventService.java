@@ -58,10 +58,12 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import java.nio.charset.Charset;
 import java.util.Random;
 import java.util.UUID;
+import meetu.eventservice.model.Badge;
 import meetu.eventservice.model.Category;
 import meetu.eventservice.model.UserEventTicket;
 import meetu.eventservice.model.UserJoinEvent;
 import meetu.eventservice.model.UserViewEvent;
+import meetu.eventservice.repository.BadgeRepository;
 import meetu.eventservice.repository.UserEventTicketRepository;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
 import org.elasticsearch.index.query.MatchAllQueryBuilder;
@@ -113,6 +115,9 @@ public class EventService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+    
+    @Autowired
+    private BadgeRepository badgeRepository;
 
     @Autowired
     private MongoTemplate mongoTemplate;
@@ -614,6 +619,16 @@ public class EventService {
     public ResponseEntity findAllEventOfOrganize(String organizeId) {
         List<Event> allEventOfOrganize = eventRepository.findByOrganizeOrganizeId(organizeId);
         return new ResponseEntity(allEventOfOrganize, HttpStatus.OK);
+    }
+
+    public ResponseEntity createBadge(Badge badge) {
+        Badge badgeInDatabase = badgeRepository.findByBadgeName(badge.getBadgeName());
+        if(badgeInDatabase == null){
+            return ResponseEntity.status(HttpStatus.CREATED).body( badgeRepository.save(badge));
+        }
+        HashMap<String, String> response= new HashMap();
+        response.put("response", "Badge Name Duplicate !!!");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
 }
