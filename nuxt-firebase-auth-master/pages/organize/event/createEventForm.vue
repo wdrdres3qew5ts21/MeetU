@@ -226,6 +226,11 @@ export default {
   watch: {
     menu(val) {
       val && setTimeout(() => (this.$refs.picker.activePicker = "YEAR"));
+    },
+    "eventForm.eventTags"(eventTags){
+      if(eventTags.length >3){
+        this.eventForm.eventTags.shift()
+      }
     }
   },
   mounted() {

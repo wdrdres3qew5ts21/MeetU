@@ -151,6 +151,14 @@ export default {
   computed: {
     ...mapGetters(['getCategory'])
   },
+  watch: {
+    "selectBadgeTags"(selectBadgeTags){
+      console.log(selectBadgeTags)
+      if(selectBadgeTags.length >3 ){
+        this.selectBadgeTags.shift()
+      }
+    }
+  },
   mounted(){
   },
   methods: {
