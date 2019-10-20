@@ -320,7 +320,11 @@ export default {
       let parsedTicket = JSON.parse(decodedString)
       console.log(parsedTicket)
       axios
-        .post(`${process.env.EVENT_SERVICE}/event/join`,parsedTicket)
+        .post(`${process.env.EVENT_SERVICE}/event/join`,parsedTicket,{
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('jwtToken') || ''}`
+          }
+        })
         .then(scanResponse => {
           console.log(scanResponse)
           this.$swal({

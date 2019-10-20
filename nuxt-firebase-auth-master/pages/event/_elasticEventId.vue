@@ -228,7 +228,11 @@ export default {
       this.qrCodeSrc = JSON.stringify(reserveTicket);
       console.log(reserveTicket);
       axios
-        .post(`${process.env.EVENT_SERVICE}/event/reserve`, reserveTicket)
+        .post(`${process.env.EVENT_SERVICE}/event/reserve`, reserveTicket,{
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('jwtToken') || ''}`
+          }
+        })
         .then(reserveTicket => {
           console.log(reserveTicket);
           this.isViewTicketDetail = !this.isViewTicketDetail;
