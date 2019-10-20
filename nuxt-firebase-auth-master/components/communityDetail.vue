@@ -16,6 +16,25 @@
           ></v-text-field>
     -->
     <v-flex align="center">
+     <div v-if="imageUrl == ''">
+     <v-img
+        :src="defaultImage"
+        aspect-ratio="1"
+        class="grey lighten-2"
+        max-width="1250"
+        max-height="200"
+      >
+      <v-btn class="button" @click="onPickFile">
+      Upload image
+       &nbsp;
+        &nbsp;
+      <v-icon>add_a_photo</v-icon>
+      <br>
+    </v-btn>
+      </v-img>
+      
+     </div>
+      <div v-else>
       <v-img
         :src="imageUrl"
         aspect-ratio="1"
@@ -23,11 +42,8 @@
         max-width="1250"
         max-height="200"
       ></v-img>
-    </v-flex>
-    <v-btn color="#341646" class="mb-2 white--text" @click="onPickFile">
-      Upload image
-      <v-icon>add_a_photo</v-icon>
-    </v-btn>
+      </div>
+    </v-flex>   
     <input
       type="file"
       style="display: none"
@@ -272,6 +288,7 @@ export default {
     return {
       imageUrl: "",
       image: null,
+      defaultImage: "https://www.elegantthemes.com/blog/wp-content/uploads/2017/03/Facebook-Groups-for-Bloggers-shutterstock_555845587-ProStockStudio-FT.png",
       remove: ["remove"],
       post: "",
       newPost: "",
@@ -439,5 +456,21 @@ min-height:50px;
 height:auto;
 
 
+}
+.button{
+  height: 40px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  background-color: #341646 ;
+  color: #341646 ;
+  font-size: 16px;
+  padding: 12px 24px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  text-align: center;
 }
  </style>
