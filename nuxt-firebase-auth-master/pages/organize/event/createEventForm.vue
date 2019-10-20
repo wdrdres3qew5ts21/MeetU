@@ -110,11 +110,19 @@
 
     <br />
     <br />
-    <p
-      style="margin:0"
-      class="uploadPosterImg"
-      @click="goToEventConditionPage()"
-    >Event Conditions Setting</p>
+    <v-flex xs12 sm5 d-flex  @click="findMatchingBadge()" >
+      <v-select
+        :items="badgeList"
+        item-text="badgeName"
+        item-value="badgeId"
+        :menu-props="{ maxHeight: '400' }"
+        label="Select Existing Badge"
+        v-model="eventForm.eventTags"
+        multiple
+        persistent-hint
+      ></v-select>
+    </v-flex>
+    <p style="margin:0" class="uploadPosterImg" @click="goToEventConditionPage()">Event Conditions Setting</p>
     <p style="margin:0" class="uploadPosterImg" @click="goToUploadImagePage()">Upload poster image</p>
     <p style="margin:0" class="uploadPosterImg" @click="goToBadgeSettingPage()">Create Badge</p>
     <br />
@@ -199,6 +207,7 @@ export default {
           height: -35
         }
       },
+      badgeList: [],
       badgeSelect: false,
       description: "",
       place: null,
@@ -244,6 +253,27 @@ export default {
     ...mapActions(["setEventTemplate", "setEventLocation", "setGeopoint"]),
     setDescription(description) {
       this.description = description;
+    },
+    findMatchingBadge(){
+      console.log("mating badge")
+      let eventTagsQuery = ""
+      if (this.eventForm.eventTags.length > 0) {
+        eventTagsQuery ="?badgeTags="
+        for (let i = 0; i < this.eventForm.eventTags.length; i++) {
+          eventTagsQuery += `${this.eventForm.eventTags[i]},`;
+        }
+        eventTagsQuery += "&contentPerPage=50"
+      }
+      console.log(eventTagsQuery)
+      axios.get(`${process.env.EVENT_SERVICE}/badges${eventTagsQuery}`)
+      .then(badgeResponse =>{
+        this.badgeList = badgeResponse.data
+        console.log(badgeResponse.data)
+      })
+      .catch(error =>{
+
+      })
+
     },
     setPlace(place) {
       this.place = place;

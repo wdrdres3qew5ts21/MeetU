@@ -49,9 +49,9 @@
           :menu-props="{ maxHeight: '400' }"
           item-text="categoryLabel"
           item-value="categoryName"
-          label="Select"
+          label="Badge Tags (Limit to 3 tags only)"
           multiple
-          hint="Select Badge Tag"
+          hint="Badge Tags (Limit to 3 tags only)"
           persistent-hint
         ></v-select>
       </v-flex>
@@ -153,7 +153,6 @@ export default {
   },
   watch: {
     "selectBadgeTags"(selectBadgeTags){
-      console.log(selectBadgeTags)
       if(selectBadgeTags.length >3 ){
         this.selectBadgeTags.shift()
       }
