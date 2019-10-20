@@ -3,7 +3,7 @@
     <h1>Create New Community</h1>
 
     <v-text-field
-      v-model="communityName"
+      v-model="communityForm.communityName"
       :rules="communityNameRules"
       label="Community Name"
       required
@@ -15,7 +15,7 @@
                       item-text="categoryLabel"
                       item-value="categoryName"
                       label="Community Category"
-                      @input="updateCategoryFilter"
+                    
                       chips
                       clearable
                       v-model="communityForm.categorySelected"
@@ -49,12 +49,13 @@
         rows="6"
         required
         hide-details
+        v-model="communityForm.communityDetail"
       ></v-text-field>
     </v-layout>
-    <nuxt-link :to="`/community/communityId/?`" style="text-decoration-line:none;">
+    <!-- <nuxt-link :to="`/community/communityId/?`" style="text-decoration-line:none;"> -->
       <br />
-      <v-btn block  color="#341646" class="mb-2 white--text">Create Community</v-btn>
-    </nuxt-link>
+      <v-btn block  color="#341646" class="mb-2 white--text" @click="createCommunity()">Create Community</v-btn>
+    <!-- </nuxt-link> -->
   </div>
 </template> 
  
@@ -70,12 +71,14 @@ export default {
     return {
       selectedFile: null,
       valid: true,
-      communityName: "",
+     
       communityNameRules: [v => !!v || "Community name is required"],
       categoryList: [],
       selectedCategoryList: [],
       communityForm: {
         categorySelected: [],
+         communityName: "",
+         communityDetail: ""
       },
       
       dialog1: false,
@@ -106,6 +109,11 @@ export default {
     },
     onUpload: function(e) {
       // upload file, get it from this.selectedFile
+    },
+    createCommunity(){
+      console.log( this.communityForm.communityName);
+      console.log(this.communityForm.communityDetail);
+      // console.log(this.communityForm.categorySelected);
     }
   }
 };
