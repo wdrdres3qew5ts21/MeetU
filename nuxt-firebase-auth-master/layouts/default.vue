@@ -255,6 +255,7 @@ export default {
       ],
       rankingMenuList: [
         { label: "View Badge", link: "/ranking/badge" },
+        { label: "My Badge", link: "/ranking/myBadge" },
       ]
     };
   },
