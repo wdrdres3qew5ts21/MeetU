@@ -1,5 +1,20 @@
 <template>
   <div>
+    <!-- ห้าม format หน้านี้เด็ดขาดเพราะ text field จะหาย
+            <v-text-field
+            :append-outer-icon="comment ? 'send' : 'send'"
+            box
+            value
+            v-model="comment"
+            clear-icon="close"
+            clearable
+            label="Write comment..."
+            type="text"
+            @click:append="toggleMarker"
+            @click:append-outer="addComment(postIndex)"
+            @click:clear="clearMessage"
+          ></v-text-field>
+    -->
     <v-flex align="center">
       <v-img
         :src="imageUrl"
@@ -301,7 +316,7 @@ export default {
         .catch(err => {});
     },
     onFileChanged(event) {
-      this.selectedFile = event.target.files[0];
+      this.selectedFile = event.target.files[0]
     },
     onPickFile() {
       this.$refs.fileInput.click();

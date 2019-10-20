@@ -33,7 +33,7 @@
               
                {{userForm.interest}} 
                <!-- : {{userForm.interest.length}}/{{limitedSelectNumber}} -->
-               <router-link to="/selectGenres" style="color:red"> <v-icon color="#341646" medium>edit</v-icon></router-link>
+               <nuxt-link to="/selectGenres" style="color:red"> <v-icon color="#341646" medium>edit</v-icon></nuxt-link>
             </h3>
           </center>
         </v-flex>

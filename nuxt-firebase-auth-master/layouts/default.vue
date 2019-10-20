@@ -87,6 +87,23 @@
           </v-list-tile>
         </v-list-group>
 
+        <v-list-group>
+          <v-list-tile slot="activator">
+            <v-list-tile>
+              <v-icon class="icon">category</v-icon>
+            </v-list-tile>
+            <v-list-tile-content class="categoryIcon" style="color:#341646;">Ranking Board</v-list-tile-content>
+          </v-list-tile>
+          <v-list-tile v-for="(rankingMenu, i) in rankingMenuList" :key="i" ripple>
+            <v-list-tile-action></v-list-tile-action>
+            <v-list-tile-content>
+              <nuxt-link class="categoryLink" :to="rankingMenu.link">
+                <v-list-tile-title>{{ rankingMenu.label }}</v-list-tile-title>
+              </nuxt-link>
+            </v-list-tile-content>
+          </v-list-tile>
+        </v-list-group>
+
         <v-divider :inset="true"></v-divider>
       </v-list>
     </v-navigation-drawer>
@@ -227,12 +244,17 @@ export default {
       ],
       communityMenuList: [
         { label: "Create Community", link: "/community/createCommunity" },
-        { label: "View Community", link: "/community" }
+        { label: "View My Community", link: "/community/myCommunity" },
+        { label: "Subscribe Community", link: "/community/subscribeCommunity" },
+        { label: "Find Community", link: "/community" }
       ],
       organizeMenuList: [
         { label: "Create Organize", link: "/organize/organizerForm" },
         { label: "Create Event", link: "/organize/event/createEventForm" },
         { label: "View Organize", link: "/organize/myOrganize" }
+      ],
+      rankingMenuList: [
+        { label: "View Badge", link: "/ranking/badge" },
       ]
     };
   },
