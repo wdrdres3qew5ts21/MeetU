@@ -32,15 +32,6 @@ export default (context) => {
     if (firebase.messaging.isSupported()){
       messaging = firebase.messaging()
     }
-
-
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.getRegistrations().then((registrations) => {
-        for (const worker of registrations) {
-          console.log('Service worker:', worker)
-        }
-      });
-    }
   }
 
   try {

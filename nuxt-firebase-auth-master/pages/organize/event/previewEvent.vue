@@ -174,8 +174,10 @@ export default {
     this.loadEventTemplate();
   },
   methods: {
+    ...mapActions(["saveEventAndUpload"]),
     createEventAndUploadData(){
       console.log(this.getEventTemplate)
+      this.saveEventAndUpload()
       //axios.post(`${process.env.EVENT_SERVICE}/event`)
     },
     toggleInfoWindow: function(marker, idx) {

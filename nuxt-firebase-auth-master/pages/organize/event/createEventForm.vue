@@ -9,7 +9,7 @@
         item-value="organizeId"
         :menu-props="{ maxHeight: '400' }"
         label="* Select Organize"
-        v-model="eventForm.organizeId"
+        v-model="eventForm.organize.organizeId"
         persistent-hint
       ></v-autocomplete>
     </v-flex>
@@ -134,7 +134,7 @@
         item-value="badgeId"
         :menu-props="{ maxHeight: '400' }"
         label="Select Existing Badge"
-        v-model="eventForm.badge"
+        v-model="eventForm.badge.badgeId"
         persistent-hint
       ></v-autocomplete>
     </v-flex>
@@ -182,7 +182,9 @@ export default {
       menuEventEndDate: false,
       organizeList: [],
       eventForm: {
-        organizeId: "",
+        organize:{
+          organizeId: "",
+        },
         eventName: "",
         eventDetail: "",
         eventTags: [],
@@ -202,7 +204,9 @@ export default {
           }
         },
         exp: 0.0,
-        badge: {}
+        badge: {
+          badgeId: ""
+        }
       },
       categoryEventList: [
         "Arts",
