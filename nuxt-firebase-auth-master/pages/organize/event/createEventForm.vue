@@ -83,7 +83,7 @@
     <span class="location" id="locationMap">Location</span>
     <p>{{getEventTemplate.location.detail}}</p>
     <v-btn class="addLocationButton" color="white" @click="addLocation()">Add Location</v-btn>
-    <v-layout v-if="isShowLocation" row wrap>
+    <v-layout v-show="isShowLocation" row wrap>
       <client-only>
         <label>
           AutoComplete
