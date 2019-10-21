@@ -27,7 +27,7 @@
 
         <v-list-tile avatar>
           <v-list-tile-avatar>
-            <v-icon class="icon">group</v-icon>
+            <v-icon class="icon">chrome_reader_mode</v-icon>
           </v-list-tile-avatar>
           <nuxt-link to="/event/history">
             <v-list-tile-content>
@@ -73,7 +73,7 @@
         <v-list-group>
           <v-list-tile slot="activator">
             <v-list-tile>
-              <v-icon class="icon">category</v-icon>
+              <v-icon class="icon">person</v-icon>
             </v-list-tile>
             <v-list-tile-content class="categoryIcon" style="color:#341646;">For Organizer</v-list-tile-content>
           </v-list-tile>
@@ -90,7 +90,7 @@
         <v-list-group>
           <v-list-tile slot="activator">
             <v-list-tile>
-              <v-icon class="icon">category</v-icon>
+              <v-icon class="icon">insert_chart</v-icon>
             </v-list-tile>
             <v-list-tile-content class="categoryIcon" style="color:#341646;">Ranking Board</v-list-tile-content>
           </v-list-tile>
