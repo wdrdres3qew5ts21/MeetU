@@ -138,9 +138,10 @@
         persistent-hint
       ></v-autocomplete>
     </v-flex>
+    <p style="margin:0" class="uploadPosterImg" @click="goToBadgeSettingPage()">Create Badge</p>
     <p style="margin:0" class="uploadPosterImg" @click="goToEventConditionPage()">Event Conditions Setting</p>
     <p style="margin:0" class="uploadPosterImg" @click="goToUploadImagePage()">Upload poster image</p>
-    <p style="margin:0" class="uploadPosterImg" @click="goToBadgeSettingPage()">Create Badge</p>
+    
     <br />
     <br />
     <center>
