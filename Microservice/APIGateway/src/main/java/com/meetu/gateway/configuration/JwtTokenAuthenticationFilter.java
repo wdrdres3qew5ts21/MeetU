@@ -30,7 +30,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
  *
  * @author raj
  */
-public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
+public class JwtTokenAuthenticationFilter extends OncePerRequestFilter { 
     
     private static org.slf4j.Logger log = LoggerFactory.getLogger(JwtTokenAuthenticationFilter.class);
 

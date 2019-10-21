@@ -131,6 +131,8 @@ export default {
     onCoverPictureUpload(event) {
       console.log("uplaod din");
       this.eventPictureCover = event.target.files[0];
+      console.log("!!!!!!!!!!!!!!!!!!!!!!")
+      console.log(this.eventPictureCover)
       this.eventPictureCoverUrl = {}
       const fileReader = new FileReader();
       fileReader.addEventListener("load", () => {

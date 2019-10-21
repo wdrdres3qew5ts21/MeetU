@@ -40,6 +40,39 @@
           v-model="phone"
           type="number"
         ></v-text-field>
+
+<br>
+
+        <span>
+      Cover image (single picture/ landscape)
+
+      <br />
+
+      <v-btn
+        class="chooseFileButton"
+        color="white"
+        @click="$refs.coverPictureUpload.click()"
+      >Choose file</v-btn>
+      <input
+        v-show="false"
+        ref="coverPictureUpload"
+        type="file"
+        @change="onCoverPictureUpload"
+        accept="image/*"
+      />
+      <p v-if="eventPictureCoverUrl.name !=undefined  ">{{eventPictureCoverUrl.name}}</p>
+      <div v-if="eventPictureCoverUrl.url !=undefined  ">
+        <v-img
+          :src="eventPictureCoverUrl.url"
+          aspect-ratio="1"
+          class="grey lighten-2"
+          max-width="1250"
+          max-height="200"
+        ></v-img>
+      </div>
+    </span>
+
+
         <v-checkbox v-model="agreement" :rules="[rules.required]" color="#341646">
           <template v-slot:label>
             I agree to the&nbsp;Terms of Service
@@ -89,6 +122,7 @@ export default {
       organizeName: "",
       valid: true,
       createdOrganizeId: '',
+      eventPictureCoverUrl: {},
       names: [
         {
           name: "A"
@@ -106,7 +140,7 @@ export default {
       phoneRules: [
         v => !!v || "Phone Number is required",
         v => (v && v.length === 10) || "Phone Number msut be 10 digit"
-      ]
+      ],
     };
   },
   computed: {
@@ -141,7 +175,35 @@ export default {
             text: `${error.response}`
           });
         });
-    }
+    },
+    ...mapActions(["setPictureDetail"]),
+    loadPreviewPicture() {
+      console.log("----- preview image ----");
+      let eventPictureCoverBase = this.getEventTemplate.eventPictureCoverBase;
+      let eventPictureListsBase = this.getEventTemplate.eventPictureListsBase;
+      console.log(eventPictureListsBase)
+      if (eventPictureCoverBase != "") {
+        this.eventPictureCoverUrl = eventPictureCoverBase;
+        console.log(this.eventPictureCoverUrl);
+      }
+      if (eventPictureListsBase.length > 0) {
+        this.eventPictureListsUrl = eventPictureListsBase;
+        console.log(this.eventPictureListsUrl)
+      }
+    },
+    onCoverPictureUpload(event) {
+      console.log("uplaod din");
+      this.eventPictureCover = event.target.files[0];
+      this.eventPictureCoverUrl = {}
+      const fileReader = new FileReader();
+      fileReader.addEventListener("load", () => {
+        this.eventPictureCoverUrl = {
+          url: fileReader.result,
+          name: event.target.files[0].name
+        };
+      });
+      fileReader.readAsDataURL(this.eventPictureCover);
+    },
   }
 };
 </script>
@@ -170,6 +232,10 @@ export default {
 .switchAccount {
   font-family: Roboto !important;
 
+  border: solid 1px #341646 !important;
+}
+
+.chooseFileButton {
   border: solid 1px #341646 !important;
 }
 </style>
