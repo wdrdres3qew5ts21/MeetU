@@ -19,7 +19,7 @@
       <v-textarea name="description" label="Description" v-model="eventForm.eventDetail" rows="3"></v-textarea>
     </v-layout>
     <v-flex xs12 sm5 d-flex>
-      <v-select
+      <v-autocomplete
         :items="getCategory"
         item-text="categoryLabel"
         item-value="categoryName"
@@ -28,7 +28,7 @@
         v-model="eventForm.eventTags"
         multiple
         persistent-hint
-      ></v-select>
+      ></v-autocomplete>
     </v-flex>
 
     <v-menu
@@ -274,6 +274,7 @@ export default {
 
     this.loadEventTemplate();
     this.loadOrganizeFromUser();
+    this.findMatchingBadge();
   },
   methods: {
     ...mapActions(["setEventTemplate", "setEventLocation", "setGeopoint", "setBadgeDetail"]),
@@ -370,6 +371,8 @@ export default {
       this.eventForm.eventEndDate = eventTemplate.eventEndDate;
       this.eventForm.badge = eventTemplate.badge;
       this.eventForm.exp = eventTemplate.exp;
+      this.eventForm.organize.organizeId = eventTemplate.organize.organizeId;
+
 
       let geopoint = eventTemplate.location.geopoint;
 
