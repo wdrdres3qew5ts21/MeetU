@@ -121,7 +121,7 @@
     <br />
     <v-flex xs12>
       <v-text-field
-        v-model="eventForm.exp"
+        v-model="eventForm.badge.exp"
         placeholder="Exp of Event"
         label="Exp Of Event"
         type="number"
@@ -203,9 +203,9 @@ export default {
             lon: 0
           }
         },
-        exp: 0.0,
         badge: {
-          badgeId: ""
+          badgeId: "",
+          exp: 0.0
         }
       },
       categoryEventList: [
@@ -275,7 +275,7 @@ export default {
     this.loadOrganizeFromUser();
   },
   methods: {
-    ...mapActions(["setEventTemplate", "setEventLocation", "setGeopoint"]),
+    ...mapActions(["setEventTemplate", "setEventLocation", "setGeopoint", "setBadgeDetail"]),
     setDescription(description) {
       this.description = description;
     },
@@ -433,6 +433,7 @@ export default {
       console.log("SAve Tempalte");
       console.log(this.eventForm);
       this.setEventTemplate(this.eventForm);
+      this.setBadgeDetail(this.eventForm.badge)
     },
     save(date) {
       this.$refs.menu.save(date);

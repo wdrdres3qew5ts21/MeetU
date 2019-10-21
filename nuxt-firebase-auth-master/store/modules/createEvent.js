@@ -6,9 +6,9 @@ const state = () => ({
         eventName: '',
         eventDetail: '',
         eventTags: [],
-        exp: 0.0,
         badge: {
             badgeId: "",
+            exp: 0.0,
         },
         organize: {
             organizeId: ""
@@ -49,8 +49,6 @@ const mutations = {
         state.eventTemplate.eventName = eventTemplate.eventName;
         state.eventTemplate.eventDetail = eventTemplate.eventDetail;
         state.eventTemplate.eventTags = eventTemplate.eventTags;
-        state.eventTemplate.badge = eventTemplate.badge;
-        state.eventTemplate.exp = parseFloat(eventTemplate.exp);
         state.eventTemplate.eventStartDate = eventTemplate.eventStartDate;
         state.eventTemplate.eventEndDate = eventTemplate.eventEndDate;
     },
@@ -58,6 +56,10 @@ const mutations = {
         state.eventTemplate.eventPictureCoverBase = pictureDetail.eventPictureCoverBase
         state.eventTemplate.eventPictureListsBase = pictureDetail.eventPictureListsBase
         console.log(state)
+    },
+    setBadgeDetail(state, badge){
+        state.eventTemplate.badge.badgeId = badge.badgeId;
+        state.eventTemplate.badge.exp = parseFloat(badge.exp);
     },
     setEventLocation(state, location) {
         // state.eventTemplate.location.place = location.place
@@ -81,6 +83,9 @@ const actions = {
         console.log("action work for eventTemplate");
         console.log(eventTemplate)
         commit("setEventTemplate", eventTemplate);
+    },
+    setBadgeDetail({ commit }, badge){
+        commit('setBadgeDetail', badge)
     },
     setPictureDetail({ commit }, pictureDetail) {
         commit('setPictureDetail', pictureDetail)
