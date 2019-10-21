@@ -1,6 +1,89 @@
 <template>
   <div>
-    <h1>My Organize</h1>
+    <br />
+    <v-layout>
+      <h2>My Organize</h2>
+      <br />
+    </v-layout>
+    <br />
+    <v-layout row wrap>
+      <v-flex xs6>
+        <v-card color="white" max-width="120" style="border-radius:50%">
+          <v-img :aspect-ratio="1/1" :src="getUser.photoURL"></v-img>
+        </v-card>
+      </v-flex>
+      <v-flex xs6 text-right>
+        <h3>Organizer name</h3>
+        <p style="margin:0" class="editOrganizerLink" @click="goToEditOrganizerPage">Edit Organizer</p>
+      </v-flex>
+    </v-layout>
+    <br />
+
+
+
+
+    <!-- tabs -->
+
+      <!-- <v-tabs
+        slot="extension"
+        v-model="tabModel"
+        centered
+        color="white"
+        slider-color="#341646"
+      >
+        <v-tab
+          v-for="i in tabTopics"
+          :key="i"
+          :href="`#tab-${i}`"
+        >
+           {{ i }}
+        </v-tab>
+      </v-tabs>
+
+    <v-tabs-items v-model="tabModel">
+      <v-tab-item
+        v-for="i in tabTopics"
+        :key="i"
+        :id="`tab-${i}`"
+      >
+        <v-card flat>
+          <v-card-text v-text="text"></v-card-text>
+        </v-card>
+      </v-tab-item>
+    </v-tabs-items> -->
+  
+
+
+        <v-tabs
+          v-model="tabModel"
+          centered
+          color="white"
+          slider-color="#341646"
+        >
+          <v-tab
+            v-for="i in tabTopics"
+            :key="i"
+            :href="`#tab-${i}`"
+          >
+           {{ i }}
+          </v-tab>
+        </v-tabs>
+
+
+    <v-tabs-items v-model="tabModel">
+      <v-tab-item
+        v-for="i in tabTopics"
+        :key="i"
+        :value="`tab-${i}`"
+      >
+        <v-card flat>
+          <v-card-text v-text="text"></v-card-text>
+        </v-card>
+      </v-tab-item>
+    </v-tabs-items>
+
+
+<br><br>
     <div v-if="organizeList">
       <nuxt-link
         v-for="(organize, index) in organizeList"
@@ -30,7 +113,11 @@ export default {
   },
   data() {
     return {
-      organizeList: null
+      organizeList: null,
+      model: 'tabModel',
+      tabTopics:["Event","Review","Edit"],
+      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+      
     };
   },
   computed: {
@@ -50,7 +137,35 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+    goToEditOrganizerPage() {
+      this.saveEventTemplate();
+      this.$router.push("/organize/editOrganizer");
     }
   }
 };
 </script>
+
+
+<style lang="css">
+.v-content {
+  max-width: 100%;
+  background-color: #eeeeee;
+  font-family: Roboto;
+  /* background-image: url(../assets/bg.png) !important; */
+  /* background-repeat: repeat; */
+  /* background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background: transparent; */
+}
+
+.editOrganizerLink {
+  font-family: Roboto;
+  font-size: 18px;
+  font-weight: bold;
+  color: #100c4b;
+  text-decoration: underline;
+}
+</style>
