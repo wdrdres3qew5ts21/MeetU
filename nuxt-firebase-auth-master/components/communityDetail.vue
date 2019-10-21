@@ -53,56 +53,56 @@
     <br />
     <br />
 
-<h2> Community Name</h2>
-<p size="1px">description about community</p>
-<br>
-   <v-flex  class="text-xs-left">
-              <v-btn text color="grey lighten-3" class="joinButton
-              " @click="join = !join" >             
-                   {{ join ? 'follow ' : 'Unfollow' }}              
-                   </v-btn>
-            </v-flex>
-           
-     <div v-show="!join" > 
-       
-    <v-card rounded outlined class="mx-auto">
-      <div class="px-3">
-        <form>
-          <v-layout>
-            <v-flex xs12>
-              <br />
-              <v-text-field
-                v-model="newPost"
-                name="newPost"
-                placeholder="Write Something..."
-                id="newPost"
-              ></v-text-field>
-            </v-flex>
-          </v-layout>
-          <v-layout>
-            <v-flex xs12 class="text-xs-left">
-              <v-btn style="margin-right: 0px" icon>
-                <v-icon>photo_camera</v-icon>
-              </v-btn>
-              <v-btn style="margin: 0px" icon>
-                <v-icon>assessment</v-icon>
-              </v-btn>
-              <v-btn style="margin: 0px" icon>
-                <v-icon>event</v-icon>
-              </v-btn>
-            </v-flex>
-            <v-flex xs class="text-xs-right">
-              <v-btn text color="#341646" class="mb-2 white--text" @click="addPost()">Post</v-btn>
-            </v-flex>
-          </v-layout>
-        </form>
-      </div>
-    </v-card>
-
-     </div>
-
+    <h2>Community Name</h2>
+    <p size="1px">description about community</p>
     <br />
+    <v-flex class="text-xs-left">
+      <v-btn
+        text
+        color="grey lighten-3"
+        class="joinButton"
+        @click="join = !join"
+      >{{ join ? 'follow ' : 'Unfollow' }}</v-btn>
+    </v-flex>
 
+    <div v-show="!join">
+      <v-card rounded outlined class="mx-auto">
+        <div class="px-3">
+          <form>
+            <v-layout>
+              <v-flex xs12>
+                <br />
+                <v-text-field
+                  v-model="newPost"
+                  name="newPost"
+                  placeholder="Write Something..."
+                  id="newPost"
+                ></v-text-field>
+              </v-flex>
+            </v-layout>
+            <v-layout>
+              <v-flex xs12 class="text-xs-left">
+                <v-btn style="margin-right: 0px" icon>
+                  <v-icon>photo_camera</v-icon>
+                </v-btn>
+                <v-btn style="margin: 0px" icon>
+                  <v-icon>assessment</v-icon>
+                </v-btn>
+                <v-btn style="margin: 0px" icon>
+                  <v-icon>event</v-icon>
+                </v-btn>
+              </v-flex>
+              <v-flex xs class="text-xs-right">
+                <v-btn text color="#341646" class="mb-2 white--text" @click="addPost()">Post</v-btn>
+              </v-flex>
+            </v-layout>
+          </form>
+        </div>
+      </v-card>
+    </div>
+
+    <!-- SHOW CODE -->
+    <br />
     <div v-for="(todo,postIndex ) in postList " :key="postIndex">
       <v-card rounded outlined>
         <br />
@@ -128,9 +128,7 @@
           <br />
           <v-list>
             <v-list-tile-content>
-              <div class="textarea" contenteditable="false">                
-                {{todo.post}}
-              </div>
+              <div class="textarea" contenteditable="false">{{todo.post}}</div>
             </v-list-tile-content>
           </v-list>
         </v-container>
@@ -166,7 +164,7 @@
                 <v-list-tile>
                   <div>
                     <v-list-tile-content>
-                      <v-card color="grey lighten-3" class="rounded-card" max-width="240px">
+                      <v-card color="#F5F5F5" class="rounded-card" max-width="240px">
                         <v-list-tile-title class="margin-name">
                           <font size="2">{{ getUser.displayName}}</font>
                         </v-list-tile-title>
@@ -188,12 +186,10 @@
 
     <div v-if="postList.length != 0">
       <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
-        <!-- <template v-slot:activator="{ on }">
-                <v-btn v-on="on" text block flat @click="getCommentFromPost(postIndex)">
-                  <v-icon>comment</v-icon>Comment
-                </v-btn>
-        </template>-->
-        <v-card>
+        <template v-slot:activator="{ on }">
+        </template>
+
+        <v-card height="auto">
           <v-toolbar dark color="primary">
             <v-btn icon dark @click="dialog = false">
               <v-icon>close</v-icon>
@@ -201,43 +197,37 @@
             <v-toolbar-title>comment</v-toolbar-title>
           </v-toolbar>
 
-          <v-card
-            rounded
-            outlined
+          <div
             v-for="(comment,commentIndex ) in  postList[postIndex].commentList "
             :key="commentIndex"
-            max-width="auto"
           >
-            <!-- grid-list-xs -->
-            <v-container grid-list-xs xs4 fluid style="padding:5px">
-              <v-list-tile xs4>
-                <v-list-tile-avatar>
-                  <v-img :aspect-ratio="1/1" :src="getUser.photoURL"></v-img>
-                </v-list-tile-avatar>
-                <v-list-tile>
-                  <div>
-                    <v-list-tile-content>
-                      <v-card color="grey lighten-3" class="rounded-card" max-width="270px">
-                        <v-list-tile-title class="margin-name">
-                          <font size="2">{{ getUser.displayName}}</font>
-                        </v-list-tile-title>
-                        <v-list-tile-sub-title class="margin-comment">
-                          <font size="2">{{comment}}</font>
-                        </v-list-tile-sub-title>
-                      </v-card>
-                    </v-list-tile-content>
-                  </div>
-                </v-list-tile>
-              </v-list-tile>
-            </v-container>
-          </v-card>
+            <v-card rounded outlined grid-list-xs>
+              <v-container grid-list-xs fluid style="padding:5px">
+                
+                <v-layout row wrap>
+                  <v-list-tile-avatar>
+                    <v-img :aspect-ratio="1/1" :src="getUser.photoURL"></v-img>
+                  </v-list-tile-avatar>
+
+                  <v-list-tile-content>
+                    <div class="text-comment-area " contenteditable="false">
+                     <font class="margin-name" > {{ getUser.displayName}}</font>
+                      <br>
+                      <font color="grey" > {{comment}}</font>
+                    </div>
+                  </v-list-tile-content>
+                </v-layout>
+              </v-container>
+            </v-card>
+          </div>
+
           <form>
             <v-layout ma-3>
               <v-layout row wrap>
                 <v-flex xs12>
                   <!-- :append-icon="marker ? 'map-marker' : 'map-marker-off'" -->
-                  <v-text-field
-            :append-outer-icon="comment ? 'send' : 'send'"
+                  <v-text-field 
+                   :append-outer-icon="comment ? 'send' : 'send'"
             box
             value
             v-model="comment"
@@ -247,26 +237,9 @@
             type="text"
             @click:append="toggleMarker"
             @click:append-outer="addComment(postIndex)"
-            @click:clear="clearMessage"
-          ></v-text-field>
+            @click:clear="clearMessage"></v-text-field>
                 </v-flex>
               </v-layout>
-              <!-- <v-flex xs12>
-                <v-flex lass="text-xs-left">
-                  <v-text-field
-                    v-model="comment"
-                    box
-                    clearable
-                    name="newComment"
-                    id="newComment"
-                    value
-                    label="write something..."+
-                  ></v-text-field>
-                </v-flex>
-              </v-flex>-->
-              <!-- <v-flex class="text-xs-right" pa-2>
-                <v-btn icon text large @click="addComment(postIndex)"><v-icon large>send</v-icon></v-btn>
-              </v-flex>-->
             </v-layout>
           </form>
         </v-card>
@@ -441,17 +414,24 @@ export default {
 
 .margin-name {
   margin-right: 9px;
-  margin-left: 3px;
-}
-.margin-comment {
-  margin: -5px;
-  margin-left: 3px;
+
 }
 
 .textarea {
-  width: 330px;
+  max-width: 320px;
   min-height: 50px;
   height: auto;
+  max-height: auto;
+ 
+}
+.text-comment-area {
+  padding: 1%;
+  border-radius: 12px;
+  max-width: 340px;
+  min-height: 50px;
+  height: auto;
+  max-height: auto;
+  background-color: #F5F5F5;
 }
 .button {
   height: 40px;
@@ -468,21 +448,18 @@ export default {
   cursor: pointer;
   border-radius: 5px;
   text-align: center;
-
 }
 .joinButton {
   height: 40px;
   font-size: 16px;
-  padding: 12px ;
+  padding: 12px;
   border: none;
   cursor: pointer;
   border-radius: 0px;
   text-align: center;
 }
 
-
 h2 {
   color: #341646;
 }
-
 </style>
