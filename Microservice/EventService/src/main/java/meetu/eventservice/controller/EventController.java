@@ -71,8 +71,8 @@ public class EventController {
     }
 
     @PostMapping("/event")
-    public ResponseEntity<Event> createEvent(@RequestBody Event event) {
-        return new ResponseEntity<Event>(eventService.createEvent(event), HttpStatus.CREATED);
+    public ResponseEntity createEvent(@RequestBody Event event) {
+        return eventService.createEvent(event);
     }
     
     @GetMapping("/events/organize/{organizeId}")

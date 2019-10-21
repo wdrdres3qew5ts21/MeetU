@@ -56,10 +56,14 @@ import com.google.firebase.messaging.Notification;
 import com.mongodb.BasicDBObject;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import java.nio.charset.Charset;
+import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
 import meetu.eventservice.model.Badge;
+import meetu.eventservice.model.BadgeReward;
 import meetu.eventservice.model.Category;
+import meetu.eventservice.model.EventBadge;
+import meetu.eventservice.model.Organize;
 import meetu.eventservice.model.UserEventTicket;
 import meetu.eventservice.model.UserJoinEvent;
 import meetu.eventservice.model.UserViewEvent;
@@ -92,6 +96,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import meetu.eventservice.repository.CategoryRepository;
+import meetu.eventservice.repository.EventBadgeRepository;
 import org.apache.commons.lang.RandomStringUtils;
 import org.elasticsearch.action.update.UpdateRequest;
 import static org.elasticsearch.common.xcontent.XContentFactory.*;
@@ -118,6 +123,9 @@ public class EventService {
 
     @Autowired
     private BadgeRepository badgeRepository;
+    
+    @Autowired
+    private EventBadgeRepository eventBadgeRepository;
 
     @Autowired
     private MongoTemplate mongoTemplate;
@@ -168,9 +176,33 @@ public class EventService {
 
     }
 
-    public Event createEvent(Event event) {
+    public ResponseEntity createEvent(Event event) {
         Date currentDate = new Date();
         event.setCreateEventDate(currentDate);
+        Badge badgeInDatabase = badgeRepository.findById(event.getBadge().getBadgeId()).get();
+        HashMap<String,String> response = new HashMap();
+
+        if (badgeInDatabase == null) {
+            response.put("response", "Fail to create Event Because Badge ID Not found : ");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+        String organizeId = event.getOrganize().getOrganizeId();
+        ResponseEntity<Organize> organizeInDatabase = restTemplate.getForEntity(USERSERVICE_URL + "/organize/" + organizeId, Organize.class);
+        if(organizeInDatabase.getBody() == null){
+            response.put("response", "Fail to create Event Because Organize ID Not found : ");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+        event.setOrganize(organizeInDatabase.getBody());
+        BadgeReward badge = event.getBadge();
+        badge.setBadgeName(badgeInDatabase.getBadgeName());
+        badge.setBadgePicture(badgeInDatabase.getBadgePicture());
+        badge.setBadgeTags(badgeInDatabase.getBadgeTags());
+        
+        EventBadge eventBadge = new EventBadge();
+        eventBadge.setBadge(badgeInDatabase);
+        eventBadge.setEvent(event);
+        eventBadgeRepository.save(eventBadge);
+        
         IndexRequest indexRequest = new IndexRequest(eventsIndex);
         String elasticEventid = null;
         Map<String, Object> pojoToMap = ElasticUtil.pojoToMap(event);
@@ -203,7 +235,7 @@ public class EventService {
             }
         }
         this.pushNotificationOfEvent(event.getEventName(), event.getEventDetail());
-        return savedEventMongoDB;
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedEventMongoDB);
     }
 
     public ResponseEntity<HashMap<String, Object>> deleteEventByElasticId(String eventId) {
@@ -632,16 +664,16 @@ public class EventService {
     }
 
     public ResponseEntity findEventThatMatchingBadge(List<String> badgeTags, String badgeName, int page, int contentPerPage) {
-        if (badgeTags == null & (badgeName.isEmpty() | badgeName == null )) {
+        if (badgeTags == null & (badgeName.isEmpty() | badgeName == null)) {
             List<Badge> allBadge = badgeRepository.findAll();
             return ResponseEntity.status(HttpStatus.OK).body(allBadge);
-        }else if( badgeTags != null & !badgeName.isEmpty()) {
-              List<Badge> badgeFilterByTagsAndName = badgeRepository.findByBadgeTagsIsInAndBadgeNameLike(badgeTags, badgeName, PageRequest.of(page, contentPerPage));
+        } else if (badgeTags != null & !badgeName.isEmpty()) {
+            List<Badge> badgeFilterByTagsAndName = badgeRepository.findByBadgeTagsIsInAndBadgeNameLike(badgeTags, badgeName, PageRequest.of(page, contentPerPage));
             return ResponseEntity.status(HttpStatus.OK).body(badgeFilterByTagsAndName);
         }
         System.out.println("Filter some bade");
         System.out.println(badgeTags);
-        List<Badge> matchingBadge = badgeRepository.findByBadgeTagsIsIn(badgeTags,PageRequest.of(page, contentPerPage));
+        List<Badge> matchingBadge = badgeRepository.findByBadgeTagsIsIn(badgeTags, PageRequest.of(page, contentPerPage));
         return ResponseEntity.status(HttpStatus.OK).body(matchingBadge);
     }
 
