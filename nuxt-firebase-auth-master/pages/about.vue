@@ -39,7 +39,8 @@ export default {
     return{
       logoImage: require('@/assets/logo.png')
     }
-  }
+  },
+
 }
 </script>
 <style lang="css">
