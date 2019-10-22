@@ -8,7 +8,7 @@
     <br />
 
     <center>
-      <nuxt-link :to="`/organizerForm?`" style="text-decoration-line:none;">
+      <nuxt-link :to="`/organize/organizerForm`" style="text-decoration-line:none;">
         <v-btn
           class="getStartButton white--text"
           depressed
