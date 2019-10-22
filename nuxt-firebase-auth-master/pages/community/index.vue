@@ -11,7 +11,7 @@
 
     <ul>
       <li v-for="(n,i) in 4" :key="i">
-        <img v-for="(item,i) in items" :src="item.src" :key="i" />
+        <img class="myImage" v-for="(item,i) in items" :src="item.src" :key="i" />
       </li>
     </ul>
 
@@ -107,7 +107,7 @@ export default {
   }
 };
 </script>
-<style lang="css">
+<style lang="css" scope>
 @import "https://cdn.jsdelivr.net/npm/animate.css@3.5.1";
 .v-carousel {
   height: 300px !important;
@@ -146,7 +146,7 @@ li {
   transition: 0.2s ease;
 }
 
-img {
+.myImage {
   width: 60px;
   height: 60px;
   border-radius: 50%;

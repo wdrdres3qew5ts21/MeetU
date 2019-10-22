@@ -36,8 +36,8 @@
           <GmapMap
             :center="marker.position"
             :zoom="14"
-            map-type-id="terrain"
             style="width: 500px; height: 300px"
+            map-type-id="terrain"
             :options="{
                 scaleControl: true
             }"
