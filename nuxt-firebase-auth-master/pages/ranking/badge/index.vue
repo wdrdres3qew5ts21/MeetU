@@ -71,7 +71,7 @@
                   </v-card>
                 </v-dialog>
 
-                <v-flex class="text-xs-right">
+                <!-- <v-flex class="text-xs-right">
                   <v-text-field
                     v-model="badgeName"
                     :append-outer-icon="badgeName ? 'search' : 'search'"
@@ -84,7 +84,7 @@
                     @click:append-outer="searchBadgeByName"
                     @click:clear="clearMessage"
                   ></v-text-field>
-                </v-flex>
+                </v-flex> -->
                 <br />
               </v-layout>
             </div>
@@ -96,7 +96,9 @@
       <h2>Top badge</h2>
     </center>
     <br />
-    <v-data-table :items="badges" :pagination.sync="pagination" item-key="name" class="elevation-1">
+
+
+    <v-data-table :items="badgeList" :pagination.sync="pagination" item-key="name" class="elevation-1">
       <template v-slot:no-data>
         <v-alert :value="true" color="pink" icon="info">
           <center>Badge not found !</center>
@@ -108,13 +110,13 @@
             <br />
             <center>
               <v-avatar size="70">
-                <img :src="props.item.avatar" />
+                <img :src="props.item.badgePicture" />
               </v-avatar>
             </center>
             <br />
           </td>
           <td>
-            <h3>{{ props.item.name }}</h3>
+            <h3>{{ props.item.badgeName }}</h3>
             <br />Detail:
           </td>
         </tr>
@@ -141,63 +143,70 @@ export default {
     filterForm: {
       categorySelected: []
     },
-
     pagination: {
       sortBy: "name"
     },
-    badges: [
-      {
-        name: "Frozen Yogurt",
+     badge: {
+          badgeId: "",
+          exp: 0.0
+        },
+    badgeList: [],
+    badgeSelect: false
+ }),
 
-        avatar: "https://cdn.vuetifyjs.com/images/lists/1.jpg"
-      },
-      {
-        name: "Ice cream sandwich",
+  //   badges: [
+  //     {
+  //       name: "Frozen Yogurt",
 
-        avatar: "https://cdn.vuetifyjs.com/images/lists/2.jpg"
-      },
-      {
-        name: "Eclair",
+  //       avatar: "https://cdn.vuetifyjs.com/images/lists/1.jpg"
+  //     },
+  //     {
+  //       name: "Ice cream sandwich",
 
-        avatar: "https://cdn.vuetifyjs.com/images/lists/3.jpg"
-      },
-      {
-        name: "Cupcake",
+  //       avatar: "https://cdn.vuetifyjs.com/images/lists/2.jpg"
+  //     },
+  //     {
+  //       name: "Eclair",
 
-        avatar: "https://cdn.vuetifyjs.com/images/lists/3.jpg"
-      },
-      {
-        name: "Gingerbread",
+  //       avatar: "https://cdn.vuetifyjs.com/images/lists/3.jpg"
+  //     },
+  //     {
+  //       name: "Cupcake",
 
-        avatar: "https://cdn.vuetifyjs.com/images/lists/4.jpg"
-      },
-      {
-        name: "Jelly bean",
+  //       avatar: "https://cdn.vuetifyjs.com/images/lists/3.jpg"
+  //     },
+  //     {
+  //       name: "Gingerbread",
 
-        avatar: "https://cdn.vuetifyjs.com/images/lists/2.jpg"
-      },
-      {
-        name: "Lollipop",
+  //       avatar: "https://cdn.vuetifyjs.com/images/lists/4.jpg"
+  //     },
+  //     {
+  //       name: "Jelly bean",
 
-        avatar: "https://cdn.vuetifyjs.com/images/lists/3.jpg"
-      },
-      {
-        name: "Honeycomb",
+  //       avatar: "https://cdn.vuetifyjs.com/images/lists/2.jpg"
+  //     },
+  //     {
+  //       name: "Lollipop",
 
-        avatar: "https://cdn.vuetifyjs.com/images/lists/5.jpg"
-      },
-      {
-        name: "Donut",
+  //       avatar: "https://cdn.vuetifyjs.com/images/lists/3.jpg"
+  //     },
+  //     {
+  //       name: "Honeycomb",
 
-        avatar: "https://cdn.vuetifyjs.com/images/lists/3.jpg"
-      },
-      {
-        name: "KitKat",
+  //       avatar: "https://cdn.vuetifyjs.com/images/lists/5.jpg"
+  //     },
+  //     {
+  //       name: "Donut",
 
-        avatar: "https://cdn.vuetifyjs.com/images/lists/3.jpg"
-      }
-    ]
-  }),
+  //       avatar: "https://cdn.vuetifyjs.com/images/lists/3.jpg"
+  //     },
+  //     {
+  //       name: "KitKat",
+
+  //       avatar: "https://cdn.vuetifyjs.com/images/lists/3.jpg"
+  //     }
+  //   ]
+  // }),
 
   computed: {
     ...mapGetters(["getCategory"]),
@@ -207,9 +216,10 @@ export default {
   },
   mounted() {
     this.loadCategoryList();
+    this.findMatchingBadge();
   },
   methods: {
-    ...mapActions(["autoSignIn", "setCategory"]),
+    ...mapActions(["autoSignIn", "setCategory","setBadgeDetail"]),
     loadCategoryList() {
       axios
         .get(`${process.env.EVENT_SERVICE}/category`)
@@ -221,7 +231,27 @@ export default {
           this.categoryList = mockCategoryList;
         });
     },
+    findMatchingBadge(){
+      console.log("mating badge")
+      let eventTagsQuery = ""
+      // if (this.eventForm.eventTags.length > 0) {
+      //   eventTagsQuery ="?badgeTags="
+      //   for (let i = 0; i < this.eventForm.eventTags.length; i++) {
+      //     eventTagsQuery += `${this.eventForm.eventTags[i]},`;
+      //   }
+      //   eventTagsQuery += "&contentPerPage=50"
+      // }
+      // console.log(eventTagsQuery)
+      axios.get(`${process.env.EVENT_SERVICE}/badges${eventTagsQuery}`)
+      .then(badgeResponse =>{
+        this.badgeList = badgeResponse.data;
+        console.log(badgeResponse.data);
+      })
+      .catch(error =>{
 
+      })
+
+    },
     // onItemClick(event, itemsCategory) {
     //   if (event) {
     //     this.selected = itemsCategory;
@@ -264,9 +294,13 @@ export default {
         this.pagination.descending = false;
       }
     }
-  }
-};
+  } 
+   };
+
 </script>
+
+
+
 <style >
 h2 {
   color: #341646;
