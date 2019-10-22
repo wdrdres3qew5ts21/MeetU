@@ -113,6 +113,11 @@ export default {
     createCommunity(){
       console.log( this.communityForm.communityName);
       console.log(this.communityForm.communityDetail);
+      this.$swal({
+                type: "success",
+                title: "Create community success!!",
+                text: `Enjoy  your community`
+              });
       // console.log(this.communityForm.categorySelected);
     }
   }
