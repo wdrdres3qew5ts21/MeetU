@@ -176,7 +176,7 @@ export default {
       let dateobj = new Date();
       let fileName = this.badgePicture.name + "_" + dateobj.toISOString();
       let storage = firebase.storage();
-      let storageRef = storage.ref();
+      let storageRef = storage.ref("/badge");
       let setupFile = storageRef.child(fileName);
 
       try {
