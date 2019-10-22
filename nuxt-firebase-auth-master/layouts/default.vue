@@ -119,7 +119,7 @@
     ></v-img>
           </v-toolbar-title>-->
 
-          <img :src="logoToolbarImage" height="110" />
+          <img :src="logoToolbarImage" height="100" />
         </nuxt-link>
       </v-toolbar-title>
 
