@@ -5,78 +5,63 @@
  */
 package meetu.userservice.model;
 
-import java.util.Date;
+import java.util.List;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  *
- * @author wdrdr
+ * @author Test
  */
+@Document("badges")
 public class Badge {
     
-    private int id;
+    @Id
+    private String badgeId;
     
-    private String badge;
+    private String badgeName;
     
-    private int level;
+    private String badgePicture;
     
-    private int exp;
-    
-    private double expUntilUpToNextLevel;
-    
-    private Date unlockBadgeDate;
+    private List<String> badgeTags;
+   
 
-    public int getId() {
-        return id;
+    public String getBadgeId() {
+        return badgeId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setBadgeId(String badgeId) {
+        this.badgeId = badgeId;
     }
 
-    public String getBadge() {
-        return badge;
+    public List<String> getBadgeTags() {
+        return badgeTags;
     }
 
-    public void setBadge(String badge) {
-        this.badge = badge;
+    public void setBadgeTags(List<String> badgeTags) {
+        this.badgeTags = badgeTags;
     }
 
-    public int getLevel() {
-        return level;
+    public String getBadgeName() {
+        return badgeName;
     }
 
-    public void setLevel(int level) {
-        this.level = level;
+    public void setBadgeName(String badgeName) {
+        this.badgeName = badgeName;
     }
 
-    public int getExp() {
-        return exp;
+    public String getBadgePicture() {
+        return badgePicture;
     }
 
-    public void setExp(int exp) {
-        this.exp = exp;
-    }
-
-    public double getExpUntilUpToNextLevel() {
-        return expUntilUpToNextLevel;
-    }
-
-    public void setExpUntilUpToNextLevel(double expUntilUpToNextLevel) {
-        this.expUntilUpToNextLevel = expUntilUpToNextLevel;
-    }
-
-    public Date getUnlockBadgeDate() {
-        return unlockBadgeDate;
-    }
-
-    public void setUnlockBadgeDate(Date unlockBadgeDate) {
-        this.unlockBadgeDate = unlockBadgeDate;
+    public void setBadgePicture(String badgePicture) {
+        this.badgePicture = badgePicture;
     }
 
     @Override
     public String toString() {
-        return "Badge{" + "id=" + id + ", badge=" + badge + ", level=" + level + ", exp=" + exp + ", expUntilUpToNextLevel=" + expUntilUpToNextLevel + ", unlockBadgeDate=" + unlockBadgeDate + '}';
+        return "Badge{" + "badgeId=" + badgeId + ", badgeName=" + badgeName + ", badgePicture=" + badgePicture + ", badgeTags=" + badgeTags  + '}';
     }
     
 }

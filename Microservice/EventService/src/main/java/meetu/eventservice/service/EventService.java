@@ -179,10 +179,12 @@ public class EventService {
     public ResponseEntity createEvent(Event event) {
         Date currentDate = new Date();
         event.setCreateEventDate(currentDate);
-        Badge badgeInDatabase = badgeRepository.findById(event.getBadge().getBadgeId()).get();
+        
+        ResponseEntity<Badge> badgeResponse = restTemplate.getForEntity(USERSERVICE_URL + "/badge/" + event.getBadge().getBadgeId() , Badge.class);
+        Badge badgeInService = badgeResponse.getBody();
         HashMap<String,String> response = new HashMap();
 
-        if (badgeInDatabase == null) {
+        if (badgeInService == null) {
             response.put("response", "Fail to create Event Because Badge ID Not found : ");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
@@ -194,12 +196,12 @@ public class EventService {
         }
         event.setOrganize(organizeInDatabase.getBody());
         BadgeReward badge = event.getBadge();
-        badge.setBadgeName(badgeInDatabase.getBadgeName());
-        badge.setBadgePicture(badgeInDatabase.getBadgePicture());
-        badge.setBadgeTags(badgeInDatabase.getBadgeTags());
+        badge.setBadgeName(badgeInService.getBadgeName());
+        badge.setBadgePicture(badgeInService.getBadgePicture());
+        badge.setBadgeTags(badgeInService.getBadgeTags());
         
         EventBadge eventBadge = new EventBadge();
-        eventBadge.setBadge(badgeInDatabase);
+        eventBadge.setBadge(badgeInService);
         eventBadge.setEvent(event);
         eventBadgeRepository.save(eventBadge);
         
