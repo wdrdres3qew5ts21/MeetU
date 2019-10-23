@@ -189,7 +189,7 @@ export default {
               badgePicture: downloadURL
             }
             console.log(badgeRequest)
-            axios.post(`${process.env.EVENT_SERVICE}/badge`,badgeRequest,{
+            axios.post(`${process.env.USER_SERVICE}/badge`,badgeRequest,{
                 headers: {
                   'Authorization': `Bearer ${localStorage.getItem('jwtToken') || ''}`
               }

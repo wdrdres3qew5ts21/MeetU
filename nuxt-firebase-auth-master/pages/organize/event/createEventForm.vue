@@ -292,7 +292,7 @@ export default {
         eventTagsQuery += "&contentPerPage=50"
       }
       console.log(eventTagsQuery)
-      axios.get(`${process.env.EVENT_SERVICE}/badges${eventTagsQuery}`)
+      axios.get(`http://localhost:4000/userservice/badges${eventTagsQuery}`)
       .then(badgeResponse =>{
         this.badgeList = badgeResponse.data
         console.log(badgeResponse.data)

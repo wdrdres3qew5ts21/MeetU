@@ -132,35 +132,31 @@ const actions = {
                                     if(eventPictureList.length === pictureFiles.length){
                                         console.log("-------- Event Picture List -----------")
                                         console.log(`Picture list : `, eventPictureList);
+                                        eventTemplate.eventPictureCover = eventPictureCover
+                                        eventTemplate.eventPictureLists = eventPictureList
+                                        
+                                        axios.post(`${process.env.EVENT_SERVICE}/event`, eventTemplate, {
+                                            headers: {
+                                                'Authorization': `Bearer ${localStorage.getItem('jwtToken') || ''}`
+                                            }
+                                        }).then(badgeResponse => {
+                                            console.log(badgeResponse.data)
+                                            this._vm.$swal({
+                                                type: "success",
+                                                title: "Upload Event success!!",
+                                                text: `Upload Event success!!`
+                                            });
+                                        }).catch(error => {
+                                            this._vm.$swal({
+                                                type: "error",
+                                                title: "Fail to Create Event!!!",
+                                                text: `Fail to Create Event!!!`
+                                            });
+
+                                        }).finally(()=>{
+                                            loader.hide()
+                                        });
                                     }
-
-                                    // axios.post(`${process.env.EVENT_SERVICE}/badge`, badgeRequest, {
-                                    //     headers: {
-                                    //         'Authorization': `Bearer ${localStorage.getItem('jwtToken') || ''}`
-                                    //     }
-                                    // }).then(badgeResponse => {
-                                    //     console.log(badgeResponse.data)
-                                    //     loader.hide()
-                                    //     this._vm.$swal({
-                                    //         type: "success",
-                                    //         title: "Upload Event success!!",
-                                    //         text: `Upload Event success!!`
-                                    //     });
-                                    // }).catch(error => {
-                                    //     this._vm.$swal({
-                                    //         type: "error",
-                                    //         title: "Fail to Create Event!!!",
-                                    //         text: `Fail to Create Event!!!`
-                                    //     });
-                                    //     loader.hide()
-                                    //     setupFile.delete().then(() => {
-                                    //         // File deleted successfully
-                                    //         console.log("delete file success because upload fail")
-                                    //     }).catch((error) => {
-                                    //         // Uh-oh, an error occurred!
-                                    //     });
-                                    // });
-
 
                                 });
                             });
