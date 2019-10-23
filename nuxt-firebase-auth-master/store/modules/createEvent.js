@@ -164,12 +164,14 @@ const actions = {
                       
 
                     } catch (err) {
+                        loader.hide()
                         console.log(err);
                     }
 
                 });
             });
         } catch (err) {
+            loader.hide()
             console.log(err);
         }
 

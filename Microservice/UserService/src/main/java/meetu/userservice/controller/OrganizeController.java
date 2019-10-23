@@ -58,7 +58,7 @@ public class OrganizeController {
 
     @GetMapping("/organize/{organizeId}")
     public ResponseEntity findOrganizeById(@PathVariable String organizeId) {
-        return new ResponseEntity(organizeService.findOrganizeById(organizeId), HttpStatus.OK);
+        return organizeService.findOrganizeById(organizeId);
     }
 
 }

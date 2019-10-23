@@ -189,11 +189,17 @@ public class EventService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
         String organizeId = event.getOrganize().getOrganizeId();
+        System.out.println(organizeId);
         ResponseEntity<Organize> organizeInDatabase = restTemplate.getForEntity(USERSERVICE_URL + "/organize/" + organizeId, Organize.class);
+        System.out.println(organizeInDatabase.getBody());
+        
         if(organizeInDatabase.getBody() == null){
             response.put("response", "Fail to create Event Because Organize ID Not found : ");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
+        System.out.println(organizeInDatabase);
+        System.out.println("----- Organize Founded -------");
+        System.out.println(organizeInDatabase.getBody());
         event.setOrganize(organizeInDatabase.getBody());
         BadgeReward badge = event.getBadge();
         badge.setBadgeName(badgeInService.getBadgeName());
@@ -652,6 +658,8 @@ public class EventService {
 
     public ResponseEntity findAllEventOfOrganize(String organizeId) {
         List<Event> allEventOfOrganize = eventRepository.findByOrganizeOrganizeId(organizeId);
+        System.out.println("find all event ");
+        System.out.println(allEventOfOrganize);
         return new ResponseEntity(allEventOfOrganize, HttpStatus.OK);
     }
 
