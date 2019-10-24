@@ -1,5 +1,13 @@
 <template>
   <div>
+  <croppa
+    v-model="croppa"
+    :width="250"
+    :height="250"
+    prevent-white-space
+    initial-image="https://zhanziyang.github.io/vue-croppa/static/500.jpeg"
+    @init="onInit"
+  ></croppa>
     <!-- ห้าม format หน้านี้เด็ดขาดเพราะ text field จะหาย
             <v-text-field
             :append-outer-icon="comment ? 'send' : 'send'"
@@ -294,6 +302,9 @@
           </form>
         </v-card>
       </v-dialog>
+
+        
+
       <!-- -----------------------Show dialog with full comment and comment button----------------------- -->
     </div>
   </div>
@@ -305,6 +316,8 @@
                   type="button"
                   name="button"
             >Remove</v-btn>-->
+
+            
 </template> 
   
  
@@ -317,6 +330,7 @@ export default {
   name: "communityDetail",
   data() {
     return {
+      croppa:{},
       join: false,
       imageUrl: "",
       image: null,
@@ -334,6 +348,7 @@ export default {
       postIndex: 0,
       dialog: false,
       name: "",
+     
       rules: [
         value =>
           !value ||
@@ -346,8 +361,8 @@ export default {
       iconIndex: 0
     };
   },
-  components: {
-    
+  components: { 
+ 
   },
   mounted() {
     this.initUserProfile();
@@ -408,6 +423,7 @@ export default {
         fileReader.readAsDataURL(this.postPictureLists[i]);
       }
     },
+
     addPost() {
       var value = this.newPost && this.newPost.trim() || this.po
       stPictureLists;
@@ -465,7 +481,27 @@ export default {
     },
     resetIcon() {
       this.iconIndex = 0;
+    },
+      handleUploaded(resp) {
+        this.userAvatar = resp.relative_url;
+      },
+
+      onInit() {
+      this.croppa.addClipPlugin(function (ctx, x, y, w, h) {
+        /*
+         * ctx: canvas context
+         * x: start point (top-left corner) x coordination
+         * y: start point (top-left corner) y coordination
+         * w: croppa width
+         * h: croppa height
+        */
+        console.log(x, y, w, h)
+        ctx.beginPath()
+        ctx.arc(x + w / 2, y + h / 2, w / 2, 0, 2 * Math.PI, true)
+        ctx.closePath()
+      })
     }
+
 
     // addComment() {
     //     this.postList.commentList.push({

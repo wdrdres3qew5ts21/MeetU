@@ -71,7 +71,7 @@
                   </v-card>
                 </v-dialog>
 
-                <!-- <v-flex class="text-xs-right">
+                <v-flex class="text-xs-right">
                   <v-text-field
                     v-model="badgeName"
                     :append-outer-icon="badgeName ? 'search' : 'search'"
@@ -84,7 +84,7 @@
                     @click:append-outer="searchBadgeByName"
                     @click:clear="clearMessage"
                   ></v-text-field>
-                </v-flex> -->
+                </v-flex>
                 <br />
               </v-layout>
             </div>
@@ -117,7 +117,7 @@
           </td>
           <td>
             <h3>{{ props.item.badgeName }}</h3>
-            <br />Detail:
+            
           </td>
         </tr>
       </template>
@@ -153,61 +153,6 @@ export default {
     badgeList: [],
     badgeSelect: false
  }),
-
-  //   badges: [
-  //     {
-  //       name: "Frozen Yogurt",
-
-  //       avatar: "https://cdn.vuetifyjs.com/images/lists/1.jpg"
-  //     },
-  //     {
-  //       name: "Ice cream sandwich",
-
-  //       avatar: "https://cdn.vuetifyjs.com/images/lists/2.jpg"
-  //     },
-  //     {
-  //       name: "Eclair",
-
-  //       avatar: "https://cdn.vuetifyjs.com/images/lists/3.jpg"
-  //     },
-  //     {
-  //       name: "Cupcake",
-
-  //       avatar: "https://cdn.vuetifyjs.com/images/lists/3.jpg"
-  //     },
-  //     {
-  //       name: "Gingerbread",
-
-  //       avatar: "https://cdn.vuetifyjs.com/images/lists/4.jpg"
-  //     },
-  //     {
-  //       name: "Jelly bean",
-
-  //       avatar: "https://cdn.vuetifyjs.com/images/lists/2.jpg"
-  //     },
-  //     {
-  //       name: "Lollipop",
-
-  //       avatar: "https://cdn.vuetifyjs.com/images/lists/3.jpg"
-  //     },
-  //     {
-  //       name: "Honeycomb",
-
-  //       avatar: "https://cdn.vuetifyjs.com/images/lists/5.jpg"
-  //     },
-  //     {
-  //       name: "Donut",
-
-  //       avatar: "https://cdn.vuetifyjs.com/images/lists/3.jpg"
-  //     },
-  //     {
-  //       name: "KitKat",
-
-  //       avatar: "https://cdn.vuetifyjs.com/images/lists/3.jpg"
-  //     }
-  //   ]
-  // }),
-
   computed: {
     ...mapGetters(["getCategory"]),
     icon() {
@@ -234,14 +179,6 @@ export default {
     findMatchingBadge(){
       console.log("mating badge")
       let eventTagsQuery = ""
-      // if (this.eventForm.eventTags.length > 0) {
-      //   eventTagsQuery ="?badgeTags="
-      //   for (let i = 0; i < this.eventForm.eventTags.length; i++) {
-      //     eventTagsQuery += `${this.eventForm.eventTags[i]},`;
-      //   }
-      //   eventTagsQuery += "&contentPerPage=50"
-      // }
-      // console.log(eventTagsQuery)
       axios.get(`${process.env.EVENT_SERVICE}/badges${eventTagsQuery}`)
       .then(badgeResponse =>{
         this.badgeList = badgeResponse.data;
