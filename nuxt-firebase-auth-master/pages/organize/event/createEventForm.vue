@@ -2,7 +2,7 @@
   <div>
     <h2 class="h2">Create New Events</h2>
     <br />
-    <v-flex xs12 sm5 d-flex >
+    <v-flex xs12 sm5 d-flex>
       <v-autocomplete
         :items="organizeList"
         item-text="organizeName"
@@ -127,7 +127,8 @@
         type="number"
       ></v-text-field>
     </v-flex>
-    <v-flex xs12 sm5 d-flex  @click="findMatchingBadge()" >
+
+    <!-- <v-flex xs12 sm5 d-flex @click="findMatchingBadge()">
       <v-autocomplete
         :items="badgeList"
         item-text="badgeName"
@@ -137,11 +138,63 @@
         v-model="eventForm.badge.badgeId"
         persistent-hint
       ></v-autocomplete>
+    </v-flex> -->
+
+    <!-- test -->
+
+      {{eventForm.badge}}
+
+    <v-flex xs12 d-flex @click="findMatchingBadge()">
+      <v-autocomplete
+        v-model="badgeSelect"
+        :items="badgeList"
+        box
+        chips
+        color="#341646"
+        label="Select Badge"
+        item-value="badgeId"
+        multiple
+      >        
+        <template v-slot:selection="data">
+          <v-chip
+            :selected="data.selected"
+            close
+            color="grey"
+            class="chip--select-multi white--text"
+            @input="remove(data.item)"
+          >
+            <v-avatar>
+              <img :src="data.item.badgePicture" />
+            </v-avatar>
+            {{ data.item.badgeName }}
+          </v-chip>
+        </template>
+        <template v-slot:item="data">
+          <template v-if="typeof data.item !== 'object'">
+            <v-list-tile-content v-text="data.item.badgeName"></v-list-tile-content>
+          </template>
+          <template v-else>
+            <v-list-tile-avatar>
+              <img :src="data.item.badgePicture" />
+            </v-list-tile-avatar>
+            <v-list-tile-content>
+              <v-list-tile-title v-html="data.item.badgeName"></v-list-tile-title>
+            </v-list-tile-content>
+          </template>
+        </template>
+      </v-autocomplete>
     </v-flex>
+
+    <!-- ----- -->
+
     <p style="margin:0" class="uploadPosterImg" @click="goToBadgeSettingPage()">Create Badge</p>
-    <p style="margin:0" class="uploadPosterImg" @click="goToEventConditionPage()">Event Conditions Setting</p>
+    <p
+      style="margin:0"
+      class="uploadPosterImg"
+      @click="goToEventConditionPage()"
+    >Event Conditions Setting</p>
     <p style="margin:0" class="uploadPosterImg" @click="goToUploadImagePage()">Upload poster image</p>
-    
+
     <br />
     <br />
     <center>
@@ -178,13 +231,19 @@ export default {
   name: "createEventForm",
   data() {
     return {
+      srcs: [
+        "https://vignette.wikia.nocookie.net/badges/images/7/70/Collaborator-icon.png/revision/latest?cb=20131203084742",
+        "https://vignette.wikia.nocookie.net/badges/images/8/83/Lucky_Edit-icon.png/revision/latest?cb=20131203085335",
+         "https://vignette.wikia.nocookie.net/badges/images/2/28/Making_a_Difference-icon.png/revision/latest?cb=20131203084745",
+        "https://vignette.wikia.nocookie.net/badges/images/1/1f/Speaker-icon.png/revision/latest?cb=20131203085342"
+      ],
       isShowLocation: false,
       menuEventStartDate: false,
       menuEventEndDate: false,
       organizeList: [],
       eventForm: {
-        organize:{
-          organizeId: "",
+        organize: {
+          organizeId: ""
         },
         eventName: "",
         eventDetail: "",
@@ -207,7 +266,15 @@ export default {
         badge: {
           badgeId: "",
           exp: 0.0
-        }
+        },
+        badgeSelect: ["", ""],
+        badgeImg: [
+          // { header: "Social" },
+          // { name: "Collaborator", avatar: this.srcs[0] },
+          // { name: "Lucky", avatar: this.srcs[1] },
+          // { name: "Making a Difference", avatar: this.srcs[2] },
+          // { name: "Speaker", avatar: this.srcs[3] }
+        ]
       },
       categoryEventList: [
         "Arts",
@@ -222,7 +289,7 @@ export default {
         "Social",
         "Technology"
       ],
-         infoWindowPos: null,
+      infoWindowPos: null,
       infoWinOpen: false,
       currentMidx: null,
       areaOfEvent: "",
@@ -255,15 +322,20 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["getCategory", "getEventTemplate", "getCurrentLocation","getUser"])
+    ...mapGetters([
+      "getCategory",
+      "getEventTemplate",
+      "getCurrentLocation",
+      "getUser"
+    ])
   },
   watch: {
     menu(val) {
       val && setTimeout(() => (this.$refs.picker.activePicker = "YEAR"));
     },
-    "eventForm.eventTags"(eventTags){
-      if(eventTags.length >3){
-        this.eventForm.eventTags.shift()
+    "eventForm.eventTags"(eventTags) {
+      if (eventTags.length > 3) {
+        this.eventForm.eventTags.shift();
       }
     }
   },
@@ -271,36 +343,48 @@ export default {
     // axios.get("http://localhost:4000/userservice/users").then(value => {
     //   console.log(value);
     // });
-
+    
     this.loadEventTemplate();
     this.loadOrganizeFromUser();
     this.findMatchingBadge();
+
+  
   },
   methods: {
-    ...mapActions(["setEventTemplate", "setEventLocation", "setGeopoint", "setBadgeDetail"]),
+    ...mapActions([
+      "setEventTemplate",
+      "setEventLocation",
+      "setGeopoint",
+      "setBadgeDetail"
+    ]),
     setDescription(description) {
       this.description = description;
     },
-    findMatchingBadge(){
-      console.log("mating badge")
-      let eventTagsQuery = ""
+    findMatchingBadge() {
+      console.log("mating badge");
+      let eventTagsQuery = "";
       if (this.eventForm.eventTags.length > 0) {
-        eventTagsQuery ="?badgeTags="
+        eventTagsQuery = "?badgeTags=";
         for (let i = 0; i < this.eventForm.eventTags.length; i++) {
           eventTagsQuery += `${this.eventForm.eventTags[i]},`;
         }
-        eventTagsQuery += "&contentPerPage=50"
+        eventTagsQuery += "&contentPerPage=50";
       }
-      console.log(eventTagsQuery)
-      axios.get(`${process.env.EVENT_SERVICE}/badges${eventTagsQuery}`)
-      .then(badgeResponse =>{
-        this.badgeList = badgeResponse.data
-        console.log(badgeResponse.data)
-      })
-      .catch(error =>{
-
-      })
-
+      console.log(eventTagsQuery);
+      axios
+        .get(`${process.env.EVENT_SERVICE}/badges${eventTagsQuery}`)
+        .then(badgeResponse => {
+          this.badgeList = badgeResponse.data;
+          console.log(badgeResponse.data);
+          this.badgeImg = [
+          { header: "Social" },
+          { name: "Collaborator", avatar: this.badgeList[0].badgePicture },
+          { name: "Lucky", avatar: this.srcs[1] },
+          { name: "Making a Difference", avatar: this.srcs[2] },
+          { name: "Speaker", avatar: this.srcs[3] }
+        ]
+        })
+        .catch(error => {});
     },
     loadOrganizeFromUser() {
       axios
@@ -373,11 +457,10 @@ export default {
       this.eventForm.exp = eventTemplate.exp;
       this.eventForm.organize.organizeId = eventTemplate.organize.organizeId;
 
-
       let geopoint = eventTemplate.location.geopoint;
 
       if ((geopoint.lat === 0) & (geopoint.lon === 0)) {
-        console.log("initital value")
+        console.log("initital value");
         navigator.geolocation.getCurrentPosition(location => {
           this.marker.position = {
             lat: location.coords.latitude,
@@ -386,7 +469,6 @@ export default {
           console.log(location.coords.latitude);
           console.log(location.coords.longitude);
         });
-
       } else {
         this.marker.position = {
           lat: geopoint.lat,
@@ -413,9 +495,9 @@ export default {
         this.currentMidx = idx;
       }
     },
-    addLocation(){
-      this.isShowLocation = true
-      this.$vuetify.goTo('#locationMap')
+    addLocation() {
+      this.isShowLocation = true;
+      this.$vuetify.goTo("#locationMap");
     },
     goToPreviewEvent() {
       this.saveEventTemplate();
@@ -437,7 +519,7 @@ export default {
       console.log("SAve Tempalte");
       console.log(this.eventForm);
       this.setEventTemplate(this.eventForm);
-      this.setBadgeDetail(this.eventForm.badge)
+      this.setBadgeDetail(this.eventForm.badge);
     },
     save(date) {
       this.$refs.menu.save(date);
@@ -461,6 +543,10 @@ export default {
     },
     createEvent() {
       axios.post(`${process.env.EVENT_SERVICE}/event`);
+    },
+    remove(item) {
+      const index = this.badgeSelect.indexOf(item.name);
+      if (index >= 0) this.badgeSelect.splice(index, 1);
     }
   }
 };
