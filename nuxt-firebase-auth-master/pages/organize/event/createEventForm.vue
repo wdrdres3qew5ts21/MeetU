@@ -138,12 +138,11 @@
         v-model="eventForm.badge.badgeId"
         persistent-hint
       ></v-autocomplete>
-    </v-flex> -->
+    </v-flex>-->
 
     <!-- test -->
 
-      {{eventForm.badge}}
-
+    {{eventForm.badge}}
     <v-flex xs12 d-flex @click="findMatchingBadge()">
       <v-autocomplete
         v-model="badgeSelect"
@@ -154,7 +153,7 @@
         label="Select Badge"
         item-value="badgeId"
         multiple
-      >        
+      >
         <template v-slot:selection="data">
           <v-chip
             :selected="data.selected"
@@ -186,6 +185,53 @@
     </v-flex>
 
     <!-- ----- -->
+
+    <!-- Test อีกรอบ -->
+
+          <!-- <v-flex xs12 d-flex @click="findMatchingBadge()">
+            <v-autocomplete
+              v-model="badgeSelect"
+              :items="badgeList"
+              box
+              chips
+              color="#341646"
+              label="Select Badge"
+              item-value="badgeId"
+              multiple
+            >
+              <template v-slot:selection="data">
+                <v-chip
+                  :selected="data.selected"
+                  close
+                  color="grey"
+                  class="chip--select-multi white--text"
+                  @input="remove(data.item)"
+                >
+                  <v-avatar>
+                    <img :src="data.item.badgePicture" />
+                  </v-avatar>
+                  {{ data.item.name }}
+                </v-chip>
+              </template>
+
+              <template v-slot:item="data">
+                <template v-if="typeof data.item !== 'object'">
+                  <v-list-tile-content v-text="data.item.badgeName"></v-list-tile-content>
+                </template>
+                <template v-else>
+                  <v-list-tile-avatar>
+                    <img :src="data.item.badgePicture" />
+                  </v-list-tile-avatar>
+                  <v-list-tile-content>
+                    <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
+                    <v-list-tile-sub-title v-html="data.item.badgeName"></v-list-tile-sub-title>
+                  </v-list-tile-content>
+                </template>
+              </template>
+            </v-autocomplete>
+          </v-flex> -->
+
+    <!--  -->
 
     <p style="margin:0" class="uploadPosterImg" @click="goToBadgeSettingPage()">Create Badge</p>
     <p
@@ -234,7 +280,7 @@ export default {
       srcs: [
         "https://vignette.wikia.nocookie.net/badges/images/7/70/Collaborator-icon.png/revision/latest?cb=20131203084742",
         "https://vignette.wikia.nocookie.net/badges/images/8/83/Lucky_Edit-icon.png/revision/latest?cb=20131203085335",
-         "https://vignette.wikia.nocookie.net/badges/images/2/28/Making_a_Difference-icon.png/revision/latest?cb=20131203084745",
+        "https://vignette.wikia.nocookie.net/badges/images/2/28/Making_a_Difference-icon.png/revision/latest?cb=20131203084745",
         "https://vignette.wikia.nocookie.net/badges/images/1/1f/Speaker-icon.png/revision/latest?cb=20131203085342"
       ],
       isShowLocation: false,
@@ -343,12 +389,10 @@ export default {
     // axios.get("http://localhost:4000/userservice/users").then(value => {
     //   console.log(value);
     // });
-    
+
     this.loadEventTemplate();
     this.loadOrganizeFromUser();
     this.findMatchingBadge();
-
-  
   },
   methods: {
     ...mapActions([
@@ -370,34 +414,29 @@ export default {
         }
         eventTagsQuery += "&contentPerPage=50";
       }
-<<<<<<< HEAD
       console.log(eventTagsQuery);
       axios
-        .get(`${process.env.EVENT_SERVICE}/badges${eventTagsQuery}`)
+        .get(`${process.env.USER_SERVICE}/badges${eventTagsQuery}`)
         .then(badgeResponse => {
           this.badgeList = badgeResponse.data;
           console.log(badgeResponse.data);
           this.badgeImg = [
-          { header: "Social" },
-          { name: "Collaborator", avatar: this.badgeList[0].badgePicture },
-          { name: "Lucky", avatar: this.srcs[1] },
-          { name: "Making a Difference", avatar: this.srcs[2] },
-          { name: "Speaker", avatar: this.srcs[3] }
-        ]
+            { header: "Social" },
+            { name: "Collaborator", avatar: this.badgeList[0].badgePicture },
+            { name: "Lucky", avatar: this.srcs[1] },
+            { name: "Making a Difference", avatar: this.srcs[2] },
+            { name: "Speaker", avatar: this.srcs[3] }
+          ];
         })
         .catch(error => {});
-=======
-      console.log(eventTagsQuery)
-      axios.get(`http://localhost:4000/userservice/badges${eventTagsQuery}`)
-      .then(badgeResponse =>{
-        this.badgeList = badgeResponse.data
-        console.log(badgeResponse.data)
-      })
-      .catch(error =>{
-
-      })
-
->>>>>>> master
+      console.log(eventTagsQuery);
+      axios
+        .get(`http://localhost:4000/userservice/badges${eventTagsQuery}`)
+        .then(badgeResponse => {
+          this.badgeList = badgeResponse.data;
+          console.log(badgeResponse.data);
+        })
+        .catch(error => {});
     },
     loadOrganizeFromUser() {
       axios
@@ -557,10 +596,13 @@ export default {
     createEvent() {
       axios.post(`${process.env.EVENT_SERVICE}/event`);
     },
-    remove(item) {
-      const index = this.badgeSelect.indexOf(item.name);
-      if (index >= 0) this.badgeSelect.splice(index, 1);
-    }
+    remove (item) {
+      console.log(item.badgeName)
+        const index = this.badgeSelect.indexOf(item.badgeName)
+        console.log(this.badgeSelect)
+        console.log(index)
+        if (index >= 0) this.badgeSelect.splice(index, 1)
+      }
   }
 };
 </script>

@@ -179,7 +179,7 @@ export default {
     findMatchingBadge(){
       console.log("mating badge")
       let eventTagsQuery = ""
-      axios.get(`${process.env.EVENT_SERVICE}/badges${eventTagsQuery}`)
+      axios.get(`${process.env.USER_SERVICE}/badges${eventTagsQuery}`)
       .then(badgeResponse =>{
         this.badgeList = badgeResponse.data;
         console.log(badgeResponse.data);
