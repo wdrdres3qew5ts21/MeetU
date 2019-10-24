@@ -176,7 +176,7 @@ export default {
       let dateobj = new Date();
       let fileName = this.badgePicture.name + "_" + dateobj.toISOString();
       let storage = firebase.storage();
-      let storageRef = storage.ref();
+      let storageRef = storage.ref("/badge");
       let setupFile = storageRef.child(fileName);
 
       try {
@@ -189,7 +189,7 @@ export default {
               badgePicture: downloadURL
             }
             console.log(badgeRequest)
-            axios.post(`${process.env.EVENT_SERVICE}/badge`,badgeRequest,{
+            axios.post(`${process.env.USER_SERVICE}/badge`,badgeRequest,{
                 headers: {
                   'Authorization': `Bearer ${localStorage.getItem('jwtToken') || ''}`
               }
@@ -229,6 +229,21 @@ export default {
     remove(item) {
       this.chips.splice(this.chips.indexOf(item), 1);
       this.chips = [...this.chips];
+    },
+      onInit() {
+      this.croppa.addClipPlugin(function (ctx, x, y, w, h) {
+        /*
+         * ctx: canvas context
+         * x: start point (top-left corner) x coordination
+         * y: start point (top-left corner) y coordination
+         * w: croppa width
+         * h: croppa height
+        */
+        console.log(x, y, w, h)
+        ctx.beginPath()
+        ctx.arc(x + w / 2, y + h / 2, w / 2, 0, 2 * Math.PI, true)
+        ctx.closePath()
+      })
     }
   }
 };

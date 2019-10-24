@@ -83,6 +83,8 @@ public class OrganizeService {
     public ResponseEntity findOrganizeById(String organizeId) {
         Organize organizeInDatabase = organizeRepository.findById(organizeId).get();
         if (organizeInDatabase != null) {
+            System.out.println("----------- Found organize -------");
+            System.out.println(organizeInDatabase);
             return new ResponseEntity(organizeInDatabase, HttpStatus.OK);
         }
         HashMap<String, String> response = new HashMap<>();

@@ -14,10 +14,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
  *
  * @author Test
  */
-@Document("badges")
+//@Document("badges")
 public class Badge {
     
-    @Id
+    //@Id
     private String badgeId;
     
     private String badgeName;

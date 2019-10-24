@@ -370,6 +370,7 @@ export default {
         }
         eventTagsQuery += "&contentPerPage=50";
       }
+<<<<<<< HEAD
       console.log(eventTagsQuery);
       axios
         .get(`${process.env.EVENT_SERVICE}/badges${eventTagsQuery}`)
@@ -385,6 +386,18 @@ export default {
         ]
         })
         .catch(error => {});
+=======
+      console.log(eventTagsQuery)
+      axios.get(`http://localhost:4000/userservice/badges${eventTagsQuery}`)
+      .then(badgeResponse =>{
+        this.badgeList = badgeResponse.data
+        console.log(badgeResponse.data)
+      })
+      .catch(error =>{
+
+      })
+
+>>>>>>> master
     },
     loadOrganizeFromUser() {
       axios

@@ -28,6 +28,7 @@
     </v-alert>
     </template>
       <template v-slot:items="props">
+
         <tr>
           <!-- <td>{{badges.index}} </td> -->
           <td>
@@ -44,6 +45,7 @@
             <br />Detail:
           </td>
         </tr>
+        
       </template>
     </v-data-table>
   </div>
