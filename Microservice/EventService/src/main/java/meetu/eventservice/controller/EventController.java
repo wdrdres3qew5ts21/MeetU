@@ -56,19 +56,19 @@ public class EventController {
     private QRCodeService qRCodeService;
     
     
-    @PostMapping("/badge")
-    public ResponseEntity createBadge(@RequestBody Badge badge) {
-        return eventService.createBadge(badge);
-    }
-    
-    @GetMapping("/badges")
-    public ResponseEntity<Event> findEventThatMatchingBadge(
-            @RequestParam(required = false) List<String> badgeTags,
-            @RequestParam(required = false, defaultValue = "") String badgeName,
-            @RequestParam(required = false, defaultValue = "0") int page,
-            @RequestParam(required = false, defaultValue = "20") int contentPerPage ) {
-        return eventService.findEventThatMatchingBadge(badgeTags, badgeName,page,contentPerPage);
-    }
+//    @PostMapping("/badge")
+//    public ResponseEntity createBadge(@RequestBody Badge badge) {
+//        return eventService.createBadge(badge);
+//    }
+//    
+//    @GetMapping("/badges")
+//    public ResponseEntity<Badge> findEventThatMatchingBadge(
+//            @RequestParam(required = false) List<String> badgeTags,
+//            @RequestParam(required = false, defaultValue = "") String badgeName,
+//            @RequestParam(required = false, defaultValue = "0") int page,
+//            @RequestParam(required = false, defaultValue = "20") int contentPerPage ) {
+//        return eventService.findEventThatMatchingBadge(badgeTags, badgeName,page,contentPerPage);
+//    }
 
     @PostMapping("/event")
     public ResponseEntity createEvent(@RequestBody Event event) {

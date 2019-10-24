@@ -48,7 +48,7 @@
       <h1>Popular Event</h1>
       <client-only>
         <carousel :perPage="1" :paginationEnabled="false">
-          <slide v-for="(event, index) in recentlyEventList" :key="index">
+          <slide v-for="(event, index) in popularEventList" :key="index">
             <event-card :event="event"></event-card>
           </slide>
           <slide>
@@ -217,7 +217,7 @@ export default {
       let concentPerPage = 6;
       await axios
         .get(
-          `${process.env.EVENT_SERVICE}/events?isPopular=true&contentPerPage=${concentPerPage}`
+          `${process.env.EVENT_SERVICE}/events?isPopularEvent=true&contentPerPage=${concentPerPage}`
         )
         .then(popularEventList => {
           this.popularEventList = popularEventList.data;

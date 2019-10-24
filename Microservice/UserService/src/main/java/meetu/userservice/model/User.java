@@ -60,7 +60,7 @@ public class User {
     
     private String phone;
 
-    private List<Badge> badgeList = new ArrayList<Badge>();
+    private List<UserBadge> badgeList = new ArrayList<UserBadge>();
     
     private String notificationToken;
     
@@ -275,11 +275,11 @@ public class User {
         this.gender = gender;
     }
 
-    public List<Badge> getBadgeList() {
+    public List<UserBadge> getBadgeList() {
         return badgeList;
     }
 
-    public void setBadgeList(List<Badge> badgeList) {
+    public void setBadgeList(List<UserBadge> badgeList) {
         this.badgeList = badgeList;
     }
 

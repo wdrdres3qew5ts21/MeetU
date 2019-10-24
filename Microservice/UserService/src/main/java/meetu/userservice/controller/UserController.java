@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import meetu.userservice.service.UserService;
-import meetu.userservice.model.Badge;
+import meetu.userservice.model.UserBadge;
 import meetu.userservice.model.User;
 import meetu.userservice.model.UserJoinEvent;
 import meetu.userservice.model.UserNotification;

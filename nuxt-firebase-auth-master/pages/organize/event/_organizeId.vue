@@ -83,7 +83,7 @@ export default {
         .get(`${process.env.USER_SERVICE}/organize/${this.organizeId}`)
         .then(organizeResponse => {
           console.log(organizeResponse.data);
-          this.organize = organizeResponse.data.body;
+          this.organize = organizeResponse.data;
         })
         .catch(error => {
           console.log(error);

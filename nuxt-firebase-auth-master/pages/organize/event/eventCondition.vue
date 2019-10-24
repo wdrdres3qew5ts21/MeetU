@@ -118,6 +118,12 @@
       </v-menu>
     </v-flex>
 
+    <br />
+    <h3 class="h3">Amount Ticket</h3>
+    <v-card-text>
+      <v-text-field type="number" v-model="value" label="amount of ticket" hint="Please fill number of ticket for this event."></v-text-field>
+    </v-card-text>
+
     <!-- <h3 class="h3">Age Restriction</h3>
     Minimum Age
     <p class="minAgeDescription">Restrict attendees age must be at least</p>
@@ -139,7 +145,14 @@
 
     <center>
       <!-- <nuxt-link :to="`/?`" style="text-decoration-line:none;"> -->
-      <v-btn @click="cancle()" class="cancelButton white--text" color="#AEAEAE" depressed large height="50">Cancel</v-btn>
+      <v-btn
+        @click="cancle()"
+        class="cancelButton white--text"
+        color="#AEAEAE"
+        depressed
+        large
+        height="50"
+      >Cancel</v-btn>
       <!-- </nuxt-link> -->
 
       <!-- <nuxt-link :to="`/?`" style="text-decoration-line:none;"> -->
@@ -178,7 +191,9 @@ export default {
         saleEndDate: "",
         minAge: "",
         maxAge: "",
-        endTime: ""
+        endTime: "",
+        value: "",
+
       }
     };
   },
@@ -200,8 +215,8 @@ export default {
         endTime: this.ticketForm.endTime
       });
     },
-    cancle(){
-      this.$router.push('/organize/event/createEventForm')
+    cancle() {
+      this.$router.push("/organize/event/createEventForm");
     }
   }
 };
