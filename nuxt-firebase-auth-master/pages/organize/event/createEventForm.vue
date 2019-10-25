@@ -157,10 +157,10 @@
         <template v-slot:selection="data">
           <v-chip
             :selected="data.selected"
-            close
-            color="grey"
+            
+            color="#341646"
             class="chip--select-multi white--text"
-            @input="remove(data.item)"
+            @click:close="remove(data.item)"
           >
             <v-avatar>
               <img :src="data.item.badgePicture" />
@@ -320,7 +320,7 @@ export default {
           // { name: "Lucky", avatar: this.srcs[1] },
           // { name: "Making a Difference", avatar: this.srcs[2] },
           // { name: "Speaker", avatar: this.srcs[3] }
-        ]
+        ],
       },
       categoryEventList: [
         "Arts",
@@ -606,11 +606,13 @@ export default {
       axios.post(`${process.env.EVENT_SERVICE}/event`);
     },
     remove (item) {
-      console.log(item.badgeName)
-        const index = this.badgeSelect.indexOf(item.badgeName)
-        console.log(this.badgeSelect)
-        console.log(index)
+      const index = this.badgeSelect.indexOf(item.badgeName)
         if (index >= 0) this.badgeSelect.splice(index, 1)
+      // console.log(item.badgeName)
+      //   // const index = this.badgeSelect.indexOf(item.badgeSelect)
+      //   console.log(this.badgeSelect)
+      //   console.log(index)
+      //   if (index >= 0) this.badgeSelect.splice(index, 1)
       }
   }
 };
@@ -683,5 +685,9 @@ export default {
   font-weight: bold;
   color: #100c4b;
   text-decoration: underline;
+}
+
+.v-chip:focus:not(.v-chip--selected):after {
+  background: none !important;
 }
 </style>
