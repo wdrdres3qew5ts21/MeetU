@@ -90,8 +90,6 @@
             <v-layout>
               <v-flex xs12>
                 <br />
-
-
       
                  <div v-if="postPictureListsUrl.length>0">       
                  </div>
@@ -180,7 +178,7 @@
           aspect-ratio="1"
           class="grey lighten-2"
           max-width="1250"
-          max-height="200"
+          max-height="250"
         ></v-img>
           <input
             v-show="false"
@@ -208,11 +206,12 @@
         </v-card-text>
         <v-list>
           <v-card
+            xs6
             rounded
             outlined
             v-for="(comment,commentIndex ) in postList[postIndex].commentList "
             :key="commentIndex"
-            max-width="500px"
+            
           >
             <v-container grid-list-xs xs4 fluid style="padding:5px">
               <v-list-tile xs4>
@@ -222,15 +221,15 @@
                  <v-list-tile>
                   <div>
                     <v-list-tile-content>
-                      <v-card color="#F5F5F5" class="rounded-card" max-width="240px">
+                      <!-- max-width="240px" -->
+                      <v-card color="#F5F5F5" class="rounded-card" max-width="240px" >
                         <v-list-tile-title class="margin-name">
                           <font size="2">{{ getUser.displayName}}</font>
                         </v-list-tile-title>
-
                         <v-list-tile-sub-title class="margin-comment">
                           <font size="2">{{comment}}</font>
                         </v-list-tile-sub-title>
-                      </v-card>
+                      </v-card> 
                     </v-list-tile-content>
                   </div>
                 </v-list-tile>
@@ -264,18 +263,25 @@
           >
             <v-card rounded outlined grid-list-xs>
               <v-container grid-list-xs fluid style="padding:5px">
-                <v-layout row wrap>
-                  <v-list-tile-avatar>
-                    <v-img :aspect-ratio="1/1" :src="getUser.photoURL"></v-img>
+               
+            
+                <v-layout row wrap  justify-start >
+                      <v-flex xs2 >
+                           <v-list-tile-avatar >
+                      <v-img :aspect-ratio="1/1" :src="getUser.photoURL" size="80" ></v-img>
                   </v-list-tile-avatar>
+                          </v-flex>
+                    <v-flex xs10>
                   <v-list-tile-content>
-                    <div class="text-comment-area " contenteditable="false">
+                    <div class="text-comment-area " contenteditable="false" >
                      <font class="margin-name" > {{ getUser.displayName}}</font>
                       <br>
                       <font color="grey" > {{comment}}</font>
                     </div>
                   </v-list-tile-content>
+                    </v-flex>
                 </v-layout>
+              
               </v-container>
             </v-card>
           </div>
@@ -425,8 +431,7 @@ export default {
     },
 
     addPost() {
-      var value = this.newPost && this.newPost.trim() || this.po
-      stPictureLists;
+      var value = this.newPost && this.newPost.trim() || this.postPictureLists;
       if (!value) {
         return;
       }
@@ -540,7 +545,7 @@ export default {
 .text-comment-area {
   padding: 1%;
   border-radius: 12px;
-  max-width: 340px;
+  max-width: auto;
   min-height: 50px;
   height: auto;
   max-height: auto;
