@@ -96,26 +96,28 @@
       <h2>Top badge</h2>
     </center>
     <br />
-    <v-data-table :items="badges" :pagination.sync="pagination" item-key="name" class="elevation-1">
+
+
+    <v-data-table :items="badgeList" :pagination.sync="pagination" item-key="name" class="elevation-1">
       <template v-slot:no-data>
         <v-alert :value="true" color="pink" icon="info">
           <center>Badge not found !</center>
         </v-alert>
       </template>
       <template v-slot:items="props">
-        <tr>
+         <tr >
           <td>
             <br />
             <center>
               <v-avatar size="70">
-                <img :src="props.item.avatar" />
+                <img :src="props.item.badgePicture" />
               </v-avatar>
             </center>
             <br />
           </td>
           <td>
-            <h3>{{ props.item.name }}</h3>
-            <br />Detail:
+            <h3>{{ props.item.badgeName }}</h3>
+            
           </td>
         </tr>
       </template>
@@ -141,64 +143,16 @@ export default {
     filterForm: {
       categorySelected: []
     },
-
     pagination: {
       sortBy: "name"
     },
-    badges: [
-      {
-        name: "Frozen Yogurt",
-
-        avatar: "https://cdn.vuetifyjs.com/images/lists/1.jpg"
-      },
-      {
-        name: "Ice cream sandwich",
-
-        avatar: "https://cdn.vuetifyjs.com/images/lists/2.jpg"
-      },
-      {
-        name: "Eclair",
-
-        avatar: "https://cdn.vuetifyjs.com/images/lists/3.jpg"
-      },
-      {
-        name: "Cupcake",
-
-        avatar: "https://cdn.vuetifyjs.com/images/lists/3.jpg"
-      },
-      {
-        name: "Gingerbread",
-
-        avatar: "https://cdn.vuetifyjs.com/images/lists/4.jpg"
-      },
-      {
-        name: "Jelly bean",
-
-        avatar: "https://cdn.vuetifyjs.com/images/lists/2.jpg"
-      },
-      {
-        name: "Lollipop",
-
-        avatar: "https://cdn.vuetifyjs.com/images/lists/3.jpg"
-      },
-      {
-        name: "Honeycomb",
-
-        avatar: "https://cdn.vuetifyjs.com/images/lists/5.jpg"
-      },
-      {
-        name: "Donut",
-
-        avatar: "https://cdn.vuetifyjs.com/images/lists/3.jpg"
-      },
-      {
-        name: "KitKat",
-
-        avatar: "https://cdn.vuetifyjs.com/images/lists/3.jpg"
-      }
-    ]
-  }),
-
+     badge: {
+          badgeId: "",
+          exp: 0.0
+        },
+    badgeList: [],
+    badgeSelect: false
+ }),
   computed: {
     ...mapGetters(["getCategory"]),
     icon() {
@@ -207,12 +161,13 @@ export default {
   },
   mounted() {
     this.loadCategoryList();
+    this.findMatchingBadge();
   },
   methods: {
-    ...mapActions(["autoSignIn", "setCategory"]),
+    ...mapActions(["autoSignIn", "setCategory","setBadgeDetail"]),
     loadCategoryList() {
       axios
-        .get(`${process.env.EVENT_SERVICE}/category`)
+        .get(`${process.env.USER_SERVICE}/category`)
         .then(categoryList => {
           this.categoryList = categoryList.data;
           this.setCategory(this.categoryList);
@@ -221,7 +176,19 @@ export default {
           this.categoryList = mockCategoryList;
         });
     },
+    findMatchingBadge(){
+      console.log("mating badge")
+      let eventTagsQuery = ""
+      axios.get(`${process.env.USER_SERVICE}/badges${eventTagsQuery}`)
+      .then(badgeResponse =>{
+        this.badgeList = badgeResponse.data;
+        console.log(badgeResponse.data);
+      })
+      .catch(error =>{
 
+      })
+
+    },
     // onItemClick(event, itemsCategory) {
     //   if (event) {
     //     this.selected = itemsCategory;
@@ -264,9 +231,13 @@ export default {
         this.pagination.descending = false;
       }
     }
-  }
-};
+  } 
+   };
+
 </script>
+
+
+
 <style >
 h2 {
   color: #341646;

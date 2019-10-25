@@ -77,16 +77,16 @@ export default {
         .then(savedInterestIdea => {
           this.$swal({
             type: "success",
-            title: "Save Your Preference !!!",
-            text: `Your preference have been save`
+            title: "Save Your Preference",
+            text: `Your preference have been save.`
           });
           this.$router.push("/userProfile")
         })
         .catch(err => {
           this.$swal({
             type: "error",
-            title: "Fail to Save Your Preference !!!",
-            text: `Fail to Save Your Preference  ${error.message}`
+            title: "Fail to Save Your Preference",
+            text: `Fail to Save Your Preference  ${error.message}.`
           });
         });
     },

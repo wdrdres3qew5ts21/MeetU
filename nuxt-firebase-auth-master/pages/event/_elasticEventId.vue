@@ -91,11 +91,13 @@
       <qrcode :value="qrCodeSrc" :options="{ width: 200 }"></qrcode>
       </center>-->
 
+  <br>
+    <v-divider > </v-divider>
       <h3>Contract</h3>
-      <p>Contract the oraganizer for more information</p>
-      <v-card class="mx-auto" elevation="1">
+      <p></p>
+      
         <center>
-          <div style="width:200px;overflow:hidden">
+          <div style="width:150px;overflow:hidden">
             <v-img
               src="https://picsum.photos/id/11/500/300"
               lazy-src="https://picsum.photos/id/11/10/6"
@@ -106,13 +108,15 @@
             ></v-img>
           </div>
         </center>
-        <v-card-title justify-center>Organizer</v-card-title>
-        <v-card-text>Website</v-card-text>
-        <v-card-text>Email</v-card-text>
-        <v-card-actions>
-          <v-btn text>Click</v-btn>
-        </v-card-actions>
-      </v-card>
+        <br>
+        <b> Organizer Name : </b> {{organizeName}}  <br>
+
+         <b>Website  :</b> <br>
+         <b>Email  :</b> <br> <br>
+       <center>
+           <v-btn block color="#341646"  style="color:white">For more information</v-btn>
+       </center>
+    
     </div>
 
     <div v-else>
@@ -136,6 +140,8 @@ export default {
       qrCodeSrc: "demo",
       isTicketSelected: true,
       isViewTicketDetail: true,
+      organizeId: "",
+      organizeName: "",
       eventName: "",
       numberOfTicket: 0,
       eventDetail: "",
