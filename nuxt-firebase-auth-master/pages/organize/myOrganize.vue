@@ -14,42 +14,13 @@
       </v-flex>
       <v-flex xs6 text-right>
         <h3>Organizer name</h3>
-        <p style="margin:0" class="editOrganizerLink" @click="goToEditOrganizerPage">Edit Organizer</p>
       </v-flex>
     </v-layout>
     <br />
 
-    <!-- tabs -->
 
-    <!-- <v-tabs
-        slot="extension"
-        v-model="tabModel"
-        centered
-        color="white"
-        slider-color="#341646"
-      >
-        <v-tab
-          v-for="i in tabTopics"
-          :key="i"
-          :href="`#tab-${i}`"
-        >
-           {{ i }}
-        </v-tab>
-      </v-tabs>
-
-    <v-tabs-items v-model="tabModel">
-      <v-tab-item
-        v-for="i in tabTopics"
-        :key="i"
-        :id="`tab-${i}`"
-      >
-        <v-card flat>
-          <v-card-text v-text="text"></v-card-text>
-        </v-card>
-      </v-tab-item>
-    </v-tabs-items>-->
-
-    <v-tabs v-model="tabModel" centered color="white" slider-color="#341646">
+<!-- เอาจริงๆ -->
+    <!-- <v-tabs v-model="tabModel" centered color="white" slider-color="#341646">
       <v-tab v-for="i in tabTopics" :key="i" :href="`#tab-${i}`">{{ i }}</v-tab>
     </v-tabs>
 
@@ -72,11 +43,32 @@
               <p style="color:grey">You not own any Organize.</p>
             </center>
           </div>
-          <!-- <v-card-text v-text="text"></v-card-text> -->
         </v-card>
       </v-tab-item>
-    </v-tabs-items>
+    </v-tabs-items> -->
 
+<!-- เอาจริงๆ  -->
+
+ <v-card flat>
+          <div v-if="organizeList">
+            <nuxt-link
+              v-for="(organize, index) in organizeList"
+              :key="index"
+              :to="`/organize/event/${organize.organizeId}`"
+            >
+              <organize-card :organizeName="organize.organizeName" />
+            </nuxt-link>
+          </div>
+          <div v-else>
+            <center>
+              <br />
+              <p style="color:grey">You not own any Organize.</p>
+            </center>
+          </div>
+        </v-card>
+
+        <!-- code ซัน -->
+    
     <!-- <div v-if="organizeList">
       <nuxt-link
         v-for="(organize, index) in organizeList"
@@ -107,10 +99,6 @@ export default {
   data() {
     return {
       organizeList: null,
-      tabModel: "tabModel",
-      tabTopics: ["Organize", "Review", "Edit"],
-      text:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
     };
   },
   computed: {
@@ -131,10 +119,6 @@ export default {
           console.log(error);
         });
     },
-    goToEditOrganizerPage() {
-      this.saveEventTemplate();
-      this.$router.push("/organize/event/editOrganizer");
-    }
   }
 };
 </script>
