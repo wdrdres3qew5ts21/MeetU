@@ -336,7 +336,16 @@ export default {
         province,
         country
       });
-
+      console.log({
+        place,
+        detail,
+        streetNumber,
+        road,
+        subDistrict,
+        distrct,
+        province,
+        country
+      })
       this.usePlace(this.place);
     },
     usePlace(place) {
