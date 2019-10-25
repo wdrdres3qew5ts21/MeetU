@@ -25,7 +25,7 @@
     </div>
     <event-card v-for="(event, index) in eventList" :key="index" :event="event" />
     <br />
-    <center>
+    <center  v-if="eventList == null">
       <nuxt-link :to="`/organize/event/createEventForm`" style="text-decoration-line:none;">
         <v-btn
           class="createEvent white--text"
