@@ -1,11 +1,12 @@
 <template>
   <div>
-    <h1>Create New Community</h1>
+    <br>
+    <h2>Create New Community</h2>
 
     <v-text-field
       v-model="communityForm.communityName"
       :rules="communityNameRules"
-      label="Community Name"
+      label="* Community Name"
       required
     ></v-text-field>
     <v-layout class="mb-4">
@@ -126,6 +127,19 @@ export default {
  
  
 <style>
+.v-content {
+  max-width: 100%;
+  background-color: #eeeeee;
+  font-family: Roboto;
+  /* background-image: url(../assets/bg.png) !important; */
+  /* background-repeat: repeat; */
+  /* background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background: transparent; */
+}
+
 .accountButton {
   width: 500px;
 }
