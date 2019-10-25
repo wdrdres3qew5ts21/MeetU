@@ -105,7 +105,7 @@
         </v-alert>
       </template>
       <template v-slot:items="props">
-        <tr>
+         <tr >
           <td>
             <br />
             <center>
@@ -167,7 +167,7 @@ export default {
     ...mapActions(["autoSignIn", "setCategory","setBadgeDetail"]),
     loadCategoryList() {
       axios
-        .get(`${process.env.EVENT_SERVICE}/category`)
+        .get(`${process.env.USER_SERVICE}/category`)
         .then(categoryList => {
           this.categoryList = categoryList.data;
           this.setCategory(this.categoryList);
