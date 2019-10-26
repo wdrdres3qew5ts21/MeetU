@@ -621,7 +621,8 @@ public class EventService {
         System.out.println("Doom day hystrix!!!");
         return ResponseEntity.status(HttpStatus.OK).body("fuq");
     }
-
+    
+    // join เพื่อหา Detail ของ Event ที่ตั๋วนั้นถูกกดมาใช้งาน
     public ResponseEntity findUserTicketHistory(String uid) {
         LookupOperation lookupOperation = LookupOperation.newLookup()
                 .from("events")
@@ -635,6 +636,13 @@ public class EventService {
         System.out.println(results);
         return ResponseEntity.status(HttpStatus.OK).body(results);
     }
+    
+    public ResponseEntity findUserTicketHistoryNoAggregate(String uid) {
+        List<UserEventTicket> ticketsOfUser = userEventTicketRespository.findByUid(uid);
+        return ResponseEntity.status(HttpStatus.OK).body(ticketsOfUser);
+    }
+    
+    
 
     public ResponseEntity createEventCategory(Category category) {
         HashMap<String, String> responseBody = new HashMap<>();

@@ -5,6 +5,7 @@
  */
 package meetu.eventservice.repository;
 
+import java.util.List;
 import meetu.eventservice.model.EventTicket;
 import meetu.eventservice.model.UserEventTicket;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -16,6 +17,8 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 public interface UserEventTicketRepository  extends MongoRepository<UserEventTicket, String> {
     
     public UserEventTicket findByTicketId(String ticketId);
+    
+    public List<UserEventTicket> findByUid(String uid);
     
     
 }

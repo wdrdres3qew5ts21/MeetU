@@ -2,42 +2,52 @@
   <div>
     <h2>Ticket(s)</h2>
     <br />
-    <v-flex v-for="(eventTicket, index) in userEventTicketList" :key="index" xs12>
-      <v-card min-width="370"  color="white">
-        <v-layout v-if="eventTicket.ticketDetail[0]" >
-          <v-flex xs8>
-            <v-img
-              :src="eventTicket.ticketDetail[0].eventPictureCover"
-              width="170px"
-            ></v-img>
-          </v-flex>
-          <v-flex xs7>
-            <v-card-title primary-title>
-              <div>
-                <div class="headline">
-                  {{eventTicket.ticketDetail[0].eventName.length > 10 ? eventTicket.ticketDetail[0].eventName.substr(0,10)+"..." : eventTicket.ticketDetail[0].eventName }}
-                </div>
-                <div>{{new Date().toISOString() || eventTicket.ticketDetail[0].eventStartDate.substr(0,10) }}</div>
-                <div>{{eventTicket.ticketDetail[0].location.province+", " +eventTicket.ticketDetail[0].location.country}}</div>
-                <nuxt-link :to="`/ticket/${eventTicket.elasticEventId}`">
-                  <br />
-                  <b color="deep-purple darken-3">View Detail</b>
-                </nuxt-link>
-                <div>Used: {{eventTicket.isParticipate}}</div>
-              </div>
-            </v-card-title>
-          </v-flex>
-        </v-layout>
-        <!-- <v-layout v-else>
-          <v-flex xs8>
-            <p  width="170px">Event Had Been deleted</p>
-          </v-flex>
-          <v-flex xs7>
-          </v-flex>
-        </v-layout> -->
-      </v-card>
-    </v-flex>
-    <br />
+    <div v-for="(eventTicket, index) in userEventTicketList" :key="index">
+      <v-flex xs12>
+        <nuxt-link :to="`/ticket/${eventTicket.elasticEventId}`">
+          <v-card min-width="370" color="white">
+            <v-layout v-if="!eventTicket.isEventDelete">
+              <v-flex xs8>
+                <v-img :src="eventTicket.ticketDetail[0].eventPictureCover" width="170px"></v-img>
+              </v-flex>
+              <v-flex xs7>
+                <v-card-title primary-title>
+                  <div>
+                    <div
+                      class="headline"
+                    >{{eventTicket.ticketDetail[0].eventName.length > 10 ? eventTicket.ticketDetail[0].eventName.substr(0,10)+"..." : eventTicket.ticketDetail[0].eventName }}</div>
+                    <div>{{new Date().toISOString() || eventTicket.ticketDetail[0].eventStartDate.substr(0,10) }}</div>
+                    <div>{{eventTicket.ticketDetail[0].location.province+", " +eventTicket.ticketDetail[0].location.country}}</div>
+                    <br />
+                    <b color="deep-purple darken-3">View Detail</b>
+                    <div>Used: {{eventTicket.isParticipate}}</div>
+                  </div>
+                </v-card-title>
+              </v-flex>
+            </v-layout>
+            <v-layout v-else>
+            <v-flex xs8>
+              <p  width="170px">{{eventTicket.deleteMessageDetail}}</p>
+            </v-flex>
+            <v-flex xs7>
+                <v-card-title primary-title>
+                  <div>
+                    <div
+                      class="headline"
+                    >{{eventTicket.eventName.length > 10 ? eventTicket.eventName.substr(0,10)+"..." : eventTicket.eventName }}</div>
+                    <div>{{new Date().toISOString() || eventTicket.eventStartDate.substr(0,10) }}</div>
+                    <br />
+                    <b color="deep-purple darken-3">View Detail</b>
+                    <div>Used: {{eventTicket.isParticipate}}</div>
+                  </div>
+                </v-card-title>
+            </v-flex>
+            </v-layout>
+          </v-card>
+        </nuxt-link>
+      </v-flex>
+      <br />
+    </div>
   </div>
 </template>
 <script>
