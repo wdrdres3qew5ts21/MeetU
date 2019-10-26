@@ -1,12 +1,13 @@
 <template>
   <div>
-    <h1>Popular Communities</h1>
+    <br>
+    <h2>Popular Communities</h2>
     <br />
     <v-carousel>
       <v-carousel-item sm6 xs2 v-for="(item,i) in carouselsPhoto" :src="item.src" :key="i"></v-carousel-item>
     </v-carousel>
     <br />
-    <h2>Recent activity</h2>
+    <h3>Recent activity</h3>
     <br />
 
     <ul>
@@ -108,6 +109,19 @@ export default {
 };
 </script>
 <style lang="css" scope>
+.v-content {
+  max-width: 100%;
+  background-color: #eeeeee;
+  font-family: Roboto;
+  /* background-image: url(../assets/bg.png) !important; */
+  /* background-repeat: repeat; */
+  /* background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background: transparent; */
+}
+
 @import "https://cdn.jsdelivr.net/npm/animate.css@3.5.1";
 .v-carousel {
   height: 300px !important;

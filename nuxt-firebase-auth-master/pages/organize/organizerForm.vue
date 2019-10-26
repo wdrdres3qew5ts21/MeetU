@@ -73,6 +73,35 @@
     </span>
 
 
+      <br>
+      <v-flex xs12 d-flex>
+        <v-combobox
+          :items="items"
+          label="Add Admin"
+          multiple
+          chips
+        >
+          <template v-slot:selection="data">
+            <v-chip
+              :key="JSON.stringify(data.item)"
+              :selected="data.selected"
+              :disabled="data.disabled"
+              class="v-chip--select-multi"
+              @input="data.parent.selectItem(data.item)"
+            >
+              <v-avatar
+                class="accent white--text"
+                v-text="data.item.slice(0, 1).toUpperCase()"
+              ></v-avatar>
+              {{ data.item }}
+            </v-chip>
+          </template>
+        </v-combobox>
+      </v-flex>
+
+
+
+
         <v-checkbox v-model="agreement" :rules="[rules.required]" color="#341646">
           <template v-slot:label>
             I agree to the&nbsp;Terms of Service
@@ -141,6 +170,8 @@ export default {
         v => !!v || "Phone Number is required",
         v => (v && v.length === 10) || "Phone Number msut be 10 digit"
       ],
+        items: [
+        ]
     };
   },
   computed: {
