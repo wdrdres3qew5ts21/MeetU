@@ -6,6 +6,17 @@
       </v-carousel>
       <br />
       <h3>{{eventName}}</h3>
+      <br>
+      
+     Event category: 
+      <v-chip v-for="(item,index) in eventTags" :key="index" text-color="#341646">
+      <v-avatar>
+        <v-icon color="primary">local_offer</v-icon>
+      </v-avatar>
+   {{item}}
+    </v-chip>
+     
+      <br>
       <v-btn
         block
         color="#341646"
@@ -142,6 +153,7 @@ export default {
       isViewTicketDetail: true,
       organizeId: "",
       organizeName: "",
+      eventTags:[],
       eventName: "",
       numberOfTicket: 0,
       eventDetail: "",
@@ -193,6 +205,7 @@ export default {
           location: data.location,
           organizeId: data.organize.organizeId,
           organizeName: data.organize.organizeName,
+          eventTags: data.eventTags,
           marker: {
             title: data.eventName,
             detail: data.eventDetail,
