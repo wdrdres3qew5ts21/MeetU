@@ -112,9 +112,14 @@ public class EventController {
         return eventService.userViewEvent(userViewEvent);
     }
 
-    @DeleteMapping("/event/{elasticEventId}")
-    public ResponseEntity deleteEventByElasticId(@PathVariable String elasticEventId) {
-        return eventService.deleteEventByElasticId(elasticEventId);
+    @PostMapping("/event/delete")
+    public ResponseEntity deleteEventByElasticId(@RequestBody  UserEventTicket deletedEvent) {
+        return eventService.deleteEventByElasticId(deletedEvent);
+    }
+    
+    @PostMapping("/fuck")
+    public ResponseEntity deleteEventByElasticIdTest(@RequestBody  UserEventTicket deletedEvent) {
+        return eventService.deleteEventByElasticIdTest(deletedEvent);
     }
 
     @GetMapping("/events/popular")

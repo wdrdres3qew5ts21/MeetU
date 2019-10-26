@@ -5,6 +5,7 @@
  */
 package meetu.eventservice.model;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -13,6 +14,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Document("userNotifications")
 public class UserNotification {
+    
+    @Id
+    private String id;
     
     private String notificationToken;
     
@@ -26,6 +30,14 @@ public class UserNotification {
         this.notificationToken = notificationToken;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+    
     public String getUid() {
         return uid;
     }
@@ -36,7 +48,8 @@ public class UserNotification {
 
     @Override
     public String toString() {
-        return "UserNotification{" + "notificationToken=" + notificationToken + ", uid=" + uid + '}';
+        return "UserNotification{" + "id=" + id + ", notificationToken=" + notificationToken + ", uid=" + uid + '}';
     }
+
     
 }

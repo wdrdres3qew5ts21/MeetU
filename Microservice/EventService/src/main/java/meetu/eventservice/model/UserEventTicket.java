@@ -21,22 +21,92 @@ public class UserEventTicket {
 
     @Id
     private String id;
-    
+
     @Indexed
     private String ticketId;
 
     private String uid;
 
+    private String eventName;
+
     private String elasticEventId;
 
     private String ticketKey;
-    
-    private List<String> eventTags;
 
-    private boolean isParticipate = false;
+    private String badgeId;
+
+    private List<String> eventTags;
 
     private Date participateDate;
 
+    private boolean isParticipate = false;
+
+    private String deleteMessageDetail;
+
+    private boolean isEventDelete = false;
+
+    private Date eventEndDate;
+
+    private Date eventStartDate;
+
+    private Organize organize;
+
+    public Organize getOrganize() {
+        return organize;
+    }
+
+    public void setOrganize(Organize organize) {
+        this.organize = organize;
+    }
+
+    public boolean isIsEventDelete() {
+        return isEventDelete;
+    }
+
+    public void setIsEventDelete(boolean isEventDelete) {
+        this.isEventDelete = isEventDelete;
+    }
+
+    public String getEventName() {
+        return eventName;
+    }
+
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
+    }
+
+    public Date getEventEndDate() {
+        return eventEndDate;
+    }
+
+    public void setEventEndDate(Date eventEndDate) {
+        this.eventEndDate = eventEndDate;
+    }
+
+    public Date getEventStartDate() {
+        return eventStartDate;
+    }
+
+    public void setEventStartDate(Date eventStartDate) {
+        this.eventStartDate = eventStartDate;
+    }
+
+    public String getBadgeId() {
+        return badgeId;
+    }
+
+    public void setBadgeId(String badgeId) {
+        this.badgeId = badgeId;
+    }
+
+    public String getDeleteMessageDetail() {
+        return deleteMessageDetail;
+    }
+
+    public void setDeleteMessageDetail(String deleteMessageDetail) {
+        this.deleteMessageDetail = deleteMessageDetail;
+    }
+    
     public String getTicketId() {
         return ticketId;
     }
@@ -106,7 +176,9 @@ public class UserEventTicket {
 
     @Override
     public String toString() {
-        return "UserEventTicket{" + "id=" + id + ", uid=" + uid + ", eventElasticId=" + elasticEventId + ", ticketKey=" + ticketKey + ", isParticipate=" + isParticipate + ", participateDate=" + participateDate + '}';
+        return "UserEventTicket{" + "id=" + id + ", ticketId=" + ticketId + ", uid=" + uid + ", eventName=" + eventName + ", elasticEventId=" + elasticEventId + ", ticketKey=" + ticketKey + ", badgeId=" + badgeId + ", eventTags=" + eventTags + ", participateDate=" + participateDate + ", isParticipate=" + isParticipate + ", deleteMessageDetail=" + deleteMessageDetail + ", isEventDelete=" + isEventDelete + ", eventEndDate=" + eventEndDate + ", eventStartDate=" + eventStartDate + ", organize=" + organize + '}';
     }
+
+    
 
 }

@@ -101,6 +101,8 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.elasticsearch.action.update.UpdateRequest;
 import static org.elasticsearch.common.xcontent.XContentFactory.*;
 import org.elasticsearch.index.get.GetResult;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 
 /**
  *
@@ -123,7 +125,7 @@ public class EventService {
 
     @Autowired
     private BadgeRepository badgeRepository;
-    
+
     @Autowired
     private EventBadgeRepository eventBadgeRepository;
 
@@ -179,10 +181,10 @@ public class EventService {
     public ResponseEntity createEvent(Event event) {
         Date currentDate = new Date();
         event.setCreateEventDate(currentDate);
-        
-        ResponseEntity<Badge> badgeResponse = restTemplate.getForEntity(USERSERVICE_URL + "/badge/" + event.getBadge().getBadgeId() , Badge.class);
+
+        ResponseEntity<Badge> badgeResponse = restTemplate.getForEntity(USERSERVICE_URL + "/badge/" + event.getBadge().getBadgeId(), Badge.class);
         Badge badgeInService = badgeResponse.getBody();
-        HashMap<String,String> response = new HashMap();
+        HashMap<String, String> response = new HashMap();
 
         if (badgeInService == null) {
             response.put("response", "Fail to create Event Because Badge ID Not found : ");
@@ -192,8 +194,8 @@ public class EventService {
         System.out.println(organizeId);
         ResponseEntity<Organize> organizeInDatabase = restTemplate.getForEntity(USERSERVICE_URL + "/organize/" + organizeId, Organize.class);
         System.out.println(organizeInDatabase.getBody());
-        
-        if(organizeInDatabase.getBody() == null){
+
+        if (organizeInDatabase.getBody() == null) {
             response.put("response", "Fail to create Event Because Organize ID Not found : ");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
@@ -205,12 +207,12 @@ public class EventService {
         badge.setBadgeName(badgeInService.getBadgeName());
         badge.setBadgePicture(badgeInService.getBadgePicture());
         badge.setBadgeTags(badgeInService.getBadgeTags());
-        
+
         EventBadge eventBadge = new EventBadge();
         eventBadge.setBadge(badgeInService);
         eventBadge.setEvent(event);
         eventBadgeRepository.save(eventBadge);
-        
+
         IndexRequest indexRequest = new IndexRequest(eventsIndex);
         String elasticEventid = null;
         Map<String, Object> pojoToMap = ElasticUtil.pojoToMap(event);
@@ -246,10 +248,11 @@ public class EventService {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedEventMongoDB);
     }
 
-    public ResponseEntity<HashMap<String, Object>> deleteEventByElasticId(String eventId) {
+    public ResponseEntity<HashMap<String, Object>> deleteEventByElasticId(UserEventTicket deletedEvent) {
         HashMap<String, Object> responseBody = new HashMap();
         Event deletedEventMongo = null;
-        DeleteRequest deleteRequest = new DeleteRequest(eventsIndex, eventId);
+        String elasticEventId = deletedEvent.getElasticEventId();
+        DeleteRequest deleteRequest = new DeleteRequest(eventsIndex, elasticEventId);
         DeleteResponse deleteResponse = null;
         try {
             deleteResponse = elasticClient.delete(deleteRequest, RequestOptions.DEFAULT);
@@ -260,16 +263,24 @@ public class EventService {
             System.out.println(deleteResponse);
             try {
                 System.out.println("---- initial delete item ----");
-                eventRepository.deleteByElasticEventId(eventId);
+                // แสดงรายละเอียดการลบกิจกรรมไปยังตั๋ว Ticket ที่ User ครอบครอง
+                Query query = Query.query(Criteria.where("elasticEventId").is(elasticEventId));
+                Update updateDeletedEventDetailToUserTicket = new Update();
+                updateDeletedEventDetailToUserTicket.set("deleteMessageDetail", deletedEvent.getDeleteMessageDetail());
+                updateDeletedEventDetailToUserTicket.set("isEventDelete", true);
+                mongoTemplate.findAndModify(query, updateDeletedEventDetailToUserTicket, UserEventTicket.class);
+                // ลบตั๋วจริงๆออกจาก MongoDB
+                eventRepository.deleteById(elasticEventId);
+
                 System.out.println("---- Deleted Event Mongo ----");
             } catch (Exception ex) {
                 Logger.getLogger(EventService.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
-            responseBody.put("response", "remove " + eventId + " fail !");
+            responseBody.put("response", "remove " + elasticEventId + " fail !");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
         }
-        responseBody.put("response", "remove " + eventId + " successful !");
+        responseBody.put("response", "remove " + elasticEventId + " successful !");
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(responseBody);
     }
 
@@ -375,7 +386,7 @@ public class EventService {
                 // ถ้า InterestIdea ที่เลือกไว้จาก preference ตรงกับ  TopN ที่เราคัดกรองมาก็จะบวกคะแนน
                 queryFilter.should().add(
                         QueryBuilders.termQuery("eventTags", topNumberParticipateEvent.get(i).getGenre().toLowerCase())
-//                                .boost(1.2f)
+                //                                .boost(1.2f)
                 );
             } else {
                 queryFilter.should().add(
@@ -484,6 +495,8 @@ public class EventService {
             System.out.println("!! userEventTicket !!");
             System.out.println(userEventTicketInDatabase);
             if (userEventTicketInDatabase.isIsParticipate() == false) {
+                Event eventFromDatabase = eventRepository.findById(userEventTicketInDatabase.getElasticEventId()).get();
+
                 if (userEventTicketInDatabase.getTicketKey().equals(userJoinEvent.getTicketKey()) && userEventTicketInDatabase.getUid().equals(userJoinEvent.getUid())) {
                     userEventTicketInDatabase.setIsParticipate(true);
                     userEventTicketInDatabase.setParticipateDate(new Timestamp(System.currentTimeMillis()));
@@ -505,17 +518,21 @@ public class EventService {
         if (eventInDatabase != null) {
             if (eventInDatabase.getNumberOfTicket() > 0) {
                 if (eventInDatabase.getUserLists().contains(userReserveTicket.getUid()) == false) {
+                    // บันทึกรายละเอียดของตั๋วที่กดมาจาก Event นั้นลง UserEventTicket
                     byte[] array = new byte[8]; // length is bounded by 7
                     new Random().nextBytes(array);
                     String generateTicketKey = new String(array, Charset.forName("UTF-8"));
                     userReserveTicket.setTicketId(System.currentTimeMillis() + "");
-//                userReserveTicket.setTicketKey(UUID.randomUUID().toString());
+                    userReserveTicket.setEventName(eventInDatabase.getEventName());
+                    userReserveTicket.setOrganize(eventInDatabase.getOrganize());
                     userReserveTicket.setEventTags(eventInDatabase.getEventTags());
                     userReserveTicket.setTicketKey(RandomStringUtils.randomAlphanumeric(8));
+                    System.out.println("Event In Data Base");
+                    System.out.println(eventInDatabase);
                     System.out.println(userReserveTicket);
+                    // หักจำนวนตั๋วที่เหลืออยู่ในระบบ
                     int numberOfTicket = eventInDatabase.getNumberOfTicket();
                     numberOfTicket--;
-
                     List<String> userLists = eventInDatabase.getUserLists();
                     userLists.add(userReserveTicket.getUid());
                     eventInDatabase.setUserLists(userLists);
@@ -539,11 +556,16 @@ public class EventService {
 
     public ResponseEntity saveuserNotification(UserNotification userNotification) {
         UserNotification userNotificationInDatabase = userNotificationRepository.findByUid(userNotification.getUid());
+        // บันทึก Token ครั้งแรกกรณีที่ผู้ใช้ไม่เคยมี Token เลย
         if (userNotificationInDatabase == null) {
             return ResponseEntity.status(HttpStatus.CREATED).body(userNotificationRepository.save(userNotification));
         }
+        System.out.println("New Token From User : " + userNotification.getNotificationToken());
+        // อัพเดท Token ตัวใหม่ไปให้แก่ User ตาม uid นั้นๆหากเคยมี Token อยู่แล้ว
         userNotificationInDatabase.setNotificationToken(userNotification.getNotificationToken());
-        return ResponseEntity.status(HttpStatus.CREATED).body(userNotificationInDatabase);
+        System.out.println("-------------------- Notification DAtabase -------------------");
+        System.out.println(userNotificationInDatabase);
+        return ResponseEntity.status(HttpStatus.CREATED).body(userNotificationRepository.save(userNotificationInDatabase));
     }
 
 //    @HystrixCommand(fallbackMethod = "fuckYouFallback")
@@ -685,6 +707,19 @@ public class EventService {
         System.out.println(badgeTags);
         List<Badge> matchingBadge = badgeRepository.findByBadgeTagsIsIn(badgeTags, PageRequest.of(page, contentPerPage));
         return ResponseEntity.status(HttpStatus.OK).body(matchingBadge);
+    }
+
+    public ResponseEntity deleteEventByElasticIdTest(UserEventTicket deletedEvent) {
+        System.out.println(deletedEvent);
+        String elasticEventId = deletedEvent.getElasticEventId();
+        Query query = Query.query(Criteria.where("elasticEventId").is(elasticEventId));
+        Update updateDeletedEventDetailToUserTicket = new Update();
+        updateDeletedEventDetailToUserTicket.set("deleteMessageDetail", deletedEvent.getDeleteMessageDetail());
+        updateDeletedEventDetailToUserTicket.set("isEventDelete", true);
+
+        mongoTemplate.findAndModify(query, updateDeletedEventDetailToUserTicket, UserEventTicket.class);
+
+        return null;
     }
 
 }

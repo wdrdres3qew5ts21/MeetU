@@ -15,8 +15,18 @@ public class UserViewEvent extends User{
         
     private String elasticEventId;
     
+    private String badgeId;
+    
     private List<String> eventTags;
 
+    public String getBadgeId() {
+        return badgeId;
+    }
+
+    public void setBadgeId(String badgeId) {
+        this.badgeId = badgeId;
+    }
+    
     public List<String> getEventTags() {
         return eventTags;
     }
