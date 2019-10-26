@@ -198,7 +198,7 @@ public class UserService {
             System.out.println(interestBehaviorList.toString());
             System.out.println("-------------");
             userRepository.save(userInDatabase);
-            return ResponseEntity.status(HttpStatus.CREATED).body(userInDatabase);
+            //return ResponseEntity.status(HttpStatus.CREATED).body(userInDatabase);
         }
         HashMap<String, String> responseBody = new HashMap();
         responseBody.put("response", "Not found any user in database !");

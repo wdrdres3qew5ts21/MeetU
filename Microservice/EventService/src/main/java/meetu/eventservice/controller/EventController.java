@@ -97,7 +97,7 @@ public class EventController {
 
     @PostMapping("/event/join")
     public ResponseEntity userJoinEvent(@RequestBody UserEventTicket userJoinEvent) {
-        return new ResponseEntity(eventService.userJoinEvent(userJoinEvent), HttpStatus.CREATED);
+        return eventService.userJoinEvent(userJoinEvent);
     }
 
     @PostMapping("/event/reserve")

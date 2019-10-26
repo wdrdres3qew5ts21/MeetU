@@ -375,7 +375,7 @@ public class EventService {
                 // ถ้า InterestIdea ที่เลือกไว้จาก preference ตรงกับ  TopN ที่เราคัดกรองมาก็จะบวกคะแนน
                 queryFilter.should().add(
                         QueryBuilders.termQuery("eventTags", topNumberParticipateEvent.get(i).getGenre().toLowerCase())
-                                .boost(1.2f)
+//                                .boost(1.2f)
                 );
             } else {
                 queryFilter.should().add(

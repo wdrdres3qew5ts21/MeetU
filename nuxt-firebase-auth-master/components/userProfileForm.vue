@@ -317,8 +317,13 @@ export default {
   methods: {
     ...mapActions(["testContext"]),
     onDecode: function(decodedString) {
-      let parsedTicket = JSON.parse(decodedString)
-      console.log(parsedTicket)
+      let parsedTicket= ""
+      try {
+        parsedTicket = JSON.parse(decodedString)
+        console.log(parsedTicket)
+      } catch (error) {
+       console.log('fail to QR decode',parsedTicket) 
+      }
       axios
         .post(`${process.env.EVENT_SERVICE}/event/join`,parsedTicket,{
           headers: {
@@ -334,10 +339,10 @@ export default {
           });
         })
         .catch(err=>{
-          his.$swal({
+          this.$swal({
             type: "error",
-            title: "Error to scan QR Code !!!",
-            text: "Error to scan QR Code"
+            title: "Fail to scan QR Code !!!",
+            text: `${err.response.data.response}`
           });
         });
     },
