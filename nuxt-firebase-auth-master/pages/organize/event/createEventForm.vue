@@ -116,8 +116,10 @@
         </GmapMap>
       </client-only>
     </v-layout>
-
     <br />
+    <br />
+    <span class="location" id="locationMap">Event Detail</span>
+    <v-text-field type="number" v-model="eventForm.numberOfTicket" label="amount of ticket" hint="Please fill number of ticket for this event."></v-text-field>
     <br />
     <v-flex xs12>
       <v-text-field
@@ -233,11 +235,11 @@
     <!--  -->
 
     <p style="margin:0" class="uploadPosterImg" @click="goToBadgeSettingPage()">Create Badge</p>
-    <p
+    <!-- <p
       style="margin:0"
       class="uploadPosterImg"
       @click="goToEventConditionPage()"
-    >Event Conditions Setting</p>
+    >Event Conditions Setting</p> -->
     <p style="margin:0" class="uploadPosterImg" @click="goToUploadImagePage()">Upload poster image</p>
 
     <br />
@@ -287,6 +289,7 @@ export default {
       menuEventEndDate: false,
       organizeList: [],
       eventForm: {
+        numberOfTicket: 10,
         organize: {
           organizeId: ""
         },
@@ -516,6 +519,7 @@ export default {
       this.eventForm.badge = eventTemplate.badge;
       this.eventForm.exp = eventTemplate.exp;
       this.eventForm.organize.organizeId = eventTemplate.organize.organizeId;
+      this.eventForm.numberOfTicket = eventTemplate.numberOfTicket;
 
       let geopoint = eventTemplate.location.geopoint;
 
