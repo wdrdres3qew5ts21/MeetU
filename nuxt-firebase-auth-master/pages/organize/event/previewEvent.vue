@@ -81,29 +81,36 @@
       color="primary"
       id="ticketSection"
     >GET TICKET</v-btn>
+<br>
+      <v-divider > </v-divider>
+      <br>
+      <h3>Contract</h3>
+      <br>
+      <p></p>
+      
+        <center>
+          <div style="width:150px;overflow:hidden">
+            <v-img
+              src="https://picsum.photos/id/11/500/300"
+              lazy-src="https://picsum.photos/id/11/10/6"
+              aspect-ratio="1"
+              class="grey lighten-2"
+              max-width="300"
+              style="border-radius:60%;"
+            ></v-img>
+          </div>
+        </center>
+        <br>
+        <b> Organizer Name : </b> {{organizeName}}  <br>
 
-    <h3>Contract</h3>
-    <p>Contract the oraganizer for more information</p>
-    <v-card class="mx-auto" elevation="1">
-      <center>
-        <div style="width:200px;overflow:hidden">
-          <v-img
-            src="https://picsum.photos/id/11/500/300"
-            lazy-src="https://picsum.photos/id/11/10/6"
-            aspect-ratio="1"
-            class="grey lighten-2"
-            max-width="300"
-            style="border-radius:60%;"
-          ></v-img>
-        </div>
-      </center>
-      <v-card-title justify-center>Organizer</v-card-title>
-      <v-card-text>Website</v-card-text>
-      <v-card-text>Email</v-card-text>
-      <v-card-actions>
-        <v-btn text>Click</v-btn>
-      </v-card-actions>
-    </v-card>
+         <b>Website  :</b> <br>
+         <b>Email  :</b> <br> <br>
+       <center>
+           <v-btn block color="#341646"  style="color:white">For more information</v-btn>
+       </center>
+
+       <br>
+       <br>
     <v-btn
         block
         class="saveButton white--text"
