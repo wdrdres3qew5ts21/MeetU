@@ -226,14 +226,28 @@ public class UserService {
 
             } else {
                 // เคยมี Badge อยู่แล้วแสดงว่าต้องเพิ่มคะแนนราย Badge แล้วก็เช็คว่าถึงเวลาอัพเลเวลไหม
-                System.out.println("Add badge to existing badge");
+                System.out.println("Own badge at least 1");
+                System.out.println("!!!!!!!!!!!!!!!");
+                System.out.println(userBadgeList);
+                System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                 UserBadge matchingBadgeForUpExp = userBadgeList.stream()
                         .filter(ownedBadge -> ownedBadge.getBadgeId().equals(eventBadge.getBadgeId()))
                         .findFirst()
-                        .get();
+                        .orElse(new UserBadge());
                 System.out.println("Found Matching !");
                 System.out.println(matchingBadgeForUpExp);
-                if (matchingBadgeForUpExp != null) {
+                if (matchingBadgeForUpExp.getBadgeId() == null) {
+                    // ไม่เคยครอบครอง Badge ชนิดนี้มาก่อนเลย ต้องทำการเพิม่ลงไปในระบบ 
+                    System.out.println("Add new badge to List< badge>");
+                    UserBadge userBadge = new UserBadge();
+                    userBadge.setBadgeId(eventBadge.getBadgeId());
+                    userBadge.setBadgeName(eventBadge.getBadgeName());
+                    userBadge.setExp(userJoinEvent.getExp());
+                    userBadge.setExpUntilUpToNextLevel(300);
+                    userBadge.setUnlockBadgeDate(new Date());
+                    userBadge.setUid(userInDatabase.getUid());
+                    userBadgeList.add(userBadge);
+                } else {
                     double currentExp = matchingBadgeForUpExp.getExp();
                     currentExp += userJoinEvent.getExp();
                     if (currentExp >= matchingBadgeForUpExp.getExpUntilUpToNextLevel()) {
@@ -242,6 +256,9 @@ public class UserService {
                         double expAfterLevelUp = currentExp - matchingBadgeForUpExp.getExpUntilUpToNextLevel();
                         matchingBadgeForUpExp.setExp(expAfterLevelUp);
                         matchingBadgeForUpExp.setLevel(currentLevel);
+                        double expUntilUpToNextLevel = matchingBadgeForUpExp.getExpUntilUpToNextLevel();
+                        expUntilUpToNextLevel = 1.2* expUntilUpToNextLevel;
+                        matchingBadgeForUpExp.setExpUntilUpToNextLevel(expUntilUpToNextLevel);
                         System.out.println("Up EXP !!!");
                         System.out.println(matchingBadgeForUpExp);
                     } else {
