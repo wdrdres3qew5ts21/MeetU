@@ -1,5 +1,6 @@
 <template>
   <div>
+    <br>
     <h2>Ticket(s)</h2>
     <br />
     <div v-for="(eventTicket, index) in userEventTicketList" :key="index">

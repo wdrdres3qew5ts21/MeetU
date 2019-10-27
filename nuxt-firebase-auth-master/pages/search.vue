@@ -146,6 +146,7 @@
         <v-img v-if="showTest" :src="emotionImg" max-width="60"></v-img>
 
   </transition>
+  <br><br>
 </div>
 </center>
 
