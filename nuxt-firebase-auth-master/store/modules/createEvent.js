@@ -51,6 +51,7 @@ const mutations = {
         state.eventTemplate.eventTags = eventTemplate.eventTags;
         state.eventTemplate.eventStartDate = eventTemplate.eventStartDate;
         state.eventTemplate.eventEndDate = eventTemplate.eventEndDate;
+        state.eventTemplate.numberOfTicket = eventTemplate.numberOfTicket;
     },
     setPictureDetail(state, pictureDetail) {
         state.eventTemplate.eventPictureCoverBase = pictureDetail.eventPictureCoverBase
