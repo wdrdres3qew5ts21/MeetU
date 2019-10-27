@@ -41,16 +41,16 @@
 
     
     <v-layout class="mb-4">
-      <v-text-field
+      <v-textarea
+        outline
         name="description"
         label="Description"
         color="pink"
-        textarea
         rows="6"
         required
         hide-details
         v-model="communityForm.communityDetail"
-      ></v-text-field>
+      ></v-textarea>
     </v-layout>
     <!-- <nuxt-link :to="`/community/communityId/?`" style="text-decoration-line:none;"> -->
       <br />

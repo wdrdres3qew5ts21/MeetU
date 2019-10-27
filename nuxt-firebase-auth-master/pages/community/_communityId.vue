@@ -85,16 +85,18 @@
     ></v-text-field>
             <br>
             Community Description
-               <v-text-field
+            <br>
+            <br>
+               <v-textarea
+               outline
         name="description"
         label="Description"
         color="pink"
-        textarea
         rows="6"
         required
         hide-details
         v-model="communityForm.communityDetail"
-      ></v-text-field>
+      ></v-textarea>
         </v-container>
         </v-card-text>
         <v-card-actions>
