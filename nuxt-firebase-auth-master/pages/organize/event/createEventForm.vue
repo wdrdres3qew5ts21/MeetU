@@ -145,17 +145,17 @@
     {{eventForm.badge}}
     <v-flex xs12 d-flex @click="findMatchingBadge()">
       <v-autocomplete
-        v-model="badgeSelect"
+        v-model="badge"
         :items="badgeList"
         box
         chips
         color="#341646"
         label="Select Badge"
         item-value="badgeId"
-        multiple
       >
         <template v-slot:selection="data">
           <v-chip
+          v-bind="data.attrs"
             :selected="data.selected"
             
             color="#341646"
@@ -165,12 +165,12 @@
             <v-avatar>
               <img :src="data.item.badgePicture" />
             </v-avatar>
-            {{ data.item.badgeName }}
+            <h3>{{ data.item.badgeName }}</h3>
           </v-chip>
         </template>
         <template v-slot:item="data">
           <template v-if="typeof data.item !== 'object'">
-            <v-list-tile-content v-text="data.item.badgeName"></v-list-tile-content>
+            <v-list-tile-content v-text="data.item"></v-list-tile-content>
           </template>
           <template v-else>
             <v-list-tile-avatar>
