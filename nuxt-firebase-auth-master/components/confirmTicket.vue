@@ -26,6 +26,9 @@
 </template>
 <script>
 export default {
-  name: "ConfirmTicket"
+  name: "ConfirmTicket",
+  props: {
+    ticketId: String
+  }
 };
 </script>

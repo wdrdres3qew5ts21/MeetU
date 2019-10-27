@@ -6,40 +6,53 @@
 package meetu.userservice.model;
 
 import java.util.Date;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  *
  * @author wdrdr
  */
+@Document
 public class UserBadge {
     
-    private int id;
+    @Id
+    private String id;
     
-    private String badge;
+    private String badgeId;
+    
+    private String badgeName;
     
     private int level;
     
-    private int exp;
+    private double exp;
     
     private double expUntilUpToNextLevel;
     
     private Date unlockBadgeDate;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
-
-    public String getBadge() {
-        return badge;
+    
+    public String getBadgeId() {
+        return badgeId;
     }
 
-    public void setBadge(String badge) {
-        this.badge = badge;
+    public void setBadgeId(String badgeId) {
+        this.badgeId = badgeId;
+    }
+
+    public String getBadgeName() {
+        return badgeName;
+    }
+
+    public void setBadgeName(String badgeName) {
+        this.badgeName = badgeName;
     }
 
     public int getLevel() {
@@ -50,11 +63,11 @@ public class UserBadge {
         this.level = level;
     }
 
-    public int getExp() {
+    public double getExp() {
         return exp;
     }
 
-    public void setExp(int exp) {
+    public void setExp(double exp) {
         this.exp = exp;
     }
 
@@ -76,7 +89,7 @@ public class UserBadge {
 
     @Override
     public String toString() {
-        return "Badge{" + "id=" + id + ", badge=" + badge + ", level=" + level + ", exp=" + exp + ", expUntilUpToNextLevel=" + expUntilUpToNextLevel + ", unlockBadgeDate=" + unlockBadgeDate + '}';
+        return "UserBadge{" + "badgeId=" + badgeId + ", badgeName=" + badgeName + ", level=" + level + ", exp=" + exp + ", expUntilUpToNextLevel=" + expUntilUpToNextLevel + ", unlockBadgeDate=" + unlockBadgeDate + '}';
     }
-    
+
 }

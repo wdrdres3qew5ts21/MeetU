@@ -97,6 +97,7 @@ public class EventController {
 
     @PostMapping("/event/join")
     public ResponseEntity userJoinEvent(@RequestBody UserEventTicket userJoinEvent) {
+        System.out.println("WTF this helll !!!!!!!!!!!!");
         return eventService.userJoinEvent(userJoinEvent);
     }
 

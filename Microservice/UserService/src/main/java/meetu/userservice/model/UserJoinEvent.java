@@ -10,13 +10,24 @@ package meetu.userservice.model;
  * @author Test
  */
 public class UserJoinEvent extends UserViewEvent{
+    
+    private double exp;
+    
     private boolean isJoinEvent;
-
+    
     public UserJoinEvent() {
     }
 
     public UserJoinEvent(boolean isJoinEvent) {
         this.isJoinEvent = isJoinEvent;
+    }
+
+    public double getExp() {
+        return exp;
+    }
+
+    public void setExp(double exp) {
+        this.exp = exp;
     }
     
     public boolean isIsJoinEvent() {
