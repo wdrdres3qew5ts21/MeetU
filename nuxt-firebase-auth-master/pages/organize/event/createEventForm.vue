@@ -152,12 +152,11 @@
         color="#341646"
         label="Select Badge"
         item-value="badgeId"
-        multiple
       >
         <template v-slot:selection="data">
           <v-chip
             :selected="data.selected"
-            
+            close
             color="#341646"
             class="chip--select-multi white--text"
             @click:close="remove(data.item)"
