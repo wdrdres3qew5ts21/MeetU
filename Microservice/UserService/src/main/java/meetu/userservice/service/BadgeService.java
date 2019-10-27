@@ -37,11 +37,19 @@ public class BadgeService {
     }
 
     public ResponseEntity findBadgeByFilter(List<String> badgeTags, String badgeName, int page, int contentPerPage) {
+        System.out.println("--------------");
+        System.out.println("Test Bebug");
+        System.out.println(badgeName);
         if (badgeTags == null & (badgeName.isEmpty() | badgeName == null)) {
             List<Badge> allBadge = badgeRepository.findAll();
             return ResponseEntity.status(HttpStatus.OK).body(allBadge);
         } else if (badgeTags != null & !badgeName.isEmpty()) {
             List<Badge> badgeFilterByTagsAndName = badgeRepository.findByBadgeTagsIsInAndBadgeNameLike(badgeTags, badgeName, PageRequest.of(page, contentPerPage));
+            return ResponseEntity.status(HttpStatus.OK).body(badgeFilterByTagsAndName);
+        }
+        else if (!badgeName.isEmpty()) {
+            System.out.println(badgeName);
+            List<Badge> badgeFilterByTagsAndName = badgeRepository.findByBadgeNameLike(badgeName, PageRequest.of(page, contentPerPage));
             return ResponseEntity.status(HttpStatus.OK).body(badgeFilterByTagsAndName);
         }
         System.out.println("Filter some bade");
