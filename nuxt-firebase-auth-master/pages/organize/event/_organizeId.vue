@@ -1,6 +1,43 @@
 <template>
   <div>
-    <h1>{{organize.organizeName}}</h1>
+
+    <v-img
+          :src="defaultImage"
+          aspect-ratio="1"
+          class="grey lighten-2"
+          max-width="1250"
+          max-height="200"
+        >
+    </v-img>
+    <br>
+    <v-layout row wrap  justify-start>
+    <v-flex xs3>
+<v-avatar size="80">
+   <v-img
+          :src="defaultImage"
+          aspect-ratio="1" 
+          max-width="80"
+          max-height="80"
+        ></v-img>
+</v-avatar>
+    </v-flex >
+    <v-flex xs7>
+      <br>
+       <h2>{{organize.organizeName}}</h2>
+
+    </v-flex>
+    <v-flex class="text-right">
+      <br>
+    <v-icon color="#341646" medium >edit</v-icon>
+    </v-flex>
+    </v-layout>
+   
+ 
+  <div>
+   Organize Description ........
+  </div>
+<br>
+
     <center>
       <nuxt-link :to="`/organize/event/createEventForm`" style="text-decoration-line:none;">
         <v-btn
@@ -57,7 +94,8 @@ export default {
       organize: {
         organizeId: "",
         organizeName: ""
-      }
+      },
+      defaultImage: "https://www.elegantthemes.com/blog/wp-content/uploads/2017/03/Facebook-Groups-for-Bloggers-shutterstock_555845587-ProStockStudio-FT.png"
     };
   },
   mounted() {
@@ -111,5 +149,9 @@ export default {
 
 .h1 {
   font-family: Roboto;
+  color: #341646;
+}
+.img-circle {
+    border-radius: 50%;
 }
 </style>
