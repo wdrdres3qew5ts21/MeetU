@@ -1,45 +1,137 @@
 <template>
   <div>
+      <v-layout row wrap>
+      <v-flex xs12>
+        <!-- <v-card class="mx-auto" elevation="0" outlined width="100%"> -->
+        <div>
+          <v-layout>
+            <v-dialog
+              v-model="dialog"
+              fullscreen
+              hide-overlay
+              transition="dialog-bottom-transition"
+            >
+              <template v-slot:activator="{ on }">
+                <v-btn flat icon color="#341646" v-on="on">
+                  <v-icon>filter_list</v-icon>
+                </v-btn>
+              </template>
+              <v-card>
+                <v-toolbar dark color="primary">
+                  <v-btn icon dark @click="dialog = false">
+                    <v-icon>navigate_before</v-icon>
+                  </v-btn>
+                  <v-toolbar-title>Filter</v-toolbar-title>
+                  <v-spacer></v-spacer>
+                </v-toolbar>
+
+                <v-list three-line subheader>
+                  <br />
+
+                  <v-subheader>Filter by community category</v-subheader>
+                  <v-layout class="mb-4">
+                    <!-- <v-combobox
+                      :items="categoryList"
+                      item-text="categoryLabel"
+                      item-value="categoryName"
+                      label="category"
+                      @input="updateCategoryFilter"
+                      chips
+                      clearable
+                      solo
+                      multiple
+                      sm6
+                      xs2
+                    >
+                    
+                      <template v-slot:selection="data">
+                        <v-chip
+                          :selected="data.selected"
+                         
+                        >
+                          <strong></strong>&nbsp;
+                        </v-chip>
+                      </template>
+                    </v-combobox> -->
+                  </v-layout>
+                  
+                
+                </v-list>
+
+                <v-btn
+                  class="white--text"
+                  depressed
+                  large
+                  block
+                  color="#341646"
+                  
+                >Search</v-btn>
+            
+
+              </v-card>
+            </v-dialog>
+
+            <v-text-field
+              class="questrial no-top-padding"
+              height="20px"
+              placeholder="Search..."
+             
+             
+            ></v-text-field>
+            <v-flex class="text-xs-right">
+              <v-btn
+                class="white--text"
+                depressed
+                small
+                color="#341646"
+                ref="searchButton"
+               
+              >Search</v-btn>
+            </v-flex>
+          </v-layout>
+        </div>
+        <!-- </v-card> -->
+      </v-flex>
+      <br />
+
+     
+      <!-- <v-flex xs12 v-else>
+          <h3>
+            <center>You can search event ;)</center>
+          </h3>
+      </v-flex>-->
+
+      <!-- <v-btn
+            color="#fc5577"
+            
+            :round="true"
+            text-color="white"
+            @click="findEventInArea()">
+            Click to search nearby event for {{areaOfEvent}}
+            
+      </v-btn>-->
+    </v-layout>
+
+
+<br><br>
+
+<!-- <center><div>
+  <v-icon size="50" @click="showTest = !showTest">insert_emoticon</v-icon>
+  <transition
+    name="custom-classes-transition"
+    enter-active-class="animated tada"
+    leave-active-class="animated tada"
+  >
+
+   
+    <h3 v-if="showTest">You can search event!</h3>
     <br>
-    <h2>Popular Communities</h2>
-    <br />
-    <v-carousel>
-      <v-carousel-item sm6 xs2 v-for="(item,i) in carouselsPhoto" :src="item.src" :key="i"></v-carousel-item>
-    </v-carousel>
-    <br />
-    <h3>Recent activity</h3>
-    <br />
+   
+        <v-img v-if="showTest" :src="emotionImg" max-width="60"></v-img>
 
-    <ul>
-      <li v-for="(n,i) in 4" :key="i">
-        <img class="myImage" v-for="(item,i) in items" :src="item.src" :key="i" />
-      </li>
-    </ul>
-
-    <center>
-      <v-btn class="black--text" block outline color="#341646" depressed large>
-        Filter community
-        <v-icon>filter_list</v-icon>
-      </v-btn>
-    </center>
-    <br />
-
-    <center>
-      <community-card
-        v-for="(community, index) in communityList"
-        :key="index"
-        :communityPictureCover="community.communityPictureCover"
-        :communityName="community.communityName"
-      ></community-card>
-    </center>
-    <br />
-    <br />
-    <center>
-      <nuxt-link :to="``" style="text-decoration-line:none;">
-        <v-btn class="black--text" outline color="#341646" depressed large>View more</v-btn>
-      </nuxt-link>
-    </center>
-
+  </transition>
+</div>
+</center> -->
     <br />
     <br />
     <center>
@@ -77,7 +169,7 @@ export default {
           src: "https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
         }
       ],
-
+      dialog: false,
       linksFooter: [
         "Home",
         "About Us",
