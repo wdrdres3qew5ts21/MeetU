@@ -44,7 +44,7 @@
 <br>
 
         <span>
-      Cover image (single picture/ landscape)
+      Organize image (circle picture)
 
       <br />
 
@@ -65,8 +65,8 @@
         <v-img
           :src="eventPictureCoverUrl.url"
           aspect-ratio="1"
-          class="grey lighten-2"
-          max-width="1250"
+          class="grey lighten-2 img-circle"
+          max-width="200"
           max-height="200"
         ></v-img>
       </div>
@@ -268,5 +268,8 @@ export default {
 
 .chooseFileButton {
   border: solid 1px #341646 !important;
+}
+.img-circle {
+    border-radius: 50%;
 }
 </style>
