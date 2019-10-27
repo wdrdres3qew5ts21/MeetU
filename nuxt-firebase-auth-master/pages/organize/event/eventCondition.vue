@@ -171,6 +171,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "createEventForm",
   data() {
@@ -203,6 +204,7 @@ export default {
     }
   },
   methods: {
+    ...mapGetters(['']),
     save(date) {
       this.$refs.menu.save(date);
     },
@@ -214,6 +216,7 @@ export default {
         startTime: this.ticketForm.startTime,
         endTime: this.ticketForm.endTime
       });
+       this.$router.push("/organize/event/createEventForm");
     },
     cancle() {
       this.$router.push("/organize/event/createEventForm");

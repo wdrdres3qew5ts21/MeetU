@@ -116,8 +116,10 @@
         </GmapMap>
       </client-only>
     </v-layout>
-
     <br />
+    <br />
+    <span class="location" id="locationMap">Event Detail</span>
+    <v-text-field type="number" v-model="eventForm.numberOfTicket" label="amount of ticket" hint="Please fill number of ticket for this event."></v-text-field>
     <br />
     <v-flex xs12>
       <v-text-field
@@ -142,10 +144,9 @@
 
     <!-- test -->
 
-    {{eventForm.badge}}
     <v-flex xs12 d-flex @click="findMatchingBadge()">
       <v-autocomplete
-        v-model="badge"
+        v-model="eventForm.badge.badgeId"
         :items="badgeList"
         box
         chips
@@ -155,14 +156,14 @@
       >
         <template v-slot:selection="data">
           <v-chip
-          v-bind="data.attrs"
+            v-bind="data.attrs"
             :selected="data.selected"
             color="#341646"
             class="chip--select-multi white--text"
             @click:close="remove(data.item)"
           >
             <v-avatar>
-              <img :src="data.item.badgePicture" />
+              <img :src="data.item.badgePicture"/>
             </v-avatar>
             <h3>{{ data.item.badgeName }}</h3>
           </v-chip>
@@ -233,11 +234,11 @@
     <!--  -->
 
     <p style="margin:0" class="uploadPosterImg" @click="goToBadgeSettingPage()">Create Badge</p>
-    <p
+    <!-- <p
       style="margin:0"
       class="uploadPosterImg"
       @click="goToEventConditionPage()"
-    >Event Conditions Setting</p>
+    >Event Conditions Setting</p> -->
     <p style="margin:0" class="uploadPosterImg" @click="goToUploadImagePage()">Upload poster image</p>
 
     <br />
@@ -287,6 +288,7 @@ export default {
       menuEventEndDate: false,
       organizeList: [],
       eventForm: {
+        numberOfTicket: 10,
         organize: {
           organizeId: ""
         },
@@ -310,7 +312,7 @@ export default {
         },
         badge: {
           badgeId: "",
-          exp: 0.0
+          exp: 30
         },
         badgeSelect: ["", ""],
         badgeImg: [
@@ -516,6 +518,7 @@ export default {
       this.eventForm.badge = eventTemplate.badge;
       this.eventForm.exp = eventTemplate.exp;
       this.eventForm.organize.organizeId = eventTemplate.organize.organizeId;
+      this.eventForm.numberOfTicket = eventTemplate.numberOfTicket;
 
       let geopoint = eventTemplate.location.geopoint;
 
