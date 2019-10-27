@@ -18,8 +18,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.sort;
 import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
 import org.springframework.data.mongodb.core.aggregation.LookupOperation;
+import org.springframework.data.mongodb.core.aggregation.SortOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import static org.springframework.data.mongodb.core.query.UntypedExampleMatcher.matching;
 import static org.springframework.data.mongodb.core.validation.Validator.criteria;
@@ -36,10 +38,10 @@ public class BadgeService {
 
     @Autowired
     private BadgeRepository badgeRepository;
-    
+
     @Autowired
     private UserBadgeRepository userBadgeRepository;
-    
+
     @Autowired
     private MongoTemplate mongoTemplate;
 
@@ -63,8 +65,7 @@ public class BadgeService {
         } else if (badgeTags != null & !badgeName.isEmpty()) {
             List<Badge> badgeFilterByTagsAndName = badgeRepository.findByBadgeTagsIsInAndBadgeNameLike(badgeTags, badgeName, PageRequest.of(page, contentPerPage));
             return ResponseEntity.status(HttpStatus.OK).body(badgeFilterByTagsAndName);
-        }
-        else if (!badgeName.isEmpty()) {
+        } else if (!badgeName.isEmpty()) {
             System.out.println(badgeName);
             List<Badge> badgeFilterByTagsAndName = badgeRepository.findByBadgeNameLike(badgeName, PageRequest.of(page, contentPerPage));
             return ResponseEntity.status(HttpStatus.OK).body(badgeFilterByTagsAndName);
@@ -86,15 +87,16 @@ public class BadgeService {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
-    public ResponseEntity findRankingOfUserInBadge(int page, int contentPerPage) {
-       LookupOperation lookupOperation = LookupOperation.newLookup()
+    public ResponseEntity findRankingOfUserInBadge(String badgeId, int page, int contentPerPage) {
+        LookupOperation lookupOperation = LookupOperation.newLookup()
                 .from("users")
                 .localField("uid")
                 .foreignField("uid")
-                .as("ticketDetail");
-//       AggregationOperation match = Aggregation.match(Criteria.where("uid").is("JdNBfUjngGZEedP8wr9XhY0V15q1"));
-        Aggregation aggregation = Aggregation.newAggregation(lookupOperation);
-        List<BasicDBObject> results = mongoTemplate.aggregate( aggregation,"userBadge", BasicDBObject.class).getMappedResults();
+                .as("userDetail");
+        AggregationOperation match = Aggregation.match(Criteria.where("badgeId").is(badgeId));
+        SortOperation sortLevelAndExp = sort(new Sort(Sort.Direction.DESC, "level","exp"));
+        Aggregation aggregation = Aggregation.newAggregation(match, lookupOperation, sortLevelAndExp);
+        List<BasicDBObject> results = mongoTemplate.aggregate(aggregation, "userBadge", BasicDBObject.class).getMappedResults();
         return ResponseEntity.status(HttpStatus.OK).body(results);
     }
 
