@@ -8,6 +8,7 @@
     <br />
     <v-layout row wrap>
       <v-flex xs6>
+      
         <v-card color="white" max-width="120" style="border-radius:50%">
           <v-img :aspect-ratio="1/1" :src="getUser.photoURL"></v-img>
         </v-card>
@@ -51,6 +52,7 @@
 
  <v-card flat>
           <div v-if="organizeList">
+           
             <nuxt-link
               v-for="(organize, index) in organizeList"
               :key="index"
