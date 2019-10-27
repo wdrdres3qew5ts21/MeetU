@@ -147,7 +147,7 @@ const actions = {
                                                 title: "Upload Event success!!",
                                                 text: `Upload Event success!!`
                                             });
-                                            this._vm.$router.push(`/event/${eventTemplate.data.elasticEventId}`)
+                                           
                                         }).catch(error => {
                                             this._vm.$swal({
                                                 type: "error",

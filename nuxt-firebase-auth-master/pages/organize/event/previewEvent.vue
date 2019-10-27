@@ -173,7 +173,11 @@ export default {
       description: "",
       place: null,
       pinLocation: {},
-      organize: {}
+      organize: {
+        organizeName: '',
+        website: '',
+        email: ''
+      }
     };
   },
   computed: {
