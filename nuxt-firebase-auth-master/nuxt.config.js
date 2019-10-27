@@ -70,8 +70,7 @@ module.exports = {
     { src: '~/plugins/vue-loading.js',  mode: 'client'},
     { src: '~/plugins/vue-qrcode-generator.js', mode: 'client' },
     { src: '~/plugins/vue-qrcode-reader.js', ssr: false },
-    { src: '~/plugins/vue2-google-maps.js', ssr: false },
-    { src: '~/plugins/vue-croppa.js', ssr: false }
+    { src: '~/plugins/vue2-google-maps.js', ssr: false }
    
     
   ],

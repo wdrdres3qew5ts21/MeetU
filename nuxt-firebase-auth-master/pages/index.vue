@@ -14,7 +14,7 @@
         <nuxt-link to="/selectGenres">
           <h3>Setting Recommedation</h3>
         </nuxt-link>
-        <h1>Recomended Event</h1>
+        <h2>Recomended Event</h2>
         <client-only>
           <carousel :perPage="1" :paginationEnabled="false">
             <slide v-for="(event, index) in recommendedEventList" :key="index">
@@ -45,7 +45,7 @@
         <br />
       </div>
 
-      <h1>Popular Event</h1>
+      <h2>Popular Event</h2>
       <client-only>
         <carousel :perPage="1" :paginationEnabled="false">
           <slide v-for="(event, index) in popularEventList" :key="index">
@@ -75,7 +75,7 @@
       <!-- <event-list :eventList="recentlyEventList" link="/event"></event-list> -->
       <br />
 
-      <h1>New Event</h1>
+      <h2>New Event</h2>
       <client-only>
         <carousel :perPage="1" :paginationEnabled="false">
           <slide v-for="(event, index) in recentlyEventList" :key="index">
@@ -105,7 +105,7 @@
       <!-- <event-list :eventList="recentlyEventList" link="/event"></event-list> -->
       <br />
       <!-- Community -->
-      <h1>Community</h1>
+      <h2>Community</h2>
       <community-card
         v-for="(community, index) in communityList"
         :key="index"
