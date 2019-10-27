@@ -143,15 +143,16 @@
     <!-- test -->
 
     {{eventForm.badge}}
+ 
     <v-flex xs12 d-flex @click="findMatchingBadge()">
       <v-autocomplete
-        v-model="badge"
+        v-model="eventForm.badge"
         :items="badgeList"
         box
         chips
         color="#341646"
         label="Select Badge"
-        item-value="badgeId"
+        item-value="exp"
       >
         <template v-slot:selection="data">
           <v-chip
