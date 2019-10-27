@@ -5,13 +5,24 @@
  */
 package meetu.userservice.service;
 
+import com.mongodb.BasicDBObject;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import meetu.userservice.model.Badge;
 import meetu.userservice.model.UserBadge;
 import meetu.userservice.repository.BadgeRepository;
+import meetu.userservice.repository.UserBadgeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
+import org.springframework.data.mongodb.core.aggregation.LookupOperation;
+import org.springframework.data.mongodb.core.query.Criteria;
+import static org.springframework.data.mongodb.core.query.UntypedExampleMatcher.matching;
+import static org.springframework.data.mongodb.core.validation.Validator.criteria;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -25,6 +36,12 @@ public class BadgeService {
 
     @Autowired
     private BadgeRepository badgeRepository;
+    
+    @Autowired
+    private UserBadgeRepository userBadgeRepository;
+    
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     public ResponseEntity createBadge(Badge badge) {
         Badge badgeInDatabase = badgeRepository.findByBadgeNameEquals(badge.getBadgeName());
@@ -67,6 +84,18 @@ public class BadgeService {
         }
         response.put("response", "Fail to create Event Because Badge ID Not found : ");
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    public ResponseEntity findRankingOfUserInBadge(int page, int contentPerPage) {
+       LookupOperation lookupOperation = LookupOperation.newLookup()
+                .from("users")
+                .localField("uid")
+                .foreignField("uid")
+                .as("ticketDetail");
+//       AggregationOperation match = Aggregation.match(Criteria.where("uid").is("JdNBfUjngGZEedP8wr9XhY0V15q1"));
+        Aggregation aggregation = Aggregation.newAggregation(lookupOperation);
+        List<BasicDBObject> results = mongoTemplate.aggregate( aggregation,"userBadge", BasicDBObject.class).getMappedResults();
+        return ResponseEntity.status(HttpStatus.OK).body(results);
     }
 
 }

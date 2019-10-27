@@ -19,6 +19,8 @@ public class UserBadge {
     @Id
     private String id;
     
+    private String uid;
+    
     private String badgeId;
     
     private String badgeName;
@@ -31,6 +33,14 @@ public class UserBadge {
     
     private Date unlockBadgeDate;
 
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+    
     public String getId() {
         return id;
     }

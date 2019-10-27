@@ -13,20 +13,8 @@ import org.springframework.data.annotation.Id;
  */
 public class UserBadgeRanking extends UserBadge{
     
-    private String uid;
 
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
-
-    @Override
-    public String toString() {
-        return "UserBadgeRanking{" + "uid=" + uid + '}';
-    }
+ 
 
    
 }

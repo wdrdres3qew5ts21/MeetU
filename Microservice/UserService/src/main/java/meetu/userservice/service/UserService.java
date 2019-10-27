@@ -220,6 +220,7 @@ public class UserService {
                 userBadge.setExp(userJoinEvent.getExp());
                 userBadge.setExpUntilUpToNextLevel(300);
                 userBadge.setUnlockBadgeDate(new Date());
+                userBadge.setUid(userInDatabase.getUid());
                 userBadgeList.add(userBadge);
                 // ต้องบันทึก Badge นี้ลง Table Ranking ที่เห็นทุกๆ Badge 
 
@@ -246,6 +247,7 @@ public class UserService {
                     } else {
                         matchingBadgeForUpExp.setExp(currentExp);
                     }
+                    matchingBadgeForUpExp.setUid(userInDatabase.getUid());
                     System.out.println("------ fin stream update exp level -----");
                     System.out.println(matchingBadgeForUpExp);
                     System.out.println(userBadgeList);
