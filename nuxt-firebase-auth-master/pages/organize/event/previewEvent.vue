@@ -229,6 +229,7 @@ export default {
       this.eventPictureCover = eventTemplate.eventPictureCoverBase;
       this.eventPictureLists = eventTemplate.eventPictureListsBase;
       this.eventStartDate = eventTemplate.eventStartDate;
+      this.numberOfTicket = eventTemplate.numberOfTicket;
 
       let geopoint = eventTemplate.location.geopoint;
 

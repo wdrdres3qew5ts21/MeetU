@@ -204,6 +204,7 @@ export default {
     }
   },
   methods: {
+    ...mapGetters(['']),
     save(date) {
       this.$refs.menu.save(date);
     },
