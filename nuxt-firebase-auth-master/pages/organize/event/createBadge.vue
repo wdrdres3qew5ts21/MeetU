@@ -29,9 +29,9 @@
         <v-img
           :src="badgePictureUrl"
           aspect-ratio="1"
-          class="grey lighten-2"
-          max-width="1250"
-          max-height="200"
+          class="grey lighten-2 img-circle"
+          max-width="200"
+          max-height="200"        
         ></v-img>
       </div>
     </span>
@@ -229,23 +229,9 @@ export default {
     remove(item) {
       this.chips.splice(this.chips.indexOf(item), 1);
       this.chips = [...this.chips];
-    },
-      onInit() {
-      this.croppa.addClipPlugin(function (ctx, x, y, w, h) {
-        /*
-         * ctx: canvas context
-         * x: start point (top-left corner) x coordination
-         * y: start point (top-left corner) y coordination
-         * w: croppa width
-         * h: croppa height
-        */
-        console.log(x, y, w, h)
-        ctx.beginPath()
-        ctx.arc(x + w / 2, y + h / 2, w / 2, 0, 2 * Math.PI, true)
-        ctx.closePath()
-      })
     }
-  }
+    }
+  
 };
 </script>
 
@@ -266,5 +252,8 @@ export default {
 
 .chooseFileButton {
   border: solid 1px #341646 !important;
+}
+.img-circle {
+    border-radius: 50%;
 }
 </style>

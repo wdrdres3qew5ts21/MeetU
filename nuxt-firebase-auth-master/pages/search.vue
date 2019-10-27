@@ -45,11 +45,12 @@
                       sm6
                       xs2
                     >
+                     <!-- close
+                          @input="remove(data.item.categoryName)" -->
                       <template v-slot:selection="data">
                         <v-chip
                           :selected="data.selected"
-                          close
-                          @input="remove(data.item.categoryName)"
+                         
                         >
                           <strong>{{ data.item.categoryName}}</strong>&nbsp;
                         </v-chip>
