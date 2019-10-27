@@ -1,13 +1,7 @@
 <template>
   <div>
-  <croppa
-    v-model="croppa"
-    :width="250"
-    :height="250"
-    prevent-white-space
-    initial-image="https://zhanziyang.github.io/vue-croppa/static/500.jpeg"
-    @init="onInit"
-  ></croppa>
+
+
     <!-- ห้าม format หน้านี้เด็ดขาดเพราะ text field จะหาย
             <v-text-field
             :append-outer-icon="comment ? 'send' : 'send'"
@@ -63,24 +57,73 @@
     />
     <br />
     <br />
-
         <!-- Upload Cover picture Do not do any thing now -->
 
 
-
-    <h2>Community Name</h2>
+          <!-- Edit Description Admin only -->
+          <v-layout row wrap>
+            <v-flex class="text-xs-left">
+    <h2>Community Name</h2> 
+            </v-flex>
+    <v-flex class="text-xs-right">
+    <v-dialog v-model="dialog" persistent max-width="600px">
+      <template v-slot:activator="{ on }">
+        <v-btn depressed flat v-on="on"><v-icon color="#341646" medium >edit</v-icon>  </v-btn>
+      </template>
+      <v-card>
+        <v-card-title>
+          <span class="headline">Edit Community</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container grid-list-md>
+            Community Name
+            <v-text-field
+      v-model="communityForm.communityName"
+      
+      label="* Community Name"
+      required
+    ></v-text-field>
+            <br>
+            Community Description
+               <v-text-field
+        name="description"
+        label="Description"
+        color="pink"
+        textarea
+        rows="6"
+        required
+        hide-details
+        v-model="communityForm.communityDetail"
+      ></v-text-field>
+        </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" flat @click="dialog = false">Close</v-btn>
+          <v-btn color="blue darken-1" flat @click="dialog = false">Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    </v-flex>
+          </v-layout>
     <p size="1px">description about community</p>
+
     <br />
+
+        <!-- Edit Description Admin only -->
+
+
 
     <!-- ------Button for Joined community and un Joined-------  -->
     <v-flex class="text-xs-left">
       <v-btn
         text
         color="grey lighten-3"
-        class="joinButton"
+
         @click="join = !join"
       >{{ join ? 'follow ' : 'Unfollow' }}</v-btn>
     </v-flex>
+    <br>
  <!-- ------Button for Joined community and un Joined-------  -->
 
     <div v-show="!join">
@@ -170,7 +213,11 @@
         </div>
         <v-container grid-list-xs fluid style="padding:5px">
           <br />
-           
+             <v-list>
+            <v-list-tile-content>
+              <div class="textarea" contenteditable="false">{{todo.post}}</div>
+            </v-list-tile-content>
+          </v-list>
           <v-img
           v-for="(image, index) in postPictureListsUrl "
           :key="index"
@@ -188,11 +235,7 @@
         @change="onPictureListUpload"
         accept="image/*"
           /> 
-          <v-list>
-            <v-list-tile-content>
-              <div class="textarea" contenteditable="false">{{todo.post}}</div>
-            </v-list-tile-content>
-          </v-list>
+        
         </v-container>
 
         <v-card-text rounded outlined class="mx-auto">
@@ -336,7 +379,7 @@ export default {
   name: "communityDetail",
   data() {
     return {
-      croppa:{},
+      dialog: false,
       join: false,
       imageUrl: "",
       image: null,
@@ -364,7 +407,10 @@ export default {
       show: false,
       message: "Hey!",
       marker: true,
-      iconIndex: 0
+      communityForm: {
+         communityName: "",
+         communityDetail: ""
+      }
     };
   },
   components: { 
@@ -441,7 +487,7 @@ export default {
       });
       this.newPost = "";
       console.log(this.postList);
-      
+      console.log(this.croppa);
     },
     // removePost(todo) {
     //   const postIndex = this.postList.indexOf(todo);
@@ -489,25 +535,8 @@ export default {
     },
       handleUploaded(resp) {
         this.userAvatar = resp.relative_url;
-      },
-
-      onInit() {
-      this.croppa.addClipPlugin(function (ctx, x, y, w, h) {
-        /*
-         * ctx: canvas context
-         * x: start point (top-left corner) x coordination
-         * y: start point (top-left corner) y coordination
-         * w: croppa width
-         * h: croppa height
-        */
-        console.log(x, y, w, h)
-        ctx.beginPath()
-        ctx.arc(x + w / 2, y + h / 2, w / 2, 0, 2 * Math.PI, true)
-        ctx.closePath()
-      })
-    }
-
-
+      }
+   
     // addComment() {
     //     this.postList.commentList.push({
     //     // commentList: this.commentList.push({
