@@ -270,7 +270,7 @@ public class EventService {
                 updateDeletedEventDetailToUserTicket.set("isEventDelete", true);
                 mongoTemplate.findAndModify(query, updateDeletedEventDetailToUserTicket, UserEventTicket.class);
                 // ลบตั๋วจริงๆออกจาก MongoDB
-                eventRepository.deleteById(elasticEventId);
+                eventRepository.deleteByElasticEventId(elasticEventId);
 
                 System.out.println("---- Deleted Event Mongo ----");
             } catch (Exception ex) {
