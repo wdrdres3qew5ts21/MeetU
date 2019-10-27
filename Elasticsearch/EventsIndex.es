@@ -26,6 +26,43 @@ PUT /events
   }
 }
 
+// Analyzer แบบเพิ่มความละเอียดในการแก้ grammar
+PUT /events
+{
+  "settings": {
+    "analysis": {
+      "filter": {
+        "thai_stop": {
+          "type":       "stop",
+          "stopwords":  "_thai_" 
+        },
+        "en_stemmer" : {
+          "type" : "stemmer",
+          "name" : "english"
+        },
+        "filter_shingle": {
+          "type": "shingle",
+          "max_shingle_size": 3
+        }
+        
+      },
+      "analyzer": {
+        "thai_analyzer": {
+          "tokenizer":  "thai",
+          "filter": [
+            "lowercase",
+            "decimal_digit",
+            "thai_stop",
+            "en_stemmer",
+            "filter_shingle"
+          ]
+        }
+      }
+    }
+  }
+}
+
+
 2) สร้าง Mapping ให้ type ใช้งานได้ตามที่ตั้งเอาไว้สิ่งที่ต้องทำได้แก่การจัดการการค้นหาของรายละเอียดกิจกรรม
 จึงต้องทำเป็น Full Text Search รวมถึงชื่อกิจกรรมด้วยเช่นกันลองสังเกตที่ตรง fields นั้นจะเป้นการระบุเพิ่มให้
 field หนึ่งปกติของเราเช่น field eventName มีประเภทเป้นทั้งประเภทหลักคือ text สำหรับการทำ full text Search
@@ -138,6 +175,8 @@ GET /events/_search
     "match_all": {}
   }
 }
+
+
 
 Filter คือช่วงที่อยู่ในการถามที่เป้นแค่ใช้กับไม่เท่านั้นจึงต้องเป้นพวก range หรือ term queryนั่นเองซึ่งจะมี must_not หรือ should 
 ด้วยเช่นกันใช้ในการเพิ่มแต้มคะแนนเวลาค้นหา
