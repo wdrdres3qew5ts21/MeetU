@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import meetu.userservice.filters.TokenAuthenticationService;
@@ -208,8 +209,11 @@ public class UserService {
             // ทำการเพิ่ม EXP ให้กับ Badge นั้นๆและถ้ายังไม่เคยมี Badge ให้ทำการสร้าง Badge ใหม่เข้าไป
             Badge eventBadge = badgeRepository.findById(userJoinEvent.getBadgeId()).get();
             List<UserBadge> userBadgeList = userInDatabase.getBadgeList();
+            System.out.println("DSFDSFSDF");
+
             if (userBadgeList.size() == 0) {
                 // ไม่เคยมี Badge เลยให้ทำการ push ลงไปเลย
+                System.out.println("Initial New Badge from scratch");
                 UserBadge userBadge = new UserBadge();
                 userBadge.setBadgeId(eventBadge.getBadgeId());
                 userBadge.setBadgeName(eventBadge.getBadgeName());
@@ -218,25 +222,36 @@ public class UserService {
                 userBadge.setUnlockBadgeDate(new Date());
                 userBadgeList.add(userBadge);
                 // ต้องบันทึก Badge นี้ลง Table Ranking ที่เห็นทุกๆ Badge 
-                userBadgeRepository.saveAll(userBadgeList);
 
             } else {
                 // เคยมี Badge อยู่แล้วแสดงว่าต้องเพิ่มคะแนนราย Badge แล้วก็เช็คว่าถึงเวลาอัพเลเวลไหม
-                userBadgeList.forEach((userBadge) -> {
-                    if (userBadge.getBadgeId().equals(eventBadge.getBadgeId())) {
-                        double currentExp = userBadge.getExp();
-                        currentExp += userJoinEvent.getExp();
-                        if (currentExp >= userBadge.getExpUntilUpToNextLevel()) {
-                            int currentLevel = userBadge.getLevel();
-                            currentLevel++;
-                            double expAfterLevelUp = currentExp - userBadge.getExpUntilUpToNextLevel();
-                            userBadge.setExp(expAfterLevelUp);
-                            userBadge.setLevel(currentLevel);
-                        }
+                System.out.println("Add badge to existing badge");
+                UserBadge matchingBadgeForUpExp = userBadgeList.stream()
+                        .filter(ownedBadge -> ownedBadge.getBadgeId().equals(eventBadge.getBadgeId()))
+                        .findFirst()
+                        .get();
+                System.out.println("Found Matching !");
+                System.out.println(matchingBadgeForUpExp);
+                if (matchingBadgeForUpExp != null) {
+                    double currentExp = matchingBadgeForUpExp.getExp();
+                    currentExp += userJoinEvent.getExp();
+                    if (currentExp >= matchingBadgeForUpExp.getExpUntilUpToNextLevel()) {
+                        int currentLevel = matchingBadgeForUpExp.getLevel();
+                        currentLevel++;
+                        double expAfterLevelUp = currentExp - matchingBadgeForUpExp.getExpUntilUpToNextLevel();
+                        matchingBadgeForUpExp.setExp(expAfterLevelUp);
+                        matchingBadgeForUpExp.setLevel(currentLevel);
+                        System.out.println("Up EXP !!!");
+                        System.out.println(matchingBadgeForUpExp);
+                    } else {
+                        matchingBadgeForUpExp.setExp(currentExp);
                     }
-                });
+                    System.out.println("------ fin stream update exp level -----");
+                    System.out.println(matchingBadgeForUpExp);
+                    System.out.println(userBadgeList);
+                }
             }
-
+            userBadgeRepository.saveAll(userBadgeList);
             userRepository.save(userInDatabase);
             return ResponseEntity.status(HttpStatus.CREATED).body(userInDatabase);
         }
