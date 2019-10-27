@@ -6,7 +6,9 @@
 package meetu.userservice.repository;
 
 import java.util.List;
+import java.util.Optional;
 import meetu.userservice.model.User;
+import meetu.userservice.model.UserBadge;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
@@ -24,6 +26,8 @@ public interface UserRepository extends MongoRepository<User, String> {
     public User findByUsername(String username);
     
     public User findByUid(String uid);
+
+    public Optional<User> findByBadgeListBadgeIdEquals(String badgeId);
     
     
 }

@@ -5,13 +5,26 @@
  */
 package meetu.userservice.service;
 
+import com.mongodb.BasicDBObject;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import meetu.userservice.model.Badge;
 import meetu.userservice.model.UserBadge;
 import meetu.userservice.repository.BadgeRepository;
+import meetu.userservice.repository.UserBadgeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.sort;
+import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
+import org.springframework.data.mongodb.core.aggregation.LookupOperation;
+import org.springframework.data.mongodb.core.aggregation.SortOperation;
+import org.springframework.data.mongodb.core.query.Criteria;
+import static org.springframework.data.mongodb.core.query.UntypedExampleMatcher.matching;
+import static org.springframework.data.mongodb.core.validation.Validator.criteria;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -26,6 +39,12 @@ public class BadgeService {
     @Autowired
     private BadgeRepository badgeRepository;
 
+    @Autowired
+    private UserBadgeRepository userBadgeRepository;
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
     public ResponseEntity createBadge(Badge badge) {
         Badge badgeInDatabase = badgeRepository.findByBadgeNameEquals(badge.getBadgeName());
         if (badgeInDatabase == null) {
@@ -37,11 +56,18 @@ public class BadgeService {
     }
 
     public ResponseEntity findBadgeByFilter(List<String> badgeTags, String badgeName, int page, int contentPerPage) {
+        System.out.println("--------------");
+        System.out.println("Test Bebug");
+        System.out.println(badgeName);
         if (badgeTags == null & (badgeName.isEmpty() | badgeName == null)) {
             List<Badge> allBadge = badgeRepository.findAll();
             return ResponseEntity.status(HttpStatus.OK).body(allBadge);
         } else if (badgeTags != null & !badgeName.isEmpty()) {
             List<Badge> badgeFilterByTagsAndName = badgeRepository.findByBadgeTagsIsInAndBadgeNameLike(badgeTags, badgeName, PageRequest.of(page, contentPerPage));
+            return ResponseEntity.status(HttpStatus.OK).body(badgeFilterByTagsAndName);
+        } else if (!badgeName.isEmpty()) {
+            System.out.println(badgeName);
+            List<Badge> badgeFilterByTagsAndName = badgeRepository.findByBadgeNameLike(badgeName, PageRequest.of(page, contentPerPage));
             return ResponseEntity.status(HttpStatus.OK).body(badgeFilterByTagsAndName);
         }
         System.out.println("Filter some bade");
@@ -59,6 +85,19 @@ public class BadgeService {
         }
         response.put("response", "Fail to create Event Because Badge ID Not found : ");
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    public ResponseEntity findRankingOfUserInBadge(String badgeId, int page, int contentPerPage) {
+        LookupOperation lookupOperation = LookupOperation.newLookup()
+                .from("users")
+                .localField("uid")
+                .foreignField("uid")
+                .as("userDetail");
+        AggregationOperation match = Aggregation.match(Criteria.where("badgeId").is(badgeId));
+        SortOperation sortLevelAndExp = sort(new Sort(Sort.Direction.DESC, "level","exp"));
+        Aggregation aggregation = Aggregation.newAggregation(match, lookupOperation, sortLevelAndExp);
+        List<BasicDBObject> results = mongoTemplate.aggregate(aggregation, "userBadge", BasicDBObject.class).getMappedResults();
+        return ResponseEntity.status(HttpStatus.OK).body(results);
     }
 
 }

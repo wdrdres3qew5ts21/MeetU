@@ -38,7 +38,7 @@ export default {
           src: "https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
         }
       ],
-
+      dialog: false,
       linksFooter: [
         "Home",
         "About Us",
