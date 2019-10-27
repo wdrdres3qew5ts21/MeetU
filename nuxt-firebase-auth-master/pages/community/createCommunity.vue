@@ -17,7 +17,6 @@
                       item-text="categoryLabel"
                       item-value="categoryName"
                       label="Community Category"
-                    
                       chips
                       clearable
                       v-model="communityForm.categorySelected"
