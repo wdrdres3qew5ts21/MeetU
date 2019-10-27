@@ -157,7 +157,6 @@
           <v-chip
           v-bind="data.attrs"
             :selected="data.selected"
-            close
             color="#341646"
             class="chip--select-multi white--text"
             @click:close="remove(data.item)"
