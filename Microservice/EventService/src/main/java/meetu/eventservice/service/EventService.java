@@ -489,17 +489,23 @@ public class EventService {
 
     public ResponseEntity userJoinEvent(UserEventTicket userJoinEvent) {
         HashMap<String, Object> responseBody = new HashMap<>();
+        System.out.println("USer Join Event From Frpntend");
+            System.out.println(userJoinEvent);
         System.out.println("------ Rest Template ------");
         UserEventTicket userEventTicketInDatabase = userEventTicketRespository.findByTicketId(userJoinEvent.getTicketId());
         if (userEventTicketInDatabase != null) {
+            
             System.out.println("!! userEventTicket !!");
             System.out.println(userEventTicketInDatabase);
             if (userEventTicketInDatabase.isIsParticipate() == false) {
-                Event eventFromDatabase = eventRepository.findById(userEventTicketInDatabase.getElasticEventId()).get();
-
                 if (userEventTicketInDatabase.getTicketKey().equals(userJoinEvent.getTicketKey()) && userEventTicketInDatabase.getUid().equals(userJoinEvent.getUid())) {
+                    // logic ถูกต้อง validate ตั๋วจริงๆว่ามาจากระบบของเรา
+                    // ทำการบันทึกว่าตั๋วนี้ได้ถูกใช้ไปหลัง check in สำเร็จและ update exp พร้อม interest ของผู้ใช้งานไปยัง UserService
+                    Event eventFromDatabase = eventRepository.findByElasticEventId(userEventTicketInDatabase.getElasticEventId());
                     userEventTicketInDatabase.setIsParticipate(true);
                     userEventTicketInDatabase.setParticipateDate(new Timestamp(System.currentTimeMillis()));
+                    userEventTicketInDatabase.setBadgeId(eventFromDatabase.getBadge().getBadgeId());
+                    userEventTicketInDatabase.setExp(eventFromDatabase.getBadge().getExp());
                     restTemplate.postForEntity(USERSERVICE_URL + "/user/interest", userEventTicketInDatabase, UserJoinEvent.class);
                     return ResponseEntity.status(HttpStatus.CREATED).body(userEventTicketRespository.save(userEventTicketInDatabase));
                 }
@@ -621,7 +627,7 @@ public class EventService {
         System.out.println("Doom day hystrix!!!");
         return ResponseEntity.status(HttpStatus.OK).body("fuq");
     }
-    
+
     // join เพื่อหา Detail ของ Event ที่ตั๋วนั้นถูกกดมาใช้งาน
     public ResponseEntity findUserTicketHistory(String uid) {
         LookupOperation lookupOperation = LookupOperation.newLookup()
@@ -636,13 +642,11 @@ public class EventService {
         System.out.println(results);
         return ResponseEntity.status(HttpStatus.OK).body(results);
     }
-    
+
     public ResponseEntity findUserTicketHistoryNoAggregate(String uid) {
         List<UserEventTicket> ticketsOfUser = userEventTicketRespository.findByUid(uid);
         return ResponseEntity.status(HttpStatus.OK).body(ticketsOfUser);
     }
-    
-    
 
     public ResponseEntity createEventCategory(Category category) {
         HashMap<String, String> responseBody = new HashMap<>();

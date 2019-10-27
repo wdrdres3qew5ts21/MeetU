@@ -13,24 +13,25 @@ import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
 import com.google.gson.JsonArray;
 import java.lang.reflect.Field;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import meetu.userservice.filters.TokenAuthenticationService;
+import meetu.userservice.model.Badge;
 import meetu.userservice.model.InterestGenreBehavior;
-import meetu.userservice.model.Organize;
 import meetu.userservice.model.Persona;
-import meetu.userservice.model.RoleList;
 import meetu.userservice.repository.UserRepository;
 import meetu.userservice.model.User;
+import meetu.userservice.model.UserBadge;
 import meetu.userservice.model.UserJoinEvent;
 import meetu.userservice.model.UserNotification;
-import meetu.userservice.model.UserOrganizeRole;
 import meetu.userservice.model.UserViewEvent;
+import meetu.userservice.repository.BadgeRepository;
 import meetu.userservice.repository.OrganizeRepository;
+import meetu.userservice.repository.UserBadgeRepository;
 import meetu.userservice.repository.UserNotificationRepository;
 import meetu.userservice.repository.UserOrganizeRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +61,12 @@ public class UserService {
 
     @Autowired
     private UserOrganizeRoleRepository userOrganizeRoleRepository;
+
+    @Autowired
+    private UserBadgeRepository userBadgeRepository;
+
+    @Autowired
+    private BadgeRepository badgeRepository;
 
     public User createUserFromFirebaase(User user) {
         System.out.println("----- Create User/ Update User -------");
@@ -183,6 +190,7 @@ public class UserService {
             List<InterestGenreBehavior> interestBehaviorList = userPersona.getInterestBehaviorList();
             System.out.println("Before Update Interest Behavior");
             System.out.println(interestBehaviorList.toString());
+            // เริ่มอัพเดท persona ใให้ตรงกับ tag ของกิจกรรมที่ส่งมา
             interestBehaviorList.forEach(interestBehavior -> {
                 String genre = interestBehavior.getGenre();
                 if (userJoinEvent.getEventTags().contains(genre) == true) {
@@ -197,6 +205,38 @@ public class UserService {
             System.out.println("After Update Interest Behavior");
             System.out.println(interestBehaviorList.toString());
             System.out.println("-------------");
+            // ทำการเพิ่ม EXP ให้กับ Badge นั้นๆและถ้ายังไม่เคยมี Badge ให้ทำการสร้าง Badge ใหม่เข้าไป
+            Badge eventBadge = badgeRepository.findById(userJoinEvent.getBadgeId()).get();
+            List<UserBadge> userBadgeList = userInDatabase.getBadgeList();
+            if (userBadgeList.size() == 0) {
+                // ไม่เคยมี Badge เลยให้ทำการ push ลงไปเลย
+                UserBadge userBadge = new UserBadge();
+                userBadge.setBadgeId(eventBadge.getBadgeId());
+                userBadge.setBadgeName(eventBadge.getBadgeName());
+                userBadge.setExp(userJoinEvent.getExp());
+                userBadge.setExpUntilUpToNextLevel(300);
+                userBadge.setUnlockBadgeDate(new Date());
+                userBadgeList.add(userBadge);
+                // ต้องบันทึก Badge นี้ลง Table Ranking ที่เห็นทุกๆ Badge 
+                userBadgeRepository.saveAll(userBadgeList);
+
+            } else {
+                // เคยมี Badge อยู่แล้วแสดงว่าต้องเพิ่มคะแนนราย Badge แล้วก็เช็คว่าถึงเวลาอัพเลเวลไหม
+                userBadgeList.forEach((userBadge) -> {
+                    if (userBadge.getBadgeId().equals(eventBadge.getBadgeId())) {
+                        double currentExp = userBadge.getExp();
+                        currentExp += userJoinEvent.getExp();
+                        if (currentExp >= userBadge.getExpUntilUpToNextLevel()) {
+                            int currentLevel = userBadge.getLevel();
+                            currentLevel++;
+                            double expAfterLevelUp = currentExp - userBadge.getExpUntilUpToNextLevel();
+                            userBadge.setExp(expAfterLevelUp);
+                            userBadge.setLevel(currentLevel);
+                        }
+                    }
+                });
+            }
+
             userRepository.save(userInDatabase);
             return ResponseEntity.status(HttpStatus.CREATED).body(userInDatabase);
         }
@@ -291,7 +331,5 @@ public class UserService {
         }
         return null;
     }
-
-    
 
 }
