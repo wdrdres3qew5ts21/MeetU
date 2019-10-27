@@ -4,17 +4,18 @@
       <br />
       <center>
         <v-avatar size="100px" color="primary">
-          <!-- <img src="src" alt="alt"> -->
-          <v-icon dark size="100px">account_circle</v-icon>
+          <!-- <v-icon  dark size="100px">account_circle</v-icon> -->
+          <img :src="badge.badgePicture" width="100px">
         </v-avatar>
       </center>
       <center>
-        <h2>Badge name</h2>
+        <h2>{{badge.badgeName}}</h2>
+        <p>{{badge.badgeTags}}</p>
       </center>
       <br />
     </div>
     <v-data-table
-      :items="badges"
+      :items="rankingList"
       :pagination.sync="pagination"
       item-key="level"
       class="elevation-1"
@@ -27,7 +28,7 @@
     </center>
     </v-alert>
     </template>
-      <template v-slot:items="props">
+      <template v-slot:items="props" v-if="isRankingRender">
 
         <tr>
           <!-- <td>{{badges.index}} </td> -->
@@ -35,14 +36,15 @@
             <br />
             <center>
               <v-avatar size="60">
-                <img :src="props.item.avatar" />
+                <img :src="props.item.userDetail[0].photoURL" />
               </v-avatar>
             </center>
             <br />
           </td>
           <td>
-            <h2>{{ props.item.name }}</h2>
-            <br />Detail:
+            <h2>{{ props.item.userDetail[0].displayName }}</h2>
+            <br />
+            <p>Level: {{ props.item.level }} |  EXP: {{ props.item.exp }}</p>
           </td>
         </tr>
         
@@ -52,13 +54,21 @@
 </template>
 
 <script>
+import axios from "axios"
 export default {
   data: () => ({
     pagination: {
       sortBy: "level",
       descending: true
     },
-    badges: [
+    rankingList: [
+      {
+        userDetail: [{
+          displayName: '',
+          level: 0,
+          exp: 0
+        }]
+      },
       {
         name: "Frozen Yogurt",
         level: 1,
@@ -109,8 +119,42 @@ export default {
         level: 10,
         avatar: "https://cdn.vuetifyjs.com/images/lists/3.jpg"
       }
-    ]
-  })
+    ],
+    isRankingRender: false,
+    badge: {}
+  }),
+  mounted(){
+    console.log(this.$route.params.badgeId)
+    this.loadRankingOfUserInBadge()
+    this.loadBadgeDetail()
+  },
+  methods: {
+    loadRankingOfUserInBadge(){
+      let badgeId = this.$route.params.badgeId
+      axios.get(`${process.env.USER_SERVICE}/ranking/${badgeId}`)
+      .then(rankingResponse=>{
+        this.rankingList = rankingResponse.data
+        this.isRankingRender = true
+        console.log(this.rankingList)
+      })
+      .catch(err=>{
+        console.log(err)
+      })
+
+    },
+    loadBadgeDetail(){
+      let badgeId = this.$route.params.badgeId
+      axios.get(`${process.env.USER_SERVICE}/badge/${badgeId}`)
+      .then(badgeResponse=>{
+        this.badge = badgeResponse.data
+        console.log(this.badge)
+      })
+      .catch(err=>{
+        console.log(err)
+      })
+
+    }
+  }
 };
 </script>
 

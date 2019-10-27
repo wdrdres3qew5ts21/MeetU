@@ -97,29 +97,34 @@
     </center>
     <br />
 
-
-    <v-data-table :items="badgeList" :pagination.sync="pagination" item-key="name" class="elevation-1">
+    <v-data-table
+      :items="badgeList"
+      :pagination.sync="pagination"
+      item-key="name"
+      class="elevation-1"
+    >
       <template v-slot:no-data>
         <v-alert :value="true" color="pink" icon="info">
           <center>Badge not found !</center>
         </v-alert>
       </template>
       <template v-slot:items="props">
-         <tr >
-          <td>
-            <br />
-            <center>
-              <v-avatar size="70">
-                <img :src="props.item.badgePicture" />
-              </v-avatar>
-            </center>
-            <br />
-          </td>
-          <td>
-            <h3>{{ props.item.badgeName }}</h3>
-            
-          </td>
-        </tr>
+        <nuxt-link :to="`/ranking/badge/${props.item.badgeId}`">
+          <tr>
+            <td>
+              <br />
+              <center>
+                <v-avatar size="70">
+                  <img :src="props.item.badgePicture" />
+                </v-avatar>
+              </center>
+              <br />
+            </td>
+            <td>
+              <h3>{{ props.item.badgeName }}</h3>
+            </td>
+          </tr>
+        </nuxt-link>
       </template>
     </v-data-table>
   </div>
@@ -146,13 +151,13 @@ export default {
     pagination: {
       sortBy: "name"
     },
-     badge: {
-          badgeId: "",
-          exp: 0.0
-        },
+    badge: {
+      badgeId: "",
+      exp: 0.0
+    },
     badgeList: [],
     badgeSelect: false
- }),
+  }),
   computed: {
     ...mapGetters(["getCategory"]),
     icon() {
@@ -164,7 +169,7 @@ export default {
     this.findMatchingBadge();
   },
   methods: {
-    ...mapActions(["autoSignIn", "setCategory","setBadgeDetail"]),
+    ...mapActions(["autoSignIn", "setCategory", "setBadgeDetail"]),
     loadCategoryList() {
       axios
         .get(`${process.env.USER_SERVICE}/category`)
@@ -176,18 +181,16 @@ export default {
           this.categoryList = mockCategoryList;
         });
     },
-    findMatchingBadge(){
-      console.log("mating badge")
-      let eventTagsQuery = ""
-      axios.get(`${process.env.USER_SERVICE}/badges${eventTagsQuery}`)
-      .then(badgeResponse =>{
-        this.badgeList = badgeResponse.data;
-        console.log(badgeResponse.data);
-      })
-      .catch(error =>{
-
-      })
-
+    findMatchingBadge() {
+      console.log("mating badge");
+      let eventTagsQuery = "";
+      axios
+        .get(`${process.env.USER_SERVICE}/badges${eventTagsQuery}`)
+        .then(badgeResponse => {
+          this.badgeList = badgeResponse.data;
+          console.log(badgeResponse.data);
+        })
+        .catch(error => {});
     },
     // onItemClick(event, itemsCategory) {
     //   if (event) {
@@ -231,9 +234,8 @@ export default {
         this.pagination.descending = false;
       }
     }
-  } 
-   };
-
+  }
+};
 </script>
 
 
