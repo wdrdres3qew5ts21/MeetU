@@ -144,8 +144,6 @@
 
     <!-- test -->
 
-    {{eventForm.badge}}
- 
     <v-flex xs12 d-flex @click="findMatchingBadge()">
       <v-autocomplete
         v-model="eventForm.badge.badgeId"
@@ -158,14 +156,14 @@
       >
         <template v-slot:selection="data">
           <v-chip
-          v-bind="data.attrs"
+            v-bind="data.attrs"
             :selected="data.selected"
             color="#341646"
             class="chip--select-multi white--text"
             @click:close="remove(data.item)"
           >
             <v-avatar>
-              <img :src="data.item.badgePicture" />
+              <img :src="data.item.badgePicture"/>
             </v-avatar>
             <h3>{{ data.item.badgeName }}</h3>
           </v-chip>
@@ -314,7 +312,7 @@ export default {
         },
         badge: {
           badgeId: "",
-          exp: 0.0
+          exp: 30
         },
         badgeSelect: ["", ""],
         badgeImg: [
