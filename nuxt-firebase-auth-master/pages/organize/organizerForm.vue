@@ -183,20 +183,26 @@ export default {
     ...mapGetters(["getUser"])
   },
   watch: {
-    "adminList"(updateAdmin) {
+    "adminList"(updateAdmin, oldAdmin) {
       this.isUserEmailNotFound = false
       this.userEmailNotFound = ''
-      console.log(updateAdmin)
+      console.log("update admin : ",updateAdmin)
+      console.log("old admin : ",oldAdmin)
       console.log(updateAdmin[updateAdmin.length-1])
-      let latestUserEmail = updateAdmin[updateAdmin.length-1]
-      axios.get(`${process.env.USER_SERVICE}/user/email/${latestUserEmail}`)
-      .then(userResponse =>{
-        console.log(userResponse)
-      })
-      .catch(err =>{
-        this.isUserEmailNotFound = true
-        this.userEmailNotFound = err.response.data.response
-      })
+      let newAdmin = updateAdmin[updateAdmin.length-1]
+      let previousAdmin = oldAdmin[oldAdmin.length-1]
+
+      if(newAdmin != previousAdmin){
+        axios.get(`${process.env.USER_SERVICE}/user/email/${newAdmin}`)
+        .then(userResponse =>{
+          console.log(userResponse)
+        })
+        .catch(err =>{
+          this.isUserEmailNotFound = true
+          this.adminList.splice(updateAdmin.length-1, 1)
+          this.userEmailNotFound = err.response.data.response
+        })
+      }
       
     }
   },
