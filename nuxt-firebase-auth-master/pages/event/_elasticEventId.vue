@@ -16,11 +16,11 @@
       <br>
       
      Event category: 
-      <v-chip v-for="(item,index) in eventTags" :key="index" text-color="#341646">
+      <v-chip v-for="(eventTag,index) in eventTags" :key="index" text-color="#341646">
       <v-avatar>
         <v-icon color="primary">local_offer</v-icon>
       </v-avatar>
-   {{item}}
+                <nuxt-link :to="`/event?category=${eventTag}`">{{eventTag}}</nuxt-link>
     </v-chip>
      
       <br>
