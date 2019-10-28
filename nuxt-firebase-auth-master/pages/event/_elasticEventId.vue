@@ -15,7 +15,7 @@
       <h3>{{eventName}}</h3>
       <br>
       
-     Event category: 
+    
       <v-chip v-for="(eventTag,index) in eventTags" :key="index" text-color="#341646">
       <v-avatar>
         <v-icon color="primary">local_offer</v-icon>
