@@ -192,18 +192,22 @@ export default {
       let newAdmin = updateAdmin[updateAdmin.length-1]
       let previousAdmin = oldAdmin[oldAdmin.length-1]
 
-      if(newAdmin != previousAdmin){
-        axios.get(`${process.env.USER_SERVICE}/user/email/${newAdmin}`)
-        .then(userResponse =>{
-          console.log(userResponse)
-        })
-        .catch(err =>{
+      if(newAdmin != previousAdmin ){
+        if(! oldAdmin.includes(newAdmin)){
+          axios.get(`${process.env.USER_SERVICE}/user/email/${newAdmin}`)
+          .then(userResponse =>{
+            console.log(userResponse)
+          })
+          .catch(err =>{
+            this.isUserEmailNotFound = true
+            this.adminList.splice(updateAdmin.length-1, 1)
+            this.userEmailNotFound = err.response.data.response
+          })
+        }else{
           this.isUserEmailNotFound = true
-          this.adminList.splice(updateAdmin.length-1, 1)
-          this.userEmailNotFound = err.response.data.response
-        })
+          this.userEmailNotFound = "This email already assign to admin"
+        }
       }
-      
     }
   },
   methods: {
