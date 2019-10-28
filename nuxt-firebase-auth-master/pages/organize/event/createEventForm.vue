@@ -1,5 +1,6 @@
 <template>
   <div>
+    <br>
     <h2 class="h2">Create New Events</h2>
     <br />
     <v-flex xs12 sm5 d-flex>

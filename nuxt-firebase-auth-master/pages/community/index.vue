@@ -1,143 +1,10 @@
 <template>
   <div>
-      <v-layout row wrap>
-      <v-flex xs12>
-        <!-- <v-card class="mx-auto" elevation="0" outlined width="100%"> -->
-        <div>
-          <v-layout>
-            <v-dialog
-              v-model="dialog"
-              fullscreen
-              hide-overlay
-              transition="dialog-bottom-transition"
-            >
-              <template v-slot:activator="{ on }">
-                <v-btn flat icon color="#341646" v-on="on">
-                  <v-icon>filter_list</v-icon>
-                </v-btn>
-              </template>
-              <v-card>
-                <v-toolbar dark color="primary">
-                  <v-btn icon dark @click="dialog = false">
-                    <v-icon>navigate_before</v-icon>
-                  </v-btn>
-                  <v-toolbar-title>Filter</v-toolbar-title>
-                  <v-spacer></v-spacer>
-                </v-toolbar>
 
-                <v-list three-line subheader>
-                  <br />
-
-                  <v-subheader>Filter by community category</v-subheader>
-                  <v-layout class="mb-4">
-                    <!-- <v-combobox
-                      :items="categoryList"
-                      item-text="categoryLabel"
-                      item-value="categoryName"
-                      label="category"
-                      @input="updateCategoryFilter"
-                      chips
-                      clearable
-                      solo
-                      multiple
-                      sm6
-                      xs2
-                    >
-                    
-                      <template v-slot:selection="data">
-                        <v-chip
-                          :selected="data.selected"
-                         
-                        >
-                          <strong></strong>&nbsp;
-                        </v-chip>
-                      </template>
-                    </v-combobox> -->
-                  </v-layout>
-                  
-                
-                </v-list>
-
-                <v-btn
-                  class="white--text"
-                  depressed
-                  large
-                  block
-                  color="#341646"
-                  
-                >Search</v-btn>
-            
-
-              </v-card>
-            </v-dialog>
-
-            <v-text-field
-              class="questrial no-top-padding"
-              height="20px"
-              placeholder="Search..."
-             
-             
-            ></v-text-field>
-            <v-flex class="text-xs-right">
-              <v-btn
-                class="white--text"
-                depressed
-                small
-                color="#341646"
-                ref="searchButton"
-               
-              >Search</v-btn>
-            </v-flex>
-          </v-layout>
-        </div>
-        <!-- </v-card> -->
-      </v-flex>
-      <br />
-
-     
-      <!-- <v-flex xs12 v-else>
-          <h3>
-            <center>You can search event ;)</center>
-          </h3>
-      </v-flex>-->
-
-      <!-- <v-btn
-            color="#fc5577"
-            
-            :round="true"
-            text-color="white"
-            @click="findEventInArea()">
-            Click to search nearby event for {{areaOfEvent}}
-            
-      </v-btn>-->
-    </v-layout>
-
-
-<br><br>
-
-<!-- <center><div>
-  <v-icon size="50" @click="showTest = !showTest">insert_emoticon</v-icon>
-  <transition
-    name="custom-classes-transition"
-    enter-active-class="animated tada"
-    leave-active-class="animated tada"
-  >
-
-   
-    <h3 v-if="showTest">You can search event!</h3>
     <br>
-   
-        <v-img v-if="showTest" :src="emotionImg" max-width="60"></v-img>
-
-  </transition>
-</div>
-</center> -->
-    <br />
-    <br />
     <center>
       <h2>Let's Get Started !</h2>
 
-      <br />
 
       <nuxt-link :to="`/community/createCommunity`" style="text-decoration-line:none;">
         <v-btn
@@ -150,6 +17,8 @@
     </center>
   </div>
 </template>
+
+
 <style>
 </style>
 <script>
@@ -179,20 +48,6 @@ export default {
         "Contact Us"
       ],
 
-      carouselsPhoto: [
-        {
-          src:
-            "https://d1.awsstatic.com/Marketplace/cases/600x400_ClubAutomation_Logo.e312129c6220eb729d9c7b7912be2ee59a108421.png"
-        },
-        {
-          src:
-            "https://eventbrowse.com/wp-content/uploads/2018/11/DoG1Z3FXUAEfR3N.jpg"
-        },
-        {
-          src:
-            "https://www.rabbittoday.com/-/media/rabbittoday/content/events/bangkok-block-party-2019/bangkok-block-party-2019-event-banner.jpg?la=th-TH&hash=FE90C817F1C953E5DCB6834242EE517801037D28"
-        }
-      ]
     };
   },
   mounted() {
