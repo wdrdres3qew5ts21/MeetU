@@ -49,23 +49,8 @@
     <!-- เอาจริงๆ  -->
 
     <!-- <v-card flat> -->
+    <div v-if="organizeList"></div>
     <div v-if="organizeList">
-      <nuxt-link
-        v-for="(organize, index) in organizeList"
-        :key="index"
-        :to="`/organize/event/${organize.organizeId}`"
-      >
-        <!-- <v-badge 
-        overlap 
-        color="#341646">
-          <template v-slot:badge>
-            <v-icon dark small>create</v-icon>
-          </template>
-        </v-badge>-->
-
-        <!-- code ซัน -->
-    
-    <!-- <div v-if="organizeList">
       <nuxt-link
         v-for="(organize, index) in organizeList"
         :key="index"
@@ -79,7 +64,7 @@
         <br />
         <p style="color:grey">You not own any Organize.</p>
       </center>
-    </div>-->
+    </div>
   </div>
 </template>
 
@@ -94,7 +79,7 @@ export default {
   },
   data() {
     return {
-      organizeList: null,
+      organizeList: null
     };
   },
   computed: {
