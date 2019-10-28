@@ -1,9 +1,16 @@
 <template>
   <div>
     <div v-if="isViewTicketDetail ">
-      <v-carousel hide-delimiters hide-controls xs6 sm12 height="200px;">
+      <!-- <v-carousel hide-delimiters hide-controls xs6 sm12 height="200px;">
         <v-carousel-item v-for="(pic,i) in eventPictureLists" :key="i" :src="pic"></v-carousel-item>
-      </v-carousel>
+      </v-carousel> -->
+      <client-only>
+      <carousel :perPage="1" :paginationEnabled="false">
+        <slide v-for="(pic,i) in eventPictureLists" :key="i">
+          <img height="200px" :src="pic" alt="" srcset="">
+        </slide>
+      </carousel>
+      </client-only>
       <br />
       <h3>{{eventName}}</h3>
       <br>
@@ -137,6 +144,8 @@
 </template> 
  
 <script>
+import Carousel from "vue-carousel/src/Carousel.vue";
+import Slide from "vue-carousel/src/Slide.vue";
 import { eventNotFound } from "~/utils/errorMessage";
 import confirmTicket from "@/components/confirmTicket";
 import axios from "axios";
@@ -144,7 +153,9 @@ import { mapMutations, mapActions, mapGetters } from "vuex";
 import { error } from 'util';
 export default {
   components: {
-    confirmTicket
+    confirmTicket,
+    Carousel,
+    Slide
   },
   data() {
     return {

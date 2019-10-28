@@ -289,6 +289,7 @@ export default {
       valid: true,
       isEditing: true,
       userForm: {
+        badgeList: [],
         interest: [],
         firstName: "",
         lastName: "",
@@ -370,6 +371,9 @@ export default {
           this.userForm.phone = userProfileForm.phone || "";
         })
         .catch(err => {});
+    },
+    loadUserBadge:function(){
+     
     },
     onFileChanged(event) {
       this.selectedFile = event.target.files[0];

@@ -8,19 +8,17 @@
     <br />
     <v-layout row wrap>
       <v-flex xs6>
-      
         <v-card color="white" max-width="120" style="border-radius:50%">
           <v-img :aspect-ratio="1/1" :src="getUser.photoURL"></v-img>
         </v-card>
       </v-flex>
       <v-flex xs6 text-right>
-        <h3>Organizer name</h3>
+        <h3>Organizer</h3>
       </v-flex>
     </v-layout>
     <br />
 
-
-<!-- เอาจริงๆ -->
+    <!-- เอาจริงๆ -->
     <!-- <v-tabs v-model="tabModel" centered color="white" slider-color="#341646">
       <v-tab v-for="i in tabTopics" :key="i" :href="`#tab-${i}`">{{ i }}</v-tab>
     </v-tabs>
@@ -46,31 +44,30 @@
           </div>
         </v-card>
       </v-tab-item>
-    </v-tabs-items> -->
+    </v-tabs-items>-->
 
-<!-- เอาจริงๆ  -->
+    <!-- เอาจริงๆ  -->
 
- <v-card flat>
-          <div v-if="organizeList">
-           
-            <nuxt-link
-              v-for="(organize, index) in organizeList"
-              :key="index"
-              :to="`/organize/event/${organize.organizeId}`"
-            >
-              <organize-card :organizeName="organize.organizeName" />
-            </nuxt-link>
-          </div>
-          <div v-else>
-            <center>
-              <br />
-              <p style="color:grey">You not own any Organize.</p>
-            </center>
-          </div>
-        </v-card>
+    <v-card flat>
+      <div v-if="organizeList">
+        <nuxt-link
+          v-for="(organize, index) in organizeList"
+          :key="index"
+          :to="`/organize/event/${organize.organizeId}`"
+        >
+          <organize-card :organizeName="organize.organizeName" />
+        </nuxt-link>
+      </div>
+      <div v-else>
+        <center>
+          <br />
+          <p style="color:grey">You not own any Organize.</p>
+        </center>
+      </div>
+    </v-card>
 
-        <!-- code ซัน -->
-    
+    <!-- code ซัน -->
+
     <!-- <div v-if="organizeList">
       <nuxt-link
         v-for="(organize, index) in organizeList"
@@ -100,7 +97,7 @@ export default {
   },
   data() {
     return {
-      organizeList: null,
+      organizeList: null
     };
   },
   computed: {
@@ -120,7 +117,7 @@ export default {
         .catch(error => {
           console.log(error);
         });
-    },
+    }
   }
 };
 </script>
