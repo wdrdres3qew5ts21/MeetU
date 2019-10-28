@@ -7,7 +7,7 @@
       <client-only>
       <carousel :perPage="1" :paginationEnabled="false">
         <slide v-for="(pic,i) in eventPictureLists" :key="i">
-          <img height="200px" :src="pic" alt="" srcset="">
+          <img width="100%" :src="pic" alt="" srcset="">
         </slide>
       </carousel>
       </client-only>
