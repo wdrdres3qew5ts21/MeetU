@@ -10,7 +10,9 @@
       </center>
       <center>
         <h2>{{badge.badgeName}}</h2>
-        <p>{{badge.badgeTags}}</p>
+        <span v-for="(badgeTag, index) in badge.badgeTags" :key="index">
+          <nuxt-link :to="`/event?category=${badgeTag}`">{{badgeTag}}</nuxt-link>
+        </span>
       </center>
       <br />
     </div>
