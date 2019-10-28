@@ -74,11 +74,14 @@
         </span>
 
         <br />
+        <v-flex xs12>
+          <v-alert :value="isUserEmailNotFound" color="error" outline>{{userEmailNotFound}}</v-alert>
+        </v-flex>
         <v-flex xs12 d-flex>
           <v-combobox
             :items="items"
             label="Add Admin"
-            v-model="organizeForm.adminList"
+            v-model="adminList"
             multiple
             chips
           >
@@ -141,6 +144,8 @@ export default {
   },
   data() {
     return {
+      isUserEmailNotFound: false,
+      userEmailNotFound: '',
       valid: true,
       isUpgradeSuccess: false,
       valid: true,
@@ -178,11 +183,21 @@ export default {
     ...mapGetters(["getUser"])
   },
   watch: {
-    adminList(updateAdmin) {
+    "adminList"(updateAdmin) {
+      this.isUserEmailNotFound = false
+      this.userEmailNotFound = ''
       console.log(updateAdmin)
-      this.organizeForm.adminList.push({
-        email: updateAdmin
-      });
+      console.log(updateAdmin[updateAdmin.length-1])
+      let latestUserEmail = updateAdmin[updateAdmin.length-1]
+      axios.get(`${process.env.USER_SERVICE}/user/email/${latestUserEmail}`)
+      .then(userResponse =>{
+        console.log(userResponse)
+      })
+      .catch(err =>{
+        this.isUserEmailNotFound = true
+        this.userEmailNotFound = err.response.data.response
+      })
+      
     }
   },
   methods: {
