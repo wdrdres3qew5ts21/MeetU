@@ -59,4 +59,13 @@ public class BadgeController {
         return badgeService.findRankingOfUserInBadge(badgeId,page,contentPerPage);
     }
     
+    @GetMapping("/badges/user/{uid}")
+    public ResponseEntity findBadgeThatUserOwn(
+            @PathVariable String badgeId,
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "20") int contentPerPage ) {
+        System.out.println("ranking ");
+        return badgeService.findBadgeThatUserOwn(badgeId,page,contentPerPage);
+    }
+    
 }

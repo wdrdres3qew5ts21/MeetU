@@ -68,11 +68,11 @@ export default {
   }),
   methods: {
     loadMyBadge(){
-      axios.get().then(badgeListResponse =>{
+      axios.get(`${process.env.USER_SERVICE}/`).then(badgeListResponse =>{
 
       })
       .catch(err=>{
-        
+
       })
     }
   }

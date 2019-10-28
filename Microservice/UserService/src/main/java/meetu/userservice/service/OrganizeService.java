@@ -44,6 +44,8 @@ public class OrganizeService {
     public ResponseEntity createOrganize(String uid, Organize organize) {
         Organize organizeInDatabase = organizeRepository.findByOrganizeName(organize.getOrganizeName());
         if (organizeInDatabase == null) {
+            System.out.println("---- Organize ---");
+            System.out.println(organize);
             Admin organizeOwner = new Admin();
             organizeOwner.setUid(uid);
             organize.setOrganizeOwner(organizeOwner);

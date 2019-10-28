@@ -34,9 +34,9 @@ public class OrganizeController {
     @Autowired
     private OrganizeService organizeService;
 
-    @PostMapping("/organize/{userId}")
-    public ResponseEntity createOrganize(@PathVariable String userId, @RequestBody Organize organize) {
-        return organizeService.createOrganize(userId, organize);
+    @PostMapping("/organize/{uid}")
+    public ResponseEntity createOrganize(@PathVariable String uid, @RequestBody Organize organize) {
+        return organizeService.createOrganize(uid, organize);
     }
     
     @GetMapping("/organize/user/{uid}")

@@ -106,4 +106,8 @@ public class BadgeService {
         return ResponseEntity.status(HttpStatus.OK).body(results);
     }
 
+    public ResponseEntity findBadgeThatUserOwn(String badgeId, int page, int contentPerPage) {
+        return null;
+    }
+
 }

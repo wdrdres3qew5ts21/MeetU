@@ -15,11 +15,21 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Admin {
     
     private String uid;
+    
+    private String email;
 
     private String username;
     
     private List<String>  roles ;
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    
     public String getUid() {
         return uid;
     }

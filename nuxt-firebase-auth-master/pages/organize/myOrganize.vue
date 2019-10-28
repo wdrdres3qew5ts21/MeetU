@@ -48,27 +48,9 @@
 
     <!-- เอาจริงๆ  -->
 
-    <v-card flat>
-      <div v-if="organizeList">
-        <nuxt-link
-          v-for="(organize, index) in organizeList"
-          :key="index"
-          :to="`/organize/event/${organize.organizeId}`"
-        >
-          <organize-card :organizeName="organize.organizeName" />
-        </nuxt-link>
-      </div>
-      <div v-else>
-        <center>
-          <br />
-          <p style="color:grey">You not own any Organize.</p>
-        </center>
-      </div>
-    </v-card>
-
-    <!-- code ซัน -->
-
-    <!-- <div v-if="organizeList">
+    <!-- <v-card flat> -->
+    <div v-if="organizeList"></div>
+    <div v-if="organizeList">
       <nuxt-link
         v-for="(organize, index) in organizeList"
         :key="index"
@@ -82,7 +64,7 @@
         <br />
         <p style="color:grey">You not own any Organize.</p>
       </center>
-    </div>-->
+    </div>
   </div>
 </template>
 
