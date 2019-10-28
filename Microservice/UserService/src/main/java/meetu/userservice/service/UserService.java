@@ -259,7 +259,7 @@ public class UserService {
                         matchingBadgeForUpExp.setExp(expAfterLevelUp);
                         matchingBadgeForUpExp.setLevel(currentLevel);
                         double expUntilUpToNextLevel = matchingBadgeForUpExp.getExpUntilUpToNextLevel();
-                        expUntilUpToNextLevel = 1.2* expUntilUpToNextLevel;
+                        expUntilUpToNextLevel = 1.2 * expUntilUpToNextLevel;
                         matchingBadgeForUpExp.setExpUntilUpToNextLevel(expUntilUpToNextLevel);
                         System.out.println("Up EXP !!!");
                         System.out.println(matchingBadgeForUpExp);
@@ -366,6 +366,17 @@ public class UserService {
             Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    public ResponseEntity findUserByEmail(String email) {
+        User userFromDatabase = userRepository.findByEmailEquals(email);
+        System.out.println(userFromDatabase);
+        if (userFromDatabase != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(userFromDatabase);
+        }
+        HashMap<String,String> response = new HashMap<>();
+        response.put("response", "Not found This "+email+" email !!");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
 }

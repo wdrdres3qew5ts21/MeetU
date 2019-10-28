@@ -78,6 +78,11 @@ public class UserController {
     public ResponseEntity<String> getTestMessage() {
         return new ResponseEntity<String>(testMessage, HttpStatus.OK);
     }
+    
+    @GetMapping("/user/email/{email}")
+    public ResponseEntity findUserByEmail(@PathVariable String email) {
+        return userService.findUserByEmail(email);
+    }
 
     @GetMapping("/user/create/jwt")
     public ResponseEntity customJWT() {
