@@ -44,7 +44,7 @@
         <br />
 
         <span>
-          Organize image (circle picture)
+          Organize Image (Round)
           <br />
 
           <v-btn
@@ -59,10 +59,12 @@
             @change="onCoverPictureUpload"
             accept="image/*"
           />
-          <p v-if="eventPictureCoverUrl.name !=undefined  ">{{eventPictureCoverUrl.name}}</p>
-          <div v-if="eventPictureCoverUrl.url !=undefined  ">
+          <p
+            v-if="organizeForm.organizeImageCover.name !=undefined  "
+          >{{organizeForm.organizeImageCover.name}}</p>
+          <div v-if="organizeForm.organizeImageCover.url !=undefined  ">
             <v-img
-              :src="eventPictureCoverUrl.url"
+              :src="organizeForm.organizeImageCover.url"
               aspect-ratio="1"
               class="grey lighten-2 img-circle"
               max-width="200"
@@ -73,7 +75,13 @@
 
         <br />
         <v-flex xs12 d-flex>
-          <v-combobox :items="items" label="Add Admin" v-model="organizeForm.adminList" multiple chips>
+          <v-combobox
+            :items="items"
+            label="Add Admin"
+            v-model="organizeForm.adminList"
+            multiple
+            chips
+          >
             <template v-slot:selection="data">
               <v-chip
                 :key="JSON.stringify(data.item)"
@@ -121,6 +129,7 @@
 <script>
 import * as firebase from "firebase/app";
 import "firebase/auth";
+import "firebase/storage";
 import organizerAccountCreate from "~/components/organizerAccountCreate";
 import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
@@ -135,13 +144,15 @@ export default {
       valid: true,
       isUpgradeSuccess: false,
       valid: true,
+      adminList: [],
       organizeForm: {
         phone: "",
         organizeName: "",
         createdOrganizeId: "",
-        adminList: []
+        adminList: [],
+        organizeImageCover: {}
       },
-      eventPictureCoverUrl: {},
+      organizeImageCover: {},
       names: [
         {
           name: "A"
@@ -166,14 +177,38 @@ export default {
   computed: {
     ...mapGetters(["getUser"])
   },
+  watch: {
+    adminList(updateAdmin) {
+      console.log(updateAdmin)
+      this.organizeForm.adminList.push({
+        email: updateAdmin
+      });
+    }
+  },
   methods: {
     ...mapActions(["signOut", "setUser"]),
     logout: function() {
       this.$router.push("/userProfile");
     },
     upgradeOrganize: async function() {
+      let loader = this.$loading.show()
       console.log("upgrade fuq");
       console.log(this.organizeForm);
+      let pictureFile = this.organizeForm.organizeImageCover;
+      let dateobj = new Date();
+      let fileName = pictureFile.name + "_" + dateobj.toISOString();
+      let storage = firebase.storage();
+      let storageRef = storage.ref("/organize");
+      let setupFile = storageRef.child(fileName);
+      setupFile
+        .putString(pictureFile.url, "data_url", { contentType: "image/jpeg" })
+        .then(snapshot => {
+          snapshot.ref.getDownloadURL().then(organizeImageCover => {
+            loader.hide()
+            console.log(organizeImageCover)
+          });
+        });
+
       // await axios
       //   .post(`${process.env.USER_SERVICE}/organize/${this.getUser.uid}`, {
       //     organizeName: this.organizeName,
@@ -198,32 +233,18 @@ export default {
       //   });
     },
     ...mapActions(["setPictureDetail"]),
-    loadPreviewPicture() {
-      console.log("----- preview image ----");
-      let eventPictureCoverBase = this.getEventTemplate.eventPictureCoverBase;
-      let eventPictureListsBase = this.getEventTemplate.eventPictureListsBase;
-      console.log(eventPictureListsBase);
-      if (eventPictureCoverBase != "") {
-        this.eventPictureCoverUrl = eventPictureCoverBase;
-        console.log(this.eventPictureCoverUrl);
-      }
-      if (eventPictureListsBase.length > 0) {
-        this.eventPictureListsUrl = eventPictureListsBase;
-        console.log(this.eventPictureListsUrl);
-      }
-    },
     onCoverPictureUpload(event) {
-      console.log("uplaod din");
-      this.eventPictureCover = event.target.files[0];
-      this.eventPictureCoverUrl = {};
+      let organizeCover = event.target.files[0];
+      console.log("upload picture");
+      this.organizeForm.organizeImageCover = {};
       const fileReader = new FileReader();
       fileReader.addEventListener("load", () => {
-        this.eventPictureCoverUrl = {
+        this.organizeForm.organizeImageCover = {
           url: fileReader.result,
           name: event.target.files[0].name
         };
       });
-      fileReader.readAsDataURL(this.eventPictureCover);
+      fileReader.readAsDataURL(organizeCover);
     }
   }
 };
