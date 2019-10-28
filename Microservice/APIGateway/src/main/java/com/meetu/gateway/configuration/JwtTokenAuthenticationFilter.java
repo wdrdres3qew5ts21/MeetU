@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
-import com.meetu.gateway.filter.AuthenticationFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;

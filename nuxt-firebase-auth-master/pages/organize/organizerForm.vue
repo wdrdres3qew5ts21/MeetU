@@ -225,14 +225,15 @@ export default {
       let storage = firebase.storage();
       let storageRef = storage.ref("/organize");
       let setupFile = storageRef.child(fileName);
-      setupFile
-        .putString(pictureFile.url, "data_url", { contentType: "image/jpeg" })
-        .then(snapshot => {
-          snapshot.ref.getDownloadURL().then(organizeImageCover => {
-            loader.hide()
-            console.log(organizeImageCover)
-          });
-        });
+      
+      // setupFile
+      //   .putString(pictureFile.url, "data_url", { contentType: "image/jpeg" })
+      //   .then(snapshot => {
+      //     snapshot.ref.getDownloadURL().then(organizeImageCover => {
+      //       loader.hide()
+      //       console.log(organizeImageCover)
+      //     });
+      //   });
 
       // await axios
       //   .post(`${process.env.USER_SERVICE}/organize/${this.getUser.uid}`, {

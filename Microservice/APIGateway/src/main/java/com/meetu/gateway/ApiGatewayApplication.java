@@ -1,5 +1,6 @@
 package com.meetu.gateway;
 
+import co.elastic.apm.attach.ElasticApmAttacher;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 public class ApiGatewayApplication {
 
     public static void main(String[] args) {
+        ElasticApmAttacher.attach();
         SpringApplication.run(ApiGatewayApplication.class, args);
     }
 

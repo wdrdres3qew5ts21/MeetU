@@ -1,0 +1,25 @@
+docker run  -d\
+  --network=meetu_elastic\
+  --user=root \
+  --volume="$(pwd)/metricbeat.docker.yml:/usr/share/metricbeat/metricbeat.yml:ro" \
+  --volume="/var/run/docker.sock:/var/run/docker.sock:ro" \
+  --volume="/sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro" \
+  --volume="/proc:/hostfs/proc:ro" \
+  --volume="/:/hostfs:ro" \
+  docker.elastic.co/beats/metricbeat:7.2.1 metricbeat -e \
+  -E output.elasticsearch.hosts=["elasticsearch1:9200"] 
+
+
+docker run -d \
+  --network=meetu_elastic\
+  -p 8200:8200\
+  --user=apm-server \
+  --volume="$(pwd)/apm-server.docker.yml:/usr/share/apm-server/apm-server.yml:ro" \
+  docker.elastic.co/apm/apm-server:7.2.1 \
+  --strict.perms=false -e \
+  -E output.elasticsearch.hosts=["elasticsearch1:9200"]  
+  
+
+-javaagent:elastic-apm-agent-1.10.0.jar 
+-Delastic.apm.service_name=api-gateway 
+-Delastic.apm.server_url=https://www.meetu-milktea.tk:8200
