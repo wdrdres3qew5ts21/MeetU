@@ -75,64 +75,65 @@
       </v-flex>-->
     </v-layout>
 
+    <v-btn block :disabled="!isTicketSelected" color="primary" id="ticketSection">GET TICKET</v-btn>
+    <br />
+    <v-divider></v-divider>
+    <br />
+    <h3>Contract</h3>
+    <br />
+    <p></p>
+
+    <center>
+      <div style="width:150px;overflow:hidden">
+        <v-img
+          src="https://picsum.photos/id/11/500/300"
+          lazy-src="https://picsum.photos/id/11/10/6"
+          aspect-ratio="1"
+          class="grey lighten-2"
+          max-width="300"
+          style="border-radius:60%;"
+        ></v-img>
+      </div>
+    </center>
+    <br />
+    <b>Organizer Name :</b>
+    {{organize.organizeName}}
+    <br />
+    <b>Website :</b>
+    {{organize.website || 'https://meetu-69b29.firebaseapp.com'}}
+    <br />
+    <b>Email :</b>
+    {{organize.email || 'linjingyun@nipparn.com'}}
+    <br />
+    <br />
+    <center>
+      <v-btn block color="#341646" style="color:white">For more information</v-btn>
+    </center>
+
+    <br />
+    <br />
     <v-btn
       block
-      :disabled="!isTicketSelected"
-      color="primary"
-      id="ticketSection"
-    >GET TICKET</v-btn>
-<br>
-      <v-divider > </v-divider>
-      <br>
-      <h3>Contract</h3>
-      <br>
-      <p></p>
-      
-        <center>
-          <div style="width:150px;overflow:hidden">
-            <v-img
-              src="https://picsum.photos/id/11/500/300"
-              lazy-src="https://picsum.photos/id/11/10/6"
-              aspect-ratio="1"
-              class="grey lighten-2"
-              max-width="300"
-              style="border-radius:60%;"
-            ></v-img>
-          </div>
-        </center>
-        <br>
-        <b> Organizer Name : </b> {{organizeName}}  <br>
-
-         <b>Website  :</b> <br>
-         <b>Email  :</b> <br> <br>
-       <center>
-           <v-btn block color="#341646"  style="color:white">For more information</v-btn>
-       </center>
-
-       <br>
-       <br>
+      class="saveButton white--text"
+      color="#341646"
+      depressed
+      large
+      height="50"
+      @click="createEventAndUploadData()"
+    >Publish Event</v-btn>
     <v-btn
-        block
-        class="saveButton white--text"
-        color="#341646"
-        depressed
-        large
-        height="50"
-        @click="createEventAndUploadData()"
-      >Publish Event</v-btn>
-    <v-btn
-        block
-        color="#AEAEAE"
-        class="white--text"
-        depressed
-        large
-        height="50"
-        @click="$router.back()"
-      >Cancle</v-btn>
+      block
+      color="#AEAEAE"
+      class="white--text"
+      depressed
+      large
+      height="50"
+      @click="$router.back()"
+    >Cancle</v-btn>
   </div>
 </template> 
 <script>
-import axios from "axios"
+import axios from "axios";
 import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
@@ -171,7 +172,12 @@ export default {
         "https://www.blognone.com/sites/default/files/externals/41bbf3e3153999d8d2111d753cf1d5f2.jpg",
       description: "",
       place: null,
-      pinLocation: {}
+      pinLocation: {},
+      organize: {
+        organizeName: '',
+        website: '',
+        email: ''
+      }
     };
   },
   computed: {
@@ -182,9 +188,9 @@ export default {
   },
   methods: {
     ...mapActions(["saveEventAndUpload"]),
-    createEventAndUploadData(){
-      console.log(this.getEventTemplate)
-      this.saveEventAndUpload()
+    createEventAndUploadData() {
+      console.log(this.getEventTemplate);
+      this.saveEventAndUpload();
       //axios.post(`${process.env.EVENT_SERVICE}/event`)
     },
     toggleInfoWindow: function(marker, idx) {
@@ -230,6 +236,19 @@ export default {
       this.eventPictureLists = eventTemplate.eventPictureListsBase;
       this.eventStartDate = eventTemplate.eventStartDate;
       this.numberOfTicket = eventTemplate.numberOfTicket;
+
+      axios
+        .get(
+          `${process.env.USER_SERVICE}/organize/${eventTemplate.organize.organizeId}`
+        )
+        .then(organizeResponse => {
+          this.organize = organizeResponse.data;
+          console.log("-----organize ----");
+          console.log(organizeResponse.data);
+        })
+        .catch(err => {
+          console.log("eefdsfdsfds");
+        });
 
       let geopoint = eventTemplate.location.geopoint;
 

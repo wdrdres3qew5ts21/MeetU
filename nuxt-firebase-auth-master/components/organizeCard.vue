@@ -1,25 +1,24 @@
 <template>
-  <v-card class="mx-auto" max-width="400">
-       
-    <v-img class="#341646--text" height="200px" :src="defaultImage">
-      <!-- <v-card-title class="align-end fill-height">Top 10 Australian beaches</v-card-title> -->
-    <v-btn class="button" depressed flat  >
-                 <v-avatar color="#341646" size="40">
-                <v-icon  color="white" size="25"> edit </v-icon>
-                 </v-avatar>
-    </v-btn>
-    </v-img>
-  
-     
+  <div>
+    <v-card class="mx-auto" max-width="400">
+      <v-img class="#341646--text" height="200px" :src="defaultImage">
+        <!-- <v-card-title class="align-end fill-height">Top 10 Australian beaches</v-card-title> -->
+        <v-btn class="button" depressed flat>
+          <v-avatar color="#341646" size="40">
+            <v-icon color="white" size="25">edit</v-icon>
+          </v-avatar>
+        </v-btn>
+      </v-img>
 
-    <v-card-text>
-      <span class="text--primary">
-        <h3>{{organizeName}}</h3>
-        <!-- <br />
-        <span>Members :</span> -->
-      </span>
-    </v-card-text>
-  </v-card>
+      <v-card-text>
+        <span class="text--primary">
+          <h3>{{organizeName}}</h3>
+          <!-- <br />
+          <span>Members :</span>-->
+        </span>
+      </v-card-text>
+    </v-card>
+  </div>
 </template>
 
 <script>
@@ -30,9 +29,11 @@ export default {
     memberLists: Array
   },
   data() {
-    return{
-    defaultImage: "https://www.elegantthemes.com/blog/wp-content/uploads/2017/03/Facebook-Groups-for-Bloggers-shutterstock_555845587-ProStockStudio-FT.png"
-  }}
+    return {
+      defaultImage:
+        "https://www.elegantthemes.com/blog/wp-content/uploads/2017/03/Facebook-Groups-for-Bloggers-shutterstock_555845587-ProStockStudio-FT.png"
+    };
+  }
 };
 </script>
 <style >

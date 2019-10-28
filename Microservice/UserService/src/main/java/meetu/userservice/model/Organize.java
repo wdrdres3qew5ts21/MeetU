@@ -36,7 +36,59 @@ public class Organize {
 
     private List<Admin> adminList;
     
+    private String email;
+    
+    private String website;
+    
+    private String line;
+    
+    private String twitter;
+    
+    private String instragram;
+    
     private String phone;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public String getLine() {
+        return line;
+    }
+
+    public void setLine(String line) {
+        this.line = line;
+    }
+
+    public String getTwitter() {
+        return twitter;
+    }
+
+    public void setTwitter(String twitter) {
+        this.twitter = twitter;
+    }
+
+    public String getInstragram() {
+        return instragram;
+    }
+
+    public void setInstragram(String instragram) {
+        this.instragram = instragram;
+    }
+    
+    
 
     public String getPhone() {
         return phone;

@@ -217,6 +217,7 @@ public class UserService {
                 UserBadge userBadge = new UserBadge();
                 userBadge.setBadgeId(eventBadge.getBadgeId());
                 userBadge.setBadgeName(eventBadge.getBadgeName());
+                userBadge.setBadgePicture(eventBadge.getBadgePicture());
                 userBadge.setExp(userJoinEvent.getExp());
                 userBadge.setExpUntilUpToNextLevel(300);
                 userBadge.setUnlockBadgeDate(new Date());
@@ -242,6 +243,7 @@ public class UserService {
                     UserBadge userBadge = new UserBadge();
                     userBadge.setBadgeId(eventBadge.getBadgeId());
                     userBadge.setBadgeName(eventBadge.getBadgeName());
+                    userBadge.setBadgePicture(eventBadge.getBadgePicture());
                     userBadge.setExp(userJoinEvent.getExp());
                     userBadge.setExpUntilUpToNextLevel(300);
                     userBadge.setUnlockBadgeDate(new Date());

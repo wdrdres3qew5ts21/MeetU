@@ -101,6 +101,9 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.elasticsearch.action.update.UpdateRequest;
 import static org.elasticsearch.common.xcontent.XContentFactory.*;
 import org.elasticsearch.index.get.GetResult;
+import org.springframework.data.domain.Sort;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.sort;
+import org.springframework.data.mongodb.core.aggregation.SortOperation;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
@@ -305,7 +308,8 @@ public class EventService {
         }
         if (isPopularEvent == true) {
             System.out.println("Popular Event Filter");
-            queryFilter.must(QueryBuilders.rangeQuery("endRegisterDate").lte("now-1d/d"));
+            // filter ต้องอยู่ในช่วงเวลา
+            // queryFilter.must(QueryBuilders.rangeQuery("endRegisterDate").lte("now-1d/d"));
             searchSourceBuilder.sort("totalView", SortOrder.DESC);
         }
         if (longitude != 0.0 & latitude != 0.0) {
@@ -490,11 +494,11 @@ public class EventService {
     public ResponseEntity userJoinEvent(UserEventTicket userJoinEvent) {
         HashMap<String, Object> responseBody = new HashMap<>();
         System.out.println("USer Join Event From Frpntend");
-            System.out.println(userJoinEvent);
+        System.out.println(userJoinEvent);
         System.out.println("------ Rest Template ------");
         UserEventTicket userEventTicketInDatabase = userEventTicketRespository.findByTicketId(userJoinEvent.getTicketId());
         if (userEventTicketInDatabase != null) {
-            
+
             System.out.println("!! userEventTicket !!");
             System.out.println(userEventTicketInDatabase);
             if (userEventTicketInDatabase.isIsParticipate() == false) {
@@ -636,7 +640,8 @@ public class EventService {
                 .foreignField("elasticEventId")
                 .as("ticketDetail");
         AggregationOperation match = Aggregation.match(Criteria.where("uid").is(uid));
-        Aggregation aggregation = Aggregation.newAggregation(lookupOperation, match);
+        SortOperation sortByTicketCreateTime = sort(new Sort(Sort.Direction.DESC, "_id"));
+        Aggregation aggregation = Aggregation.newAggregation(lookupOperation, match, sortByTicketCreateTime);
         List<BasicDBObject> results = mongoTemplate.aggregate(aggregation, "userEventTicket", BasicDBObject.class).getMappedResults();
         System.out.println("----------------------");
         System.out.println(results);

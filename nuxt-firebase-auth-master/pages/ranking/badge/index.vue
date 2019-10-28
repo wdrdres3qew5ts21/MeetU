@@ -9,83 +9,26 @@
           <v-flex xs12>
             <div>
               <v-layout>
-                <v-dialog
-                  v-model="dialog"
-                  fullscreen
-                  hide-overlay
-                  transition="dialog-bottom-transition"
-                >
-                  <template v-slot:activator="{ on }">
-                    <v-btn flat icon color="#341646" v-on="on">
-                      <v-icon>filter_list</v-icon>
-                    </v-btn>
-                  </template>
-                  <v-card>
-                    <v-toolbar dark color="primary">
-                      <v-btn icon dark @click="dialog = false">
-                        <v-icon>navigate_before</v-icon>
-                      </v-btn>
-                      <v-toolbar-title>Filter</v-toolbar-title>
-                      <v-spacer></v-spacer>
-                    </v-toolbar>
-
-                    <v-list three-line subheader>
-                      <br />
-
-                      <v-subheader>Filter by category</v-subheader>
-                      <v-layout class="mb-4">
-                        <v-combobox
-                          :items="categoryList"
-                          item-text="categoryLabel"
-                          item-value="categoryName"
-                          label="category"
-                          @input="updateCategoryFilter"
-                          chips
-                          clearable
-                          solo
-                          multiple
-                          sm6
-                          xs2
-                        >
-                          <template v-slot:selection="data">
-                            <v-chip
-                              :selected="data.selected"
-                              close
-                              @input="remove(data.item.categoryName)"
-                            >
-                              <strong>{{ data.item.categoryName}}</strong>&nbsp;
-                            </v-chip>
-                          </template>
-                        </v-combobox>
-                      </v-layout>
-                    </v-list>
-                    <v-btn
-                      class="white--text"
-                      depressed
-                      large
-                      block
-                      color="#341646"
-                      @click="searchByFilter()"
-                    >Search</v-btn>
-                    {{filterForm.categorySelected}}
-                  </v-card>
-                </v-dialog>
-
+                <v-btn flat icon color="#341646">
+                  <v-icon>filter_list</v-icon>
+                </v-btn>
+                <v-text-field
+                  class="questrial no-top-padding"
+                  height="20px"
+                  placeholder="Search..."
+                  v-model="search"
+                  @keyup.enter="searchEventByFilter()"
+                ></v-text-field>
                 <v-flex class="text-xs-right">
-                  <v-text-field
-                    v-model="badgeName"
-                    :append-outer-icon="badgeName ? 'search' : 'search'"
-                    box
-                    clear-icon="close"
-                    clearable
-                    placeholder="Search..."
-                    type="text"
-                    @click:append="toggleMarker"
-                    @click:append-outer="searchBadgeByName"
-                    @click:clear="clearMessage"
-                  ></v-text-field>
+                  <v-btn
+                    class="white--text"
+                    depressed
+                    small
+                    color="#341646"
+                    ref="searchButton"
+                    @click="searchEventByFilter()"
+                  >Search</v-btn>
                 </v-flex>
-                <br />
               </v-layout>
             </div>
           </v-flex>
@@ -97,29 +40,34 @@
     </center>
     <br />
 
-
-    <v-data-table :items="badgeList" :pagination.sync="pagination" item-key="name" class="elevation-1">
+    <v-data-table
+      :items="badgeList"
+      :pagination.sync="pagination"
+      item-key="name"
+      class="elevation-1"
+    >
       <template v-slot:no-data>
         <v-alert :value="true" color="pink" icon="info">
           <center>Badge not found !</center>
         </v-alert>
       </template>
       <template v-slot:items="props">
-         <tr >
-          <td>
-            <br />
-            <center>
-              <v-avatar size="70">
-                <img :src="props.item.badgePicture" />
-              </v-avatar>
-            </center>
-            <br />
-          </td>
-          <td>
-            <h3>{{ props.item.badgeName }}</h3>
-            
-          </td>
-        </tr>
+        <nuxt-link :to="`/ranking/badge/${props.item.badgeId}`">
+          <tr>
+            <td>
+              <br />
+              <center>
+                <v-avatar size="70">
+                  <img :src="props.item.badgePicture" />
+                </v-avatar>
+              </center>
+              <br />
+            </td>
+            <td>
+              <h3>{{ props.item.badgeName }}</h3>
+            </td>
+          </tr>
+        </nuxt-link>
       </template>
     </v-data-table>
   </div>
@@ -138,6 +86,7 @@ export default {
     iconIndex: 0,
     categoryList: [],
     icons: ["filter_list"],
+    search: "",
     selectedCategoryList: [],
     badgeName: "",
     filterForm: {
@@ -146,13 +95,13 @@ export default {
     pagination: {
       sortBy: "name"
     },
-     badge: {
-          badgeId: "",
-          exp: 0.0
-        },
+    badge: {
+      badgeId: "",
+      exp: 0.0
+    },
     badgeList: [],
     badgeSelect: false
- }),
+  }),
   computed: {
     ...mapGetters(["getCategory"]),
     icon() {
@@ -164,10 +113,10 @@ export default {
     this.findMatchingBadge();
   },
   methods: {
-    ...mapActions(["autoSignIn", "setCategory","setBadgeDetail"]),
+    ...mapActions(["autoSignIn", "setCategory", "setBadgeDetail"]),
     loadCategoryList() {
       axios
-        .get(`${process.env.USER_SERVICE}/category`)
+        .get(`${process.env.EVENT_SERVICE}/category`)
         .then(categoryList => {
           this.categoryList = categoryList.data;
           this.setCategory(this.categoryList);
@@ -176,18 +125,16 @@ export default {
           this.categoryList = mockCategoryList;
         });
     },
-    findMatchingBadge(){
-      console.log("mating badge")
-      let eventTagsQuery = ""
-      axios.get(`${process.env.USER_SERVICE}/badges${eventTagsQuery}`)
-      .then(badgeResponse =>{
-        this.badgeList = badgeResponse.data;
-        console.log(badgeResponse.data);
-      })
-      .catch(error =>{
-
-      })
-
+    findMatchingBadge() {
+      console.log("mating badge");
+      let eventTagsQuery = "";
+      axios
+        .get(`${process.env.USER_SERVICE}/badges${eventTagsQuery}`)
+        .then(badgeResponse => {
+          this.badgeList = badgeResponse.data;
+          console.log(badgeResponse.data);
+        })
+        .catch(error => {});
     },
     // onItemClick(event, itemsCategory) {
     //   if (event) {
@@ -231,9 +178,8 @@ export default {
         this.pagination.descending = false;
       }
     }
-  } 
-   };
-
+  }
+};
 </script>
 
 

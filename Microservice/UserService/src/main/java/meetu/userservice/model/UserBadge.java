@@ -25,6 +25,8 @@ public class UserBadge {
     
     private String badgeName;
     
+   private String badgePicture;
+    
     private int level;
     
     private double exp;
@@ -33,6 +35,14 @@ public class UserBadge {
     
     private Date unlockBadgeDate;
 
+    public String getBadgePicture() {
+        return badgePicture;
+    }
+
+    public void setBadgePicture(String badgePicture) {
+        this.badgePicture = badgePicture;
+    }
+    
     public String getUid() {
         return uid;
     }
