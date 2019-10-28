@@ -25,7 +25,7 @@
 
       <v-form ref="form" v-model="valid" :lazy-validation="false">
         <v-text-field
-          v-model="organizeName"
+          v-model="organizeForm.organizeName"
           :rules="organizerNameRules"
           label="* Organizer Name"
           required
@@ -37,70 +37,57 @@
           placeholder="phone number"
           counter="10"
           prepend-icon="phone"
-          v-model="phone"
+          v-model="organizeForm.phone"
           type="number"
         ></v-text-field>
 
-<br>
+        <br />
 
         <span>
-      Organize image (circle picture)
+          Organize image (circle picture)
+          <br />
 
-      <br />
+          <v-btn
+            class="chooseFileButton"
+            color="white"
+            @click="$refs.coverPictureUpload.click()"
+          >Choose file</v-btn>
+          <input
+            v-show="false"
+            ref="coverPictureUpload"
+            type="file"
+            @change="onCoverPictureUpload"
+            accept="image/*"
+          />
+          <p v-if="eventPictureCoverUrl.name !=undefined  ">{{eventPictureCoverUrl.name}}</p>
+          <div v-if="eventPictureCoverUrl.url !=undefined  ">
+            <v-img
+              :src="eventPictureCoverUrl.url"
+              aspect-ratio="1"
+              class="grey lighten-2 img-circle"
+              max-width="200"
+              max-height="200"
+            ></v-img>
+          </div>
+        </span>
 
-      <v-btn
-        class="chooseFileButton"
-        color="white"
-        @click="$refs.coverPictureUpload.click()"
-      >Choose file</v-btn>
-      <input
-        v-show="false"
-        ref="coverPictureUpload"
-        type="file"
-        @change="onCoverPictureUpload"
-        accept="image/*"
-      />
-      <p v-if="eventPictureCoverUrl.name !=undefined  ">{{eventPictureCoverUrl.name}}</p>
-      <div v-if="eventPictureCoverUrl.url !=undefined  ">
-        <v-img
-          :src="eventPictureCoverUrl.url"
-          aspect-ratio="1"
-          class="grey lighten-2 img-circle"
-          max-width="200"
-          max-height="200"
-        ></v-img>
-      </div>
-    </span>
-
-
-      <br>
-      <v-flex xs12 d-flex>
-        <v-combobox
-          :items="items"
-          label="Add Admin"
-          multiple
-          chips
-        >
-          <template v-slot:selection="data">
-            <v-chip
-              :key="JSON.stringify(data.item)"
-              :selected="data.selected"
-              :disabled="data.disabled"
-              class="v-chip--select-multi"
-              @input="data.parent.selectItem(data.item)"
-            >
-              <v-avatar
-                class="accent white--text"
-                v-text="data.item.slice(0, 1).toUpperCase()"
-              ></v-avatar>
-              {{ data.item }}
-            </v-chip>
-          </template>
-        </v-combobox>
-      </v-flex>
-
-
-
+        <br />
+        <v-flex xs12 d-flex>
+          <v-combobox :items="items" label="Add Admin" v-model="organizeForm.adminList" multiple chips>
+            <template v-slot:selection="data">
+              <v-chip
+                :key="JSON.stringify(data.item)"
+                :selected="data.selected"
+                :disabled="data.disabled"
+                class="v-chip--select-multi"
+                @input="data.parent.selectItem(data.item)"
+              >
+                <v-avatar class="accent white--text" v-text="data.item.slice(0, 1).toUpperCase()"></v-avatar>
+                {{ data.item }}
+              </v-chip>
+            </template>
+          </v-combobox>
+        </v-flex>
 
         <v-checkbox v-model="agreement" :rules="[rules.required]" color="#341646">
           <template v-slot:label>
@@ -147,10 +134,13 @@ export default {
     return {
       valid: true,
       isUpgradeSuccess: false,
-      phone: "",
-      organizeName: "",
       valid: true,
-      createdOrganizeId: '',
+      organizeForm: {
+        phone: "",
+        organizeName: "",
+        createdOrganizeId: "",
+        adminList: []
+      },
       eventPictureCoverUrl: {},
       names: [
         {
@@ -170,8 +160,7 @@ export default {
         v => !!v || "Phone Number is required",
         v => (v && v.length === 10) || "Phone Number msut be 10 digit"
       ],
-        items: [
-        ]
+      items: []
     };
   },
   computed: {
@@ -183,49 +172,50 @@ export default {
       this.$router.push("/userProfile");
     },
     upgradeOrganize: async function() {
-      console.log("upgrade fuq")
-      await axios
-        .post(`${process.env.USER_SERVICE}/organize/${this.getUser.uid}`, {
-          organizeName: this.organizeName,
-          phone: this.phone
-        })
-        .then(upgradeResponse => {
-          this.organizeId = upgradeResponse.data.organizeId
-          this.isUpgradeSuccess = true;
-          this.$swal({
-            type: "success",
-            title: "Upgrade success !!!",
-            text: `upgrade successs`
-          });
-        })
-        .catch(error => {
-          console.log(error.response);
-          this.$swal({
-            type: "error",
-            title: "Failed to upgrade !!!",
-            text: `${error.response}`
-          });
-        });
+      console.log("upgrade fuq");
+      console.log(this.organizeForm);
+      // await axios
+      //   .post(`${process.env.USER_SERVICE}/organize/${this.getUser.uid}`, {
+      //     organizeName: this.organizeName,
+      //     phone: this.phone
+      //   })
+      //   .then(upgradeResponse => {
+      //     this.organizeId = upgradeResponse.data.organizeId
+      //     this.isUpgradeSuccess = true;
+      //     this.$swal({
+      //       type: "success",
+      //       title: "Upgrade success !!!",
+      //       text: `upgrade successs`
+      //     });
+      //   })
+      //   .catch(error => {
+      //     console.log(error.response);
+      //     this.$swal({
+      //       type: "error",
+      //       title: "Failed to upgrade !!!",
+      //       text: `${error.response}`
+      //     });
+      //   });
     },
     ...mapActions(["setPictureDetail"]),
     loadPreviewPicture() {
       console.log("----- preview image ----");
       let eventPictureCoverBase = this.getEventTemplate.eventPictureCoverBase;
       let eventPictureListsBase = this.getEventTemplate.eventPictureListsBase;
-      console.log(eventPictureListsBase)
+      console.log(eventPictureListsBase);
       if (eventPictureCoverBase != "") {
         this.eventPictureCoverUrl = eventPictureCoverBase;
         console.log(this.eventPictureCoverUrl);
       }
       if (eventPictureListsBase.length > 0) {
         this.eventPictureListsUrl = eventPictureListsBase;
-        console.log(this.eventPictureListsUrl)
+        console.log(this.eventPictureListsUrl);
       }
     },
     onCoverPictureUpload(event) {
       console.log("uplaod din");
       this.eventPictureCover = event.target.files[0];
-      this.eventPictureCoverUrl = {}
+      this.eventPictureCoverUrl = {};
       const fileReader = new FileReader();
       fileReader.addEventListener("load", () => {
         this.eventPictureCoverUrl = {
@@ -234,7 +224,7 @@ export default {
         };
       });
       fileReader.readAsDataURL(this.eventPictureCover);
-    },
+    }
   }
 };
 </script>
@@ -270,6 +260,6 @@ export default {
   border: solid 1px #341646 !important;
 }
 .img-circle {
-    border-radius: 50%;
+  border-radius: 50%;
 }
 </style>

@@ -3,28 +3,25 @@
     <div>
       <br />
       <center>
-    <h1>My Badges</h1>
+        <h1>My Badges</h1>
       </center>
       <br />
     </div>
 
-   
-  
     <v-data-table
       :items="badges"
       :pagination.sync="pagination"
       item-key="level"
       class="elevation-1"
     >
-    <template v-slot:no-data>
-    <v-alert :value="true" color="pink" icon="info"
-    >
-    <center>
-    Your badge not found ! <br>
-    Let's join event for get badge
-    </center>
-    </v-alert>
-    </template>
+      <template v-slot:no-data>
+        <v-alert :value="true" color="pink" icon="info">
+          <center>
+            Your badge not found !
+            <br />Let's join event for get badge
+          </center>
+        </v-alert>
+      </template>
 
       <template v-slot:items="props">
         <tr>
@@ -49,6 +46,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   data: () => ({
     pagination: {
@@ -68,7 +66,16 @@ export default {
       }
     ]
   }),
-  
+  methods: {
+    loadMyBadge(){
+      axios.get(`${process.env.USER_SERVICE}/`).then(badgeListResponse =>{
+
+      })
+      .catch(err=>{
+
+      })
+    }
+  }
 };
 </script>
 

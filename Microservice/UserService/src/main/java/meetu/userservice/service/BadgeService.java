@@ -18,9 +18,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.limit;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.skip;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.sort;
 import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
+import org.springframework.data.mongodb.core.aggregation.LimitOperation;
 import org.springframework.data.mongodb.core.aggregation.LookupOperation;
+import org.springframework.data.mongodb.core.aggregation.SkipOperation;
 import org.springframework.data.mongodb.core.aggregation.SortOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import static org.springframework.data.mongodb.core.query.UntypedExampleMatcher.matching;
@@ -95,7 +99,9 @@ public class BadgeService {
                 .as("userDetail");
         AggregationOperation match = Aggregation.match(Criteria.where("badgeId").is(badgeId));
         SortOperation sortLevelAndExp = sort(new Sort(Sort.Direction.DESC, "level","exp"));
-        Aggregation aggregation = Aggregation.newAggregation(match, lookupOperation, sortLevelAndExp);
+        SkipOperation skip = skip(page);
+        LimitOperation limitOperation = limit(contentPerPage);
+        Aggregation aggregation = Aggregation.newAggregation(match, lookupOperation, sortLevelAndExp, skip,limitOperation);
         List<BasicDBObject> results = mongoTemplate.aggregate(aggregation, "userBadge", BasicDBObject.class).getMappedResults();
         return ResponseEntity.status(HttpStatus.OK).body(results);
     }

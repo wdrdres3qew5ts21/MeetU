@@ -13,12 +13,13 @@
     </center>
     <center>
       <h2>Your order is complete</h2>
+      <h3># {{reserveTicket.ticketId}}</h3>
     </center>
     <br />
-    <h2>Event name:</h2>
+    <h2>Event: {{reserveTicket.eventName}}</h2>
    <br/>
 
-   <nuxt-link :to="`/ticket?`">
+   <nuxt-link :to="`/ticket/${reserveTicket.elasticEventId}`">
       <v-btn block color="#341646" style="color:white" >View My Ticket</v-btn>
    </nuxt-link>
    
@@ -28,7 +29,14 @@
 export default {
   name: "ConfirmTicket",
   props: {
-    ticketId: String
+    ticketId: String,
+    reserveTicket: {
+      type: Object,
+      default: {
+        elasticEventId: '',
+        eventName: ''
+      }
+    }
   }
 };
 </script>

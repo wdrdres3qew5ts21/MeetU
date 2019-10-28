@@ -7,7 +7,7 @@
       <client-only>
       <carousel :perPage="1" :paginationEnabled="false">
         <slide v-for="(pic,i) in eventPictureLists" :key="i">
-          <img height="200px" :src="pic" alt="" srcset="">
+          <img width="100%" :src="pic" alt="" srcset="">
         </slide>
       </carousel>
       </client-only>
@@ -15,7 +15,7 @@
       <h3>{{eventName}}</h3>
       <br>
       
-     Event category: 
+    
       <v-chip v-for="(eventTag,index) in eventTags" :key="index" text-color="#341646">
       <v-avatar>
         <v-icon color="primary">local_offer</v-icon>
@@ -138,7 +138,7 @@
     </div>
 
     <div v-else>
-      <confirmTicket></confirmTicket>
+      <confirmTicket :reserveTicket="reserveTicket"></confirmTicket>
     </div>
   </div>
 </template> 
@@ -159,6 +159,7 @@ export default {
   },
   data() {
     return {
+      reserveTicket: {},
       qrCodeSrc: "demo",
       isTicketSelected: true,
       isViewTicketDetail: true,
@@ -265,6 +266,7 @@ export default {
         })
         .then(reserveTicket => {
           console.log(reserveTicket);
+          this.reserveTicket = reserveTicket
           this.isViewTicketDetail = !this.isViewTicketDetail;
         })
         .catch(error => {
