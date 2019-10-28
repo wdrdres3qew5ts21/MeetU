@@ -138,7 +138,7 @@
     </div>
 
     <div v-else>
-      <confirmTicket></confirmTicket>
+      <confirmTicket :reserveTicket="reserveTicket"></confirmTicket>
     </div>
   </div>
 </template> 
@@ -159,6 +159,7 @@ export default {
   },
   data() {
     return {
+      reserveTicket: {},
       qrCodeSrc: "demo",
       isTicketSelected: true,
       isViewTicketDetail: true,
@@ -265,6 +266,7 @@ export default {
         })
         .then(reserveTicket => {
           console.log(reserveTicket);
+          this.reserveTicket = reserveTicket
           this.isViewTicketDetail = !this.isViewTicketDetail;
         })
         .catch(error => {
