@@ -3,6 +3,7 @@
     <br>
     <h2 class="h2">Create New Events</h2>
     <br />
+    <v-form ref="form" v-model="valid" :lazy-validation="false">
     <v-flex xs12 sm5 d-flex>
       <v-autocomplete
         :items="organizeList"
@@ -11,15 +12,19 @@
         :menu-props="{ maxHeight: '400' }"
         label="* Select Organize"
         v-model="eventForm.organize.organizeId"
-        persistent-hint
+        persistent-hint        
+        required
       ></v-autocomplete>
     </v-flex>
-    <v-text-field v-model="eventForm.eventName" label="* Event Name" required></v-text-field>
+    <v-text-field v-model="eventForm.eventName" label="* Event Name" required :rules="nameRules"></v-text-field>
     <!-- <v-text-field v-model="eventForm.eventDetail"  placeholder="Event Detail" required></v-text-field> -->
     <v-layout class="mb-4">
-      <v-textarea name="description" label="Description" v-model="eventForm.eventDetail" rows="3"></v-textarea>
+      <v-textarea name="description" label="Description" v-model="eventForm.eventDetail" rows="3" required
+        :rules="[v => !!v || 'Description is required']"
+      ></v-textarea>
     </v-layout>
     <v-flex xs12 sm5 d-flex>
+      
       <v-autocomplete
         :items="getCategory"
         item-text="categoryLabel"
@@ -29,7 +34,11 @@
         v-model="eventForm.eventTags"
         multiple
         persistent-hint
+        required
+        :rules="[v => !!v || 'Category is required']"
       ></v-autocomplete>
+
+
     </v-flex>
 
     <v-menu
@@ -40,6 +49,7 @@
       offset-y
       full-width
       min-width="290px"
+
     >
       <template v-slot:activator="{ on }">
         <v-text-field
@@ -48,13 +58,15 @@
           prepend-icon="today"
           readonly
           v-on="on"
+           required
+           :rules="[v => !!v || 'eventStartDate is required']"
         ></v-text-field>
       </template>
       <v-date-picker
         ref="picker"
         v-model="eventForm.eventStartDate"
         min="1950-01-01"
-        @change="save"
+        @change="save"       
       ></v-date-picker>
     </v-menu>
 
@@ -70,10 +82,12 @@
       <template v-slot:activator="{ on }">
         <v-text-field
           v-model="eventForm.eventEndDate"
+          required
           label="eventEndDate"
           prepend-icon="today"
           readonly
           v-on="on"
+           :rules="[v => !!v || 'eventEndDate is required']"
         ></v-text-field>
       </template>
       <v-date-picker ref="picker" v-model="eventForm.eventEndDate" min="1950-01-01" @change="save"></v-date-picker>
@@ -120,7 +134,9 @@
     <br />
     <br />
     <span class="location" id="locationMap">Event Detail</span>
-    <v-text-field type="number" v-model="eventForm.numberOfTicket" label="amount of ticket" hint="Please fill number of ticket for this event."></v-text-field>
+    <v-text-field type="number" v-model="eventForm.numberOfTicket" 
+    label="amount of ticket" hint="Please fill number of ticket for this event." required
+    :rules="[v => !!v || 'Number of Ticket is required']"></v-text-field>
     <br />
     <v-flex xs12>
       <v-text-field
@@ -128,6 +144,8 @@
         placeholder="Exp of Event"
         label="Exp Of Event"
         type="number"
+        required
+      :rules="[v => !!v || '']"
       ></v-text-field>
     </v-flex>
 
@@ -154,6 +172,8 @@
         color="#341646"
         label="Select Badge"
         item-value="badgeId"
+        required
+        :rules="[v => !!v || 'badge is required']"
       >
         <template v-slot:selection="data">
           <v-chip
@@ -245,6 +265,8 @@
     <br />
     <br />
     <center>
+
+
       <v-btn
         block
         class="saveButton white--text"
@@ -252,8 +274,12 @@
         depressed
         large
         height="50"
+      :disabled="!valid"
         @click="goToPreviewEvent()"
       >Preview Event</v-btn>
+
+
+
       <v-btn
         block
         color="#AEAEAE"
@@ -267,7 +293,9 @@
 
     <br />
     <br />
+      </v-form>
   </div>
+  
 </template>
 
 
@@ -287,6 +315,7 @@ export default {
       isShowLocation: false,
       menuEventStartDate: false,
       menuEventEndDate: false,
+      valid: true,
       organizeList: [],
       eventForm: {
         numberOfTicket: 10,
@@ -348,6 +377,10 @@ export default {
         }
       },
       badgeList: [],
+      nameRules: [
+        v => !!v || 'Name is required',
+        v => v.length <= 100 || 'Name must be less than 100 characters'
+      ],
       badgeSelect: false,
       description: "",
       place: null,
@@ -564,6 +597,7 @@ export default {
       this.$vuetify.goTo("#locationMap");
     },
     goToPreviewEvent() {
+     
       this.saveEventTemplate();
       this.$router.push("/organize/event/previewEvent");
     },
@@ -616,6 +650,11 @@ export default {
       //   console.log(this.badgeSelect)
       //   console.log(index)
       //   if (index >= 0) this.badgeSelect.splice(index, 1)
+      },
+       validate() {
+        if (this.$refs.form.validate()) {
+          this.snackbar = true
+        }
       }
   }
 };
