@@ -9,10 +9,18 @@
         </v-avatar>
       </center>
       <center>
+
+
         <h2>{{badge.badgeName}}</h2>
-        <span v-for="(badgeTag, index) in badge.badgeTags" :key="index">
-          <nuxt-link :to="`/event?category=${badgeTag}`">{{badgeTag}}</nuxt-link>
-        </span>
+        <v-chip v-for="(badgeTag, index) in badge.badgeTags" :key="index">
+          <v-avatar>
+                  <v-icon color="primary">local_offer</v-icon>
+        </v-avatar>
+             <nuxt-link :to="`/event?category=${badgeTag}`">{{badgeTag}}</nuxt-link>
+        </v-chip>
+
+
+
       </center>
       <br />
     </div>
