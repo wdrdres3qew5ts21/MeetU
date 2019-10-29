@@ -212,7 +212,8 @@
       >Save</v-btn>
       <!-- </nuxt-link> -->
       <!-- <v-btn color="primary" :disabled="!valid" @click="onSubmit()">ถัดไป</v-btn> -->
-<br><br>
+      <br />
+      <br />
       <v-btn color="error" @click="confirmPopup()" block>Delete an event</v-btn>
     </center>
     <br />
@@ -708,27 +709,51 @@ export default {
       //   if (index >= 0) this.badgeSelect.splice(index, 1)
     },
     confirmPopup: function(e) {
-     
-      //       Swal.fire({
-      //   title: 'Are you sure?',
-      //   text: "You won't be able to revert this!",
-      //   type: 'warning',
-      //   inputAttributes: {
-      //     autocapitalize: 'off'
-      //   },
-      //   showCancelButton: true,
-      //   confirmButtonColor: '#3085d6',
-      //   cancelButtonColor: '#d33',
-      //   confirmButtonText: 'Yes, delete it!'
-      // }).then((result) => {
-      //   if (result.value) {
-      //     Swal.fire(
-      //       'Deleted!',
-      //       'Your file has been deleted.',
-      //       'success'
-      //     )
-      //   }
-      // })
+      Swal.fire({
+        title: "Do you want to delete this event?",
+        inputPlaceholder: "Enter event name for confirmation",
+        input: "text",
+        inputAttributes: {
+          autocapitalize: "off"
+        },
+        showCancelButton: true,
+        confirmButtonText: "Confirm",
+        showLoaderOnConfirm: true,
+        preConfirm: login => {
+          return fetch(`//api.github.com/users/${login}`)
+            .then(response => {
+              if (!response.ok) {
+                throw new Error(response.statusText);
+              }
+              return response.json();
+            })
+            .catch(error => {
+              Swal.showValidationMessage(`Request failed: ${error}`);
+            });
+        },
+        allowOutsideClick: () => !Swal.isLoading()
+      }).then(result => {
+        if (result.value) {
+          Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            type: "warning",
+            inputAttributes: {
+              autocapitalize: "off"
+            },
+            showCancelButton: true,
+            confirmButtonColor: "#FD6363",
+            cancelButtonColor: "#4CAF50",
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "No, keep it!",
+
+          }).then(result => {
+            if (result.value) {
+              Swal.fire("Deleted!", "Your event has been deleted.", "success");
+            }
+          });
+        }
+      });
     }
   }
 };
