@@ -3,12 +3,13 @@
     <div>
     <br>
     <h2>Create New Community</h2>
-
+<v-form ref="form" v-model="valid" :lazy-validation="false">
     <v-text-field
       v-model="communityForm.communityName"
-      :rules="communityNameRules"
+    
       label="* Community Name"
       required
+        :rules="[v => !!v || 'Community name is required']"
     ></v-text-field>
     <v-layout class="mb-4">
  <v-layout class="mb-4">
@@ -23,6 +24,7 @@
                       multiple
                       sm6
                       xs2
+                      required
                     >
                       <template v-slot:selection="data">
                         <v-chip
@@ -49,12 +51,16 @@
         required
         hide-details
         v-model="communityForm.communityDetail"
+         
+        :rules="[v => !!v || 'Description  is required']"
       ></v-textarea>
     </v-layout>
     <!-- <nuxt-link :to="`/community/communityId/?`" style="text-decoration-line:none;"> -->
       <br />
-      <v-btn block  color="#341646" class="mb-2 white--text" @click="createCommunity()">Create Community</v-btn>
+      <v-btn block  color="#341646" class="mb-2 white--text"
+      :disabled="!valid" @click="createCommunity()">Create Community</v-btn>
     <!-- </nuxt-link> -->
+</v-form>
   </div>
   </v-container>
 </template>
@@ -70,8 +76,6 @@ export default {
     return {
       selectedFile: null,
       valid: true,
-     
-      communityNameRules: [v => !!v || "Community name is required"],
       categoryList: [],
       selectedCategoryList: [],
       communityForm: {
