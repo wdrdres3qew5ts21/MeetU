@@ -148,7 +148,49 @@
         placeholder="Exp of Event"
         label="Exp Of Event"
         type="number"
+        :disabled="isEditing"
       ></v-text-field>
+    </v-flex>
+
+        <v-flex xs12 d-flex @click="findMatchingBadge()">
+      <v-autocomplete
+        v-model="eventForm.badge.badgeId"
+        :items="badgeList"
+        box
+        chips
+        color="#341646"
+        label="Select Badge"
+        item-value="badgeId"
+        :disabled="isEditing"
+      >
+        <template v-slot:selection="data">
+          <v-chip
+            v-bind="data.attrs"
+            :selected="data.selected"
+            color="#341646"
+            class="chip--select-multi white--text"
+            @click:close="remove(data.item)"
+          >
+            <v-avatar>
+              <img :src="data.item.badgePicture" />
+            </v-avatar>
+            <h3>{{ data.item.badgeName }}</h3>
+          </v-chip>
+        </template>
+        <template v-slot:item="data">
+          <template v-if="typeof data.item !== 'object'">
+            <v-list-tile-content v-text="data.item"></v-list-tile-content>
+          </template>
+          <template v-else>
+            <v-list-tile-avatar>
+              <img :src="data.item.badgePicture" />
+            </v-list-tile-avatar>
+            <v-list-tile-content>
+              <v-list-tile-title v-html="data.item.badgeName"></v-list-tile-title>
+            </v-list-tile-content>
+          </template>
+        </template>
+      </v-autocomplete>
     </v-flex>
 
 
@@ -265,16 +307,41 @@ export default {
         twitter: "",
         instagram: ""
       },
-      location: {
-        detail: "",
-        subDistrict: "",
-        distrct: "",
-        province: "",
-        country: "",
-        geopoint: {
-          lat: 0,
-          lon: 0
-        }
+            eventForm: {
+        numberOfTicket: 10,
+        organize: {
+          organizeId: ""
+        },
+        eventName: "",
+        eventDetail: "",
+        eventTags: [],
+        location: "",
+        eventStartDate: "",
+        eventEndDate: "",
+        selectedCategory: "",
+        location: {
+          detail: "",
+          subDistrict: "",
+          distrct: "",
+          province: "",
+          country: "",
+          geopoint: {
+            lat: 0,
+            lon: 0
+          }
+        },
+        badge: {
+          badgeId: "",
+          exp: 30
+        },
+        badgeSelect: ["", ""],
+        badgeImg: [
+          // { header: "Social" },
+          // { name: "Collaborator", avatar: this.srcs[0] },
+          // { name: "Lucky", avatar: this.srcs[1] },
+          // { name: "Making a Difference", avatar: this.srcs[2] },
+          // { name: "Speaker", avatar: this.srcs[3] }
+        ]
       },
       isShowLocation: false,
       marker: {
@@ -305,6 +372,7 @@ export default {
   },
   mounted() {
     this.initUserProfile();
+    this.findMatchingBadge();
   },
   methods: {
     ...mapActions(["testContext"]),
@@ -529,9 +597,29 @@ export default {
         this.$router.push("/");
       });
     },
+
+        saveEventTemplate() {
+      console.log("SAve Tempalte");
+      console.log(this.eventForm);
+      this.setEventTemplate(this.eventForm);
+      this.setBadgeDetail(this.eventForm.badge);
+    },
+
     save(date) {
       this.$refs.menu.save(date);
     },
+
+        onSubmit() {
+      console.log({
+        eventname: this.eventForm.eventName,
+        eventdetail: this.eventForm.eventDetail,
+        eventStartDate: this.eventForm.eventStartDate,
+        eventEndDate: this.eventForm.eventEndDate,
+        location: this.location,
+        category: this.eventForm.selectedCategoryList
+      });
+    },
+    
     activateInEditMode() {
       this.isEditing = false;
     },
@@ -613,6 +701,15 @@ export default {
         this.infoWinOpen = true;
         this.currentMidx = idx;
       }
+    },
+        remove(item) {
+      const index = this.badgeSelect.indexOf(item.badgeName);
+      if (index >= 0) this.badgeSelect.splice(index, 1);
+      // console.log(item.badgeName)
+      //   // const index = this.badgeSelect.indexOf(item.badgeSelect)
+      //   console.log(this.badgeSelect)
+      //   console.log(index)
+      //   if (index >= 0) this.badgeSelect.splice(index, 1)
     }
   }
 };
