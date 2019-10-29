@@ -133,8 +133,8 @@
           </client-only>
         </v-layout>
 
-        <br>
-        <br>
+        <br />
+        <br />
         <span class="location" id="locationMap">Event Detail</span>
         <v-text-field
           type="number"
@@ -142,62 +142,56 @@
           hint="Please fill number of ticket for this event."
           :disabled="isEditing"
         ></v-text-field>
-            <br />
-    <v-flex xs12>
-      <v-text-field
-        placeholder="Exp of Event"
-        label="Exp Of Event"
-        type="number"
-        :disabled="isEditing"
-      ></v-text-field>
-    </v-flex>
+        <br />
+        <v-flex xs12>
+          <v-text-field
+            placeholder="Exp of Event"
+            label="Exp Of Event"
+            type="number"
+            :disabled="isEditing"
+          ></v-text-field>
+        </v-flex>
 
         <v-flex xs12 d-flex @click="findMatchingBadge()">
-      <v-autocomplete
-        v-model="eventForm.badge.badgeId"
-        :items="badgeList"
-        box
-        chips
-        color="#341646"
-        label="Select Badge"
-        item-value="badgeId"
-        :disabled="isEditing"
-      >
-        <template v-slot:selection="data">
-          <v-chip
-            v-bind="data.attrs"
-            :selected="data.selected"
+          <v-autocomplete
+            v-model="eventForm.badge.badgeId"
+            :items="badgeList"
+            box
+            chips
             color="#341646"
-            class="chip--select-multi white--text"
-            @click:close="remove(data.item)"
+            label="Select Badge"
+            item-value="badgeId"
+            :disabled="isEditing"
           >
-            <v-avatar>
-              <img :src="data.item.badgePicture" />
-            </v-avatar>
-            <h3>{{ data.item.badgeName }}</h3>
-          </v-chip>
-        </template>
-        <template v-slot:item="data">
-          <template v-if="typeof data.item !== 'object'">
-            <v-list-tile-content v-text="data.item"></v-list-tile-content>
-          </template>
-          <template v-else>
-            <v-list-tile-avatar>
-              <img :src="data.item.badgePicture" />
-            </v-list-tile-avatar>
-            <v-list-tile-content>
-              <v-list-tile-title v-html="data.item.badgeName"></v-list-tile-title>
-            </v-list-tile-content>
-          </template>
-        </template>
-      </v-autocomplete>
-    </v-flex>
-
-
-
-
-
-
+            <template v-slot:selection="data">
+              <v-chip
+                v-bind="data.attrs"
+                :selected="data.selected"
+                color="#341646"
+                class="chip--select-multi white--text"
+                @click:close="remove(data.item)"
+              >
+                <v-avatar>
+                  <img :src="data.item.badgePicture" />
+                </v-avatar>
+                <h3>{{ data.item.badgeName }}</h3>
+              </v-chip>
+            </template>
+            <template v-slot:item="data">
+              <template v-if="typeof data.item !== 'object'">
+                <v-list-tile-content v-text="data.item"></v-list-tile-content>
+              </template>
+              <template v-else>
+                <v-list-tile-avatar>
+                  <img :src="data.item.badgePicture" />
+                </v-list-tile-avatar>
+                <v-list-tile-content>
+                  <v-list-tile-title v-html="data.item.badgeName"></v-list-tile-title>
+                </v-list-tile-content>
+              </template>
+            </template>
+          </v-autocomplete>
+        </v-flex>
       </v-form>
     </v-layout>
     <br />
@@ -218,14 +212,16 @@
       >Save</v-btn>
       <!-- </nuxt-link> -->
       <!-- <v-btn color="primary" :disabled="!valid" @click="onSubmit()">ถัดไป</v-btn> -->
+<br><br>
+      <v-btn color="error" @click="confirmPopup()" block>Delete an event</v-btn>
     </center>
-    <br />
     <br />
   </div>
 </template> 
  
  
 <script>
+import Swal from "sweetalert2";
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
 
@@ -307,7 +303,7 @@ export default {
         twitter: "",
         instagram: ""
       },
-            eventForm: {
+      eventForm: {
         numberOfTicket: 10,
         organize: {
           organizeId: ""
@@ -598,7 +594,7 @@ export default {
       });
     },
 
-        saveEventTemplate() {
+    saveEventTemplate() {
       console.log("SAve Tempalte");
       console.log(this.eventForm);
       this.setEventTemplate(this.eventForm);
@@ -609,7 +605,7 @@ export default {
       this.$refs.menu.save(date);
     },
 
-        onSubmit() {
+    onSubmit() {
       console.log({
         eventname: this.eventForm.eventName,
         eventdetail: this.eventForm.eventDetail,
@@ -619,7 +615,7 @@ export default {
         category: this.eventForm.selectedCategoryList
       });
     },
-    
+
     activateInEditMode() {
       this.isEditing = false;
     },
@@ -702,7 +698,7 @@ export default {
         this.currentMidx = idx;
       }
     },
-        remove(item) {
+    remove(item) {
       const index = this.badgeSelect.indexOf(item.badgeName);
       if (index >= 0) this.badgeSelect.splice(index, 1);
       // console.log(item.badgeName)
@@ -710,6 +706,29 @@ export default {
       //   console.log(this.badgeSelect)
       //   console.log(index)
       //   if (index >= 0) this.badgeSelect.splice(index, 1)
+    },
+    confirmPopup: function(e) {
+     
+      //       Swal.fire({
+      //   title: 'Are you sure?',
+      //   text: "You won't be able to revert this!",
+      //   type: 'warning',
+      //   inputAttributes: {
+      //     autocapitalize: 'off'
+      //   },
+      //   showCancelButton: true,
+      //   confirmButtonColor: '#3085d6',
+      //   cancelButtonColor: '#d33',
+      //   confirmButtonText: 'Yes, delete it!'
+      // }).then((result) => {
+      //   if (result.value) {
+      //     Swal.fire(
+      //       'Deleted!',
+      //       'Your file has been deleted.',
+      //       'success'
+      //     )
+      //   }
+      // })
     }
   }
 };
