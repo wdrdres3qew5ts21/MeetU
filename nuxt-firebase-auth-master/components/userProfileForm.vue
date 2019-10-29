@@ -4,8 +4,8 @@
       <h2 style="color:#341646">My Profile</h2>
       <span></span>
       <v-flex class="text-xs-right">
-        <v-btn depressed flat @click=" isEditing= !isEditing">
-          <v-icon color="#341646" medium>edit</v-icon>
+        <v-btn fab dark small color="#341646" @click=" isEditing= !isEditing">
+          <v-icon color="#fff" medium>edit</v-icon>
         </v-btn>
       </v-flex>
     </v-layout>
@@ -17,29 +17,35 @@
         </v-card>
       </v-flex>
     </v-layout>
-    <v-btn class="black--text" outline color="red" depressed large block @click="logout()">LOG OUT</v-btn>
+    <br />
+    <v-btn class="logoutButton" outline color="red" depressed large block @click="logout()">LOG OUT</v-btn>
     <br />
     <h2>Badges :</h2>
     <br />
     <v-layout>
-     <v-flex v-for="(item,index) in badges" :key="index" xs2>
-       <v-avatar size="50">
-           <v-img  :src="item.avatar"></v-img>
-       </v-avatar>      
+      <v-flex v-for="(item,index) in badges" :key="index" xs2>
+        <v-avatar size="50">
+          <v-img :src="item.avatar"></v-img>
+        </v-avatar>
       </v-flex>
     </v-layout>
     <br />
     <v-layout column>
       <v-form ref="form" v-model="valid">
         <h2>Information</h2>
-        <br/>
-        <h3>Your interest : </h3>
+        <br />
+        <h3>Your interest :</h3>
         <v-flex xs12>
           <center>
-            <h3>             
-               {{userForm.interest}} 
-               <!-- : {{userForm.interest.length}}/{{limitedSelectNumber}} -->
-               <nuxt-link to="/selectGenres" style="color:red"> <v-icon color="#341646" medium>edit</v-icon></nuxt-link>
+            <h3>
+              {{userForm.interest}}
+              <!-- : {{userForm.interest.length}}/{{limitedSelectNumber}} -->
+              
+              <nuxt-link to="/selectGenres" style="color:red">
+                <v-btn fab dark small color="#341646">
+                  <v-icon color="#fff" medium>edit</v-icon>
+                </v-btn>
+              </nuxt-link>
             </h3>
           </center>
         </v-flex>
@@ -237,17 +243,16 @@ export default {
       isCameraOpen: false,
       limitedSelectNumber: 3,
       badges: [
-      {
-        avatar: "https://cdn.vuetifyjs.com/images/lists/1.jpg"
-      },
-      {
-        avatar: "https://cdn.vuetifyjs.com/images/lists/2.jpg"
-      },
-         {
-     
-        avatar: "https://cdn.vuetifyjs.com/images/lists/2.jpg"
-      }
-    ],
+        {
+          avatar: "https://cdn.vuetifyjs.com/images/lists/1.jpg"
+        },
+        {
+          avatar: "https://cdn.vuetifyjs.com/images/lists/2.jpg"
+        },
+        {
+          avatar: "https://cdn.vuetifyjs.com/images/lists/2.jpg"
+        }
+      ],
       date: null,
       menu: false,
 
@@ -318,28 +323,28 @@ export default {
   methods: {
     ...mapActions(["testContext"]),
     onDecode: function(decodedString) {
-      let parsedTicket= ""
+      let parsedTicket = "";
       try {
-        parsedTicket = JSON.parse(decodedString)
-        console.log(parsedTicket)
+        parsedTicket = JSON.parse(decodedString);
+        console.log(parsedTicket);
       } catch (error) {
-       console.log('fail to QR decode',parsedTicket) 
+        console.log("fail to QR decode", parsedTicket);
       }
       axios
-        .post(`${process.env.EVENT_SERVICE}/event/join`,parsedTicket,{
+        .post(`${process.env.EVENT_SERVICE}/event/join`, parsedTicket, {
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('jwtToken') || ''}`
+            Authorization: `Bearer ${localStorage.getItem("jwtToken") || ""}`
           }
         })
         .then(scanResponse => {
-          console.log(scanResponse)
+          console.log(scanResponse);
           this.$swal({
             type: "success",
             title: "Success to scan QR Code!!!",
             text: "Success to scan QR Code !!!"
           });
         })
-        .catch(err=>{
+        .catch(err => {
           this.$swal({
             type: "error",
             title: "Fail to scan QR Code !!!",
@@ -349,9 +354,9 @@ export default {
     },
     initUserProfile: function() {
       axios
-        .get(`${process.env.USER_SERVICE}/user/${this.getUser.uid}`,{
+        .get(`${process.env.USER_SERVICE}/user/${this.getUser.uid}`, {
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('jwtToken') || ''}`
+            Authorization: `Bearer ${localStorage.getItem("jwtToken") || ""}`
           }
         })
         .then(userProfileForm => {
@@ -372,9 +377,7 @@ export default {
         })
         .catch(err => {});
     },
-    loadUserBadge:function(){
-     
-    },
+    loadUserBadge: function() {},
     onFileChanged(event) {
       this.selectedFile = event.target.files[0];
     },
@@ -430,8 +433,8 @@ export default {
           `${process.env.USER_SERVICE}/user/${this.getUser.uid}`,
           this.userForm,
           {
-            headers:{
-              'Authorization': `Bearer ${localStorage.getItem('jwtToken') || ''}`
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("jwtToken") || ""}`
             }
           }
         )
@@ -482,5 +485,9 @@ export default {
   opacity: 0.5;
   position: absolute;
   width: 100%;
+}
+
+.logoutButton {
+  font-weight: bold;
 }
 </style> 
