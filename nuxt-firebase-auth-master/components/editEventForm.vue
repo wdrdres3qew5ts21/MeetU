@@ -90,11 +90,15 @@
           <v-date-picker ref="picker" min="1950-01-01" @change="save" :disabled="isEditing"></v-date-picker>
         </v-menu>
 
-        <!-- t -->
-<!-- 
         <span class="location" id="locationMap">Location</span>
         <p>{{getEventTemplate.location.detail}}</p>
-        <v-btn class="addLocationButton" color="white" @click="addLocation()">Add Location</v-btn>
+        <v-btn
+          class="addLocationButton"
+          color="white"
+          @click="addLocation()"
+          :disabled="isEditing"
+        >Add Location</v-btn>
+
         <v-layout v-show="isShowLocation" row wrap>
           <client-only>
             <label>
@@ -128,8 +132,9 @@
             </GmapMap>
           </client-only>
         </v-layout>
-        <br />
-        <br />
+
+        <br>
+        <br>
         <span class="location" id="locationMap">Event Detail</span>
         <v-text-field
           type="number"
@@ -137,56 +142,20 @@
           hint="Please fill number of ticket for this event."
           :disabled="isEditing"
         ></v-text-field>
-        <br /> -->
-        <!-- <v-flex xs12>
-          <v-text-field
-            v-model="eventForm.badge.exp"
-            placeholder="Exp of Event"
-            label="Exp Of Event"
-            type="number"
-          ></v-text-field>
-        </v-flex> -->
+            <br />
+    <v-flex xs12>
+      <v-text-field
+        placeholder="Exp of Event"
+        label="Exp Of Event"
+        type="number"
+      ></v-text-field>
+    </v-flex>
 
-        <!-- <v-flex xs12 d-flex @click="findMatchingBadge()">
-          <v-autocomplete
-            :items="badgeList"
-            box
-            chips
-            color="#341646"
-            label="Select Badge"
-            item-value="badgeId"
-          >
-            <template v-slot:selection="data">
-              <v-chip
-                v-bind="data.attrs"
-                :selected="data.selected"
-                color="#341646"
-                class="chip--select-multi white--text"
-              >
-                <v-avatar>
-                  <img :src="data.item.badgePicture" />
-                </v-avatar>
-                <h3>{{ data.item.badgeName }}</h3>
-              </v-chip>
-            </template>
 
-            <template v-slot:item="data">
-              <template v-if="typeof data.item !== 'object'">
-                <v-list-tile-content v-text="data.item"></v-list-tile-content>
-              </template>
-              <template v-else>
-                <v-list-tile-avatar>
-                  <img :src="data.item.badgePicture" />
-                </v-list-tile-avatar>
-                <v-list-tile-content>
-                  <v-list-tile-title v-html="data.item.badgeName"></v-list-tile-title>
-                </v-list-tile-content>
-              </template>
-            </template>
-          </v-autocomplete>
-        </v-flex> -->
 
-        <!--  -->
+
+
+
       </v-form>
     </v-layout>
     <br />
@@ -295,6 +264,29 @@ export default {
         facebook: "",
         twitter: "",
         instagram: ""
+      },
+      location: {
+        detail: "",
+        subDistrict: "",
+        distrct: "",
+        province: "",
+        country: "",
+        geopoint: {
+          lat: 0,
+          lon: 0
+        }
+      },
+      isShowLocation: false,
+      marker: {
+        icon:
+          "https://png2.kisspng.com/sh/5a457e82acb6e22a2ae8836f35448931/L0KzQYm3VMAzN6dBiZH0aYP2gLBuTfNwdaF6jNd7LXnmf7B6TfJ2e5pzfeV8LYfygrztjP94NZVuf9t9YXywhMPojwNnd6NyRd94dnWwRbLqUvQ2bGE3e9dqN0axQ4S8Vsc2OGc2TaQ7N0G7QYe3Ucg1NqFzf3==/kisspng-computer-icons-business-workflow-digital-transform-move-5ac2d5d02cea76.335675061522718160184.png",
+        title: "Digital Transformation 4.0 By IMC",
+        detail:
+          "พบกับผู้ที่คร่ำหวอดในวงการอุตสาหกรรมที่พร้อมจะมาพลิกโฉมอุตสาหกรรมของท่านให้ก้าวไปสู่ยุค Thailand 4.0",
+        position: {
+          lat: 13.6518128,
+          lng: 100.4937549
+        }
       }
     };
   },
@@ -406,6 +398,82 @@ export default {
         .catch(err => {});
     },
 
+    toggleInfoWindow: function(marker, idx) {
+      this.infoWindowPos = marker.position;
+      this.infoTitle = marker.title;
+      this.infoDetail = marker.detail;
+
+      //check if its the same marker that was selected if yes toggle
+      if (this.currentMidx == idx) {
+        this.infoWinOpen = !this.infoWinOpen;
+      }
+      //if different marker set infowindow to open and reset current marker index
+      else {
+        this.infoWinOpen = true;
+        this.currentMidx = idx;
+      }
+    },
+    addLocation() {
+      this.isShowLocation = true;
+      this.$vuetify.goTo("#locationMap");
+    },
+
+    setPlace(place) {
+      this.place = place;
+      console.log("----set place----");
+      console.log(this.place);
+      let addresscomponents = this.place.address_components;
+      let detail = this.place.formatted_address;
+      let streetNumber = addresscomponents[0].long_name;
+      let road = addresscomponents[1].long_name;
+      let subDistrict = addresscomponents[2].long_name;
+      let distrct = addresscomponents[3].long_name;
+      let province = addresscomponents[4].long_name;
+      let country = addresscomponents[5].long_name;
+
+      this.setEventLocation({
+        place,
+        detail,
+        streetNumber,
+        road,
+        subDistrict,
+        distrct,
+        province,
+        country
+      });
+      console.log({
+        place,
+        detail,
+        streetNumber,
+        road,
+        subDistrict,
+        distrct,
+        province,
+        country
+      });
+      this.usePlace(this.place);
+    },
+    usePlace(place) {
+      if (this.place) {
+        this.marker.position = {
+          lat: this.place.geometry.location.lat(),
+          lng: this.place.geometry.location.lng()
+        };
+        this.center = {
+          lat: this.place.geometry.location.lat(),
+          lng: this.place.geometry.location.lng()
+        };
+      }
+      console.log("--- place ----");
+      console.log("---- pin location ---- ");
+      console.log(this.marker);
+      this.setGeopoint({
+        lat: this.marker.position.lat,
+        lon: this.marker.position.lng
+      });
+      this.place = null;
+    },
+
     loadEventTemplate() {
       console.log(this.getEventTemplate);
       let eventTemplate = this.getEventTemplate;
@@ -443,26 +511,6 @@ export default {
       //   lat: geopoint.lat,
       //   lng: geopoint.lon
       // };
-    },
-
-        toggleInfoWindow: function(marker, idx) {
-      this.infoWindowPos = marker.position;
-      this.infoTitle = marker.title;
-      this.infoDetail = marker.detail;
-
-      //check if its the same marker that was selected if yes toggle
-      if (this.currentMidx == idx) {
-        this.infoWinOpen = !this.infoWinOpen;
-      }
-      //if different marker set infowindow to open and reset current marker index
-      else {
-        this.infoWinOpen = true;
-        this.currentMidx = idx;
-      }
-    },
-    addLocation() {
-      this.isShowLocation = true;
-      this.$vuetify.goTo("#locationMap");
     },
 
     onFileChanged(event) {
@@ -549,13 +597,48 @@ export default {
       //   lastName: this.userForm.lastname,
       //   gender: this.userForm.gender
       // });
+    },
+
+    toggleInfoWindow: function(marker, idx) {
+      this.infoWindowPos = marker.position;
+      this.infoTitle = marker.title;
+      this.infoDetail = marker.detail;
+
+      //check if its the same marker that was selected if yes toggle
+      if (this.currentMidx == idx) {
+        this.infoWinOpen = !this.infoWinOpen;
+      }
+      //if different marker set infowindow to open and reset current marker index
+      else {
+        this.infoWinOpen = true;
+        this.currentMidx = idx;
+      }
     }
   }
 };
 </script> 
  
  
-<style>
+<style lang="css">
+.v-content {
+  max-width: 100%;
+  background-color: #eeeeee;
+  font-family: Roboto;
+  /* background-image: url(../assets/bg.png) !important; */
+  /* background-repeat: repeat; */
+  /* background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background: transparent; */
+}
+
+.location {
+  font-family: Roboto !important;
+  font-size: 18px;
+  color: #341646 !important;
+  font-weight: bold !important;
+}
 .accountButton {
   width: 500px;
 }
