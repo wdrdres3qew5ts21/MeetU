@@ -3,13 +3,23 @@
     <br />
     <v-layout>
       <h2 style="color:#341646">Edit Event</h2>
-      <!-- <span></span> -->
+
       <v-flex class="text-xs-right">
-        <v-btn depressed flat @click=" isEditing= !isEditing">
-          <v-icon color="#341646" medium>edit</v-icon>
+        <v-btn fab dark small color="#341646" @click=" isEditing= !isEditing">
+          <v-icon color="#fff" medium>edit</v-icon>
         </v-btn>
+
+        <v-btn fab dark small color="red" @click="confirmPopup">
+      <v-icon color="#fff" medium>delete</v-icon>
+    </v-btn>
+      
+        <!-- <v-btn depressed flat @click="confirmPopup">
+          <v-icon color="#341646" medium>delete</v-icon>
+        </v-btn> -->
       </v-flex>
-    </v-layout>
+
+</v-layout>
+    
     <br />
 
     <v-layout column>
