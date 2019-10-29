@@ -1,6 +1,7 @@
 #escape=`
-FROM openjdk:alpine
+FROM openjdk:11-slim
 WORKDIR /app
+ENV spring.profiles.active=production
 ADD target/configserver-0.0.1-SNAPSHOT.jar .
 #ENV elasticsearch.host=https://meetu-milktea.tk
 #ENV spring_cloud_config=

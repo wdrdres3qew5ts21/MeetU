@@ -1,5 +1,5 @@
 server:
-  port: 3002
+  port: ${PORT:3002}
 boot:
     test: ${test:http://localhost1234}
 spring:
