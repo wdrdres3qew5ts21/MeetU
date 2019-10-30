@@ -66,13 +66,13 @@
     <h2>Community Name</h2> 
             </v-flex>
     <v-flex class="text-xs-right">
-    <v-dialog v-model="dialog" persistent max-width="600px">
+    <v-dialog v-model="dialogOfEdit" persistent max-width="600px">
       <template v-slot:activator="{ on }">
         <v-btn depressed flat v-on="on"><v-icon color="#341646" medium >edit</v-icon>  </v-btn>
       </template>
       <v-card>
         <v-card-title>
-          <span class="headline">Edit Community</span>
+          <h2>Edit Community</h2>
         </v-card-title>
         <v-card-text>
           <v-container grid-list-md>
@@ -89,20 +89,20 @@
             <br>
                <v-textarea
                outline
-        name="description"
-        label="Description"
-        color="pink"
-        rows="6"
-        required
-        hide-details
-        v-model="communityForm.communityDetail"
+                 name="description"
+                label="Description"
+                color="pink"
+                rows="6"
+                required
+                hide-details
+                v-model="communityForm.communityDetail"
       ></v-textarea>
         </v-container>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" flat @click="dialog = false">Close</v-btn>
-          <v-btn color="blue darken-1" flat @click="dialog = false">Save</v-btn>
+          <v-btn color="#341646" flat @click="dialogOfEdit = false">Close</v-btn>
+          <v-btn color="#341646" flat @click="dialogOfEdit = false">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -169,9 +169,9 @@
             </v-layout>
             <v-layout>
               <v-flex xs12 class="text-xs-left">
-                <v-btn style="margin-right: 0px" @click="$refs.pictureListUpload.click()" icon>
+                <!-- <v-btn style="margin-right: 0px" @click="$refs.pictureListUpload.click()" icon>
                   <v-icon>photo_camera</v-icon>
-                </v-btn>
+                </v-btn> -->
                 <v-btn style="margin: 0px" icon>
                   <v-icon>assessment</v-icon>
                 </v-btn>
@@ -292,12 +292,12 @@
 
       <!-- -----------------------Show dialog with full comment and comment button----------------------- -->
     <div v-if="postList.length != 0">
-      <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
+      <v-dialog v-model="dialogOfComment" fullscreen hide-overlay transition="dialog-bottom-transition">
         <template v-slot:activator="{ on }">
         </template>
         <v-card height="auto">
           <v-toolbar dark color="primary">
-            <v-btn icon dark @click="dialog = false">
+            <v-btn icon dark @click="dialogOfComment = false">
               <v-icon>close</v-icon>
             </v-btn>
             <v-toolbar-title>comment</v-toolbar-title>
@@ -381,7 +381,7 @@ export default {
   name: "communityDetail",
   data() {
     return {
-      dialog: false,
+      dialogOfEdit: false,
       join: false,
       imageUrl: "",
       image: null,
@@ -392,12 +392,12 @@ export default {
       defaultImage: "https://www.elegantthemes.com/blog/wp-content/uploads/2017/03/Facebook-Groups-for-Bloggers-shutterstock_555845587-ProStockStudio-FT.png",
       remove: ["remove"],
       post: "",
-      newPost: "",
+      newPost:"" ,
       postList: [],
       commentInPost: "",
       comment: "",
       postIndex: 0,
-      dialog: false,
+      dialogOfComment: false,
       name: "",
      
       rules: [
@@ -454,7 +454,7 @@ export default {
       this.image = files[0];
     },
     getCommentFromPost(postIndex) {
-      this.dialog = true;
+      this.dialogOfComment = true;
       this.postIndex = postIndex;
       console.log(
         "--------------------postIndex get comment from post ----------------------"
@@ -462,21 +462,21 @@ export default {
       console.log(postIndex);
       console.log(this.postList[postIndex].commentList);
     },
-    onPictureListUpload(event){
-       console.log("uplaod din");
-      this.postPictureLists = event.target.files;
-      this.postPictureListsUrl = []
-      for (let i = 0; i < this.postPictureLists.length; i++) {
-        const fileReader = new FileReader();
-        fileReader.addEventListener("load", () => {
-          this.postPictureListsUrl.push({
-            url: fileReader.result,
-            name: event.target.files[i].name
-          });
-        });
-        fileReader.readAsDataURL(this.postPictureLists[i]);
-      }
-    },
+    // onPictureListUpload(event){
+    //    console.log("uplaod din");
+    //   this.postPictureLists = event.target.files;
+    //   this.postPictureListsUrl = []
+    //   for (let i = 0; i < this.postPictureLists.length; i++) {
+    //     const fileReader = new FileReader();
+    //     fileReader.addEventListener("load", () => {
+    //       this.postPictureListsUrl.push({
+    //         url: fileReader.result,
+    //         name: event.target.files[i].name
+    //       });
+    //     });
+    //     fileReader.readAsDataURL(this.postPictureLists[i]);
+    //   }
+    // },
 
     addPost() {
       var value = this.newPost && this.newPost.trim() || this.postPictureLists;
@@ -489,7 +489,7 @@ export default {
       });
       this.newPost = "";
       console.log(this.postList);
-      console.log(this.croppa);
+    
     },
     // removePost(todo) {
     //   const postIndex = this.postList.indexOf(todo);
@@ -519,7 +519,7 @@ export default {
       this.postList[postIndex].commentList.push(this.comment);
       console.log(this.postList[postIndex].commentList);
       this.comment = "";
-      this.dialog = false;
+      this.dialogOfComment = false;
       console.log(postIndex);
     },
     toggleMarker() {
@@ -538,18 +538,6 @@ export default {
       handleUploaded(resp) {
         this.userAvatar = resp.relative_url;
       }
-   
-    // addComment() {
-    //     this.postList.commentList.push({
-    //     // commentList: this.commentList.push({
-    //     comment:  this.newComment,
-    //     done: false
-    //     // }),
-
-    //   });
-    //   this.newComment = "";
-    //   this.dialog = false;
-    // },
   }
 };
 </script> 
