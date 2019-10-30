@@ -3,13 +3,23 @@
     <br />
     <v-layout>
       <h2 style="color:#341646">Edit Event</h2>
-      <!-- <span></span> -->
+
       <v-flex class="text-xs-right">
-        <v-btn depressed flat @click=" isEditing= !isEditing">
-          <v-icon color="#341646" medium>edit</v-icon>
+        <v-btn fab dark small color="#341646" @click=" isEditing= !isEditing">
+          <v-icon color="#fff" medium>edit</v-icon>
         </v-btn>
+
+        <v-btn fab dark small color="red" @click="confirmPopup">
+      <v-icon color="#fff" medium>delete</v-icon>
+    </v-btn>
+      
+        <!-- <v-btn depressed flat @click="confirmPopup">
+          <v-icon color="#341646" medium>delete</v-icon>
+        </v-btn> -->
       </v-flex>
-    </v-layout>
+
+</v-layout>
+    
     <br />
 
     <v-layout column>
@@ -90,11 +100,15 @@
           <v-date-picker ref="picker" min="1950-01-01" @change="save" :disabled="isEditing"></v-date-picker>
         </v-menu>
 
-        <!-- t -->
-<!-- 
         <span class="location" id="locationMap">Location</span>
         <p>{{getEventTemplate.location.detail}}</p>
-        <v-btn class="addLocationButton" color="white" @click="addLocation()">Add Location</v-btn>
+        <v-btn
+          class="addLocationButton"
+          color="white"
+          @click="addLocation()"
+          :disabled="isEditing"
+        >Add Location</v-btn>
+
         <v-layout v-show="isShowLocation" row wrap>
           <client-only>
             <label>
@@ -128,6 +142,7 @@
             </GmapMap>
           </client-only>
         </v-layout>
+
         <br />
         <br />
         <span class="location" id="locationMap">Event Detail</span>
@@ -137,24 +152,26 @@
           hint="Please fill number of ticket for this event."
           :disabled="isEditing"
         ></v-text-field>
-        <br /> -->
-        <!-- <v-flex xs12>
+        <br />
+        <v-flex xs12>
           <v-text-field
-            v-model="eventForm.badge.exp"
             placeholder="Exp of Event"
             label="Exp Of Event"
             type="number"
+            :disabled="isEditing"
           ></v-text-field>
-        </v-flex> -->
+        </v-flex>
 
-        <!-- <v-flex xs12 d-flex @click="findMatchingBadge()">
+        <v-flex xs12 d-flex @click="findMatchingBadge()">
           <v-autocomplete
+            v-model="eventForm.badge.badgeId"
             :items="badgeList"
             box
             chips
             color="#341646"
             label="Select Badge"
             item-value="badgeId"
+            :disabled="isEditing"
           >
             <template v-slot:selection="data">
               <v-chip
@@ -162,6 +179,7 @@
                 :selected="data.selected"
                 color="#341646"
                 class="chip--select-multi white--text"
+                @click:close="remove(data.item)"
               >
                 <v-avatar>
                   <img :src="data.item.badgePicture" />
@@ -169,7 +187,6 @@
                 <h3>{{ data.item.badgeName }}</h3>
               </v-chip>
             </template>
-
             <template v-slot:item="data">
               <template v-if="typeof data.item !== 'object'">
                 <v-list-tile-content v-text="data.item"></v-list-tile-content>
@@ -184,9 +201,7 @@
               </template>
             </template>
           </v-autocomplete>
-        </v-flex> -->
-
-        <!--  -->
+        </v-flex>
       </v-form>
     </v-layout>
     <br />
@@ -207,14 +222,17 @@
       >Save</v-btn>
       <!-- </nuxt-link> -->
       <!-- <v-btn color="primary" :disabled="!valid" @click="onSubmit()">ถัดไป</v-btn> -->
+      <br />
+      <br />
+      <v-btn color="error" @click="confirmPopup()" block>Delete an event</v-btn>
     </center>
-    <br />
     <br />
   </div>
 </template> 
  
  
 <script>
+import Swal from "sweetalert2";
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
 
@@ -295,6 +313,54 @@ export default {
         facebook: "",
         twitter: "",
         instagram: ""
+      },
+      eventForm: {
+        numberOfTicket: 10,
+        organize: {
+          organizeId: ""
+        },
+        eventName: "",
+        eventDetail: "",
+        eventTags: [],
+        location: "",
+        eventStartDate: "",
+        eventEndDate: "",
+        selectedCategory: "",
+        location: {
+          detail: "",
+          subDistrict: "",
+          distrct: "",
+          province: "",
+          country: "",
+          geopoint: {
+            lat: 0,
+            lon: 0
+          }
+        },
+        badge: {
+          badgeId: "",
+          exp: 30
+        },
+        badgeSelect: ["", ""],
+        badgeImg: [
+          // { header: "Social" },
+          // { name: "Collaborator", avatar: this.srcs[0] },
+          // { name: "Lucky", avatar: this.srcs[1] },
+          // { name: "Making a Difference", avatar: this.srcs[2] },
+          // { name: "Speaker", avatar: this.srcs[3] }
+        ]
+      },
+      isShowLocation: false,
+      marker: {
+        icon:
+          "https://png2.kisspng.com/sh/5a457e82acb6e22a2ae8836f35448931/L0KzQYm3VMAzN6dBiZH0aYP2gLBuTfNwdaF6jNd7LXnmf7B6TfJ2e5pzfeV8LYfygrztjP94NZVuf9t9YXywhMPojwNnd6NyRd94dnWwRbLqUvQ2bGE3e9dqN0axQ4S8Vsc2OGc2TaQ7N0G7QYe3Ucg1NqFzf3==/kisspng-computer-icons-business-workflow-digital-transform-move-5ac2d5d02cea76.335675061522718160184.png",
+        title: "Digital Transformation 4.0 By IMC",
+        detail:
+          "พบกับผู้ที่คร่ำหวอดในวงการอุตสาหกรรมที่พร้อมจะมาพลิกโฉมอุตสาหกรรมของท่านให้ก้าวไปสู่ยุค Thailand 4.0",
+        position: {
+          lat: 13.6518128,
+          lng: 100.4937549
+        }
       }
     };
   },
@@ -313,6 +379,7 @@ export default {
   },
   mounted() {
     this.initUserProfile();
+    this.findMatchingBadge();
   },
   methods: {
     ...mapActions(["testContext"]),
@@ -406,6 +473,82 @@ export default {
         .catch(err => {});
     },
 
+    toggleInfoWindow: function(marker, idx) {
+      this.infoWindowPos = marker.position;
+      this.infoTitle = marker.title;
+      this.infoDetail = marker.detail;
+
+      //check if its the same marker that was selected if yes toggle
+      if (this.currentMidx == idx) {
+        this.infoWinOpen = !this.infoWinOpen;
+      }
+      //if different marker set infowindow to open and reset current marker index
+      else {
+        this.infoWinOpen = true;
+        this.currentMidx = idx;
+      }
+    },
+    addLocation() {
+      this.isShowLocation = true;
+      this.$vuetify.goTo("#locationMap");
+    },
+
+    setPlace(place) {
+      this.place = place;
+      console.log("----set place----");
+      console.log(this.place);
+      let addresscomponents = this.place.address_components;
+      let detail = this.place.formatted_address;
+      let streetNumber = addresscomponents[0].long_name;
+      let road = addresscomponents[1].long_name;
+      let subDistrict = addresscomponents[2].long_name;
+      let distrct = addresscomponents[3].long_name;
+      let province = addresscomponents[4].long_name;
+      let country = addresscomponents[5].long_name;
+
+      this.setEventLocation({
+        place,
+        detail,
+        streetNumber,
+        road,
+        subDistrict,
+        distrct,
+        province,
+        country
+      });
+      console.log({
+        place,
+        detail,
+        streetNumber,
+        road,
+        subDistrict,
+        distrct,
+        province,
+        country
+      });
+      this.usePlace(this.place);
+    },
+    usePlace(place) {
+      if (this.place) {
+        this.marker.position = {
+          lat: this.place.geometry.location.lat(),
+          lng: this.place.geometry.location.lng()
+        };
+        this.center = {
+          lat: this.place.geometry.location.lat(),
+          lng: this.place.geometry.location.lng()
+        };
+      }
+      console.log("--- place ----");
+      console.log("---- pin location ---- ");
+      console.log(this.marker);
+      this.setGeopoint({
+        lat: this.marker.position.lat,
+        lon: this.marker.position.lng
+      });
+      this.place = null;
+    },
+
     loadEventTemplate() {
       console.log(this.getEventTemplate);
       let eventTemplate = this.getEventTemplate;
@@ -445,26 +588,6 @@ export default {
       // };
     },
 
-        toggleInfoWindow: function(marker, idx) {
-      this.infoWindowPos = marker.position;
-      this.infoTitle = marker.title;
-      this.infoDetail = marker.detail;
-
-      //check if its the same marker that was selected if yes toggle
-      if (this.currentMidx == idx) {
-        this.infoWinOpen = !this.infoWinOpen;
-      }
-      //if different marker set infowindow to open and reset current marker index
-      else {
-        this.infoWinOpen = true;
-        this.currentMidx = idx;
-      }
-    },
-    addLocation() {
-      this.isShowLocation = true;
-      this.$vuetify.goTo("#locationMap");
-    },
-
     onFileChanged(event) {
       this.selectedFile = event.target.files[0];
     },
@@ -481,9 +604,29 @@ export default {
         this.$router.push("/");
       });
     },
+
+    saveEventTemplate() {
+      console.log("SAve Tempalte");
+      console.log(this.eventForm);
+      this.setEventTemplate(this.eventForm);
+      this.setBadgeDetail(this.eventForm.badge);
+    },
+
     save(date) {
       this.$refs.menu.save(date);
     },
+
+    onSubmit() {
+      console.log({
+        eventname: this.eventForm.eventName,
+        eventdetail: this.eventForm.eventDetail,
+        eventStartDate: this.eventForm.eventStartDate,
+        eventEndDate: this.eventForm.eventEndDate,
+        location: this.location,
+        category: this.eventForm.selectedCategoryList
+      });
+    },
+
     activateInEditMode() {
       this.isEditing = false;
     },
@@ -549,13 +692,104 @@ export default {
       //   lastName: this.userForm.lastname,
       //   gender: this.userForm.gender
       // });
+    },
+
+    toggleInfoWindow: function(marker, idx) {
+      this.infoWindowPos = marker.position;
+      this.infoTitle = marker.title;
+      this.infoDetail = marker.detail;
+
+      //check if its the same marker that was selected if yes toggle
+      if (this.currentMidx == idx) {
+        this.infoWinOpen = !this.infoWinOpen;
+      }
+      //if different marker set infowindow to open and reset current marker index
+      else {
+        this.infoWinOpen = true;
+        this.currentMidx = idx;
+      }
+    },
+    remove(item) {
+      const index = this.badgeSelect.indexOf(item.badgeName);
+      if (index >= 0) this.badgeSelect.splice(index, 1);
+      // console.log(item.badgeName)
+      //   // const index = this.badgeSelect.indexOf(item.badgeSelect)
+      //   console.log(this.badgeSelect)
+      //   console.log(index)
+      //   if (index >= 0) this.badgeSelect.splice(index, 1)
+    },
+    confirmPopup: function(e) {
+      Swal.fire({
+        title: "Do you want to delete this event?",
+        inputPlaceholder: "Enter event name for confirmation",
+        input: "text",
+        inputAttributes: {
+          autocapitalize: "off"
+        },
+        showCancelButton: true,
+        confirmButtonText: "Confirm",
+        showLoaderOnConfirm: true,
+        preConfirm: login => {
+          return fetch(`//api.github.com/users/${login}`)
+            .then(response => {
+              if (!response.ok) {
+                throw new Error(response.statusText);
+              }
+              return response.json();
+            })
+            .catch(error => {
+              Swal.showValidationMessage(`Request failed: ${error}`);
+            });
+        },
+        allowOutsideClick: () => !Swal.isLoading()
+      }).then(result => {
+        if (result.value) {
+          Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            type: "warning",
+            inputAttributes: {
+              autocapitalize: "off"
+            },
+            showCancelButton: true,
+            confirmButtonColor: "#FD6363",
+            cancelButtonColor: "#4CAF50",
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "No, keep it!",
+
+          }).then(result => {
+            if (result.value) {
+              Swal.fire("Deleted!", "Your event has been deleted.", "success");
+            }
+          });
+        }
+      });
     }
   }
 };
 </script> 
  
  
-<style>
+<style lang="css">
+.v-content {
+  max-width: 100%;
+  background-color: #eeeeee;
+  font-family: Roboto;
+  /* background-image: url(../assets/bg.png) !important; */
+  /* background-repeat: repeat; */
+  /* background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background: transparent; */
+}
+
+.location {
+  font-family: Roboto !important;
+  font-size: 18px;
+  color: #341646 !important;
+  font-weight: bold !important;
+}
 .accountButton {
   width: 500px;
 }
