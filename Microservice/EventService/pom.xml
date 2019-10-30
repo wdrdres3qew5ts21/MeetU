@@ -31,12 +31,12 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.9</version>
         </dependency>
-        <dependency>
+<!--        <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-core</artifactId>
             <version>${aws-java-sdk.version}</version>
             <scope>compile</scope>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>com.google.firebase</groupId>
             <artifactId>firebase-admin</artifactId>
@@ -47,11 +47,11 @@
             <artifactId>aws-java-sdk-elasticsearch</artifactId>
             <version>1.11.346</version>
         </dependency>
-        <dependency>
+<!--        <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-core</artifactId>
             <scope>compile</scope>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>org.elasticsearch.client</groupId>
             <artifactId>elasticsearch-rest-high-level-client</artifactId>
@@ -74,7 +74,7 @@
             <artifactId>spring-cloud-starter-config</artifactId>
         </dependency>
         <!-- Dependency For Generate QR Code -->
-        <dependency>
+<!--        <dependency>
             <groupId>com.google.zxing</groupId>
             <artifactId>core</artifactId>
             <version>3.3.3</version>
@@ -83,7 +83,7 @@
             <groupId>com.google.zxing</groupId>
             <artifactId>javase</artifactId>
             <version>3.3.0</version>
-        </dependency>
+        </dependency>-->
         <!-- Core Of Spring Framework-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

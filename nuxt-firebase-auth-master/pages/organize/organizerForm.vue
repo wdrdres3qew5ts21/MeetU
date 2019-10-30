@@ -74,6 +74,8 @@
         </span>
 
         <br />
+        {{isUserEmailNotFound}}
+        {{userEmailNotFound}}
         <v-flex xs12>
           <v-alert :value="isUserEmailNotFound" color="error" outline>{{userEmailNotFound}}</v-alert>
         </v-flex>
@@ -200,12 +202,14 @@ export default {
           })
           .catch(err =>{
             this.isUserEmailNotFound = true
-            this.adminList.splice(updateAdmin.length-1, 1)
             this.userEmailNotFound = err.response.data.response
+            this.adminList.splice(updateAdmin.length-1, 1)
+            console.log("fdsfdsdfds")
+            console.log(this.userEmailNotFound)
           })
         }else{
           this.isUserEmailNotFound = true
-          this.userEmailNotFound = "This email already assign to admin"
+          this.userEmailNotFound = "This email already assign to admin !"
         }
       }
     }

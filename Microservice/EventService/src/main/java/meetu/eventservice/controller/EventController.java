@@ -18,7 +18,6 @@ import meetu.eventservice.model.User;
 import meetu.eventservice.model.UserNotification;
 import meetu.eventservice.model.UserEventTicket;
 import meetu.eventservice.model.UserViewEvent;
-import meetu.eventservice.service.QRCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -51,9 +50,6 @@ public class EventController {
 
     @Autowired
     private EventService eventService;
-
-    @Autowired
-    private QRCodeService qRCodeService;
     
     
 //    @PostMapping("/badge")
@@ -194,10 +190,6 @@ public class EventController {
 //    ) {
 //        return new ResponseEntity<List<Event>>(eventService.findEventByPersonalize(user), HttpStatus.OK);
 //    }
-    @GetMapping("/event/qrcode")
-    public ResponseEntity<byte[]> qrCodeGenerator(HttpServletResponse response) {
-        response.setContentType("image/png");
-        return new ResponseEntity<byte[]>(qRCodeService.getQRCodeImage("https://trello.com/b/OutSJrmK/project", 1000, 1000), HttpStatus.OK);
-    }
+
 
 }
