@@ -186,15 +186,21 @@ export default {
   },
   watch: {
     "adminList"(updateAdmin, oldAdmin) {
-      this.isUserEmailNotFound = false
-      this.userEmailNotFound = ''
-      console.log("update admin : ",updateAdmin)
-      console.log("old admin : ",oldAdmin)
-      console.log(updateAdmin[updateAdmin.length-1])
       let newAdmin = updateAdmin[updateAdmin.length-1]
       let previousAdmin = oldAdmin[oldAdmin.length-1]
+      if((previousAdmin != undefined & newAdmin != previousAdmin)){
+        this.isUserEmailNotFound = false
+        this.userEmailNotFound = ''
+      }
+      // console.log("update admin : ",updateAdmin)
+      // console.log("old admin : ",oldAdmin)
+      // console.log(updateAdmin[updateAdmin.length-1])
+      
+      console.log('-----------')
+      console.log('Single New Admin', newAdmin)
+      console.log('Single previous Admin', previousAdmin)
 
-      if(newAdmin != previousAdmin ){
+      if( newAdmin != previousAdmin ){
         if(! oldAdmin.includes(newAdmin)){
           axios.get(`${process.env.USER_SERVICE}/user/email/${newAdmin}`)
           .then(userResponse =>{
@@ -204,7 +210,7 @@ export default {
             this.isUserEmailNotFound = true
             this.userEmailNotFound = err.response.data.response
             this.adminList.splice(updateAdmin.length-1, 1)
-            console.log("fdsfdsdfds")
+            console.log("user not found")
             console.log(this.userEmailNotFound)
           })
         }else{

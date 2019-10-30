@@ -49,7 +49,6 @@
     <!-- เอาจริงๆ  -->
 
     <!-- <v-card flat> -->
-    <div v-if="organizeList"></div>
     <div v-if="organizeList">
       <nuxt-link
         v-for="(organize, index) in organizeList"
