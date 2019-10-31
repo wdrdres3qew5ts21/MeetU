@@ -28,7 +28,7 @@
     </v-flex>
     <v-flex class="text-right">
       <br>
-      <nuxt-link to="/event/editEvent">   
+      <nuxt-link to="/organize/editOrganizeSetting">   
     <!-- <v-icon color="#341646" medium >edit</v-icon> -->
     <v-btn fab dark small color="#341646">
           <v-icon color="#fff" medium>edit</v-icon>
