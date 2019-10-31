@@ -8,7 +8,9 @@ package meetu.userservice.model;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -36,6 +38,9 @@ public class Organize {
 
     private List<Admin> adminList;
     
+    @Transient
+    private List<String> adminEmailList;
+    
     private String email;
     
     private String website;
@@ -47,6 +52,14 @@ public class Organize {
     private String instragram;
     
     private String phone;
+
+    public List<String> getAdminEmailList() {
+        return adminEmailList;
+    }
+
+    public void setAdminEmailList(List<String> adminEmailList) {
+        this.adminEmailList = adminEmailList;
+    }
 
     public String getEmail() {
         return email;

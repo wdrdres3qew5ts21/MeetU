@@ -23,6 +23,10 @@ public interface OrganizeRepository extends MongoRepository<Organize, String> {
     public Organize findByOrganizeName(String organizeName);
 
     public List<Organize> findByOrganizeOwnerUid(String uid);
+    
+     public List<Organize> findByOrganizeOwnerUidOrAdminListUidIsIn(String uidOwner, String uidAdmin);
+     
+     public void deleteByOrganizeIdAndAdminListUid(String uidAdmin);
 
 //    public List<User> findByFirstName(String firstName);
 //    

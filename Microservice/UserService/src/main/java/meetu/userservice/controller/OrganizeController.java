@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,13 +40,25 @@ public class OrganizeController {
         return organizeService.createOrganize(uid, organize);
     }
     
+     @PostMapping("/test/organize/{uid}")
+    public ResponseEntity testFindAdminEmail(@PathVariable String uid, @RequestBody Organize organize) {
+        return organizeService.testFindAdminEmail(uid, organize);
+    }
+    
+    @DeleteMapping("/organize/{organizeId}/{uid}")
+    public ResponseEntity deleteAdminByUid(@PathVariable String organizeId, @PathVariable String uid) {
+        return organizeService.deleteAdminByUid(organizeId, uid);
+    }
+    
     @GetMapping("/organize/user/{uid}")
     public ResponseEntity findAllOrganizeOfUser(@PathVariable String uid) {
-        return organizeService.findAllOrganizeOfUser(uid);
+       // return organizeService.findAllOrganizeOfUser(uid);
+       return organizeService.findAllOrganizeOfUserIsIn(uid);
     }
- 
-    public ResponseEntity addAdminOrganize(@PathVariable Admin adminList[], @RequestBody Organize organize) {
-        return new ResponseEntity<Organize>(organizeService.addAdminOrganize(adminList, organize), HttpStatus.CREATED);
+    
+    @PostMapping("/organize/{organizeId}/admin/{email}")
+    public ResponseEntity addAdminOrganize(@PathVariable String organizeId, @PathVariable String email) {
+        return organizeService.addAdminOrganize(organizeId, email);
     }
 
     @GetMapping("/organizes")
