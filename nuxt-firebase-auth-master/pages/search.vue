@@ -36,8 +36,9 @@
                       :items="categoryList"
                       item-text="categoryLabel"
                       item-value="categoryName"
-                      label="category"
+                      label="Category (Limit to 3 tags only)"
                       @input="updateCategoryFilter"
+                      v-model="filterForm.categorySelected"
                       chips
                       clearable
                       solo
@@ -193,7 +194,13 @@ export default {
       emotionImg:require('@/assets/smile.png')
     };
   },
-  
+   watch: {
+    "filterForm.categorySelected"(categorySelected) {
+      if (categorySelected.length > 3) {
+        this.filterForm.categorySelected.shift();
+      }
+    }
+   },
   computed: {
     ...mapGetters(["getCategory"])
   },
