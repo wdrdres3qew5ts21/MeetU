@@ -1,7 +1,5 @@
 <template>
   <div>
-
-
     <!-- ห้าม format หน้านี้เด็ดขาดเพราะ text field จะหาย
             <v-text-field
             :append-outer-icon="comment ? 'send' : 'send'"
@@ -17,9 +15,7 @@
             @click:clear="clearMessage"
           ></v-text-field>
     -->
-
 <!-- Upload Cover picture Do not do any thing now -->
-
     <v-flex align="center">
       <div v-if="imageUrl == ''">
         <v-img
@@ -57,7 +53,7 @@
     />
     <br />
     <br />
-        <!-- Upload Cover picture Do not do any thing now -->
+        <!-- Upload Cover picture  not do any thing now -->
 
 
           <!-- Edit Description Admin only -->
@@ -154,7 +150,7 @@
         accept="image/*"
           />  -->
                
-    <!-- Now you work here !!!-  -->
+   
 
                 <v-text-field
                   v-model="newPost"
@@ -342,7 +338,6 @@
                     type="text"
                     @click:append="toggleMarker"
                     @click:append-outer="addComment(postIndex)"
-
                     @click:clear="clearComment"></v-text-field>
                 </v-flex>
               </v-layout>
@@ -350,9 +345,6 @@
           </form>
         </v-card>
       </v-dialog>
-
-        
-
       <!-- -----------------------Show dialog with full comment and comment button----------------------- -->
     </div>
   </div>
@@ -364,11 +356,8 @@
                   type="button"
                   name="button"
             >Remove</v-btn>-->
-
-            
 </template> 
   
- 
 <script>
 import Swal from "sweetalert2";
 import axios from "axios";
@@ -396,23 +385,13 @@ export default {
       postIndex: 0,
       dialogOfComment: false,
       name: "",     
-      rules: [
-        value =>
-          !value ||
-          value.size < 2000000 ||
-          "Avatar size should be less than 2 MB!"
-      ],
       show: false,
-      message: "Hey!",
       marker: true,
       communityForm: {
          communityName: "",
          communityDetail: ""
       }
     };
-  },
-  components: { 
- 
   },
   mounted() {
     this.initUserProfile();
@@ -591,7 +570,6 @@ export default {
   border-radius: 0px;
   text-align: center;
 }
-
 h2 {
   color: #341646;
 }
