@@ -17,7 +17,7 @@
                       :items="categoryList"
                       item-text="categoryLabel"
                       item-value="categoryName"
-                      label="Community Category"
+                      label="Category (Limit to 3 tags only)"
                       chips
                       clearable
                       v-model="communityForm.categorySelected"
@@ -94,6 +94,12 @@ export default {
   mounted() {
     this.loadCategoryList();
   },
+   watch: {
+    "communityForm.categorySelected"(categorySelected) {
+      if (categorySelected.length > 3) {
+        this.communityForm.categorySelected.shift();
+      }
+    } },
   methods: {
      ...mapActions(["autoSignIn", "setCategory"]),
      loadCategoryList() {
