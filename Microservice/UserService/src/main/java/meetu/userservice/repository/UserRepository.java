@@ -7,6 +7,7 @@ package meetu.userservice.repository;
 
 import java.util.List;
 import java.util.Optional;
+import meetu.userservice.model.Admin;
 import meetu.userservice.model.User;
 import meetu.userservice.model.UserBadge;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -25,6 +26,8 @@ public interface UserRepository extends MongoRepository<User, String> {
     public List<User> findByEmailLike(String emailKeyWord);
   
     public User findByUsername(String username);
+    
+    public List<Admin> findByEmailIsIn(List<String> emailList );
     
     public User findByUid(String uid);
 

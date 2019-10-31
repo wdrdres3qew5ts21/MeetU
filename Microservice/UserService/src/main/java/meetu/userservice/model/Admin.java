@@ -20,7 +20,17 @@ public class Admin {
 
     private String username;
     
+    private String displayName;
+    
     private List<String>  roles ;
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
 
     public String getEmail() {
         return email;

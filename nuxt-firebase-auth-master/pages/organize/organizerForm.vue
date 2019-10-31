@@ -72,21 +72,13 @@
             ></v-img>
           </div>
         </span>
-
         <br />
-        {{isUserEmailNotFound}}
-        {{userEmailNotFound}}
+
         <v-flex xs12>
           <v-alert :value="isUserEmailNotFound" color="error" outline>{{userEmailNotFound}}</v-alert>
         </v-flex>
         <v-flex xs12 d-flex>
-          <v-combobox
-            :items="items"
-            label="Add Admin"
-            v-model="adminList"
-            multiple
-            chips
-          >
+          <v-combobox :items="items" label="Add Admin" v-model="adminEmailList" multiple chips>
             <template v-slot:selection="data">
               <v-chip
                 :key="JSON.stringify(data.item)"
@@ -147,16 +139,16 @@ export default {
   data() {
     return {
       isUserEmailNotFound: false,
-      userEmailNotFound: '',
+      userEmailNotFound: "",
       valid: true,
       isUpgradeSuccess: false,
       valid: true,
-      adminList: [],
+      adminEmailList: [],
       organizeForm: {
         phone: "",
         organizeName: "",
         createdOrganizeId: "",
-        adminList: [],
+        adminEmailList: [],
         organizeImageCover: {}
       },
       organizeImageCover: {},
@@ -185,37 +177,34 @@ export default {
     ...mapGetters(["getUser"])
   },
   watch: {
-    "adminList"(updateAdmin, oldAdmin) {
-      let newAdmin = updateAdmin[updateAdmin.length-1]
-      let previousAdmin = oldAdmin[oldAdmin.length-1]
-      if((previousAdmin != undefined & newAdmin != previousAdmin)){
-        this.isUserEmailNotFound = false
-        this.userEmailNotFound = ''
+    adminEmailList(updateAdmin, oldAdmin) {
+      let newAdmin = updateAdmin[updateAdmin.length - 1];
+      let previousAdmin = oldAdmin[oldAdmin.length - 1];
+      if ((previousAdmin != undefined) & (newAdmin != previousAdmin)) {
+        this.isUserEmailNotFound = false;
+        this.userEmailNotFound = "";
       }
-      // console.log("update admin : ",updateAdmin)
-      // console.log("old admin : ",oldAdmin)
-      // console.log(updateAdmin[updateAdmin.length-1])
-      
-      console.log('-----------')
-      console.log('Single New Admin', newAdmin)
-      console.log('Single previous Admin', previousAdmin)
+      console.log("-----------");
+      console.log("Single New Admin", newAdmin);
+      console.log("Single previous Admin", previousAdmin);
 
-      if( newAdmin != previousAdmin ){
-        if(! oldAdmin.includes(newAdmin)){
-          axios.get(`${process.env.USER_SERVICE}/user/email/${newAdmin}`)
-          .then(userResponse =>{
-            console.log(userResponse)
-          })
-          .catch(err =>{
-            this.isUserEmailNotFound = true
-            this.userEmailNotFound = err.response.data.response
-            this.adminList.splice(updateAdmin.length-1, 1)
-            console.log("user not found")
-            console.log(this.userEmailNotFound)
-          })
-        }else{
-          this.isUserEmailNotFound = true
-          this.userEmailNotFound = "This email already assign to admin !"
+      if (newAdmin != previousAdmin) {
+        if (!oldAdmin.includes(newAdmin)) {
+          axios
+            .get(`${process.env.USER_SERVICE}/user/email/${newAdmin}`)
+            .then(userResponse => {
+              console.log(userResponse);
+            })
+            .catch(err => {
+              this.isUserEmailNotFound = true;
+              this.userEmailNotFound = err.response.data.response;
+              this.adminEmailList.splice(updateAdmin.length - 1, 1);
+              console.log("user not found");
+              console.log(this.userEmailNotFound);
+            });
+        } else {
+          this.isUserEmailNotFound = true;
+          this.userEmailNotFound = "This email already assign to admin !";
         }
       }
     }
@@ -226,7 +215,7 @@ export default {
       this.$router.push("/userProfile");
     },
     upgradeOrganize: async function() {
-      let loader = this.$loading.show()
+      let loader = this.$loading.show();
       console.log("upgrade fuq");
       console.log(this.organizeForm);
       let pictureFile = this.organizeForm.organizeImageCover;
@@ -235,38 +224,42 @@ export default {
       let storage = firebase.storage();
       let storageRef = storage.ref("/organize");
       let setupFile = storageRef.child(fileName);
-      
-      // setupFile
-      //   .putString(pictureFile.url, "data_url", { contentType: "image/jpeg" })
-      //   .then(snapshot => {
-      //     snapshot.ref.getDownloadURL().then(organizeImageCover => {
-      //       loader.hide()
-      //       console.log(organizeImageCover)
-      //     });
-      //   });
 
-      // await axios
-      //   .post(`${process.env.USER_SERVICE}/organize/${this.getUser.uid}`, {
-      //     organizeName: this.organizeName,
-      //     phone: this.phone
-      //   })
-      //   .then(upgradeResponse => {
-      //     this.organizeId = upgradeResponse.data.organizeId
-      //     this.isUpgradeSuccess = true;
-      //     this.$swal({
-      //       type: "success",
-      //       title: "Upgrade success !!!",
-      //       text: `upgrade successs`
-      //     });
-      //   })
-      //   .catch(error => {
-      //     console.log(error.response);
-      //     this.$swal({
-      //       type: "error",
-      //       title: "Failed to upgrade !!!",
-      //       text: `${error.response}`
-      //     });
-      //   });
+      setupFile
+        .putString(pictureFile.url, "data_url", { contentType: "image/jpeg" })
+        .then(snapshot => {
+          snapshot.ref.getDownloadURL().then(organizeImageCover => {
+            let organizeForm = this.organizeForm;
+            organizeForm.organizeImageCover = organizeImageCover;
+            organizeForm.adminEmailList = this.adminEmailList;
+            axios
+              .post(
+                `${process.env.USER_SERVICE}/organize/${this.getUser.uid}`,
+                organizeForm
+              )
+              .then(upgradeResponse => {
+                this.organizeId = upgradeResponse.data.organizeId;
+                this.isUpgradeSuccess = true;
+                this.$swal({
+                  type: "success",
+                  title: "Upgrade success !!!",
+                  text: `upgrade successs`
+                });
+              })
+              .catch(error => {
+                console.log(error.response);
+                this.$swal({
+                  type: "error",
+                  title: "Failed to upgrade !!!",
+                  text: `${error.response}`
+                });
+              })
+              .finally(() => {
+                loader.hide();
+              });
+            console.log(organizeImageCover);
+          });
+        });
     },
     ...mapActions(["setPictureDetail"]),
     onCoverPictureUpload(event) {
