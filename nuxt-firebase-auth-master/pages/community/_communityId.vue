@@ -96,7 +96,7 @@
                 required
                 hide-details
                 v-model="communityForm.communityDetail"
-      ></v-textarea>
+                ></v-textarea>
         </v-container>
         </v-card-text>
         <v-card-actions>
@@ -121,24 +121,21 @@
       <v-btn
         text
         color="grey lighten-3"
-
         @click="join = !join"
-      >{{ join ? 'follow ' : 'Unfollow' }}</v-btn>
+      >{{ join ? 'Unfollow ' : 'follow' }}</v-btn>
     </v-flex>
     <br>
  <!-- ------Button for Joined community and un Joined-------  -->
 
-    <div v-show="!join">
+    <div v-show="join">
       <v-card rounded outlined class="mx-auto">
         <div class="px-3">
           <form>
             <v-layout>
               <v-flex xs12>
-                <br />
-      
-                 <div v-if="postPictureListsUrl.length>0">       
-                 </div>
-    
+                <br />     
+                 <!-- <div v-if="postPictureListsUrl.length>0">       
+                 </div>  
                 <v-img
           v-for="(image, index) in postPictureListsUrl "
           :key="index"
@@ -155,7 +152,7 @@
         type="file"
         @change="onPictureListUpload"
         accept="image/*"
-          /> 
+          />  -->
                
     <!-- Now you work here !!!-  -->
 
@@ -169,9 +166,9 @@
             </v-layout>
             <v-layout>
               <v-flex xs12 class="text-xs-left">
-                <!-- <v-btn style="margin-right: 0px" @click="$refs.pictureListUpload.click()" icon>
+                <v-btn style="margin-right: 0px"  icon>
                   <v-icon>photo_camera</v-icon>
-                </v-btn> -->
+                </v-btn>
                 <v-btn style="margin: 0px" icon>
                   <v-icon>assessment</v-icon>
                 </v-btn>
@@ -229,14 +226,14 @@
           max-width="1250"
           max-height="250"
         ></v-img>
-          <input
+          <!-- <input
             v-show="false"
            ref="pictureListUpload"
         multiple
         type="file"
         @change="onPictureListUpload"
         accept="image/*"
-          /> 
+          />  -->
         
         </v-container>
 
@@ -398,8 +395,7 @@ export default {
       comment: "",
       postIndex: 0,
       dialogOfComment: false,
-      name: "",
-     
+      name: "",     
       rules: [
         value =>
           !value ||

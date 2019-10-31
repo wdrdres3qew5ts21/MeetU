@@ -6,7 +6,7 @@
           aspect-ratio="1"
           class="grey lighten-2"
           max-width="1250"
-          max-height="200"
+          max-height="150"
         >
     </v-img>
     <br>
@@ -16,11 +16,14 @@
    <v-img
           :src="defaultImage"
           aspect-ratio="1" 
-          max-width="80"
-          max-height="80"
+          max-width="60"
+          max-height="60"
         ></v-img>
 </v-avatar>
     </v-flex >
+
+
+    
     <v-flex xs7>
       <br>
        <h2>{{organize.organizeName}}</h2>
@@ -33,18 +36,32 @@
     <v-btn fab dark small color="#341646">
           <v-icon color="#fff" medium>edit</v-icon>
         </v-btn>
-
     </nuxt-link> 
     </v-flex>
     </v-layout>
-   
- 
-  <div>
-   Organize Description ........
-  </div>
-<br>
-
-    <center>
+   <div>
+  <v-tabs
+  color="#341646"
+  dark
+  slider-color="yellow"
+  centered
+>
+  <v-tab ripple>
+    Organize Detail
+  </v-tab>
+  <v-tab ripple>
+    Events
+  </v-tab>
+  <v-tab-item>
+    <v-card flat>
+      <v-card-text> Organize Description ........</v-card-text>
+    </v-card>
+  </v-tab-item>
+  <v-tab-item>
+    <v-card flat>
+      <v-card-text>
+        
+         <center>
       <nuxt-link :to="`/organize/event/createEventForm`" style="text-decoration-line:none;">
         <v-btn
           class="createEvent white--text"
@@ -78,7 +95,18 @@
           height="50"
         >Create an Event</v-btn>
       </nuxt-link>
-    </center>
+    </center></v-card-text>
+    </v-card>
+  </v-tab-item>  
+</v-tabs>
+  </div>
+ 
+
+  
+  
+<br>
+
+   
   </div>
 </template>
 
@@ -95,6 +123,12 @@ export default {
   props: {},
   data() {
     return {
+       currentItem: 'tab-Web',
+      items: [
+        'Organize Detail', 'View Event'
+      ],
+      
+      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
       organizeId: "",
       eventList: null,
       organize: {
