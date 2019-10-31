@@ -48,9 +48,18 @@ public class OrganizeService {
 
     public ResponseEntity createOrganize(String uid, Organize organize) {
         Organize organizeInDatabase = organizeRepository.findByOrganizeName(organize.getOrganizeName());
-        if (organizeInDatabase == null) {
+        User ownerDetail = userRepository.findByUid(uid);
+        HashMap<String, Object> response = new HashMap<String, Object>();
+
+        if (organizeInDatabase == null & ownerDetail != null) {
             System.out.println("---- Organize ---");
             System.out.println(organize);
+
+            if (organize.getAdminEmailList().contains(ownerDetail.getEmail())) {
+                response.put("response", "You already Owner so you can't add your email to be admin again !");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            }
+
             Admin organizeOwner = new Admin();
             organizeOwner.setUid(uid);
             organize.setOrganizeOwner(organizeOwner);
@@ -71,9 +80,11 @@ public class OrganizeService {
             userService.updateUserOrganizeRoleClaim(uid);
             System.out.println(savedOrganize);
             return ResponseEntity.status(HttpStatus.CREATED).body(organizeRepository.save(savedOrganize));
+        } else if (organizeInDatabase == null & ownerDetail == null) {
+            response.put("response", "Don't found any User in MeetU Applciation !");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         } else {
             System.out.println("organize name duplciate");
-            HashMap<String, Object> response = new HashMap<String, Object>();
             response.put("response", "Organize Name Duplicate with existing name !");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
@@ -143,13 +154,16 @@ public class OrganizeService {
                 organizeInDatabase.getAdminList().add(admin);
                 Organize savedOrganize = organizeRepository.save(organizeInDatabase);
                 return ResponseEntity.status(HttpStatus.OK).body(savedOrganize);
-            } else {
+            } else if (organizeInDatabase.getOrganizeOwner().getEmail().equals(emailAdmin)) {
                 response.put("response", "Email already Exist");
-                return ResponseEntity.status(HttpStatus.OK).body(response);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            } else {
+                response.put("response", "You already Owner so you can't add your email to be admin again !");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
             }
         }
         response.put("response", "Not found this Organize");
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
 }

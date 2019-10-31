@@ -245,18 +245,18 @@ export default {
                   title: "Upgrade success !!!",
                   text: `upgrade successs`
                 });
+                loader.hide();
               })
               .catch(error => {
                 console.log(error.response);
                 this.$swal({
                   type: "error",
                   title: "Failed to upgrade !!!",
-                  text: `${error.response}`
+                  text: `${error.response.data.response}`
                 });
-              })
-              .finally(() => {
                 loader.hide();
-              });
+                setupFile.delete();
+              })
             console.log(organizeImageCover);
           });
         });
