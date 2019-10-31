@@ -16,7 +16,9 @@
     <br />
     <v-card-actions>
       <v-flex class="text-xs-right">
-        <v-btn class="white--text" color="#341646">JOIN</v-btn>
+       
+        <v-btn class="white--text" color="#341646">VIEW</v-btn>
+ 
       </v-flex>
     </v-card-actions>
   </v-card>

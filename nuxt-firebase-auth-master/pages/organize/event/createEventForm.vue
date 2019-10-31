@@ -342,7 +342,7 @@ export default {
         },
         badge: {
           badgeId: "",
-          exp: 30
+          exp: 0
         },
         badgeSelect: ["", ""],
         badgeImg: [
