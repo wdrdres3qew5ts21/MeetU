@@ -6,17 +6,19 @@
 
     <v-card-text>
       <span class="text--primary">
-        <span>{{communityName}}</span>
+        <span class="name">{{communityName}}</span>
         <br />
         <span>Members :</span>
-        <br />
+       
       </span>
     </v-card-text>
 
     <br />
     <v-card-actions>
       <v-flex class="text-xs-right">
-        <v-btn class="white--text" color="#341646">JOIN</v-btn>
+       <v-btn color="#341646" class="b">VIEW</v-btn>
+      
+ <!-- color="#341646" -->
       </v-flex>
     </v-card-actions>
   </v-card>
@@ -33,3 +35,12 @@ export default {
   }
 };
 </script>
+<style scoped>
+.b {
+  color: white;
+}
+.name{
+  font-size: 18px;
+  font-weight: bold;
+}
+</style>

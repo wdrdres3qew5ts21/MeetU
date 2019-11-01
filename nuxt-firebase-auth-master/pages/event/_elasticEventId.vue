@@ -34,10 +34,9 @@
 
       <p>Date</p>
       <p>
-        <b>{{createEventDate}}</b>
+        <b>{{formatDateForReadable(createEventDate)}}</b>
       </p>
-
-      <p>
+   <p>
         <a href>Add to Calendar</a>
       </p>
 
@@ -150,7 +149,7 @@ import { eventNotFound } from "~/utils/errorMessage";
 import confirmTicket from "@/components/confirmTicket";
 import axios from "axios";
 import { mapMutations, mapActions, mapGetters } from "vuex";
-import { error } from 'util';
+import { error, log } from 'util';
 export default {
   components: {
     confirmTicket,
@@ -207,6 +206,7 @@ export default {
         let data = response.data;
         console.log(data);
         return {
+          
           elasticEventId: data.elasticEventId,
           numberOfTicket: data.numberOfTicket,
           eventName: data.eventName,
@@ -322,6 +322,13 @@ export default {
       } else {
         console.log("not support fuq");
       }
+    },
+    formatDateForReadable: function(formatDate){
+      const months = ["JAN", "FEB", "MAR","APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+      let date = new Date(formatDate);
+      formatDate = date.getDate()  + "-" + months[date.getMonth()] + "-" + date.getFullYear() + "  Time  "+ date.getHours() + ":" + date.getMinutes();
+      console.log(formatDate);
+      return formatDate
     }
   }
 };

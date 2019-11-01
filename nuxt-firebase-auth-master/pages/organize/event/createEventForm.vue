@@ -93,6 +93,71 @@
       <v-date-picker ref="picker" v-model="eventForm.eventEndDate" min="1950-01-01" @change="save"></v-date-picker>
     </v-menu>
 
+
+        <!-- Event Start time -->
+  <v-dialog
+        ref="dialogEventStartTime"
+        v-model="modalForStartTime"
+        :return-value.sync="eventForm.eventStartTime"
+        persistent
+        lazy
+        full-width
+        width="290px"
+      >
+        <template v-slot:activator="{ on }">
+          <v-text-field
+            v-model="eventForm.eventStartTime"
+            label="eventStartTime"
+            prepend-icon="access_time"
+            readonly
+            v-on="on"
+          ></v-text-field>
+        </template>
+        <v-time-picker
+          v-if="modalForStartTime"
+          v-model="eventForm.eventStartTime"
+          full-width
+        >
+          <v-spacer></v-spacer>
+          <v-btn flat color="primary" @click="modalForStartTime = false">Cancel</v-btn>
+          <v-btn flat color="primary" @click="$refs.dialogEventStartTime.save(eventForm.eventStartTime)">OK</v-btn>
+        </v-time-picker>
+      </v-dialog>
+      <!-- Event Start time -->
+      
+      
+      <!-- Event End time -->
+       <v-dialog
+        ref="dialogEventEndTime"
+        v-model="modalForEndTime"
+        :return-value.sync="eventForm.eventEndTime"
+        persistent
+        lazy
+        full-width
+        width="290px"
+      >
+        <template v-slot:activator="{ on }">
+          <v-text-field
+            v-model="eventForm.eventEndTime"
+            label="eventEndTime"
+            prepend-icon="access_time"
+            readonly
+            v-on="on"
+          ></v-text-field>
+        </template>
+        <v-time-picker
+          v-if="modalForEndTime"
+          v-model="eventForm.eventEndTime"
+          full-width
+        >
+          <v-spacer></v-spacer>
+          <v-btn flat color="primary" @click="modalForEndTime = false">Cancel</v-btn>
+          <v-btn flat color="primary" @click="$refs.dialogEventEndTime.save(eventForm.eventEndTime)">OK</v-btn>
+        </v-time-picker>
+      </v-dialog>
+      <!-- Event End time -->
+     
+
     <br />
 
     <span class="location" id="locationMap">Location</span>
@@ -328,6 +393,8 @@ export default {
         location: "",
         eventStartDate: "",
         eventEndDate: "",
+        eventStartTime: "",
+        eventEndTime:"",
         selectedCategory: "",
         location: {
           detail: "",
@@ -342,7 +409,7 @@ export default {
         },
         badge: {
           badgeId: "",
-          exp: 30
+          exp: 0
         },
         badgeSelect: ["", ""],
         badgeImg: [
@@ -399,7 +466,10 @@ export default {
           lat: 13.6518128,
           lng: 100.4937549
         }
-      }
+      },
+      modalForStartTime: false,
+      modalForEndTime: false
+ 
     };
   },
   computed: {

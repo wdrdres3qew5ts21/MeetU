@@ -106,12 +106,15 @@
       <br />
       <!-- Community -->
       <h2>Community</h2>
+      <nuxt-link :to="`/community/hhjn`">
+      <!-- <nuxt-link :to="`/community/${community.communityId}`"> -->
       <community-card
         v-for="(community, index) in communityList"
         :key="index"
         :communityPictureCover="community.communityPictureCover"
         :communityName="community.communityName"
       ></community-card>
+      </nuxt-link>
       <br />
       <br />
       <center>

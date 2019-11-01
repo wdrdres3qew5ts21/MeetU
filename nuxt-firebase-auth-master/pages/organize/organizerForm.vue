@@ -5,8 +5,8 @@
       <h3>Organizer Account</h3>
       <br />
       <br />
-      <p>You are signed in as :</p>
-      {{getUser.displayName}}
+      <p>You are signed in as : {{getUser.displayName}}</p>
+     
       <br />
       <br />
 

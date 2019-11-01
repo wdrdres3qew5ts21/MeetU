@@ -6,22 +6,28 @@
     <div v-for="(eventTicket, index) in userEventTicketList" :key="index">
       <v-flex xs12>
         <nuxt-link :to="`/ticket/${eventTicket.elasticEventId}`">
-          <v-card min-width="370" color="white">
+          <v-card min-width="375" color="white">
             <v-layout v-if="!eventTicket.isEventDelete">
-              <v-flex xs8>
-                <v-img :src="eventTicket.ticketDetail[0].eventPictureCover" width="170px"></v-img>
+              <v-flex xs8 pa-2>
+                <br>
+               
+                <v-img :src="eventTicket.ticketDetail[0].eventPictureCover" width="175px" height="130px"></v-img>
               </v-flex>
               <v-flex xs7>
                 <v-card-title primary-title>
                   <div>
                     <div
                       class="headline"
-                    >{{eventTicket.ticketDetail[0].eventName.length > 10 ? eventTicket.ticketDetail[0].eventName.substr(0,10)+"..." : eventTicket.ticketDetail[0].eventName }}</div>
-                    <div>{{new Date().toISOString() || eventTicket.ticketDetail[0].eventStartDate.substr(0,10) }}</div>
-                    <div>{{eventTicket.ticketDetail[0].location.province+", " +eventTicket.ticketDetail[0].location.country}}</div>
+                    >{{eventTicket.ticketDetail[0].eventName.length > 10 ? eventTicket.ticketDetail[0].eventName.substr(0,10)+"..." : eventTicket.ticketDetail[0].eventName }}
+                    </div>
+                    <div class="detail">Date: {{ formatDateForReadable(eventTicket.ticketDetail[0].eventStartDate)}}</div>
+                    <div class="detail">Place : {{eventTicket.ticketDetail[0].location.province+", " +eventTicket.ticketDetail[0].location.country}}</div>
                     <br />
                     <b color="deep-purple darken-3">View Detail</b>
-                    <div>Used: {{eventTicket.isParticipate}}</div>
+                    <div v-if="eventTicket.isParticipate == false" >Status: available </div>
+                     <div v-else >Status: unavailable </div>
+
+                  
                   </div>
                 </v-card-title>
               </v-flex>
@@ -76,7 +82,24 @@ export default {
           this.userEventTicketList = userEventTicketList.data;
         })
         .catch(err => {});
+    },
+    formatDateForReadable: function(formatDate){
+      let date = new Date(formatDate);
+      formatDate = date.getDate()  + "-" + date.getMonth() + "-" + date.getFullYear() ;
+      console.log(formatDate);
+      return formatDate
     }
   }
 };
 </script>
+
+<style >
+.headline{
+    font-size: 12px;
+    color: #341646;
+}
+.detail{
+   font-size: 15px;
+    color:dimgrey;
+}
+</style>

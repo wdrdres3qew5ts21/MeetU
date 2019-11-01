@@ -1,7 +1,5 @@
 <template>
   <div>
-
-
     <!-- ห้าม format หน้านี้เด็ดขาดเพราะ text field จะหาย
             <v-text-field
             :append-outer-icon="comment ? 'send' : 'send'"
@@ -17,9 +15,7 @@
             @click:clear="clearMessage"
           ></v-text-field>
     -->
-
 <!-- Upload Cover picture Do not do any thing now -->
-
     <v-flex align="center">
       <div v-if="imageUrl == ''">
         <v-img
@@ -57,7 +53,7 @@
     />
     <br />
     <br />
-        <!-- Upload Cover picture Do not do any thing now -->
+        <!-- Upload Cover picture  not do any thing now -->
 
 
           <!-- Edit Description Admin only -->
@@ -96,7 +92,7 @@
                 required
                 hide-details
                 v-model="communityForm.communityDetail"
-      ></v-textarea>
+                ></v-textarea>
         </v-container>
         </v-card-text>
         <v-card-actions>
@@ -121,24 +117,21 @@
       <v-btn
         text
         color="grey lighten-3"
-
         @click="join = !join"
-      >{{ join ? 'follow ' : 'Unfollow' }}</v-btn>
+      >{{ join ? 'Unfollow ' : 'follow' }}</v-btn>
     </v-flex>
     <br>
  <!-- ------Button for Joined community and un Joined-------  -->
 
-    <div v-show="!join">
+    <div v-show="join">
       <v-card rounded outlined class="mx-auto">
         <div class="px-3">
           <form>
             <v-layout>
               <v-flex xs12>
-                <br />
-      
-                 <div v-if="postPictureListsUrl.length>0">       
-                 </div>
-    
+                <br />     
+                 <!-- <div v-if="postPictureListsUrl.length>0">       
+                 </div>  
                 <v-img
           v-for="(image, index) in postPictureListsUrl "
           :key="index"
@@ -155,9 +148,9 @@
         type="file"
         @change="onPictureListUpload"
         accept="image/*"
-          /> 
+          />  -->
                
-    <!-- Now you work here !!!-  -->
+   
 
                 <v-text-field
                   v-model="newPost"
@@ -169,9 +162,9 @@
             </v-layout>
             <v-layout>
               <v-flex xs12 class="text-xs-left">
-                <!-- <v-btn style="margin-right: 0px" @click="$refs.pictureListUpload.click()" icon>
+                <v-btn style="margin-right: 0px"  icon>
                   <v-icon>photo_camera</v-icon>
-                </v-btn> -->
+                </v-btn>
                 <v-btn style="margin: 0px" icon>
                   <v-icon>assessment</v-icon>
                 </v-btn>
@@ -229,14 +222,14 @@
           max-width="1250"
           max-height="250"
         ></v-img>
-          <input
+          <!-- <input
             v-show="false"
            ref="pictureListUpload"
         multiple
         type="file"
         @change="onPictureListUpload"
         accept="image/*"
-          /> 
+          />  -->
         
         </v-container>
 
@@ -345,7 +338,6 @@
                     type="text"
                     @click:append="toggleMarker"
                     @click:append-outer="addComment(postIndex)"
-
                     @click:clear="clearComment"></v-text-field>
                 </v-flex>
               </v-layout>
@@ -353,9 +345,6 @@
           </form>
         </v-card>
       </v-dialog>
-
-        
-
       <!-- -----------------------Show dialog with full comment and comment button----------------------- -->
     </div>
   </div>
@@ -367,11 +356,8 @@
                   type="button"
                   name="button"
             >Remove</v-btn>-->
-
-            
 </template> 
   
- 
 <script>
 import Swal from "sweetalert2";
 import axios from "axios";
@@ -398,25 +384,14 @@ export default {
       comment: "",
       postIndex: 0,
       dialogOfComment: false,
-      name: "",
-     
-      rules: [
-        value =>
-          !value ||
-          value.size < 2000000 ||
-          "Avatar size should be less than 2 MB!"
-      ],
+      name: "",     
       show: false,
-      message: "Hey!",
       marker: true,
       communityForm: {
          communityName: "",
          communityDetail: ""
       }
     };
-  },
-  components: { 
- 
   },
   mounted() {
     this.initUserProfile();
@@ -595,7 +570,6 @@ export default {
   border-radius: 0px;
   text-align: center;
 }
-
 h2 {
   color: #341646;
 }
