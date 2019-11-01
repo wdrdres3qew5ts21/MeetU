@@ -117,6 +117,7 @@
           v-if="modalForStartTime"
           v-model="eventForm.eventStartTime"
           full-width
+           use-seconds
         >
           <v-spacer></v-spacer>
           <v-btn flat color="primary" @click="modalForStartTime = false">Cancel</v-btn>
@@ -149,6 +150,7 @@
           v-if="modalForEndTime"
           v-model="eventForm.eventEndTime"
           full-width
+           use-seconds
         >
           <v-spacer></v-spacer>
           <v-btn flat color="primary" @click="modalForEndTime = false">Cancel</v-btn>
@@ -157,6 +159,7 @@
       </v-dialog>
       <!-- Event End time -->
      
+     <v-btn @click="test()"> Test</v-btn>
 
     <br />
 
@@ -391,9 +394,11 @@ export default {
         eventDetail: "",
         eventTags: [],
         location: "",
+        eventEndDateAndTime: "",
+        eventStartDateAndTime: "",
         eventStartDate: "",
         eventEndDate: "",
-        eventStartTime: "",
+        eventStartTime:"",
         eventEndTime:"",
         selectedCategory: "",
         location: {
@@ -725,6 +730,15 @@ export default {
         if (this.$refs.form.validate()) {
           this.snackbar = true
         }
+      },
+      test() {
+        let eventStratDateAndTime = this.eventForm.eventStartDate + "T" + this.eventForm.eventStartTime + "." +"+07:00"
+        let eventEndDateAndTime = this.eventForm.eventEndDate + "T" + this.eventForm.eventEndTime + "." + "+07:00"
+        this.eventForm.eventStratDateAndTime = eventStratDateAndTime
+        this.eventForm.eventEndDateAndTime = eventEndDateAndTime
+         console.log(this.eventForm.eventEndDateAndTime);
+         console.log(this.eventForm.eventStratDateAndTime);
+      
       }
   }
 };
