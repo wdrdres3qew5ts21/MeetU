@@ -4,7 +4,6 @@
       <h2 style="color:#341646">My Profile</h2>
 
       <v-flex class="text-xs-right">
-
         <!-- ปุ่มสแกน qr code -->
 
         <!-- <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
@@ -46,13 +45,11 @@
               <h3>Just scan a QR code for join an event!</h3>
             </center>
           </v-card>
-        </v-dialog> -->
+        </v-dialog>-->
 
         <v-btn fab dark small color="#341646" @click=" isEditing= !isEditing">
-          <v-icon color="#fff" medium>edit</v-icon>
+          <v-icon color="#fff" size="25">edit</v-icon>
         </v-btn>
-
-      
       </v-flex>
     </v-layout>
 
@@ -67,61 +64,65 @@
     </v-layout>
     <br />
 
-    
-              <!-- โค้ดปุ่มยาวๆเหมือนตอนแรกที่ทำไว้  ฝนปรับดีไซน์จากปุ่มเดิมของซันแล้ว
+    <!-- โค้ดปุ่มยาวๆเหมือนตอนแรกที่ทำไว้  ฝนปรับดีไซน์จากปุ่มเดิมของซันแล้ว
               
               <v-btn @click="isCameraOpen" large color="primary">
                   <v-icon class="spacing-playground py-0 px-2" large>mdi-qrcode-scan</v-icon>QR Code
-              </v-btn>-->
-              <!-- <div v-if="isCameraOpen">
+    </v-btn>-->
+    <!-- <div v-if="isCameraOpen">
                 <client-only placeholder="loading...">
                   <qrcode-stream @decode="onDecode"></qrcode-stream>
                 </client-only>
               </div> 
               
-              -->
+    -->
 
     <v-btn class="logoutButton" outline color="red" depressed large block @click="logout()">LOG OUT</v-btn>
     <br />
-     
- 
 
-
-     <h2>Information</h2>
-<br>
+    <h2>Information</h2>
+    <br />
     <v-layout column>
       <v-form ref="form" v-model="valid">
         <v-layout row wrap>
-        <v-flex xs4>
-    <h3>Badges :</h3>
-        </v-flex>
-      <v-flex xs8 v-for="(item,index) in badges" :key="index" xs2>
-        <v-avatar size="40">
-          <v-img :src="item.badgePicture"></v-img>
-        </v-avatar>
-      </v-flex>
-    </v-layout>
+          <v-flex xs5>
+            <h3>Your Badges</h3>
+          </v-flex>
+          <v-flex xs7 v-for="(item,index) in badges" :key="index" xs2>
+            <v-avatar size="40">
+              <v-img :src="item.badgePicture"></v-img>
+            </v-avatar>
+          </v-flex>
+        </v-layout>
 
         <br />
-        <h3>Your interest :</h3>
-
-        <v-chip v-for="(userInterest,index) in userForm.interest" :key="index" text-color="#341646" class="textSize" >
-        <v-avatar>
-          <v-icon color="primary" size="21">favorite</v-icon>
-        </v-avatar>
-        {{userInterest}}
-      </v-chip>
+        <v-layout row>
+          <v-flex class="text-xs-left">
+          <h3>Your interest</h3>
+          </v-flex>
+          <v-flex class="text-xs-right">
+            <nuxt-link to="/selectGenres" style="color:red">
+              <v-btn fab dark small color="#341646">
+                <v-icon color="#fff" size="25">edit</v-icon>
+              </v-btn>
+            </nuxt-link>
+          </v-flex>
+        </v-layout>
+        <v-chip
+          v-for="(userInterest,index) in userForm.interest"
+          :key="index"
+          text-color="#341646"
+          class="textSize"
+        >
+          <v-avatar>
+            <v-icon color="primary" size="21">favorite</v-icon>
+          </v-avatar>
+          {{userInterest}}
+        </v-chip>
         <v-flex xs12>
           <center>
             <h3>
-            
               <!-- : {{userForm.interest.length}}/{{limitedSelectNumber}} -->
-
-              <nuxt-link to="/selectGenres" style="color:red">
-                <v-btn fab dark small color="#341646">
-                  <v-icon color="#fff" medium>edit</v-icon>
-                </v-btn>
-              </nuxt-link>
             </h3>
           </center>
         </v-flex>
@@ -396,8 +397,8 @@ export default {
         instagram: ""
       },
       dialog: false,
-      organizeForm:{
-        organizeName:""
+      organizeForm: {
+        organizeName: ""
       }
     };
   },
@@ -406,7 +407,7 @@ export default {
   },
   mounted() {
     this.initUserProfile();
-    this.loadMyBadge()
+    this.loadMyBadge();
   },
   methods: {
     ...mapActions(["testContext"]),
@@ -465,18 +466,19 @@ export default {
         })
         .catch(err => {});
     },
-    loadMyBadge(){
-    let loader = this.$loading.show()
-      axios.get(`${process.env.USER_SERVICE}/badges/user/${this.getUser.uid}`).then(badgeListResponse =>{
-        this.badges = badgeListResponse.data
-        console.log(this.badges)
-        loader.hide()
-      })
-      .catch(err=>{
-        loader.hide()
-      })
+    loadMyBadge() {
+      let loader = this.$loading.show();
+      axios
+        .get(`${process.env.USER_SERVICE}/badges/user/${this.getUser.uid}`)
+        .then(badgeListResponse => {
+          this.badges = badgeListResponse.data;
+          console.log(this.badges);
+          loader.hide();
+        })
+        .catch(err => {
+          loader.hide();
+        });
     },
-
 
     loadUserBadge: function() {},
     onFileChanged(event) {
@@ -591,7 +593,7 @@ export default {
 .logoutButton {
   font-weight: bold;
 }
-.textSize{
-    font-size: 15px;
+.textSize {
+  font-size: 15px;
 }
 </style> 

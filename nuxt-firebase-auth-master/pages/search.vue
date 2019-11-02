@@ -28,54 +28,70 @@
 
                   <v-list three-line subheader>
                     <br />
-                    <v-subheader>SearchDetail</v-subheader>
-                    <v-layout class="mb-4">
-                      <v-text-field
-                        class="questrial no-top-padding"
-                        height="20px"
-                        placeholder="Search..."
-                        v-model="search"
-                        @keyup.enter="searchEventByFilter()"
-                      ></v-text-field>
-                    </v-layout>
 
-                    <v-subheader>Filter by category</v-subheader>
-                    <v-layout class="mb-4">
-                      <v-select
-                        :items="categoryList"
-                        item-text="categoryLabel"
-                        item-value="categoryName"
-                        label="Category (Limit to 3 tags only)"
-                        v-model="selectedCategoryList"
-                        chips
-                        clearable
-                        solo
-                        multiple
-                        sm6
-                        xs2
-                      >
-                        <!-- close
-                        @input="remove(data.item.categoryName)"-->
-                        <template v-slot:selection="data">
-                          <v-chip :selected="data.selected">
-                            <strong>{{ data.item.categoryName}}</strong>&nbsp;
-                          </v-chip>
-                        </template>
-                      </v-select>
-                    </v-layout>
+                    <v-container grid-list-md>
+                      <v-layout wrap>
+                        <v-icon color="primary">description</v-icon>SearchDetail
+                        <v-flex xs12>
+                          <v-text-field
+                            class="questrial no-top-padding"
+                            height="20px"
+                            placeholder="Search..."
+                            v-model="search"
+                            @keyup.enter="searchEventByFilter()"
+                          ></v-text-field>
+                        </v-flex>
 
-                    <v-subheader>Sort by Date</v-subheader>
-                    <v-layout class="mb-4">
-                      <v-select
-                        :items="sortDate"
-                        label="Last Update"
-                        v-model="filterForm.sortByDate"
-                        solo
-                      ></v-select>
-                    </v-layout>
+                        <v-icon color="primary">category</v-icon>Filter by category
+                        <v-flex xs12>
+                          <v-select
+                            :items="categoryList"
+                            item-text="categoryLabel"
+                            item-value="categoryName"
+                            label="Category (Limit to 3 tags only)"
+                            v-model="selectedCategoryList"
+                            chips
+                            clearable
+                            attach
+                            multiple
+                            sm6
+                            xs2
+                          >
+                            <!-- close
+                            @input="remove(data.item.categoryName)"-->
+                            <template v-slot:selection="data">
+                              <v-chip :selected="data.selected">
+                                <strong>{{ data.item.categoryName}}</strong>&nbsp;
+                              </v-chip>
+                            </template>
+                          </v-select>
+                        </v-flex>
 
-                    <v-subheader>Near your location</v-subheader>
-                    <v-text-field type="number" v-model="filterForm.distance"></v-text-field>
+                        <v-flex xs12>
+                          <v-icon color="primary">insert_chart</v-icon>Sort by Popular
+                          <v-select :items="popular" v-model="filterForm.sortByPopular" attach></v-select>
+                        </v-flex>
+
+                        <v-flex xs12>
+                          <v-icon color="primary">today</v-icon>Sort by Date
+                          <v-select :items="sortDate" v-model="filterForm.sortByDate" attach></v-select>
+                        </v-flex>
+
+                        <v-icon color="primary">room</v-icon>Near your location
+                        <v-layout row wrap>
+                          <v-flex xs9>
+                            <v-text-field
+                              label="Enter the distance"
+                              type="number"
+                              v-model="filterForm.distance"
+                            ></v-text-field>
+                          </v-flex>
+                          <v-flex xs3>
+                            <v-select :items="unit" v-model="filterForm.unit" label="unit " attach></v-select>
+                          </v-flex>
+                        </v-layout>
+                      </v-layout>
+                    </v-container>
                   </v-list>
 
                   <v-btn
@@ -109,7 +125,11 @@
               </v-flex>
             </v-layout>
             <v-layout row wrap>
-              <v-chip v-for="(categoryChip, index) in selectedCategoryList" @click="$router.push(`/event?category=${categoryChip}`)" :key="index">
+              <v-chip
+                v-for="(categoryChip, index) in selectedCategoryList"
+                @click="$router.push(`/event?category=${categoryChip}`)"
+                :key="index"
+              >
                 <strong>{{ categoryChip}}</strong>&nbsp;
               </v-chip>
             </v-layout>
@@ -182,6 +202,8 @@ export default {
       widgets: false,
       search: "",
       sortDate: ["Last Update", "First Update"],
+      popular: ["Most popular", ""],
+      unit: ["meter", "kilometer"],
       isRecently: false,
       isShowEventTag: false,
       categoryList: [],
@@ -190,7 +212,9 @@ export default {
       filterForm: {
         distance: "",
         sortByDate: "",
-        categorySelected: []
+        sortByPopular: "",
+        categorySelected: [],
+        unit: ""
       },
       showTest: true,
       emotionImg: require("@/assets/smile.png")
@@ -257,7 +281,7 @@ export default {
       searchedEventList = searchedEventList.data;
       this.searchedEventList = searchedEventList;
       console.log(this.searchedEventList);
-      this.dialog = false
+      this.dialog = false;
     },
     searchByFilter() {
       console.log(this.filterForm.sortByDate);
