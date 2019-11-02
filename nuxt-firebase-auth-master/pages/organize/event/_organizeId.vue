@@ -57,6 +57,7 @@
                   :to="`/organize/event/createEventForm?organizeId=${$route.params.organizeId}`"
                   style="text-decoration-line:none;"
                 >
+                  <br />
                   <v-btn
                     class="createEvent white--text"
                     color="#341646"
@@ -66,19 +67,31 @@
                   >Create an Event</v-btn>
                 </nuxt-link>
               </center>
+
               <div v-if="eventList == null">
                 <center>
                   <p style="color:grey">No event, please create a new event.</p>
                 </center>
               </div>
+
               <div v-else>
                 <center>
                   <br />
                   <p style="color:grey">You can create new event.</p>
                 </center>
               </div>
+
+              <!-- <v-flex class="text-xs-right">
+                <v-btn fab dark small color="red" @click="confirmPopup">
+                  <v-icon color="#fff" medium>delete</v-icon>
+                </v-btn>
+              </v-flex> -->
+
               <event-card v-for="(event, index) in eventList" :key="index" :event="event" />
+
+
               <br />
+
               <center v-if="eventList == null">
                 <nuxt-link
                   :to="`/organize/event/createEventForm?organizeId=${$route.params.organizeId}`"
@@ -147,10 +160,10 @@ export default {
   props: {},
   data() {
     return {
+      isOrganizeMember: false,
       isCameraOpen: false,
       currentItem: "tab-Web",
       items: ["Organize Detail", "View Event"],
-
       text:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
       organizeId: "",
@@ -191,6 +204,7 @@ export default {
     console.log(this.$route.params.organizeId);
     this.loadAllEventOfOrganize();
     this.loadOrganizeDetail();
+    this.verifyIfUserIsOrganizeMember()
   },
   methods: {
     ...mapActions(["testContext"]),
@@ -224,6 +238,21 @@ export default {
           });
         });
     },
+    verifyIfUserIsOrganizeMember(){
+      console.log("------ verify status ------")
+      axios.get(`${process.env.USER_SERVICE}/organize/${this.$route.params.organizeId}/admin/status`,
+      {
+        headers: {
+          'Authorization': localStorage.getItem('jwtToken')
+        }
+      })
+      .then(verifyResponse=>{
+        console.log(verifyResponse.data)
+      })
+      .catch(err=>{
+        console.log(err.response)
+      })
+    },
     initUserProfile: function() {
       let loader = this.$loading.show();
       axios
@@ -233,7 +262,7 @@ export default {
           }
         })
         .then(userProfileForm => {
-          console.log("haate my self");
+          console.log("organize detail");
           userProfileForm = userProfileForm.data;
           console.log(userProfileForm);
           this.userForm.interest = userProfileForm.interest;
@@ -247,10 +276,10 @@ export default {
           this.userForm.twitter = userProfileForm.twitter;
           this.userForm.instagram = userProfileForm.instagram;
           this.userForm.phone = userProfileForm.phone || "";
-          loader.hide()
+          loader.hide();
         })
         .catch(err => {
-          loader.hide()
+          loader.hide();
         });
     },
     loadAllEventOfOrganize: async function() {
@@ -260,11 +289,11 @@ export default {
         .then(eventResponse => {
           console.log(eventResponse.data);
           this.eventList = eventResponse.data;
-          loader.hide()
+          loader.hide();
         })
         .catch(error => {
           console.log(error);
-          loader.hide()
+          loader.hide();
         });
     },
     loadOrganizeDetail: async function() {
@@ -274,59 +303,14 @@ export default {
         .then(organizeResponse => {
           console.log(organizeResponse.data);
           this.organize = organizeResponse.data;
-          loader.hide()
+          loader.hide();
         })
         .catch(error => {
           console.log(error);
-          loader.hide()
+          loader.hide();
         });
-    }
-    // confirmPopup: function(e) {
-    //   Swal.fire({
-    //     title: "Do you want to delete this organize?",
-    //     inputPlaceholder: "Enter organize name for confirmation",
-    //     input: "text",
-    //     inputAttributes: {
-    //       autocapitalize: "off"
-    //     },
-    //     showCancelButton: true,
-    //     confirmButtonText: "Confirm",
-    //     showLoaderOnConfirm: true,
-    //     preConfirm: login => {
-    //       return fetch(`//api.github.com/users/${login}`)
-    //         .then(response => {
-    //           if (!response.ok) {
-    //             throw new Error(response.statusText);
-    //           }
-    //           return response.json();
-    //         })
-    //         .catch(error => {
-    //           Swal.showValidationMessage(`Request failed: ${error}`);
-    //         });
-    //     },
-    //     allowOutsideClick: () => !Swal.isLoading()
-    //   }).then(result => {
-    //     if (result.value) {
-    //       Swal.fire({
-    //         title: "Are you sure?",
-    //         text: "You won't be able to revert this!",
-    //         type: "warning",
-    //         inputAttributes: {
-    //           autocapitalize: "off"
-    //         },
-    //         showCancelButton: true,
-    //         confirmButtonColor: "#FD6363",
-    //         cancelButtonColor: "#4CAF50",
-    //         confirmButtonText: "Yes, delete it!",
-    //         cancelButtonText: "No, keep it!"
-    //       }).then(result => {
-    //         if (result.value) {
-    //           Swal.fire("Deleted!", "Your event has been deleted.", "success");
-    //         }
-    //       });
-    //     }
-    //   });
-    // }
+    },
+
   }
 };
 </script>

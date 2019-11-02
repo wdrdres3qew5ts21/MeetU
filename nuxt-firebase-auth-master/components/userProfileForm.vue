@@ -29,7 +29,7 @@
             <center>
 
               <br />
-        <h3>You are {{userForm.firstName}} : {{organizeForm.organizeName}} Organize
+        <h3>You are {{userForm.firstName}} : {{organize.organizeName}} Organize
         </h3>
         <br />
 

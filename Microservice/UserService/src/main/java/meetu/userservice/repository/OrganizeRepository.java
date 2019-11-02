@@ -32,4 +32,8 @@ public interface OrganizeRepository extends MongoRepository<Organize, String> {
     public void deleteByOrganizeIdAndAdminListUid(String uidAdmin);
 
     public List<Organize> findByOrganizeNameLike(String organizeName, Pageable pageable);
+
+    public Organize findByOrganizeOwnerUidOrAdminListUidIsInAndOrganizeId(String uid, String uid0, String organizeId);
+
+    public Organize findByAdminListUidIsInAndOrganizeId(String uid, String organizeId);
 }

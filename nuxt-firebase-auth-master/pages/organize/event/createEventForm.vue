@@ -315,7 +315,6 @@
                   {{ data.item.name }}
                 </v-chip>
               </template>
-
               <template v-slot:item="data">
                 <template v-if="typeof data.item !== 'object'">
                   <v-list-tile-content v-text="data.item.badgeName"></v-list-tile-content>
@@ -611,7 +610,6 @@ export default {
       // let distrct = addresscomponents[3].long_name;
       // let province = addresscomponents[4].long_name;
       // let country = addresscomponents[5].long_name;
-
       this.setEventLocation({
         place,
         detail,
@@ -668,9 +666,7 @@ export default {
       this.eventForm.exp = eventTemplate.exp;
       this.eventForm.organize.organizeId = eventTemplate.organize.organizeId;
       this.eventForm.numberOfTicket = eventTemplate.numberOfTicket;
-
       let geopoint = eventTemplate.location.geopoint;
-
       if ((geopoint.lat === 0) & (geopoint.lon === 0)) {
         console.log("initital value");
         navigator.geolocation.getCurrentPosition(location => {
@@ -696,7 +692,6 @@ export default {
       this.infoWindowPos = marker.position;
       this.infoTitle = marker.title;
       this.infoDetail = marker.detail;
-
       //check if its the same marker that was selected if yes toggle
       if (this.currentMidx == idx) {
         this.infoWinOpen = !this.infoWinOpen;
@@ -777,7 +772,6 @@ export default {
         console.log("---------------")
         let eventEndDateAndTime= this.eventEndDateTime;
         console.log(eventEndDateAndTime)
-
       // let date = new Date(eventEndDateAndTime);
       // eventEndDateAndTime = date.getDate()  + "-" + date.getMonth() + "-" + date.getFullYear() + "  Time  "+ date.getHours() + ":" + date.getMinutes();
       // console.log(eventEndDateAndTime);
@@ -787,7 +781,6 @@ export default {
           this.eventForm.eventEndTime > this.eventForm.eventStartTime
         }
       }
-
   }
 };
 </script>
@@ -806,37 +799,30 @@ export default {
   background-size: cover;
   background: transparent; */
 }
-
 .h2 {
   color: #341646;
 }
-
 .location {
   font-family: Roboto !important;
   font-size: 18px;
   color: #341646 !important;
   font-weight: bold !important;
 }
-
 .selectBadge {
   font-family: Roboto !important;
   font-size: 18px;
   color: #341646 !important;
   font-weight: bold !important;
 }
-
 .locationDescription {
   color: #707070 !important;
 }
-
 .addLocationButton {
   border: solid 1px #341646 !important;
 }
-
 .selectBudgeButton {
   border: solid 1px #341646 !important;
 }
-
 .uploadPosterImg {
   font-family: Roboto;
   font-size: 18px;
@@ -844,7 +830,6 @@ export default {
   color: #100c4b;
   text-decoration: underline;
 }
-
 .eventCondition {
   font-family: Roboto;
   font-size: 18px;
@@ -852,7 +837,6 @@ export default {
   color: #100c4b;
   text-decoration: underline;
 }
-
 .createBadge {
   font-family: Roboto;
   font-size: 18px;
@@ -860,7 +844,6 @@ export default {
   color: #100c4b;
   text-decoration: underline;
 }
-
 .v-chip:focus:not(.v-chip--selected):after {
   background: none !important;
 }

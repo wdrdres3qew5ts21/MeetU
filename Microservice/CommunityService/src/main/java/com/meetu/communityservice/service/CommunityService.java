@@ -14,6 +14,7 @@ import java.util.List;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 /**
@@ -34,8 +35,8 @@ public class CommunityService {
         return communityRepository.findByCommunityNameIgnoreCaseLike(communityName);
     }
     
-    public Community createCommunity(Community community) {
-        return communityRepository.save(community);
+    public ResponseEntity<Community> createCommunity(Community community) {
+        return null;
     }
     
     public Post createPostToCommunity(String communityId, Post newPostOfCommunity) {

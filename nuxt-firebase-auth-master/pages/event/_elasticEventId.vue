@@ -123,16 +123,18 @@
       </center>
       <br />
       <b>Organizer Name :</b>
-      {{organizeName}}
+      {{organizeName || '404 Network might be trouble...'}}
       <br />
 
-      <b>Website {{}} :</b>
+      <b>Website {{website || 'Not have information...'}} :</b>
       <br />
-      <b>Email : {{}}</b>
+      <b>Email : {{email || 'Not have information...'}}</b>
       <br />
       <br />
       <center>
-        <v-btn block color="#341646" style="color:white">For more information</v-btn>
+        <nuxt-link :to="`/organize/event/${organizeId}`">
+          <v-btn block color="#341646" style="color:white">Organize Information</v-btn>
+        </nuxt-link>
       </center>
     </div>
 
@@ -170,6 +172,7 @@ export default {
       numberOfTicket: 0,
       eventDetail: "",
       createEventDate: "",
+      website: "",
       location: "",
       infoWindowPos: null,
       infoWinOpen: false,
@@ -253,6 +256,9 @@ export default {
           organizeResponse = organizeResponse.data;
           console.log(organizeResponse);
           this.organizeImageCover = organizeResponse.organizeImageCover
+          this.organizeName = organizeResponse.organizeName
+          this.email = organizeResponse.email
+          this.website = organizeResponse.website
           
         });
     },
