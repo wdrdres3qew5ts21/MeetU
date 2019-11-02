@@ -171,7 +171,7 @@
             color="#341646"
             label="Select Badge"
             item-value="badgeId"
-            :disabled="isEditing"
+            :disabled="badgeSelectDisabled"
           >
             <template v-slot:selection="data">
               <v-chip
@@ -296,6 +296,7 @@ export default {
       ],
       valid: true,
       isEditing: true,
+      badgeSelectDisabled: true,
       userForm: {
         interest: [],
         firstName: "",
