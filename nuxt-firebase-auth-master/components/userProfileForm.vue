@@ -6,7 +6,7 @@
       <v-flex class="text-xs-right">
 
         <!-- ปุ่มสแกน qr code -->
-        
+
         <!-- <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
           <template v-slot:activator="{ on }">
             <v-btn v-on="on" @click="isCameraOpen = !isCameraOpen" fab dark small color="primary">
@@ -30,7 +30,7 @@
             <center>
 
               <br />
-        <h3>You are {{userForm.firstName}} : {{organizeForm.organizeName}} Organize
+        <h3>You are {{userForm.firstName}} : {{organize.organizeName}} Organize
         </h3>
         <br />
 

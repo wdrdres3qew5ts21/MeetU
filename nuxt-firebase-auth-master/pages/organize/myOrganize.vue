@@ -18,6 +18,7 @@
     </v-layout>
     <br />
 
+
     <!-- เอาจริงๆ -->
     <!-- <v-tabs v-model="tabModel" centered color="white" slider-color="#341646">
       <v-tab v-for="i in tabTopics" :key="i" :href="`#tab-${i}`">{{ i }}</v-tab>
@@ -49,6 +50,22 @@
     <!-- เอาจริงๆ  -->
 
     <!-- <v-card flat> -->
+    <!-- <div v-if="organizeList">
+      <nuxt-link
+        v-for="(organize, index) in organizeList"
+        :key="index"
+        :to="`/organize/event/${organize.organizeId}`"
+      > -->
+        <!-- <v-badge 
+        overlap 
+        color="#341646">
+          <template v-slot:badge>
+            <v-icon dark small>create</v-icon>
+          </template>
+        </v-badge>-->
+
+        <!-- code ซัน -->
+    
     <div v-if="organizeList">
       <nuxt-link
         v-for="(organize, index) in organizeList"
