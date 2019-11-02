@@ -122,6 +122,7 @@ const actions = {
       });
   },
   signInWithGoogle: function ({ commit }) {
+    let loader = this._vm.$loading.show();
     auth.signInWithRedirect(GoogleProvider).then(result => {
       console.log(result);
       auth.getRedirectResult().then((result) => {
@@ -134,8 +135,8 @@ const actions = {
             console.log("---------- First Time sign up ----------")
             axios.post(`${process.env.USER_SERVICE}/user`, result.user)
           }
-
         }
+        loader.hide()
       }).catch(function (error) {
 
       });
@@ -149,6 +150,7 @@ const actions = {
     auth
       .signInWithRedirect(FacebookProvider)
       .then(user => {
+        
         // Do something after OAuth Redirect login success
         auth.getRedirectResult().then((result) => {
           if (result.credential) {

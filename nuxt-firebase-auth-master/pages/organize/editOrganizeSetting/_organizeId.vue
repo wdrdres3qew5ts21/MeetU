@@ -158,6 +158,7 @@ export default {
   },
   methods: {
     loadOrganizeDetail() {
+      let loader = this.$loading.show();
       axios
         .get(
           `${process.env.USER_SERVICE}/organize/${this.$route.params.organizeId}`
@@ -167,9 +168,11 @@ export default {
           this.organizeForm.organizeOwner.uid = this.getUser.uid;
           console.log("-----organize ----");
           console.log(organizeResponse.data);
+          loader.hide()
         })
         .catch(err => {
           console.log("eefdsfdsfds");
+          loader.hide()
         });
     },
     updateOrganize() {

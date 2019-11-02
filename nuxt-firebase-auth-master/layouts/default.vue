@@ -13,7 +13,7 @@
               <nuxt-link to="/signup">Sign Up</nuxt-link>
             </v-list-tile-content>
           </v-list-tile>
-          <v-list-tile avatar>
+          <v-list-tile v-else avatar>
             <v-list-tile-avatar>
               <img :src="getUser.photoURL" />
             </v-list-tile-avatar>

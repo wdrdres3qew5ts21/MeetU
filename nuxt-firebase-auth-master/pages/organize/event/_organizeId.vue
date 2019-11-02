@@ -34,7 +34,7 @@
 
         <!-- <v-btn fab dark small color="red" @click="confirmPopup">
           <v-icon color="#fff" medium>delete</v-icon>
-        </v-btn> -->
+        </v-btn>-->
       </v-flex>
     </v-layout>
 
@@ -101,26 +101,25 @@
         <v-tab-item>
           <v-card flat>
             <center>
-
-
               <br />
-        <h3 class="h3Text">You are {{userForm.firstName}} {{userForm.lastName}} 
-        </h3><br>
+              <h3 class="h3Text">You are {{userForm.firstName}} {{userForm.lastName}}</h3>
+              <br />
               <div v-if="isCameraOpen">
                 <client-only placeholder="loading...">
                   <qrcode-stream @decode="onDecode"></qrcode-stream>
                 </client-only>
               </div>
 
-
-<v-spacer></v-spacer>
+              <v-spacer></v-spacer>
               <v-btn @click="isCameraOpen=!isCameraOpen" round block large color="primary">
                 <v-icon class="spacing-playground py-0 px-2" large>mdi-qrcode-scan</v-icon>QR Code
               </v-btn>
 
-              <p class="textIntroduce">Just scan a QR code for join an event! 
-               <br>
-                <v-icon medium>mdi-emoticon-cool-outline</v-icon></p>
+              <p class="textIntroduce">
+                Just scan a QR code for join an event!
+                <br />
+                <v-icon medium>mdi-emoticon-cool-outline</v-icon>
+              </p>
             </center>
 
             <br />
@@ -162,9 +161,8 @@ export default {
         organizeName: ""
       },
       defaultImage:
-        "https://www.elegantthemes.com/blog/wp-content/uploads/2017/03/Facebook-Groups-for-Bloggers-shutterstock_555845587-ProStockStudio-FT.png"
-    ,
-          userForm: {
+        "https://www.elegantthemes.com/blog/wp-content/uploads/2017/03/Facebook-Groups-for-Bloggers-shutterstock_555845587-ProStockStudio-FT.png",
+      userForm: {
         badgeList: [],
         interest: [],
         firstName: "",
@@ -182,9 +180,8 @@ export default {
         facebook: "",
         twitter: "",
         instagram: ""
-      },
-      
-      };
+      }
+    };
   },
   computed: {
     ...mapGetters(["getUser"])
@@ -228,8 +225,8 @@ export default {
           });
         });
     },
-
-        initUserProfile: function() {
+    initUserProfile: function() {
+      let loader = this.$loading.show();
       axios
         .get(`${process.env.USER_SERVICE}/user/${this.getUser.uid}`, {
           headers: {
@@ -251,32 +248,40 @@ export default {
           this.userForm.twitter = userProfileForm.twitter;
           this.userForm.instagram = userProfileForm.instagram;
           this.userForm.phone = userProfileForm.phone || "";
+          loader.hide()
         })
-        .catch(err => {});
+        .catch(err => {
+          loader.hide()
+        });
     },
-
     loadAllEventOfOrganize: async function() {
+      let loader = this.$loading.show();
       axios
         .get(`${process.env.EVENT_SERVICE}/events/organize/${this.organizeId}`)
         .then(eventResponse => {
           console.log(eventResponse.data);
           this.eventList = eventResponse.data;
+          loader.hide()
         })
         .catch(error => {
           console.log(error);
+          loader.hide()
         });
     },
     loadOrganizeDetail: async function() {
+      let loader = this.$loading.show();
       axios
         .get(`${process.env.USER_SERVICE}/organize/${this.organizeId}`)
         .then(organizeResponse => {
           console.log(organizeResponse.data);
           this.organize = organizeResponse.data;
+          loader.hide()
         })
         .catch(error => {
           console.log(error);
+          loader.hide()
         });
-    },
+    }
     // confirmPopup: function(e) {
     //   Swal.fire({
     //     title: "Do you want to delete this organize?",
@@ -351,11 +356,11 @@ export default {
   border-radius: 50%;
 }
 
-.h3Text{
+.h3Text {
   color: #341646;
 }
 
-.textIntroduce{
+.textIntroduce {
   color: gray;
 }
 </style>
