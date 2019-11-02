@@ -55,7 +55,7 @@
         :key="index"
         :to="`/organize/event/${organize.organizeId}`"
       >
-        <organize-card :organizeName="organize.organizeName" />
+        <organize-card :organize="organize" />
       </nuxt-link>
     </div>
     <div v-else>

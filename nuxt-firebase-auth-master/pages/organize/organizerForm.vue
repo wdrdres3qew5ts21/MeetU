@@ -118,7 +118,7 @@
         <br />
       </v-form>
     </div>
-    <organizerAccountCreate :organizeId="createdOrganizeId" v-else />
+    <organizerAccountCreate :organizeId="organizeForm.createdOrganizeId" v-else />
   </transition>
 </template>
 

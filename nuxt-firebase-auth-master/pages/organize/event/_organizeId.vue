@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-img
-      :src="defaultImage"
+      :src="organize.organizeImageCover ||defaultImage"
       aspect-ratio="1"
       class="grey lighten-2"
       max-width="1250"
@@ -11,7 +11,7 @@
     <v-layout row wrap justify-start>
       <v-flex xs3>
         <v-avatar size="80">
-          <v-img :src="defaultImage" aspect-ratio="1" max-width="60" max-height="60"></v-img>
+          <v-img :src="organize.organizeImageCover || defaultImage" aspect-ratio="1" max-width="60" max-height="60"></v-img>
         </v-avatar>
       </v-flex>
 

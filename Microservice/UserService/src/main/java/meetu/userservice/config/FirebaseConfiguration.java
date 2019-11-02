@@ -35,17 +35,18 @@ public class FirebaseConfiguration {
             if (FirebaseApp.DEFAULT_APP_NAME == null) {
                 System.out.println("Destroy Firebase Inastance");
                 //   FirebaseApp.getInstance().delete();
-                System.out.println("---------- Firebase Configuration Start  ! ---------------");
-                System.out.println("Firebase SRC : " + firebaseSrc);
 
-                System.out.println(FirebaseApp.DEFAULT_APP_NAME);
-                serviceAccount = new FileInputStream(this.firebaseSrc);
-                FirebaseOptions options = new FirebaseOptions.Builder()
-                        .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                        .setDatabaseUrl("https://meetu-69b29.firebaseio.com")
-                        .build();
-                FirebaseApp.initializeApp(options);
             }
+            System.out.println("---------- Firebase Configuration Start  ! ---------------");
+            System.out.println("Firebase SRC : " + firebaseSrc);
+
+            System.out.println(FirebaseApp.DEFAULT_APP_NAME);
+            serviceAccount = new FileInputStream(this.firebaseSrc);
+            FirebaseOptions options = new FirebaseOptions.Builder()
+                    .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                    .setDatabaseUrl("https://meetu-69b29.firebaseio.com")
+                    .build();
+            FirebaseApp.initializeApp(options);
 
         } catch (FileNotFoundException ex) {
             Logger.getLogger(FirebaseConfiguration.class.getName()).log(Level.SEVERE, null, ex);
