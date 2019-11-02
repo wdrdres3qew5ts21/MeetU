@@ -108,6 +108,11 @@
                 >Search</v-btn>
               </v-flex>
             </v-layout>
+            <v-layout row wrap>
+              <v-chip v-for="(categoryChip, index) in selectedCategoryList" @click="$router.push(`/event?category=${categoryChip}`)" :key="index">
+                <strong>{{ categoryChip}}</strong>&nbsp;
+              </v-chip>
+            </v-layout>
           </div>
           <!-- </v-card> -->
         </v-flex>

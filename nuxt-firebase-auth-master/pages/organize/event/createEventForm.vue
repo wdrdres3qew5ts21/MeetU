@@ -605,32 +605,32 @@ export default {
       console.log(this.place);
       let addresscomponents = this.place.address_components;
       let detail = this.place.formatted_address;
-      let streetNumber = addresscomponents[0].long_name;
-      let road = addresscomponents[1].long_name;
-      let subDistrict = addresscomponents[2].long_name;
-      let distrct = addresscomponents[3].long_name;
-      let province = addresscomponents[4].long_name;
-      let country = addresscomponents[5].long_name;
+      // let streetNumber = addresscomponents[0].long_name;
+      // let road = addresscomponents[1].long_name;
+      // let subDistrict = addresscomponents[2].long_name;
+      // let distrct = addresscomponents[3].long_name;
+      // let province = addresscomponents[4].long_name;
+      // let country = addresscomponents[5].long_name;
 
       this.setEventLocation({
         place,
         detail,
-        streetNumber,
-        road,
-        subDistrict,
-        distrct,
-        province,
-        country
+        // streetNumber,
+        // road,
+        // subDistrict,
+        // distrct,
+        // province,
+        // country
       });
       console.log({
         place,
         detail,
-        streetNumber,
-        road,
-        subDistrict,
-        distrct,
-        province,
-        country
+        // streetNumber,
+        // road,
+        // subDistrict,
+        // distrct,
+        // province,
+        // country
       })
       this.usePlace(this.place);
     },
