@@ -147,24 +147,4 @@ export default {
     }
   }
 };
-// export default {
-//   components: {
-
-//   },
-//   data() {
-//     return {
-//       qrCode: ""
-//     };
-//   },
-//   methods: {
-//     onDecode(decodedString) {
-//       console.log("QR Code is Decoding...");
-//     },
-//     async qrCodeGenerator() {
-//       let qrCode = await axios.get("http://localhost:3002/events/qrcode");
-//       console.log(qrCode);
-//       this.qrCode = qrCode.data;
-//     }
-//   }
-// };
 </script>

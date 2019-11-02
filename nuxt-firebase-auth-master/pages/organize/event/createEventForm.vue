@@ -496,10 +496,6 @@ export default {
     }
   },
   mounted() {
-    // axios.get("http://localhost:4000/userservice/users").then(value => {
-    //   console.log(value);
-    // });
-
     this.loadEventTemplate();
     this.loadOrganizeFromUser();
     this.findMatchingBadge();
@@ -541,7 +537,7 @@ export default {
         .catch(error => {});
       console.log(eventTagsQuery);
       axios
-        .get(`http://localhost:4000/userservice/badges${eventTagsQuery}`)
+        .get(`${process.env.USER_SERVICE}/badges${eventTagsQuery}`)
         .then(badgeResponse => {
           this.badgeList = badgeResponse.data;
           console.log(badgeResponse.data);
