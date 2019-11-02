@@ -3,17 +3,18 @@
     <h2 class="h2">Edit Organizer Settings</h2>
     <br />
 
-    <h3 class="h3">Organizer Details</h3>
-    <br />
+    <!-- <h3 class="h3">Organizer Details</h3>
+    <br /> -->
 
     <div>
       <v-form>
-        <v-text-field
-          v-model="organizeForm.organizerName"
+        <h3 class="h3">{{organizeForm.organizeName}}</h3>
+        <!-- <v-text-field
+          v-model="organizeForm.organizeName"
           :rules="organizerNameRules"
           label="* Organizer Name"
           required
-        ></v-text-field>
+        ></v-text-field> -->
 
         <v-textarea outlined name="input-7-4" label="Description"></v-textarea>
       </v-form>
@@ -25,7 +26,8 @@
 
     <center>
       <v-avatar color="#DEDEDE" size="152">
-        <span class="black--text">Image</span>
+        <img :src="organizeForm.organizeImageCover" alt srcset />
+        <!-- <span class="black--text">Image</span> -->
       </v-avatar>
 
       <br />
@@ -43,14 +45,9 @@
       <v-text-field v-model="organizeForm.email" :rules="emailRules" label="* Email" required></v-text-field>
     </v-form>
 
-    <v-layout row wrap>
-      <v-flex xs3>
-        <v-select :items="phone" label="TH" prepend-icon="phone"></v-select>
-      </v-flex>
-      <v-flex xs9 sm9 md9>
-        <v-text-field :rules="phoneRules" label="* Phone" v-model="phone"></v-text-field>
-      </v-flex>
-    </v-layout>
+    <v-flex xs12 sm9 md9>
+      <v-text-field :rules="phoneRules" label="* Phone" v-model="organizeForm.phone"></v-text-field>
+    </v-flex>
 
     <br />
     <br />
@@ -113,6 +110,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "editOrganizerSettings",
   data() {
@@ -122,7 +120,7 @@ export default {
       phoneRules: [v => !!v || "Phone is required"],
       phone: ["TH", "EN"],
       organizeForm: {
-        organizerName: "",
+        organizeName: "",
         interest: [],
         firstName: "",
         lastName: "",
@@ -141,6 +139,25 @@ export default {
         instagram: ""
       }
     };
+  },
+  mounted() {
+    this.loadOrganizeDetail();
+  },
+  methods: {
+    loadOrganizeDetail() {
+      axios
+        .get(
+          `${process.env.USER_SERVICE}/organize/${this.$route.params.organizeId}`
+        )
+        .then(organizeResponse => {
+          this.organizeForm = organizeResponse.data;
+          console.log("-----organize ----");
+          console.log(organizeResponse.data);
+        })
+        .catch(err => {
+          console.log("eefdsfdsfds");
+        });
+    }
   }
 };
 </script>

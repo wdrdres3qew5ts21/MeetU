@@ -21,7 +21,7 @@
       </v-flex>
 
       <v-flex class="text-xs-right">
-        <nuxt-link to="/organize/editOrganizeSetting">
+        <nuxt-link :to="`/organize/editOrganizeSetting/${$route.params.organizeId}`">
           <v-btn fab dark small color="#341646" @click=" isEditing= !isEditing">
             <v-icon color="#fff" medium>edit</v-icon>
           </v-btn>

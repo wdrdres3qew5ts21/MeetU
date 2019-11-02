@@ -16,7 +16,7 @@ module.exports = {
     ]
   },
   mode: 'universal',
-  loading: { color: '#3f51b5' },
+  loading: { color: '#341646' },
   workbox: {
     importScripts: [
       'custom-sw.js'
@@ -24,7 +24,7 @@ module.exports = {
   },
   manifest: {
     "name": "MeetU",
-    "display": "fullscreen",
+    "display": "standalone",
     "icons": [
       {
         "src": "~/assets/logo/meetu-alt.png",

@@ -86,7 +86,7 @@
     <center>
       <div style="width:150px;overflow:hidden">
         <v-img
-          src="https://picsum.photos/id/11/500/300"
+          :src=" organize.organizeImageCover ||  'https://picsum.photos/id/11/500/300' "
           lazy-src="https://picsum.photos/id/11/10/6"
           aspect-ratio="1"
           class="grey lighten-2"
@@ -176,7 +176,8 @@ export default {
       organize: {
         organizeName: '',
         website: '',
-        email: ''
+        email: '',
+        organizeImageCover: ''
       }
     };
   },
@@ -185,6 +186,7 @@ export default {
   },
   mounted() {
     this.loadEventTemplate();
+    this.loadOrganizeDetail();
   },
   methods: {
     ...mapActions(["saveEventAndUpload"]),
@@ -226,6 +228,10 @@ export default {
       console.log("---- pin location ---- ");
       console.log(this.pinLocation);
       this.place = null;
+    },
+    loadOrganizeDetail(){
+      // axios.get(`${process.env.USER_SERVICE}/organize/${this.getEventTemplate.organize.organizeId}`)
+      // .then(organizeResponse)
     },
     loadEventTemplate() {
       let eventTemplate = this.getEventTemplate;
