@@ -14,6 +14,7 @@
         v-model="eventForm.organize.organizeId"
         persistent-hint        
         required
+        :rules="[v => !!v || 'organize is required']"
       ></v-autocomplete>
     </v-flex>
     <v-text-field v-model="eventForm.eventName" label="* Event Name" required :rules="nameRules"></v-text-field>
@@ -62,8 +63,8 @@
           prepend-icon="today"
           readonly
           v-on="on"
-           required
-           :rules="[v => !!v || 'eventStartDate is required']"
+          required
+          :rules="[v => !!v || 'eventStartDate is required']"
         ></v-text-field>
       </template>
       <v-date-picker
@@ -121,13 +122,14 @@
     >
       <template v-slot:activator="{ on }">
         <v-text-field
+          :disabled="eventForm.eventStartDate ==''"
           v-model="eventForm.eventEndDate"
           required
           label="eventEndDate"
           prepend-icon="today"
           readonly
           v-on="on"
-           :rules="[v => !!v || 'eventEndDate is required']"
+          :rules="[v => !!v || 'eventEndDate is required']"
         ></v-text-field>
       </template>
       <v-date-picker ref="picker" v-model="eventForm.eventEndDate" 
@@ -147,8 +149,10 @@
         width="290px"
       >
         <template v-slot:activator="{ on }">
-          <v-text-field
-            v-model="eventForm.eventEndTime"
+          <v-text-field         
+            :disabled="eventForm.eventStartTime == null"
+            
+            v-model="eventForm.eventEndTime"           
             label="eventEndTime"
             prepend-icon="access_time"
             readonly
@@ -406,8 +410,8 @@ export default {
         location: "",
         eventEndDateAndTime: "",
         eventStartDateAndTime: "",
-        eventStartDate: new Date().toISOString().substr(0, 10),
-        eventEndDate: new Date().toISOString().substr(0, 10),
+        eventStartDate: "",
+        eventEndDate: "",
         eventStartTime: null,
         eventEndTime: null,
         selectedCategory: "",
@@ -777,8 +781,13 @@ export default {
       // let date = new Date(eventEndDateAndTime);
       // eventEndDateAndTime = date.getDate()  + "-" + date.getMonth() + "-" + date.getFullYear() + "  Time  "+ date.getHours() + ":" + date.getMinutes();
       // console.log(eventEndDateAndTime);
-      
+      },
+      time(){
+        if (this.eventForm.eventStartDate == this.eventForm.eventEndDate){
+          this.eventForm.eventEndTime > this.eventForm.eventStartTime
+        }
       }
+
   }
 };
 </script>
