@@ -8,6 +8,7 @@ package meetu.eventservice.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.firebase.messaging.AndroidConfig;
 import com.google.firebase.messaging.BatchResponse;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
@@ -53,6 +54,7 @@ import com.google.firebase.messaging.BatchResponse;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Notification;
+import com.google.firebase.messaging.WebpushConfig;
 import com.mongodb.BasicDBObject;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import java.nio.charset.Charset;
@@ -156,6 +158,8 @@ public class EventService {
         // Create a list containing up to 100 messages.
         List<UserNotification> userNotifications = userNotificationRepository.findAll();
         List<Message> messages = new ArrayList<>();
+        
+                
         if (userNotifications != null) {
             for (UserNotification userNotification : userNotifications) {
                 messages = Arrays.asList(

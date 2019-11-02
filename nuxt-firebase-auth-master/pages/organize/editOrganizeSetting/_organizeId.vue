@@ -33,7 +33,7 @@
       <v-img
         style="border-radius:100%"
         aspect-ratio="1"
-        :src="organizeForm.organizeImageCover"
+        :src="organizeForm.organizeImageCover || 'https://www.rubberstamps.net/Images/6-free-image-upload.svg' "
         width="152px"
       />
       <!-- <span class="black--text">Image</span> -->
