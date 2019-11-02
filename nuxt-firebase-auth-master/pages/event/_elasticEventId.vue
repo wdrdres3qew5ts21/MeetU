@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="isViewTicketDetail ">
+    <div v-if="isViewTicketDetail">
       <!-- <v-carousel hide-delimiters hide-controls xs6 sm12 height="200px;">
         <v-carousel-item v-for="(pic,i) in eventPictureLists" :key="i" :src="pic"></v-carousel-item>
       </v-carousel> -->
@@ -35,12 +35,13 @@
       <p>Date</p>
       <p>
         <b>{{formatDateForReadable(createEventDate)}}</b>
+       
       </p>
    <p>
-        <a href>Add to Calendar</a>
+       
       </p>
 
-      <h4>Event Detail</h4>
+      <p>Event Detail</p>
       <p class="text-justify">{{eventDetail}}</p>
 
       <p>Location</p>
@@ -80,7 +81,7 @@
         </v-container>
         <br />
       </center>
-      <p>Share with...</p>
+     
       <h3>Tickets</h3>
       <p>
         <b>{{eventName}}</b>
