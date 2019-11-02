@@ -67,11 +67,11 @@ public class BadgeService {
             List<Badge> allBadge = badgeRepository.findAll();
             return ResponseEntity.status(HttpStatus.OK).body(allBadge);
         } else if (badgeTags != null & !badgeName.isEmpty()) {
-            List<Badge> badgeFilterByTagsAndName = badgeRepository.findByBadgeTagsIsInAndBadgeNameLike(badgeTags, badgeName, PageRequest.of(page, contentPerPage));
+            List<Badge> badgeFilterByTagsAndName = badgeRepository.findByBadgeTagsIsInAndBadgeNameIgnoreCaseLike(badgeTags, badgeName, PageRequest.of(page, contentPerPage));
             return ResponseEntity.status(HttpStatus.OK).body(badgeFilterByTagsAndName);
         } else if (!badgeName.isEmpty()) {
             System.out.println(badgeName);
-            List<Badge> badgeFilterByTagsAndName = badgeRepository.findByBadgeNameLike(badgeName, PageRequest.of(page, contentPerPage));
+            List<Badge> badgeFilterByTagsAndName = badgeRepository.findByBadgeNameIgnoreCaseLike(badgeName, PageRequest.of(page, contentPerPage));
             return ResponseEntity.status(HttpStatus.OK).body(badgeFilterByTagsAndName);
         }
         System.out.println("Filter some bade");

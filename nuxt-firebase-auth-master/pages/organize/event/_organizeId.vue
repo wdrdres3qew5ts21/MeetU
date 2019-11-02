@@ -4,8 +4,7 @@
       :src="organize.organizeImageCover ||defaultImage"
       aspect-ratio="1"
       class="grey lighten-2"
-      max-width="1250"
-      max-height="150"
+      max-height="200"
     ></v-img>
     <br />
     <v-layout row wrap justify-start>

@@ -16,8 +16,8 @@
                   class="questrial no-top-padding"
                   height="20px"
                   placeholder="Search..."
-                  v-model="search"
-                  @keyup.enter="searchEventByFilter()"
+                  v-model="badgeName"
+                  @keyup.enter="findMatchingBadge()"
                 ></v-text-field>
                 <v-flex class="text-xs-right">
                   <v-btn
@@ -26,7 +26,7 @@
                     small
                     color="#341646"
                     ref="searchButton"
-                    @click="searchEventByFilter()"
+                    @click="findMatchingBadge()"
                   >Search</v-btn>
                 </v-flex>
               </v-layout>
@@ -89,6 +89,7 @@ export default {
     search: "",
     selectedCategoryList: [],
     badgeName: "",
+    badgeTags: [],
     filterForm: {
       categorySelected: []
     },
@@ -127,20 +128,21 @@ export default {
     },
     findMatchingBadge() {
       console.log("mating badge");
-      let eventTagsQuery = "";
+      let badgeTags = "";
+      if (this.badgeTags.length > 0) {
+        badgeTags= "&badgeTags="
+        for (let i = 0; i < this.badgeTags.length; i++) {
+          badgeTags += `${this.badgeTags[i]},`;
+        }
+      }
       axios
-        .get(`${process.env.USER_SERVICE}/badges${eventTagsQuery}`)
+        .get(`${process.env.USER_SERVICE}/badges?badgeName=${this.badgeName}${badgeTags}`)
         .then(badgeResponse => {
           this.badgeList = badgeResponse.data;
           console.log(badgeResponse.data);
         })
         .catch(error => {});
     },
-    // onItemClick(event, itemsCategory) {
-    //   if (event) {
-    //     this.selected = itemsCategory;
-    //   }
-    // },
     remove: function(item) {
       console.log(item);
       this.chips.splice(this.chips.indexOf(item), 1);

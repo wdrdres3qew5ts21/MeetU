@@ -7,6 +7,7 @@ package meetu.userservice.repository;
 
 import java.util.List;
 import meetu.userservice.model.Badge;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
@@ -25,5 +26,9 @@ public interface BadgeRepository extends MongoRepository<Badge, String>{
     public List<Badge> findByBadgeNameLike(String badgeName, Pageable pageable);
 
     public List<Badge> findByBadgeTagsIsInAndBadgeNameLike(List<String> badgeTags,String badgeName, Pageable pageable);
+
+    public List<Badge> findByBadgeTagsIsInAndBadgeNameIgnoreCaseLike(List<String> badgeTags, String badgeName, PageRequest of);
+
+    public List<Badge> findByBadgeNameIgnoreCaseLike(String badgeName, PageRequest of);
     
 }
