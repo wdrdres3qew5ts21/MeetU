@@ -25,7 +25,7 @@
                     <br />
                     <b color="deep-purple darken-3">View Detail</b>
                     <div v-if="eventTicket.isParticipate == false" >Status: available </div>
-                     <div v-else >Status: unavailable </div>
+                     <div v-else >Status: joined </div>
 
                   
                   </div>
@@ -34,7 +34,9 @@
             </v-layout>
             <v-layout v-else>
             <v-flex xs8>
+              <center>
               <p  width="170px">{{eventTicket.deleteMessageDetail}}</p>
+              </center>
             </v-flex>
             <v-flex xs7>
                 <v-card-title primary-title>
