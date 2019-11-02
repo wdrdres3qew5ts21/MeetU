@@ -103,8 +103,8 @@
         <span class="location" id="locationMap">Location</span>
         <p>{{getEventTemplate.location.detail}}</p>
         <v-btn
-          class="addLocationButton"
-          color="white"
+          class="addLocationButton #341646--text"
+          outline color="primary"
           @click="addLocation()"
           :disabled="isEditing"
         >Add Location</v-btn>
