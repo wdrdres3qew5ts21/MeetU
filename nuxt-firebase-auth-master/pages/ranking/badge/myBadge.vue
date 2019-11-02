@@ -30,14 +30,15 @@
             <br />
             <center>
               <v-avatar size="60">
-                <img :src="props.item.avatar" />
+                <img :src="props.item.badgePicture" />
               </v-avatar>
             </center>
             <br />
           </td>
           <td>
-            <h2>{{ props.item.name }}</h2>
-            <br />Detail:
+            <h2>{{ props.item.badgeName }}</h2>
+            <br />
+            <p>Level: {{ props.item.level }} |  EXP: {{ props.item.exp }}</p>
           </td>
         </tr>
       </template>
@@ -46,33 +47,38 @@
 </template>
 
 <script>
+import {mapGetters} from "vuex"
 import axios from 'axios'
 export default {
   data: () => ({
     pagination: {
-      sortBy: "level",
-      descending: true
+      // sortBy: "level",
+      // descending: true
     },
     badges: [
       {
-        name: "Frozen Yogurt",
+        badgeName: "My badge",
         level: 1,
-        avatar: "https://cdn.vuetifyjs.com/images/lists/1.jpg"
+        badgePicture: "https://cdn.vuetifyjs.com/images/lists/1.jpg"
       },
-      {
-        name: "Ice cream sandwich",
-        level: 2,
-        avatar: "https://cdn.vuetifyjs.com/images/lists/2.jpg"
-      }
     ]
   }),
+  computed: {
+    ...mapGetters(['getUser'])
+  },
+  mounted(){
+    this.loadMyBadge()
+  },
   methods: {
     loadMyBadge(){
-      axios.get(`${process.env.USER_SERVICE}/`).then(badgeListResponse =>{
-
+    let loader = this.$loading.show()
+      axios.get(`${process.env.USER_SERVICE}/badges/user/${this.getUser.uid}`).then(badgeListResponse =>{
+        this.badges = badgeListResponse.data
+        console.log(this.badges)
+        loader.hide()
       })
       .catch(err=>{
-
+        loader.hide()
       })
     }
   }

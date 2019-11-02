@@ -19,4 +19,6 @@ public interface UserBadgeRepository extends MongoRepository<UserBadge, String>{
     
     public List<UserBadge> findByBadgeId(Sort sort);
     
+    public List<UserBadge> findByUid(String uid, Pageable pageable);
+    
 }
