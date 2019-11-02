@@ -100,9 +100,12 @@
 
         <v-tab-item>
           <v-card flat>
-            <br />
-            <br />
             <center>
+
+
+              <br />
+        <h3 class="h3Text">You are {{userForm.firstName}} {{userForm.lastName}} 
+        </h3><br>
               <div v-if="isCameraOpen">
                 <client-only placeholder="loading...">
                   <qrcode-stream @decode="onDecode"></qrcode-stream>
@@ -110,15 +113,14 @@
               </div>
 
 
-              <br>
-
-
-              <h3>Just scan a QR code! 
-                <br><v-icon large>mdi-emoticon-cool-outline</v-icon></h3>
-
+<v-spacer></v-spacer>
               <v-btn @click="isCameraOpen=!isCameraOpen" round block large color="primary">
                 <v-icon class="spacing-playground py-0 px-2" large>mdi-qrcode-scan</v-icon>QR Code
               </v-btn>
+
+              <p class="textIntroduce">Just scan a QR code for join an event! 
+               <br>
+                <v-icon medium>mdi-emoticon-cool-outline</v-icon></p>
             </center>
 
             <br />
@@ -161,12 +163,34 @@ export default {
       },
       defaultImage:
         "https://www.elegantthemes.com/blog/wp-content/uploads/2017/03/Facebook-Groups-for-Bloggers-shutterstock_555845587-ProStockStudio-FT.png"
-    };
+    ,
+          userForm: {
+        badgeList: [],
+        interest: [],
+        firstName: "",
+        lastName: "",
+        gender: "",
+        dateArray: [],
+        dateOfBirth: "",
+        phone: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        password: "",
+        website: "",
+        line: "",
+        facebook: "",
+        twitter: "",
+        instagram: ""
+      },
+      
+      };
   },
   computed: {
     ...mapGetters(["getUser"])
   },
   mounted() {
+    this.initUserProfile();
     this.organizeId = this.$route.params.organizeId;
     console.log(this.$route.params.organizeId);
     this.loadAllEventOfOrganize();
@@ -203,6 +227,32 @@ export default {
             text: `${err.response.data.response}`
           });
         });
+    },
+
+        initUserProfile: function() {
+      axios
+        .get(`${process.env.USER_SERVICE}/user/${this.getUser.uid}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("jwtToken") || ""}`
+          }
+        })
+        .then(userProfileForm => {
+          console.log("haate my self");
+          userProfileForm = userProfileForm.data;
+          console.log(userProfileForm);
+          this.userForm.interest = userProfileForm.interest;
+          this.userForm.firstName = userProfileForm.firstName;
+          this.userForm.lastName = userProfileForm.lastName;
+          this.userForm.email = userProfileForm.email;
+          this.userForm.gender = userProfileForm.gender;
+          this.userForm.facebook = userProfileForm.facebook;
+          this.userForm.line = userProfileForm.line;
+          this.userForm.website = userProfileForm.website;
+          this.userForm.twitter = userProfileForm.twitter;
+          this.userForm.instagram = userProfileForm.instagram;
+          this.userForm.phone = userProfileForm.phone || "";
+        })
+        .catch(err => {});
     },
 
     loadAllEventOfOrganize: async function() {
@@ -299,5 +349,13 @@ export default {
 }
 .img-circle {
   border-radius: 50%;
+}
+
+.h3Text{
+  color: #341646;
+}
+
+.textIntroduce{
+  color: gray;
 }
 </style>
