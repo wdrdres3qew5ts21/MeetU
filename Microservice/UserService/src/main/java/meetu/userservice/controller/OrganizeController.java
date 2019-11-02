@@ -43,7 +43,7 @@ public class OrganizeController {
     
     @PatchMapping("/organize/{organizeId}")
     public ResponseEntity updateOrganizeDetail(@PathVariable String organizeId, @RequestBody Organize organize) {
-        return organizeService.createOrganize(organizeId, organize);
+        return organizeService.updateOrganizeDetail(organizeId, organize);
     }
 
     @PostMapping("/test/organize/{uid}")

@@ -4,7 +4,7 @@
     <br />
 
     <!-- <h3 class="h3">Organizer Details</h3>
-    <br /> -->
+    <br />-->
 
     <div>
       <v-form>
@@ -14,9 +14,9 @@
           :rules="organizerNameRules"
           label="* Organizer Name"
           required
-        ></v-text-field> -->
+        ></v-text-field>-->
 
-        <v-textarea outlined name="input-7-4" label="Description"></v-textarea>
+        <v-textarea outlined name="input-7-4" v-model="organizeForm.organizeDetail" label="Description"></v-textarea>
       </v-form>
     </div>
 
@@ -100,9 +100,14 @@
         <v-btn class="cancelButton white--text" color="#AEAEAE" depressed large height="50">Cancel</v-btn>
       </nuxt-link>
 
-      <nuxt-link :to="`/?`" style="text-decoration-line:none;">
-        <v-btn class="saveButton white--text" color="#341646" depressed large height="50">Save</v-btn>
-      </nuxt-link>
+      <v-btn
+        class="saveButton white--text"
+        color="#341646"
+        @click="updateOrganize()"
+        depressed
+        large
+        height="50"
+      >Save</v-btn>
     </center>
     <br />
     <br />
@@ -110,6 +115,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import axios from "axios";
 export default {
   name: "editOrganizerSettings",
@@ -120,18 +126,14 @@ export default {
       phoneRules: [v => !!v || "Phone is required"],
       phone: ["TH", "EN"],
       organizeForm: {
+        organizeImageCover: "",
         organizeName: "",
-        interest: [],
-        firstName: "",
-        lastName: "",
-        gender: "",
-        dateArray: [],
-        dateOfBirth: "",
+        organizeDetail: "",
+        organizeOwner: {
+          uid: ""
+        },
         phone: "",
         email: "",
-        password: "",
-        confirmPassword: "",
-        password: "",
         website: "",
         line: "",
         facebook: "",
@@ -139,6 +141,9 @@ export default {
         instagram: ""
       }
     };
+  },
+  computed: {
+    ...mapGetters(["getUser"])
   },
   mounted() {
     this.loadOrganizeDetail();
@@ -151,11 +156,33 @@ export default {
         )
         .then(organizeResponse => {
           this.organizeForm = organizeResponse.data;
+          this.organizeForm.organizeOwner.uid = this.getUser.uid;
           console.log("-----organize ----");
           console.log(organizeResponse.data);
         })
         .catch(err => {
           console.log("eefdsfdsfds");
+        });
+    },
+    updateOrganize() {
+      axios
+        .patch(
+          `${process.env.USER_SERVICE}/organize/${this.$route.params.organizeId}`,
+          this.organizeForm
+        )
+        .then(organizeResponse => {
+          this.$swal({
+            type: "success",
+            title: "Update Organize Profile success !!!",
+            text: "update Organize Profile success !!!"
+          });
+        })
+        .catch(err => {
+          this.$swal({
+            type: "error",
+            title: "Success to scan QR Code!!!",
+            text: `${err.response.data.response}`
+          });
         });
     }
   }

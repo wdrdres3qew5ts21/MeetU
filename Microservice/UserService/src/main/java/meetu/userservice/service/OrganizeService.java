@@ -175,8 +175,12 @@ public class OrganizeService {
             organizeOwnedByUser.setInstragram(organize.getInstragram());
             organizeOwnedByUser.setLine(organize.getLine());
             organizeOwnedByUser.setOrganizeDetail(organize.getOrganizeDetail());
-            organizeOwnedByUser.setOrganizeImageCover(organize.getOrganizeImageCover());
-            organizeOwnedByUser.setOrganizeImageProfile(organize.getOrganizeImageProfile());
+            if (organize.getOrganizeImageCover() != null | !organize.getOrganizeImageCover().isEmpty()) {
+                organizeOwnedByUser.setOrganizeImageCover(organize.getOrganizeImageCover());
+            }
+//            if (organize.getOrganizeImageProfile() != null | !organize.getOrganizeImageProfile().isEmpty()) {
+//                organizeOwnedByUser.setOrganizeImageProfile(organize.getOrganizeImageProfile());
+//            }
             organizeOwnedByUser.setPhone(organize.getPhone());
             organizeOwnedByUser.setTwitter(organize.getTwitter());
             organizeOwnedByUser.setWebsite(organize.getWebsite());
