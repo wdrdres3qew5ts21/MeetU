@@ -3,27 +3,26 @@
     <div v-if="isViewTicketDetail">
       <!-- <v-carousel hide-delimiters hide-controls xs6 sm12 height="200px;">
         <v-carousel-item v-for="(pic,i) in eventPictureLists" :key="i" :src="pic"></v-carousel-item>
-      </v-carousel> -->
+      </v-carousel>-->
       <client-only>
-      <carousel :perPage="1" :paginationEnabled="false">
-        <slide v-for="(pic,i) in eventPictureLists" :key="i">
-          <img width="100%" :src="pic" alt="" srcset="">
-        </slide>
-      </carousel>
+        <carousel :perPage="1" :paginationEnabled="false">
+          <slide v-for="(pic,i) in eventPictureLists" :key="i">
+            <img width="100%" :src="pic" alt srcset />
+          </slide>
+        </carousel>
       </client-only>
       <br />
       <h3>{{eventName}}</h3>
-      <br>
-      
-    
+      <br />
+
       <v-chip v-for="(eventTag,index) in eventTags" :key="index" text-color="#341646">
-      <v-avatar>
-        <v-icon color="primary">local_offer</v-icon>
-      </v-avatar>
-                <nuxt-link :to="`/event?category=${eventTag}`">{{eventTag}}</nuxt-link>
-    </v-chip>
-     
-      <br>
+        <v-avatar>
+          <v-icon color="primary">local_offer</v-icon>
+        </v-avatar>
+        <nuxt-link :to="`/event?category=${eventTag}`">{{eventTag}}</nuxt-link>
+      </v-chip>
+
+      <br />
       <v-btn
         block
         color="#341646"
@@ -35,11 +34,8 @@
       <p>Date</p>
       <p>
         <b>{{formatDateForReadable(createEventDate)}}</b>
-       
       </p>
-   <p>
-       
-      </p>
+      <p></p>
 
       <p>Event Detail</p>
       <p class="text-justify">{{eventDetail}}</p>
@@ -81,7 +77,7 @@
         </v-container>
         <br />
       </center>
-     
+
       <h3>Tickets</h3>
       <p>
         <b>{{eventName}}</b>
@@ -109,32 +105,35 @@
       <qrcode :value="qrCodeSrc" :options="{ width: 200 }"></qrcode>
       </center>-->
 
-  <br>
-    <v-divider > </v-divider>
+      <br />
+      <v-divider></v-divider>
       <h3>Contract</h3>
       <p></p>
-      
-        <center>
-          <div style="width:150px;overflow:hidden">
-            <v-img
-              src="https://picsum.photos/id/11/500/300"
-              lazy-src="https://picsum.photos/id/11/10/6"
-              aspect-ratio="1"
-              class="grey lighten-2"
-              max-width="300"
-              style="border-radius:60%;"
-            ></v-img>
-          </div>
-        </center>
-        <br>
-        <b> Organizer Name : </b> {{organizeName}}  <br>
 
-         <b>Website  :</b> <br>
-         <b>Email  :</b> <br> <br>
-       <center>
-           <v-btn block color="#341646"  style="color:white">For more information</v-btn>
-       </center>
-    
+      <center>
+        <div style="width:150px;overflow:hidden">
+          <v-img
+            :src="  organizeImageCover ||  'https://picsum.photos/id/11/500/300' "
+            aspect-ratio="1"
+            class="grey lighten-2"
+            max-width="300"
+            style="border-radius:60%;"
+          ></v-img>
+        </div>
+      </center>
+      <br />
+      <b>Organizer Name :</b>
+      {{organizeName}}
+      <br />
+
+      <b>Website {{}} :</b>
+      <br />
+      <b>Email : {{}}</b>
+      <br />
+      <br />
+      <center>
+        <v-btn block color="#341646" style="color:white">For more information</v-btn>
+      </center>
     </div>
 
     <div v-else>
@@ -150,7 +149,7 @@ import { eventNotFound } from "~/utils/errorMessage";
 import confirmTicket from "@/components/confirmTicket";
 import axios from "axios";
 import { mapMutations, mapActions, mapGetters } from "vuex";
-import { error, log } from 'util';
+import { error, log } from "util";
 export default {
   components: {
     confirmTicket,
@@ -163,9 +162,10 @@ export default {
       qrCodeSrc: "demo",
       isTicketSelected: true,
       isViewTicketDetail: true,
+      organizeImageCover: "",
       organizeId: "",
       organizeName: "",
-      eventTags:[],
+      eventTags: [],
       eventName: "",
       numberOfTicket: 0,
       eventDetail: "",
@@ -206,13 +206,6 @@ export default {
         console.log("------------ Async Data  -----------");
         let data = response.data;
         console.log(data);
-        axios.get(`${process.env.USER_SERVICE}/organize/${data.organize.organizeId}`)
-        .then(organizeResponse=>{
-          return {
-            organizeId: data.organizeId,
-            organizeName: data.organizeName
-          }
-        })
 
         return {
           elasticEventId: data.elasticEventId,
@@ -246,12 +239,23 @@ export default {
     console.log(this.$route.params.elasticEventId);
     console.log(this.getUser.uid);
     this.userViewEvent();
+    this.loadOrganizeDetail()
   },
   computed: {
     ...mapGetters(["getCurrentLocation", "getUser"])
   },
   methods: {
     ...mapActions(["updateCurrentLocation"]),
+    loadOrganizeDetail() {
+      axios
+        .get(`${process.env.USER_SERVICE}/organize/${this.organizeId}`)
+        .then(organizeResponse => {
+          organizeResponse = organizeResponse.data;
+          console.log(organizeResponse);
+          this.organizeImageCover = organizeResponse.organizeImageCover
+          
+        });
+    },
     userViewEvent: function() {
       axios.post(`${process.env.EVENT_SERVICE}/event/view`, {
         uid: this.getUser.uid,
@@ -267,25 +271,29 @@ export default {
       this.qrCodeSrc = JSON.stringify(reserveTicket);
       console.log(reserveTicket);
       axios
-        .post(`${process.env.EVENT_SERVICE}/event/reserve`, reserveTicket,{
+        .post(`${process.env.EVENT_SERVICE}/event/reserve`, reserveTicket, {
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('jwtToken') || ''}`
+            Authorization: `Bearer ${localStorage.getItem("jwtToken") || ""}`
           }
         })
         .then(reserveTicket => {
           console.log(reserveTicket);
-          this.reserveTicket = reserveTicket
+          this.reserveTicket = reserveTicket;
           this.isViewTicketDetail = !this.isViewTicketDetail;
         })
         .catch(error => {
-          console.log("fsdfsdf")
-          console.log(error.response )
+          console.log("fsdfsdf");
+          console.log(error.response);
           this.$swal({
             type: "error",
             title: "Fail to reserve ticket !",
-            text: `${error.response === undefined ? 'Please Login first!':error.response }`
+            text: `${
+              error.response === undefined
+                ? "Please Login first!"
+                : error.response
+            }`
           });
-          this.$router.push("/login")
+          this.$router.push("/login");
         });
     },
     findEventInArea: async function() {
@@ -331,12 +339,34 @@ export default {
         console.log("not support fuq");
       }
     },
-    formatDateForReadable: function(formatDate){
-      const months = ["JAN", "FEB", "MAR","APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+    formatDateForReadable: function(formatDate) {
+      const months = [
+        "JAN",
+        "FEB",
+        "MAR",
+        "APR",
+        "MAY",
+        "JUN",
+        "JUL",
+        "AUG",
+        "SEP",
+        "OCT",
+        "NOV",
+        "DEC"
+      ];
       let date = new Date(formatDate);
-      formatDate = date.getDate()  + "-" + months[date.getMonth()] + "-" + date.getFullYear() + "  Time  "+ date.getHours() + ":" + date.getMinutes();
+      formatDate =
+        date.getDate() +
+        "-" +
+        months[date.getMonth()] +
+        "-" +
+        date.getFullYear() +
+        "  Time  " +
+        date.getHours() +
+        ":" +
+        date.getMinutes();
       console.log(formatDate);
-      return formatDate
+      return formatDate;
     }
   }
 };
