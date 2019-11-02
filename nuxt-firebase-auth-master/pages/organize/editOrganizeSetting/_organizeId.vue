@@ -16,7 +16,12 @@
           required
         ></v-text-field>-->
 
-        <v-textarea outlined name="input-7-4" v-model="organizeForm.organizeDetail" label="Description"></v-textarea>
+        <v-textarea
+          outlined
+          name="input-7-4"
+          v-model="organizeForm.organizeDetail"
+          label="Description"
+        ></v-textarea>
       </v-form>
     </div>
 
@@ -25,20 +30,19 @@
     <h3 class="h3">Profile</h3>
 
     <center>
-      <v-avatar color="#DEDEDE" size="152">
-        <img :src="organizeForm.organizeImageCover" alt srcset />
-        <!-- <span class="black--text">Image</span> -->
-      </v-avatar>
-
-      <br />
-      <br />
-
+      <v-img
+        style="border-radius:100%"
+        aspect-ratio="1"
+        :src="organizeForm.organizeImageCover"
+        width="152px"
+      />
+      <!-- <span class="black--text">Image</span> -->
       <v-btn
         class="chooseFileButton"
         color="white"
         @click="$refs.inputUpload.click()"
       >Upload an Image</v-btn>
-      <input v-show="false" ref="inputUpload" type="file" />
+      <input v-show="false" ref="inputUpload" @change="onCoverPictureUpload" type="file" />
     </center>
 
     <v-form>
@@ -115,6 +119,8 @@
 </template>
 
 <script>
+import * as firebase from "firebase/app";
+import "firebase/storage";
 import { mapGetters } from "vuex";
 import axios from "axios";
 export default {
@@ -125,6 +131,8 @@ export default {
       emailRules: [v => /.+@.+/ || "E-mail must be valid"],
       phoneRules: [v => !!v || "Phone is required"],
       phone: ["TH", "EN"],
+      filename: "",
+      originalFileToDelete: "",
       organizeForm: {
         organizeImageCover: "",
         organizeName: "",
@@ -165,25 +173,75 @@ export default {
         });
     },
     updateOrganize() {
-      axios
-        .patch(
-          `${process.env.USER_SERVICE}/organize/${this.$route.params.organizeId}`,
-          this.organizeForm
-        )
-        .then(organizeResponse => {
-          this.$swal({
-            type: "success",
-            title: "Update Organize Profile success !!!",
-            text: "update Organize Profile success !!!"
-          });
+      let loader = this.$loading.show()
+      let dateobj = new Date();
+      let fileName = this.filename + "_" + dateobj.toISOString();
+      let storage = firebase.storage();
+      let storageRef = storage.ref("/organize");
+      let setupFile = storageRef.child(fileName);
+      setupFile
+        .putString(this.organizeForm.organizeImageCover, "data_url", {
+          contentType: "image/jpeg"
         })
-        .catch(err => {
-          this.$swal({
-            type: "error",
-            title: "Success to scan QR Code!!!",
-            text: `${err.response.data.response}`
+        .then(snapshot => {
+          snapshot.ref.getDownloadURL().then(organizeImageCover => {
+            this.organizeForm.organizeImageCover = organizeImageCover;
+            axios
+              .patch(
+                `${process.env.USER_SERVICE}/organize/${this.$route.params.organizeId}`,
+                this.organizeForm
+              )
+              .then(organizeResponse => {
+                this.$swal({
+                  type: "success",
+                  title: "Update Organize Profile success !!!",
+                  text: "update Organize Profile success !!!"
+                });
+                // setupFile = storageRef.child(this.originalFileToDelete);
+                // setupFile
+                //   .delete()
+                //   .then(() => {
+                    
+                //     // File deleted successfully
+                //     console.log("delete originalfile after uplaod new pic");
+                //   })
+                //   .catch(error => {
+                //     // Uh-oh, an error occurred!
+                //   });
+                  loader.hide()
+              })
+              .catch(err => {
+                setupFile
+                  .delete()
+                  .then(() => {
+                    // File deleted successfully
+                    console.log("delete file success because upload fail");
+                  })
+                  .catch(error => {
+                    // Uh-oh, an error occurred!
+                  });
+                this.$swal({
+                  type: "error",
+                  title: "Failed to Update Organize!!!",
+                  text: `${err.response.data.response}`
+                });
+                loader.hide()
+              });
           });
         });
+    },
+    onCoverPictureUpload(event) {
+      console.log("uplaod din");
+      let temptPicture = event.target.files[0];
+      this.filename = event.target.files[0].name;
+      console.log("!!!!!!!!!!!!!!!!!!!!!!");
+      console.log(this.temptPicture);
+      this.originalFileToDelete = this.organizeForm.organizeImageCover;
+      const fileReader = new FileReader();
+      fileReader.addEventListener("load", () => {
+        this.organizeForm.organizeImageCover = fileReader.result;
+      });
+      fileReader.readAsDataURL(temptPicture);
     }
   }
 };
