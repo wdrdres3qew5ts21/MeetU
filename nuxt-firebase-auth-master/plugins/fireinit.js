@@ -52,7 +52,6 @@ export default (context) => {
   }
 
 
-
   authen.onAuthStateChanged(user => {
     authen.getRedirectResult().then((result) => {
       console.log("Auth status change")

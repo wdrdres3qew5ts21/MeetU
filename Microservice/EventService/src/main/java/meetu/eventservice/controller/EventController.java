@@ -51,21 +51,6 @@ public class EventController {
     @Autowired
     private EventService eventService;
     
-    
-//    @PostMapping("/badge")
-//    public ResponseEntity createBadge(@RequestBody Badge badge) {
-//        return eventService.createBadge(badge);
-//    }
-//    
-//    @GetMapping("/badges")
-//    public ResponseEntity<Badge> findEventThatMatchingBadge(
-//            @RequestParam(required = false) List<String> badgeTags,
-//            @RequestParam(required = false, defaultValue = "") String badgeName,
-//            @RequestParam(required = false, defaultValue = "0") int page,
-//            @RequestParam(required = false, defaultValue = "20") int contentPerPage ) {
-//        return eventService.findEventThatMatchingBadge(badgeTags, badgeName,page,contentPerPage);
-//    }
-
     @PostMapping("/event")
     public ResponseEntity createEvent(@RequestBody Event event) {
         return eventService.createEvent(event);
@@ -98,7 +83,10 @@ public class EventController {
     }
 
     @PostMapping("/event/reserve")
-    public ResponseEntity userReserveTicket(@RequestBody UserEventTicket userJoinEvent) {
+    public ResponseEntity userReserveTicket(
+            @RequestBody UserEventTicket userJoinEvent, 
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "20") int contentPerPage) {
         System.out.println("---- Reserve -----");
         return eventService.userReserveTicket(userJoinEvent);
     }
@@ -120,7 +108,9 @@ public class EventController {
     }
 
     @GetMapping("/events/popular")
-    public ResponseEntity findAllPopularEvent() {
+    public ResponseEntity findAllPopularEvent(
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "20") int contentPerPage) {
         return eventService.findAllPopularEvent();
     }
 
@@ -181,15 +171,5 @@ public class EventController {
     public ResponseEntity createEventCatagory(@RequestBody Category category) {
         return eventService.createEventCategory(category);
     }
-
-//    @PostMapping("/events/recommend/persona")
-//    public ResponseEntity<List<Event>> searchWithPersonalize(
-//            @RequestParam(required = false, defaultValue = "0") int page,
-//            @RequestParam(required = false, defaultValue = "20") int contentPerPage,
-//            @RequestBody User user
-//    ) {
-//        return new ResponseEntity<List<Event>>(eventService.findEventByPersonalize(user), HttpStatus.OK);
-//    }
-
 
 }

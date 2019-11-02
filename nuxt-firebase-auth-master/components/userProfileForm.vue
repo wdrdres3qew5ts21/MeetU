@@ -4,7 +4,10 @@
       <h2 style="color:#341646">My Profile</h2>
 
       <v-flex class="text-xs-right">
-        <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
+
+        <!-- ปุ่มสแกน qr code -->
+        
+        <!-- <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
           <template v-slot:activator="{ on }">
             <v-btn v-on="on" @click="isCameraOpen = !isCameraOpen" fab dark small color="primary">
               <v-icon medium>mdi-qrcode-scan</v-icon>
@@ -43,7 +46,7 @@
               <h3>Just scan a QR code for join an event!</h3>
             </center>
           </v-card>
-        </v-dialog>
+        </v-dialog> -->
 
         <v-btn fab dark small color="#341646" @click=" isEditing= !isEditing">
           <v-icon color="#fff" medium>edit</v-icon>

@@ -89,14 +89,17 @@ export default {
   },
   methods: {
     loadOrganizeFromUser: function() {
+      let loader = this.$loading.show();
       axios
         .get(`${process.env.USER_SERVICE}/organize/user/${this.getUser.uid}`)
         .then(organizeResponse => {
           console.log(organizeResponse.data);
           this.organizeList = organizeResponse.data;
+          loader.hide();
         })
         .catch(error => {
           console.log(error);
+          loader.hide()
         });
     }
   }

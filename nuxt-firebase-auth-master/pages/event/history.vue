@@ -77,13 +77,17 @@ export default {
   },
   methods: {
     loadAllUserEventTicket() {
+      let loader = this.$loading.show();
       axios
         .get(`${process.env.EVENT_SERVICE}/events/tickets/${this.getUser.uid}`)
         .then(userEventTicketList => {
           console.log(userEventTicketList.data);
           this.userEventTicketList = userEventTicketList.data;
+          loader.hide()
         })
-        .catch(err => {});
+        .catch(err => {
+          loader.hide()
+        });
     },
     formatDateForReadable: function(formatDate){
       let date = new Date(formatDate);

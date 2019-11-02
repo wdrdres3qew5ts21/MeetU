@@ -33,7 +33,7 @@
       <v-img
         style="border-radius:100%"
         aspect-ratio="1"
-        :src="organizeForm.organizeImageCover"
+        :src="organizeForm.organizeImageCover || 'https://www.rubberstamps.net/Images/6-free-image-upload.svg' "
         width="152px"
       />
       <!-- <span class="black--text">Image</span> -->
@@ -158,6 +158,7 @@ export default {
   },
   methods: {
     loadOrganizeDetail() {
+      let loader = this.$loading.show();
       axios
         .get(
           `${process.env.USER_SERVICE}/organize/${this.$route.params.organizeId}`
@@ -167,9 +168,11 @@ export default {
           this.organizeForm.organizeOwner.uid = this.getUser.uid;
           console.log("-----organize ----");
           console.log(organizeResponse.data);
+          loader.hide()
         })
         .catch(err => {
           console.log("eefdsfdsfds");
+          loader.hide()
         });
     },
     updateOrganize() {
