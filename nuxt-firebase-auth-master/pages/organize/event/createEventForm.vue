@@ -38,9 +38,13 @@
         :rules="[v => !!v || 'Category is required']"
       ></v-autocomplete>
 
-
+<!-- <v-date-picker v-model="eventForm.eventStartDate"></v-date-picker>
+         <v-time-picker v-model="eventForm.eventStartTime" format="24hr"></v-time-picker> -->
+         
     </v-flex>
-
+    <!-- Evant Start Date -->
+        
+         
     <v-menu
       ref="menu"
       v-model="menuEventStartDate"
@@ -65,36 +69,13 @@
       <v-date-picker
         ref="picker"
         v-model="eventForm.eventStartDate"
-        min="1950-01-01"
+        :min="nowDate"      
         @change="save"       
       ></v-date-picker>
     </v-menu>
-
-    <v-menu
-      ref="menu"
-      v-model="menuEventEndDate"
-      :close-on-content-click="false"
-      transition="scale-transition"
-      offset-y
-      full-width
-      min-width="290px"
-    >
-      <template v-slot:activator="{ on }">
-        <v-text-field
-          v-model="eventForm.eventEndDate"
-          required
-          label="eventEndDate"
-          prepend-icon="today"
-          readonly
-          v-on="on"
-           :rules="[v => !!v || 'eventEndDate is required']"
-        ></v-text-field>
-      </template>
-      <v-date-picker ref="picker" v-model="eventForm.eventEndDate" min="1950-01-01" @change="save"></v-date-picker>
-    </v-menu>
-
-
-        <!-- Event Start time -->
+     
+    <!-- Evant Start Date -->
+<!-- Event Start time -->
   <v-dialog
         ref="dialogEventStartTime"
         v-model="modalForStartTime"
@@ -124,14 +105,42 @@
           <v-btn flat color="primary" @click="$refs.dialogEventStartTime.save(eventForm.eventStartTime)">OK</v-btn>
         </v-time-picker>
       </v-dialog>
+
+
+
       <!-- Event Start time -->
-      
+    <!-- Event End Date -->
+    <v-menu
+      ref="menu"
+      v-model="menuEventEndDate"
+      :close-on-content-click="false"
+      transition="scale-transition"
+      offset-y
+      full-width
+      min-width="290px"
+    >
+      <template v-slot:activator="{ on }">
+        <v-text-field
+          v-model="eventForm.eventEndDate"
+          required
+          label="eventEndDate"
+          prepend-icon="today"
+          readonly
+          v-on="on"
+           :rules="[v => !!v || 'eventEndDate is required']"
+        ></v-text-field>
+      </template>
+      <v-date-picker ref="picker" v-model="eventForm.eventEndDate" 
+      :min="eventForm.eventStartDate"  @change="save"></v-date-picker>
+    </v-menu>
+<!-- Event End Date -->
+
+       
       
       <!-- Event End time -->
        <v-dialog
         ref="dialogEventEndTime"
         v-model="modalForEndTime"
-        :return-value.sync="eventForm.eventEndTime"
         persistent
         lazy
         full-width
@@ -374,6 +383,7 @@ export default {
   name: "createEventForm",
   data() {
     return {
+      nowDate: new Date().toISOString().slice(0,10),
       srcs: [
         "https://vignette.wikia.nocookie.net/badges/images/7/70/Collaborator-icon.png/revision/latest?cb=20131203084742",
         "https://vignette.wikia.nocookie.net/badges/images/8/83/Lucky_Edit-icon.png/revision/latest?cb=20131203085335",
@@ -396,10 +406,10 @@ export default {
         location: "",
         eventEndDateAndTime: "",
         eventStartDateAndTime: "",
-        eventStartDate: "",
-        eventEndDate: "",
-        eventStartTime:"",
-        eventEndTime:"",
+        eventStartDate: new Date().toISOString().substr(0, 10),
+        eventEndDate: new Date().toISOString().substr(0, 10),
+        eventStartTime: null,
+        eventEndTime: null,
         selectedCategory: "",
         location: {
           detail: "",
@@ -483,7 +493,33 @@ export default {
       "getEventTemplate",
       "getCurrentLocation",
       "getUser"
-    ])
+    ]),
+    eventStartDateTime () {
+        const startDate = new Date(this.eventForm.eventStartDate)
+        if (typeof this.eventForm.eventStartTime === 'string') {
+          let hours = this.eventForm.eventStartTime.match(/^(\d+)/)[1]
+          const minutes = this.eventForm.eventStartTime.match(/:(\d+)/)[1]
+          startDate.setHours(hours)
+          startDate.setMinutes(minutes)
+        } else {
+          startDate.setHours(this.eventForm.eventStartTime.getHours())
+          startDate.setMinutes(this.eventForm.eventStartTime.getMinutes())
+        }
+        return startDate
+      },
+       eventEndDateTime () {
+        const endDate = new Date(this.eventForm.eventEndDate)
+        if (typeof this.eventForm.eventEndTime === 'string') {
+          let hours = this.eventForm.eventEndTime.match(/^(\d+)/)[1]
+          const minutes = this.eventForm.eventEndTime.match(/:(\d+)/)[1]
+          endDate.setHours(hours)
+          endDate.setMinutes(minutes)
+        } else {
+          endDate.setHours(this.eventForm.eventEndTime.getHours())
+          endDate.setMinutes(this.eventForm.eventEndTime.getMinutes())
+        }
+        return endDate
+      }
   },
   watch: {
     menu(val) {
@@ -494,6 +530,7 @@ export default {
         this.eventForm.eventTags.shift();
       }
     }
+    
   },
   mounted() {
     this.loadEventTemplate();
@@ -731,12 +768,15 @@ export default {
         }
       },
       test() {
-        let eventStratDateAndTime = this.eventForm.eventStartDate + "T" + this.eventForm.eventStartTime + "." +"+07:00"
-        let eventEndDateAndTime = this.eventForm.eventEndDate + "T" + this.eventForm.eventEndTime + "." + "+07:00"
-        this.eventForm.eventStratDateAndTime = eventStratDateAndTime
-        this.eventForm.eventEndDateAndTime = eventEndDateAndTime
-         console.log(this.eventForm.eventEndDateAndTime);
-         console.log(this.eventForm.eventStratDateAndTime);
+        let eventStartDateAndTime = this.eventStartDateTime;
+        console.log(eventStartDateAndTime)
+        console.log("---------------")
+        let eventEndDateAndTime= this.eventEndDateTime;
+        console.log(eventEndDateAndTime)
+
+      // let date = new Date(eventEndDateAndTime);
+      // eventEndDateAndTime = date.getDate()  + "-" + date.getMonth() + "-" + date.getFullYear() + "  Time  "+ date.getHours() + ":" + date.getMinutes();
+      // console.log(eventEndDateAndTime);
       
       }
   }
