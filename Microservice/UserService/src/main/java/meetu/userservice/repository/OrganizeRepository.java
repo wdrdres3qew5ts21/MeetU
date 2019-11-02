@@ -7,6 +7,8 @@ package meetu.userservice.repository;
 
 import java.util.List;
 import meetu.userservice.model.Organize;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
@@ -17,20 +19,15 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface OrganizeRepository extends MongoRepository<Organize, String> {
-
-    public List<Organize> findByOrganizeNameLike(String organizeName);
+    
 
     public Organize findByOrganizeName(String organizeName);
 
     public List<Organize> findByOrganizeOwnerUid(String uid);
-    
-     public List<Organize> findByOrganizeOwnerUidOrAdminListUidIsIn(String uidOwner, String uidAdmin);
-     
-     public void deleteByOrganizeIdAndAdminListUid(String uidAdmin);
 
-//    public List<User> findByFirstName(String firstName);
-//    
-//    public List<User> findByEmailLike(String emailKeyWord);
-//  
-//    public User findByUsername(String username);
+    public List<Organize> findByOrganizeOwnerUidOrAdminListUidIsIn(String uidOwner, String uidAdmin, Pageable pageable);
+
+    public void deleteByOrganizeIdAndAdminListUid(String uidAdmin);
+
+    public List<Organize> findByOrganizeNameLike(String organizeName, Pageable pageable);
 }
