@@ -338,7 +338,6 @@ public class UserService {
     public ResponseEntity updateUserOrganizeRoleClaim(String uid) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("isOrganize", true);
-        claims.put("naruam", true);
 //        List<UserOrganizeRole> userOrganizeRole = userOrganizeRoleRepository.findAllByUid(uid);
 //        System.out.println(userOrganizeRole);
 //        User userFromDatabase = userRepository.findByUid(uid);

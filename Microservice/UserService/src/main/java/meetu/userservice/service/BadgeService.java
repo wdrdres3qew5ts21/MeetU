@@ -98,16 +98,16 @@ public class BadgeService {
                 .foreignField("uid")
                 .as("userDetail");
         AggregationOperation match = Aggregation.match(Criteria.where("badgeId").is(badgeId));
-        SortOperation sortLevelAndExp = sort(new Sort(Sort.Direction.DESC, "level","exp"));
+        SortOperation sortLevelAndExp = sort(new Sort(Sort.Direction.DESC, "level", "exp"));
         SkipOperation skip = skip(page);
         LimitOperation limitOperation = limit(contentPerPage);
-        Aggregation aggregation = Aggregation.newAggregation(match, lookupOperation, sortLevelAndExp, skip,limitOperation);
+        Aggregation aggregation = Aggregation.newAggregation(match, lookupOperation, sortLevelAndExp, skip, limitOperation);
         List<BasicDBObject> results = mongoTemplate.aggregate(aggregation, "userBadge", BasicDBObject.class).getMappedResults();
         return ResponseEntity.status(HttpStatus.OK).body(results);
     }
 
-    public ResponseEntity findBadgeThatUserOwn(String badgeId, int page, int contentPerPage) {
-        return null;
+    public ResponseEntity findBadgeThatUserOwn(String uid, int page, int contentPerPage) {
+        return ResponseEntity.status(HttpStatus.OK).body(userBadgeRepository.findByUid(uid, PageRequest.of(page, contentPerPage, Sort.Direction.DESC, "level", "exp")));
     }
 
 }

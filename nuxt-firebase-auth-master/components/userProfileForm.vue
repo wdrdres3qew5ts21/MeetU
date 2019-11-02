@@ -2,14 +2,59 @@
   <div>
     <v-layout>
       <h2 style="color:#341646">My Profile</h2>
-      <span></span>
+
       <v-flex class="text-xs-right">
+        <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
+          <template v-slot:activator="{ on }">
+            <v-btn v-on="on" @click="isCameraOpen = !isCameraOpen" fab dark small color="primary">
+              <v-icon medium>mdi-qrcode-scan</v-icon>
+            </v-btn>
+          </template>
+          <v-card>
+            <v-toolbar dark color="primary">
+              <v-btn icon dark  
+              @click.native="isCameraOpen=false"
+              @click="dialog = false" 
+             >
+                <v-icon>mdi-arrow-left</v-icon>
+              </v-btn>
+            </v-toolbar>
+            <br />
+            <br />
+
+
+
+            <center>
+
+              <br />
+        <h3>You are {{userForm.firstName}} : {{organizeForm.organizeName}} Organize
+        </h3>
+        <br />
+
+
+              <div v-if="isCameraOpen">
+                <client-only placeholder="loading...">
+                  <qrcode-stream @decode="onDecode"></qrcode-stream>
+                </client-only>
+              </div>
+
+              <br />
+
+              <h3>Just scan a QR code for join an event!</h3>
+            </center>
+          </v-card>
+        </v-dialog>
+
         <v-btn fab dark small color="#341646" @click=" isEditing= !isEditing">
           <v-icon color="#fff" medium>edit</v-icon>
         </v-btn>
+
+      
       </v-flex>
     </v-layout>
+
     <br />
+
     <v-layout justify-center row wrap>
       <v-flex xs12>
         <v-card class="elevation-0 mx-auto" color="white" max-width="150" style="border-radius:50%">
@@ -18,6 +63,21 @@
       </v-flex>
     </v-layout>
     <br />
+
+    
+              <!-- โค้ดปุ่มยาวๆเหมือนตอนแรกที่ทำไว้  ฝนปรับดีไซน์จากปุ่มเดิมของซันแล้ว
+              
+              <v-btn @click="isCameraOpen" large color="primary">
+                  <v-icon class="spacing-playground py-0 px-2" large>mdi-qrcode-scan</v-icon>QR Code
+              </v-btn>-->
+              <!-- <div v-if="isCameraOpen">
+                <client-only placeholder="loading...">
+                  <qrcode-stream @decode="onDecode"></qrcode-stream>
+                </client-only>
+              </div> 
+              
+              -->
+
     <v-btn class="logoutButton" outline color="red" depressed large block @click="logout()">LOG OUT</v-btn>
     <br />
     <h2>Badges :</h2>
@@ -29,7 +89,7 @@
         </v-avatar>
       </v-flex>
     </v-layout>
-    <br />
+
     <v-layout column>
       <v-form ref="form" v-model="valid">
         <h2>Information</h2>
@@ -40,7 +100,7 @@
             <h3>
               {{userForm.interest}}
               <!-- : {{userForm.interest.length}}/{{limitedSelectNumber}} -->
-              
+
               <nuxt-link to="/selectGenres" style="color:red">
                 <v-btn fab dark small color="#341646">
                   <v-icon color="#fff" medium>edit</v-icon>
@@ -50,12 +110,17 @@
           </center>
         </v-flex>
 
-        <v-btn @click="isCameraOpen = !isCameraOpen" block primary>Open camera</v-btn>
+        <!--  โค้ดซันแบบดั้งเดิม
+          
+          
+           <v-btn @click="isCameraOpen = !isCameraOpen" block primary>Open camera</v-btn>
         <div v-if="isCameraOpen">
           <client-only placeholder="loading...">
             <qrcode-stream @decode="onDecode"></qrcode-stream>
           </client-only>
         </div>
+        
+        -->
 
         <br />
         <v-text-field
@@ -229,11 +294,12 @@
     <br />
   </div>
 </template> 
- 
+
  
 <script>
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
+import "@mdi/font/css/materialdesignicons.css";
 
 export default {
   name: "userProfileForm",
@@ -241,6 +307,7 @@ export default {
   data() {
     return {
       isCameraOpen: false,
+      // isCameraClose: true,
       limitedSelectNumber: 3,
       badges: [
         {
@@ -311,6 +378,10 @@ export default {
         facebook: "",
         twitter: "",
         instagram: ""
+      },
+      dialog: false,
+      organizeForm:{
+        organizeName:""
       }
     };
   },

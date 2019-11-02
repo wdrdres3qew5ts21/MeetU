@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@chenfengyuan/vue-qrcode": "^1.0.1",
+    "@mdi/font": "^4.5.95",
     "@nuxtjs/axios": "^5.6.0",
     "@nuxtjs/onesignal": "^3.0.0-beta.16",
     "@nuxtjs/pwa": "^3.0.0-0",

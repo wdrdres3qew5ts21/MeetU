@@ -20,6 +20,7 @@ import meetu.userservice.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.query.TextCriteria;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -90,12 +91,12 @@ public class OrganizeService {
         }
     }
 
-    public List<Organize> findAllOrganizes() {
-        return organizeRepository.findAll();
+    public List<Organize> findAllOrganizes(int page, int contentPerPage) {
+        return organizeRepository.findAll(PageRequest.of(page, contentPerPage)).getContent();
     }
 
-    public List<Organize> findByOrganizeName(String organizeName) {
-        return organizeRepository.findByOrganizeNameLike(organizeName);
+    public List<Organize> findByOrganizeName(String organizeName, int page, int contentPerPage) {
+                return organizeRepository.findByOrganizeNameLike(organizeName, PageRequest.of(page, contentPerPage));
     }
 
     public ResponseEntity findOrganizeById(String organizeId) {
@@ -114,8 +115,8 @@ public class OrganizeService {
         return new ResponseEntity(organizeRepository.findByOrganizeOwnerUid(uid), HttpStatus.OK);
     }
 
-    public ResponseEntity findAllOrganizeOfUserIsIn(String uid) {
-        return new ResponseEntity(organizeRepository.findByOrganizeOwnerUidOrAdminListUidIsIn(uid, uid), HttpStatus.OK);
+    public ResponseEntity findAllOrganizeOfUserIsIn(String uid, int page, int contentPerPage) {
+        return new ResponseEntity(organizeRepository.findByOrganizeOwnerUidOrAdminListUidIsIn(uid, uid,  PageRequest.of(page, contentPerPage)), HttpStatus.OK);
     }
 
     public ResponseEntity testFindAdminEmail(String uid, Organize organize) {

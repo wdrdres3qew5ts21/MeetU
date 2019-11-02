@@ -1,13 +1,13 @@
 <template>
   <div>
     <v-card class="mx-auto" max-width="400">
-      <v-img class="#341646--text" height="200px" :src="defaultImage">
+      <v-img class="#341646--text" height="200px" :src=" organize.organizeImageCover || defaultImage">
         <!-- <v-card-title class="align-end fill-height">Top 10 Australian beaches</v-card-title> -->
       </v-img>
 
       <v-card-text>
         <span class="text--primary">
-          <h3>{{organizeName}}</h3>
+          <h3>{{organize.organizeName}}</h3>
           <!-- <br />
           <span>Members :</span>-->
         </span>
@@ -19,6 +19,7 @@
 <script>
 export default {
   props: {
+    organize: Object,
     organizePictureCover: String,
     organizeName: String,
     memberLists: Array

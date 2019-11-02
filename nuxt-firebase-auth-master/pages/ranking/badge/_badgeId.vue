@@ -68,8 +68,8 @@ import axios from "axios"
 export default {
   data: () => ({
     pagination: {
-      sortBy: "level",
-      descending: true
+      // sortBy: "level",
+      // descending: true
     },
     rankingList: [
       {

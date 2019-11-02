@@ -41,7 +41,7 @@ export default {
       console.log("QR Code is Decoding...");
     },
     async qrCodeGenerate() {
-      let qrCode = await axios.get("http://localhost:3002/events/qrcode");
+      let qrCode = await axios.get(`${process.env.EVENT_SERVICE}/events/qrcode`);
        console.log(qrCode);
       this.qrCode = qrCode.data;
     },

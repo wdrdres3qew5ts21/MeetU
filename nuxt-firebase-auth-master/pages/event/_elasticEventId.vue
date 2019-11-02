@@ -205,8 +205,15 @@ export default {
         console.log("------------ Async Data  -----------");
         let data = response.data;
         console.log(data);
+        axios.get(`${process.env.USER_SERVICE}/organize/${data.organize.organizeId}`)
+        .then(organizeResponse=>{
+          return {
+            organizeId: data.organizeId,
+            organizeName: data.organizeName
+          }
+        })
+
         return {
-          
           elasticEventId: data.elasticEventId,
           numberOfTicket: data.numberOfTicket,
           eventName: data.eventName,

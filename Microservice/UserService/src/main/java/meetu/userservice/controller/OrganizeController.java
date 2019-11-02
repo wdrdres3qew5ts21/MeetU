@@ -39,34 +39,39 @@ public class OrganizeController {
     public ResponseEntity createOrganize(@PathVariable String uid, @RequestBody Organize organize) {
         return organizeService.createOrganize(uid, organize);
     }
-    
-     @PostMapping("/test/organize/{uid}")
+
+    @PostMapping("/test/organize/{uid}")
     public ResponseEntity testFindAdminEmail(@PathVariable String uid, @RequestBody Organize organize) {
         return organizeService.testFindAdminEmail(uid, organize);
     }
-    
+
     @DeleteMapping("/organize/{organizeId}/{uid}")
     public ResponseEntity deleteAdminByUid(@PathVariable String organizeId, @PathVariable String uid) {
         return organizeService.deleteAdminByUid(organizeId, uid);
     }
-    
+
     @GetMapping("/organize/user/{uid}")
-    public ResponseEntity findAllOrganizeOfUser(@PathVariable String uid) {
-       // return organizeService.findAllOrganizeOfUser(uid);
-       return organizeService.findAllOrganizeOfUserIsIn(uid);
+    public ResponseEntity findAllOrganizeOfUser(
+            @PathVariable String uid,
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "20") int contentPerPage) {
+        return organizeService.findAllOrganizeOfUserIsIn(uid, page, contentPerPage);
     }
-    
+
     @PostMapping("/organize/{organizeId}/admin/{email}")
     public ResponseEntity addAdminOrganize(@PathVariable String organizeId, @PathVariable String email) {
         return organizeService.addAdminOrganize(organizeId, email);
     }
 
     @GetMapping("/organizes")
-    public ResponseEntity findAllOrganizes(@RequestParam(required = false) String organizeName) {
+    public ResponseEntity findAllOrganizes(
+            @RequestParam(required = false) String organizeName, 
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "20") int contentPerPage) {
         if (organizeName == null) {
-            return new ResponseEntity<List<Organize>>(organizeService.findAllOrganizes(), HttpStatus.OK);
+            return new ResponseEntity<List<Organize>>(organizeService.findAllOrganizes(page, contentPerPage), HttpStatus.OK);
         }
-        return new ResponseEntity<List<Organize>>(organizeService.findByOrganizeName(organizeName), HttpStatus.OK);
+        return new ResponseEntity<List<Organize>>(organizeService.findByOrganizeName(organizeName, page, contentPerPage), HttpStatus.OK);
     }
 
     @GetMapping("/organize/{organizeId}")
