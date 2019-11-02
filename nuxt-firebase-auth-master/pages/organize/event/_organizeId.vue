@@ -43,7 +43,7 @@
         <v-tab ripple>Events</v-tab>
         <v-tab-item>
           <v-card flat>
-            <v-card-text>Organize Description ........</v-card-text>
+            <v-card-text>{{  organize.organizeDetail ||'Organize Description ...'}}</v-card-text>
           </v-card>
         </v-tab-item>
         <v-tab-item>
