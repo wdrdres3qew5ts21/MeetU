@@ -96,7 +96,7 @@ public class OrganizeService {
     }
 
     public List<Organize> findByOrganizeName(String organizeName, int page, int contentPerPage) {
-                return organizeRepository.findByOrganizeNameLike(organizeName, PageRequest.of(page, contentPerPage));
+        return organizeRepository.findByOrganizeNameLike(organizeName, PageRequest.of(page, contentPerPage));
     }
 
     public ResponseEntity findOrganizeById(String organizeId) {
@@ -116,7 +116,7 @@ public class OrganizeService {
     }
 
     public ResponseEntity findAllOrganizeOfUserIsIn(String uid, int page, int contentPerPage) {
-        return new ResponseEntity(organizeRepository.findByOrganizeOwnerUidOrAdminListUidIsIn(uid, uid,  PageRequest.of(page, contentPerPage)), HttpStatus.OK);
+        return new ResponseEntity(organizeRepository.findByOrganizeOwnerUidOrAdminListUidIsIn(uid, uid, PageRequest.of(page, contentPerPage)), HttpStatus.OK);
     }
 
     public ResponseEntity testFindAdminEmail(String uid, Organize organize) {
@@ -165,6 +165,31 @@ public class OrganizeService {
         }
         response.put("response", "Not found this Organize");
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    public ResponseEntity updateOrganizeDetail(String organizeId, Organize organize) {
+        String ownerUid = organize.getOrganizeOwner().getUid();
+        Organize organizeOwnedByUser = organizeRepository.findByOrganizeOwnerUidAndOrganizeId(ownerUid, organizeId);
+        if (organizeOwnedByUser != null) {
+            organizeOwnedByUser.setEmail(organize.getEmail());
+            organizeOwnedByUser.setInstragram(organize.getInstragram());
+            organizeOwnedByUser.setLine(organize.getLine());
+            organizeOwnedByUser.setOrganizeDetail(organize.getOrganizeDetail());
+            if (organize.getOrganizeImageCover() != null | !organize.getOrganizeImageCover().isEmpty()) {
+                organizeOwnedByUser.setOrganizeImageCover(organize.getOrganizeImageCover());
+            }
+//            if (organize.getOrganizeImageProfile() != null | !organize.getOrganizeImageProfile().isEmpty()) {
+//                organizeOwnedByUser.setOrganizeImageProfile(organize.getOrganizeImageProfile());
+//            }
+            organizeOwnedByUser.setPhone(organize.getPhone());
+            organizeOwnedByUser.setTwitter(organize.getTwitter());
+            organizeOwnedByUser.setWebsite(organize.getWebsite());
+            Organize updatedOrganize = organizeRepository.save(organizeOwnedByUser);
+            return ResponseEntity.status(HttpStatus.CREATED).body(updatedOrganize);
+        }
+        HashMap<String, String> response = new HashMap<>();
+        response.put("response", "You don't have permission to up date this organize");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
 }

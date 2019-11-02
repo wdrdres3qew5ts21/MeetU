@@ -11,7 +11,12 @@
     <v-layout row wrap justify-start>
       <v-flex xs3>
         <v-avatar size="80">
-          <v-img :src="organize.organizeImageCover || defaultImage" aspect-ratio="1" max-width="60" max-height="60"></v-img>
+          <v-img
+            :src="organize.organizeImageCover || defaultImage"
+            aspect-ratio="1"
+            max-width="60"
+            max-height="60"
+          ></v-img>
         </v-avatar>
       </v-flex>
 
@@ -21,7 +26,7 @@
       </v-flex>
 
       <v-flex class="text-xs-right">
-        <nuxt-link to="/organize/editOrganizeSetting">
+        <nuxt-link :to="`/organize/editOrganizeSetting/${$route.params.organizeId}`">
           <v-btn fab dark small color="#341646" @click=" isEditing= !isEditing">
             <v-icon color="#fff" medium>edit</v-icon>
           </v-btn>
@@ -31,19 +36,16 @@
           <v-icon color="#fff" medium>delete</v-icon>
         </v-btn>
       </v-flex>
+    </v-layout>
 
-    
-</v-layout>
-
-    
-      <br>
+    <br />
     <div>
       <v-tabs color="#341646" dark slider-color="yellow" centered>
         <v-tab ripple>Organize Detail</v-tab>
         <v-tab ripple>Events</v-tab>
         <v-tab-item>
           <v-card flat>
-            <v-card-text>Organize Description ........</v-card-text>
+            <v-card-text>{{ organize.organizeDetail ||'Organize Description ...'}}</v-card-text>
           </v-card>
         </v-tab-item>
         <v-tab-item>
@@ -158,7 +160,7 @@ export default {
           console.log(error);
         });
     },
-        confirmPopup: function(e) {
+    confirmPopup: function(e) {
       Swal.fire({
         title: "Do you want to delete this organize?",
         inputPlaceholder: "Enter organize name for confirmation",
@@ -195,8 +197,7 @@ export default {
             confirmButtonColor: "#FD6363",
             cancelButtonColor: "#4CAF50",
             confirmButtonText: "Yes, delete it!",
-            cancelButtonText: "No, keep it!",
-
+            cancelButtonText: "No, keep it!"
           }).then(result => {
             if (result.value) {
               Swal.fire("Deleted!", "Your event has been deleted.", "success");
