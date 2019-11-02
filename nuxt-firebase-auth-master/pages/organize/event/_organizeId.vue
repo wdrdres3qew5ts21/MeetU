@@ -9,7 +9,7 @@
     ></v-img>
     <br />
     <v-layout row wrap justify-start>
-      <v-flex xs3>
+      <!-- <v-flex xs3>
         <v-avatar size="80">
           <v-img
             :src="organize.organizeImageCover || defaultImage"
@@ -18,9 +18,9 @@
             max-height="60"
           ></v-img>
         </v-avatar>
-      </v-flex>
+      </v-flex> -->
 
-      <v-flex xs3>
+      <v-flex xs9>
         <br />
         <h2>{{organize.organizeName}}</h2>
       </v-flex>
@@ -31,7 +31,6 @@
             <v-icon color="#fff" medium>edit</v-icon>
           </v-btn>
         </nuxt-link>
-
         <!-- <v-btn fab dark small color="red" @click="confirmPopup">
           <v-icon color="#fff" medium>delete</v-icon>
         </v-btn>-->

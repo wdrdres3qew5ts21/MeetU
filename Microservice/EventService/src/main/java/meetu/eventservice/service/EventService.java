@@ -452,9 +452,9 @@ public class EventService {
 
     public QueryStringQueryBuilder filterByEventDetail(String eventDetail) {
         QueryStringQueryBuilder alreadyFilterByEventDetail = QueryBuilders.queryStringQuery(eventDetail + "~")
-                .field("eventName").boost(2.0f)
-                .field("eventDetail").boost(2.0f)
-                .field("location.*").boost(5.0f)
+                .field("eventName").boost(3.0f)
+                .field("eventDetail").boost(4.0f)
+                .field("location.*").boost(2.0f)
                 .fuzzyTranspositions(true);
         return alreadyFilterByEventDetail;
     }
