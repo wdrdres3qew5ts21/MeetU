@@ -147,10 +147,10 @@ export default {
   props: {},
   data() {
     return {
+      isOrganizeMember: false,
       isCameraOpen: false,
       currentItem: "tab-Web",
       items: ["Organize Detail", "View Event"],
-
       text:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
       organizeId: "",
@@ -191,6 +191,7 @@ export default {
     console.log(this.$route.params.organizeId);
     this.loadAllEventOfOrganize();
     this.loadOrganizeDetail();
+    this.verifyIfUserIsOrganizeMember()
   },
   methods: {
     ...mapActions(["testContext"]),
@@ -224,6 +225,21 @@ export default {
           });
         });
     },
+    verifyIfUserIsOrganizeMember(){
+      console.log("------ verify status ------")
+      axios.get(`${process.env.USER_SERVICE}/organize/${this.$route.params.organizeId}/admin/status`,
+      {
+        headers: {
+          'Authorization': localStorage.getItem('jwtToken')
+        }
+      })
+      .then(verifyResponse=>{
+        console.log(verifyResponse.data)
+      })
+      .catch(err=>{
+        console.log(err.response)
+      })
+    },
     initUserProfile: function() {
       let loader = this.$loading.show();
       axios
@@ -233,7 +249,7 @@ export default {
           }
         })
         .then(userProfileForm => {
-          console.log("haate my self");
+          console.log("organize detail");
           userProfileForm = userProfileForm.data;
           console.log(userProfileForm);
           this.userForm.interest = userProfileForm.interest;

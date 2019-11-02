@@ -5,6 +5,9 @@
  */
 package meetu.userservice.service;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseToken;
 import meetu.userservice.repository.OrganizeRepository;
 import meetu.userservice.repository.UserCommunityRoleRepository;
 import meetu.userservice.repository.UserOrganizeRoleRepository;
@@ -12,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
 import meetu.userservice.model.Admin;
 import meetu.userservice.model.Organize;
 import meetu.userservice.model.User;
@@ -190,6 +194,29 @@ public class OrganizeService {
         HashMap<String, String> response = new HashMap<>();
         response.put("response", "You don't have permission to up date this organize");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    public ResponseEntity verifyIfUserIsOrganizeMember(String token, String organizeId) {
+        System.out.println("--------- verify header ------------");
+        System.out.println(token);
+        System.out.println(organizeId);
+        HashMap<String, Object> response = new HashMap<>();
+        try {
+            FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
+            String uid = decodedToken.getUid();
+            Organize adminOrganize = organizeRepository.findByAdminListUidIsInAndOrganizeId(uid, organizeId);
+            Organize ownerOrganize = organizeRepository.findByOrganizeOwnerUidAndOrganizeId(uid, organizeId);
+            if (ownerOrganize != null) {
+                response.put("isOwner", true);
+                return ResponseEntity.status(HttpStatus.OK).body(response);
+            } else if (adminOrganize != null) {
+                response.put("isAdmin", true);
+                return ResponseEntity.status(HttpStatus.OK).body(response);
+            }
+        } catch (FirebaseAuthException ex) {
+            java.util.logging.Logger.getLogger(OrganizeService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 }

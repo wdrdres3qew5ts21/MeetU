@@ -40,8 +40,8 @@ public class CommunityController {
     }
 
     @PostMapping("/community")
-    public ResponseEntity<Community> createCommunity(@RequestBody Community community) {
-        return new ResponseEntity<Community>(communityService.createCommunity(community), HttpStatus.CREATED);
+    public ResponseEntity createCommunity(@RequestBody Community community) {
+        return communityService.createCommunity(community);
     }
 
     @GetMapping("/community/{communityId}/post/{postId}")

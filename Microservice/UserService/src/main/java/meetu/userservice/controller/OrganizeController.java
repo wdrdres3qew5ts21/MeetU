@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -54,6 +55,13 @@ public class OrganizeController {
     @DeleteMapping("/organize/{organizeId}/{uid}")
     public ResponseEntity deleteAdminByUid(@PathVariable String organizeId, @PathVariable String uid) {
         return organizeService.deleteAdminByUid(organizeId, uid);
+    }
+    
+    @GetMapping("/organize/{organizeId}/admin/status")
+    public ResponseEntity verifyIfUserIsOrganizeMember(
+            @RequestHeader(required = true, name = "Authorization")String token ,
+            @PathVariable String organizeId) {
+        return organizeService.verifyIfUserIsOrganizeMember(token,organizeId);
     }
 
     @GetMapping("/organize/user/{uid}")
