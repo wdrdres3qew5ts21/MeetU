@@ -6,7 +6,7 @@
       <v-flex class="text-xs-right">
 
         <!-- ปุ่มสแกน qr code -->
-        
+
         <!-- <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
           <template v-slot:activator="{ on }">
             <v-btn v-on="on" @click="isCameraOpen = !isCameraOpen" fab dark small color="primary">
@@ -30,7 +30,7 @@
             <center>
 
               <br />
-        <h3>You are {{userForm.firstName}} : {{organizeForm.organizeName}} Organize
+        <h3>You are {{userForm.firstName}} : {{organize.organizeName}} Organize
         </h3>
         <br />
 
@@ -83,25 +83,38 @@
 
     <v-btn class="logoutButton" outline color="red" depressed large block @click="logout()">LOG OUT</v-btn>
     <br />
-    <h2>Badges :</h2>
-    <br />
-    <v-layout>
-      <v-flex v-for="(item,index) in badges" :key="index" xs2>
-        <v-avatar size="50">
-          <v-img :src="item.avatar"></v-img>
+     
+ 
+
+
+     <h2>Information</h2>
+<br>
+    <v-layout column>
+      <v-form ref="form" v-model="valid">
+        <v-layout row wrap>
+        <v-flex xs4>
+    <h3>Badges :</h3>
+        </v-flex>
+      <v-flex xs8 v-for="(item,index) in badges" :key="index" xs2>
+        <v-avatar size="40">
+          <v-img :src="item.badgePicture"></v-img>
         </v-avatar>
       </v-flex>
     </v-layout>
 
-    <v-layout column>
-      <v-form ref="form" v-model="valid">
-        <h2>Information</h2>
         <br />
         <h3>Your interest :</h3>
+
+        <v-chip v-for="(userInterest,index) in userForm.interest" :key="index" text-color="#341646" class="textSize" >
+        <v-avatar>
+          <v-icon color="primary" size="21">favorite</v-icon>
+        </v-avatar>
+        {{userInterest}}
+      </v-chip>
         <v-flex xs12>
           <center>
             <h3>
-              {{userForm.interest}}
+            
               <!-- : {{userForm.interest.length}}/{{limitedSelectNumber}} -->
 
               <nuxt-link to="/selectGenres" style="color:red">
@@ -393,6 +406,7 @@ export default {
   },
   mounted() {
     this.initUserProfile();
+    this.loadMyBadge()
   },
   methods: {
     ...mapActions(["testContext"]),
@@ -451,6 +465,19 @@ export default {
         })
         .catch(err => {});
     },
+    loadMyBadge(){
+    let loader = this.$loading.show()
+      axios.get(`${process.env.USER_SERVICE}/badges/user/${this.getUser.uid}`).then(badgeListResponse =>{
+        this.badges = badgeListResponse.data
+        console.log(this.badges)
+        loader.hide()
+      })
+      .catch(err=>{
+        loader.hide()
+      })
+    },
+
+
     loadUserBadge: function() {},
     onFileChanged(event) {
       this.selectedFile = event.target.files[0];
@@ -563,5 +590,8 @@ export default {
 
 .logoutButton {
   font-weight: bold;
+}
+.textSize{
+    font-size: 15px;
 }
 </style> 
