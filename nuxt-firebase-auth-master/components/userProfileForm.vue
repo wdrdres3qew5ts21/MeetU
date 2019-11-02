@@ -12,13 +12,24 @@
           </template>
           <v-card>
             <v-toolbar dark color="primary">
-              <v-btn icon dark @click="dialog = false">
+              <v-btn icon dark  
+              @click.native="isCameraOpen=false"
+              @click="dialog = false" 
+             >
                 <v-icon>mdi-arrow-left</v-icon>
               </v-btn>
             </v-toolbar>
             <br />
             <br />
+
+
+
             <center>
+
+              <br />
+        <h3>You are {{userForm.firstName}} : {{organizeForm.organizeName}} Organize
+        </h3>
+        <br />
 
 
               <div v-if="isCameraOpen">
@@ -296,7 +307,7 @@ export default {
   data() {
     return {
       isCameraOpen: false,
-      isCameraClose: true,
+      // isCameraClose: true,
       limitedSelectNumber: 3,
       badges: [
         {
@@ -368,7 +379,10 @@ export default {
         twitter: "",
         instagram: ""
       },
-      dialog: false
+      dialog: false,
+      organizeForm:{
+        organizeName:""
+      }
     };
   },
   computed: {
