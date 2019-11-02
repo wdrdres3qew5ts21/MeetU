@@ -499,6 +499,9 @@ export default {
     this.loadEventTemplate();
     this.loadOrganizeFromUser();
     this.findMatchingBadge();
+    let presetOrganizeId = this.$route.query.organizeId
+    this.eventForm.organize.organizeId = presetOrganizeId
+    console.log(presetOrganizeId)
   },
   methods: {
     ...mapActions([

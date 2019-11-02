@@ -51,7 +51,7 @@
             <v-card-text>
               <center>
                 <nuxt-link
-                  :to="`/organize/event/createEventForm`"
+                  :to="`/organize/event/createEventForm?organizeId=${$route.params.organizeId}`"
                   style="text-decoration-line:none;"
                 >
                   <v-btn
@@ -78,7 +78,7 @@
               <br />
               <center v-if="eventList == null">
                 <nuxt-link
-                  :to="`/organize/event/createEventForm`"
+                  :to="`/organize/event/createEventForm?organizeId=${$route.params.organizeId}`"
                   style="text-decoration-line:none;"
                 >
                   <v-btn
@@ -87,7 +87,7 @@
                     depressed
                     large
                     height="50"
-                  >Create an Event</v-btn>
+                  >Create an Event!</v-btn>
                 </nuxt-link>
               </center>
             </v-card-text>
