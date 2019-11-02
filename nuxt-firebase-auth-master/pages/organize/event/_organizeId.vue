@@ -18,7 +18,7 @@
             max-height="60"
           ></v-img>
         </v-avatar>
-      </v-flex> -->
+      </v-flex>-->
 
       <v-flex xs9>
         <br />
@@ -26,11 +26,14 @@
       </v-flex>
 
       <v-flex class="text-xs-right">
-        <nuxt-link :to="`/organize/editOrganizeSetting/${$route.params.organizeId}`">
-          <v-btn fab dark small color="#341646" @click=" isEditing= !isEditing">
-            <v-icon color="#fff" medium>edit</v-icon>
-          </v-btn>
-        </nuxt-link>
+        <div v-if="isOwner">
+          <nuxt-link :to="`/organize/editOrganizeSetting/${$route.params.organizeId}`">
+            <v-btn fab dark small color="#341646" @click=" isEditing= !isEditing">
+              <v-icon color="#fff" medium>edit</v-icon>
+            </v-btn>
+          </nuxt-link>
+        </div>
+
         <!-- <v-btn fab dark small color="red" @click="confirmPopup">
           <v-icon color="#fff" medium>delete</v-icon>
         </v-btn>-->
@@ -42,7 +45,7 @@
       <v-tabs color="#341646" dark slider-color="white" centered>
         <v-tab ripple>Organize Detail</v-tab>
         <v-tab ripple>Events</v-tab>
-        <v-tab ripple>QR code</v-tab>
+        <v-tab v-if="isAdmin==true" ripple>QR code</v-tab>
 
         <v-tab-item>
           <v-card flat>
@@ -85,10 +88,9 @@
                 <v-btn fab dark small color="red" @click="confirmPopup">
                   <v-icon color="#fff" medium>delete</v-icon>
                 </v-btn>
-              </v-flex> -->
+              </v-flex>-->
 
               <event-card v-for="(event, index) in eventList" :key="index" :event="event" />
-
 
               <br />
 
@@ -110,7 +112,7 @@
           </v-card>
         </v-tab-item>
 
-        <v-tab-item>
+        <v-tab-item v-if="isAdmin==true">
           <v-card flat>
             <center>
               <br />
@@ -160,7 +162,8 @@ export default {
   props: {},
   data() {
     return {
-      isOrganizeMember: false,
+      isAdmin: false,
+      isOwner: false,
       isCameraOpen: false,
       currentItem: "tab-Web",
       items: ["Organize Detail", "View Event"],
@@ -204,7 +207,7 @@ export default {
     console.log(this.$route.params.organizeId);
     this.loadAllEventOfOrganize();
     this.loadOrganizeDetail();
-    this.verifyIfUserIsOrganizeMember()
+    this.verifyIfUserIsOrganizeMember();
   },
   methods: {
     ...mapActions(["testContext"]),
@@ -238,20 +241,30 @@ export default {
           });
         });
     },
-    verifyIfUserIsOrganizeMember(){
-      console.log("------ verify status ------")
-      axios.get(`${process.env.USER_SERVICE}/organize/${this.$route.params.organizeId}/admin/status`,
-      {
-        headers: {
-          'Authorization': localStorage.getItem('jwtToken')
-        }
-      })
-      .then(verifyResponse=>{
-        console.log(verifyResponse.data)
-      })
-      .catch(err=>{
-        console.log(err.response)
-      })
+    verifyIfUserIsOrganizeMember() {
+      console.log("------ verify status ------");
+      axios
+        .get(
+          `${process.env.USER_SERVICE}/organize/${this.$route.params.organizeId}/admin/status`,
+          {
+            headers: {
+              Authorization: localStorage.getItem("jwtToken")
+            }
+          }
+        )
+        .then(verifyResponse => {
+          console.log(verifyResponse.data);
+          let verifyStatus = verifyResponse.data;
+          if (verifyStatus.isOwner != null) {
+            this.isOwner = verifyStatus.isOwner;
+            this.isAdmin = verifyStatus.isAdmin;
+          } else if (verifyStatus.isAdmin != null) {
+            this.isAdmin = verifyStatus.isAdmin;
+          }
+        })
+        .catch(err => {
+          console.log(err.response);
+        });
     },
     initUserProfile: function() {
       let loader = this.$loading.show();
@@ -309,8 +322,7 @@ export default {
           console.log(error);
           loader.hide();
         });
-    },
-
+    }
   }
 };
 </script>

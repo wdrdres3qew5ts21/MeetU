@@ -208,6 +208,7 @@ public class OrganizeService {
             Organize ownerOrganize = organizeRepository.findByOrganizeOwnerUidAndOrganizeId(uid, organizeId);
             if (ownerOrganize != null) {
                 response.put("isOwner", true);
+                response.put("isAdmin", true);
                 return ResponseEntity.status(HttpStatus.OK).body(response);
             } else if (adminOrganize != null) {
                 response.put("isAdmin", true);
