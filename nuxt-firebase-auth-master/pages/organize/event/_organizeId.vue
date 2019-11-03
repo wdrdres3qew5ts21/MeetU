@@ -214,6 +214,8 @@ export default {
       let parsedTicket = "";
       try {
         parsedTicket = JSON.parse(decodedString);
+        parsedTicket.organizeId = this.$route.params.organizeId
+        console.log("---- parsed scaning ticket ----")
         console.log(parsedTicket);
       } catch (error) {
         console.log("fail to QR decode", parsedTicket);
@@ -221,7 +223,7 @@ export default {
       axios
         .post(`${process.env.EVENT_SERVICE}/event/join`, parsedTicket, {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("jwtToken") || ""}`
+            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
           }
         })
         .then(scanResponse => {
@@ -247,7 +249,7 @@ export default {
           `${process.env.USER_SERVICE}/organize/${this.$route.params.organizeId}/admin/status`,
           {
             headers: {
-              Authorization: localStorage.getItem("jwtToken")
+              Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
             }
           }
         )

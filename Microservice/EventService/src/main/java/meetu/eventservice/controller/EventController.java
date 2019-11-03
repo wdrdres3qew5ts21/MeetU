@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -77,9 +78,11 @@ public class EventController {
     }
 
     @PostMapping("/event/join")
-    public ResponseEntity userJoinEvent(@RequestBody UserEventTicket userJoinEvent) {
+    public ResponseEntity userJoinEvent(
+            @RequestHeader(name = "Authorization", required = true)String token,
+            @RequestBody UserEventTicket userJoinEvent) {
         System.out.println("WTF this helll !!!!!!!!!!!!");
-        return eventService.userJoinEvent(userJoinEvent);
+        return eventService.userJoinEvent(token,userJoinEvent);
     }
 
     @PostMapping("/event/reserve")

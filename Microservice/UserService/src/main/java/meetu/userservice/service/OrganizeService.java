@@ -202,6 +202,7 @@ public class OrganizeService {
         System.out.println(organizeId);
         HashMap<String, Object> response = new HashMap<>();
         try {
+            token = token.replace("Bearer ", "");
             FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
             String uid = decodedToken.getUid();
             Organize adminOrganize = organizeRepository.findByAdminListUidIsInAndOrganizeId(uid, organizeId);
@@ -217,7 +218,7 @@ public class OrganizeService {
         } catch (FirebaseAuthException ex) {
             java.util.logging.Logger.getLogger(OrganizeService.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 
 }

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -48,11 +49,22 @@ public class UserEventTicket {
     private Date eventEndDate;
 
     private Date eventStartDate;
+    
+    @Transient
+    private String organizeId;
 
     private Organize organize;
     
     private double exp;
 
+    public String getOrganizeId() {
+        return organizeId;
+    }
+
+    public void setOrganizeId(String organizeId) {
+        this.organizeId = organizeId;
+    }
+    
     public double getExp() {
         return exp;
     }
