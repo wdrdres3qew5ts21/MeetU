@@ -168,9 +168,9 @@
       </v-tabs>
     </div>
 
-    <v-flex></v-flex>
+    <!-- <v-flex></v-flex>
     <v-btn @click="loadAdminDetail()">test</v-btn>
-    <br />
+    <br /> -->
   </div>
 </template>
 
@@ -178,7 +178,7 @@
 <script>
 import editOrganizeSetting from "~/components/editOrganizeSetting"
 import Swal from "sweetalert2";
-import eventCard from "~/components/eventCard";
+import eventCardOrganize from "~/components/eventCardOrganize";
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
 import { error } from "util";
@@ -187,7 +187,7 @@ import { async } from "q";
 export default {
   name: "startedEvent",
   components: {
-    eventCard,
+    eventCardOrganize,
     editOrganizeSetting
   },
   props: {},

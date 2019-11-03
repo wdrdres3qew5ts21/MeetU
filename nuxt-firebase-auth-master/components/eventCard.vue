@@ -15,14 +15,14 @@
         <h3 class="#AEAEAE--text">{{event.eventName}}</h3>
       </v-card-actions>
       
-      <v-flex class="text-xs-right">
+      <!-- <v-flex class="text-xs-right">
          <v-btn fab dark small color="#341646" @click=" isEditing= !isEditing">
           <v-icon color="#fff" medium>edit</v-icon>
         </v-btn>
             <v-btn fab dark small color="red" @click="confirmPopup">
               <v-icon color="#fff" medium>delete</v-icon>
             </v-btn>
-          </v-flex>
+          </v-flex> -->
       
       <v-slide-y-transition>
         <v-card-text>
