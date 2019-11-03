@@ -176,6 +176,7 @@
 
 
 <script>
+import editOrganizeSetting from "~/components/editOrganizeSetting"
 import Swal from "sweetalert2";
 import eventCard from "~/components/eventCard";
 import axios from "axios";
@@ -186,7 +187,8 @@ import { async } from "q";
 export default {
   name: "startedEvent",
   components: {
-    eventCard
+    eventCard,
+    editOrganizeSetting
   },
   props: {},
   data() {
