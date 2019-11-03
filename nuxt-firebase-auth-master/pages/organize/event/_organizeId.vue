@@ -117,8 +117,8 @@
           <br />
           <h3>Admin Lists</h3>
           <v-card>
-            <v-list two-line subheader>
-              <v-list-tile v-for="(admin, index) in adminList" :key="index" avatar>
+            <v-list two-line subheader v-if="adminList.userDetail != undefined">
+              <v-list-tile  v-for="(admin, index) in adminList" :key="index" avatar>
                 <v-list-tile-avatar>
                   <img :src="admin.userDetail[0].photoURL" />
                 </v-list-tile-avatar>
@@ -400,21 +400,36 @@ export default {
           loader.hide();
         });
     },
-    removeItem(id) {
+    removeItem(uid) {
       this.$swal({
         type: "Comfirm Delete Admin",
-
         text: `Comfirm for delete Admin`,
         showCancelButton: true,
         cancelButtonColor: "#FD6363",
         confirmButtonColor: "#AEAEAE",
-
         cancleButtonText: "Cancel",
         confirmButtonText: "Delete"
       }).then(button => {
         console.log(button);
         if (button.dismiss != "cancel")
-          this.adminList = this.adminList.filter(admin => admin.userDetail[0].uid !== id);
+          this.adminList = this.adminList.filter(admin => admin.userDetail[0].uid !== uid);
+
+          axios.delete(`${process.env.USER_SERVICE}/organize/${this.organizeId}/${uid}`)
+          .then(deleteResponse =>{
+            this.$swal({
+              type: "success",
+              title: "Delete Admin success",
+              text: `Delete Admin success`
+            })
+          })
+          .catch(err =>{
+            this.$swal({
+              type: "error",
+              title: "Delete Admin error",
+              text: `Delete Admin success`
+            })
+          })
+
       });
     }
   }
