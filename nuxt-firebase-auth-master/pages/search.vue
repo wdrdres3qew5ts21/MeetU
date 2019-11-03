@@ -31,7 +31,7 @@
 
                     <v-container grid-list-md>
                       <v-layout wrap>
-                        <v-icon color="primary">description</v-icon>SearchDetail
+                        <v-icon color="primary">description</v-icon>Search by Detail
                         <v-flex xs12>
                           <v-text-field
                             class="questrial no-top-padding"
@@ -67,10 +67,11 @@
                           </v-select>
                         </v-flex>
 
-                        <v-flex xs12>
-                          <v-icon color="primary">insert_chart</v-icon>Sort by Popular
-                          <v-select :items="popular" v-model="filterForm.sortByPopular" attach></v-select>
-                        </v-flex>
+                      
+                          <v-flex xs12>
+                            <v-checkbox v-model="checkbox" label="Popular Event" ></v-checkbox>
+                          </v-flex>
+                         
 
                         <v-flex xs12>
                           <v-icon color="primary">today</v-icon>Sort by Date
@@ -87,7 +88,7 @@
                             ></v-text-field>
                           </v-flex>
                           <v-flex xs3>
-                            <v-select :items="unit" v-model="filterForm.unit" label="unit " attach></v-select>
+                            <v-select :items="unit" v-model="filterForm.unit" label="unit " ></v-select>
                           </v-flex>
                         </v-layout>
                       </v-layout>
@@ -195,6 +196,7 @@ export default {
   components: { EventList },
   data() {
     return {
+      checkbox: true,
       chips: [],
       dialog: false,
       notifications: false,
@@ -221,9 +223,9 @@ export default {
     };
   },
   watch: {
-    "filterForm.categorySelected"(categorySelected) {
+    "selectedCategoryList"(categorySelected) {
       if (categorySelected.length > 3) {
-        this.filterForm.categorySelected.shift();
+        this.selectedCategoryList.shift();
       }
     }
   },
