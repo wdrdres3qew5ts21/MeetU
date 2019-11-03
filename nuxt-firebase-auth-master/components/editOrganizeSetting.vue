@@ -125,6 +125,9 @@ import { mapGetters } from "vuex";
 import axios from "axios";
 export default {
   name: "editOrganizeSetting",
+  props: {
+    organizeId: String
+  },
   data() {
     return {
       organizerNameRules: [v => !!v || "Name is required"],
@@ -161,7 +164,7 @@ export default {
       let loader = this.$loading.show();
       axios
         .get(
-          `${process.env.USER_SERVICE}/organize/${this.$route.params.organizeId}`
+          `${process.env.USER_SERVICE}/organize/${this.organizeId}`
         )
         .then(organizeResponse => {
           this.organizeForm = organizeResponse.data;
@@ -191,7 +194,7 @@ export default {
             this.organizeForm.organizeImageCover = organizeImageCover;
             axios
               .patch(
-                `${process.env.USER_SERVICE}/organize/${this.$route.params.organizeId}`,
+                `${process.env.USER_SERVICE}/organize/${this.organizeId}`,
                 this.organizeForm
               )
               .then(organizeResponse => {

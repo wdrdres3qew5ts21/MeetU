@@ -114,7 +114,7 @@
         </v-tab-item>
         <!-- Management Organize -->
         <v-tab-item>
-          
+          <edit-organize-setting :organizeId="$route.params.organizeId" />
         </v-tab-item>
         <!-- QR Code Scanner-->
         <v-tab-item v-if="isAdmin==true">
@@ -153,6 +153,7 @@
 
 
 <script>
+import editOrganizeSetting from "~/components/editOrganizeSetting"
 import Swal from "sweetalert2";
 import eventCard from "~/components/eventCard";
 import axios from "axios";
@@ -162,7 +163,8 @@ import "@mdi/font/css/materialdesignicons.css";
 export default {
   name: "startedEvent",
   components: {
-    eventCard
+    eventCard,
+    editOrganizeSetting
   },
   props: {},
   data() {
