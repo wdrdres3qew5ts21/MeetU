@@ -111,6 +111,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.web.client.HttpStatusCodeException;
 
 /**
  *
@@ -506,32 +507,44 @@ public class EventService {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", token);
         HttpEntity entity = new HttpEntity(headers);
-        // request ไปถามเพื่อยืนยันว่าเราคือ admin ของ organize นี้จริงๆและมีสิทธิอยู่จริงๆด้วยนะ
-        ResponseEntity<HashMap> adminStatusResponse = restTemplate.exchange(USERSERVICE_URL + "/organize/" + userJoinEvent.getOrganizeId() + "/admin/status", HttpMethod.GET, entity, HashMap.class);
-        // ResponseEntity<HashMap> adminStatusResponse = restTemplate.getForEntity(USERSERVICE_URL + "/organize/" + userJoinEvent.getOrganizeId() + "/admin/status", HashMap.class);
-        if (adminStatusResponse.getStatusCode() == HttpStatus.OK) {
-            // response กลับมา 200 แสดงว่าเป็น admin ไม่ก็ owner ก็แสดงว่าสามารถแสกนเข้าระบบได้
-            UserEventTicket userEventTicketInDatabase = userEventTicketRespository.findByTicketId(userJoinEvent.getTicketId());
-            if (userEventTicketInDatabase != null) {
+        UserEventTicket qrCodeTicket = userEventTicketRespository.findByTicketId(userJoinEvent.getTicketId());
+        String ticketOrganizeId = qrCodeTicket.getOrganize().getOrganizeId();
+        System.out.println("-- organizeId ---");
+        System.out.println(ticketOrganizeId);
+        try {
+            // request ไปถามเพื่อยืนยันว่าเราคือ admin ของ organize นี้จริงๆและมีสิทธิอยู่จริงๆด้วยนะ
+            ResponseEntity<HashMap> adminStatusResponse = restTemplate.exchange(USERSERVICE_URL + "/organize/" + ticketOrganizeId + "/admin/status", HttpMethod.GET, entity, HashMap.class);
+            // ResponseEntity<HashMap> adminStatusResponse = restTemplate.getForEntity(USERSERVICE_URL + "/organize/" + userJoinEvent.getOrganizeId() + "/admin/status", HashMap.class);
+            if (adminStatusResponse.getStatusCode() == HttpStatus.OK) {
+                // response กลับมา 200 แสดงว่าเป็น admin ไม่ก็ owner ก็แสดงว่าสามารถแสกนเข้าระบบได้
+                UserEventTicket userEventTicketInDatabase = userEventTicketRespository.findByTicketId(userJoinEvent.getTicketId());
+                if (userEventTicketInDatabase != null) {
 
-                System.out.println("!! userEventTicket !!");
-                System.out.println(userEventTicketInDatabase);
-                if (userEventTicketInDatabase.isIsParticipate() == false) {
-                    if (userEventTicketInDatabase.getTicketKey().equals(userJoinEvent.getTicketKey()) && userEventTicketInDatabase.getUid().equals(userJoinEvent.getUid())) {
-                        // logic ถูกต้อง validate ตั๋วจริงๆว่ามาจากระบบของเรา
-                        // ทำการบันทึกว่าตั๋วนี้ได้ถูกใช้ไปหลัง check in สำเร็จและ update exp พร้อม interest ของผู้ใช้งานไปยัง UserService
-                        Event eventFromDatabase = eventRepository.findByElasticEventId(userEventTicketInDatabase.getElasticEventId());
-                        userEventTicketInDatabase.setIsParticipate(true);
-                        userEventTicketInDatabase.setParticipateDate(new Timestamp(System.currentTimeMillis()));
-                        userEventTicketInDatabase.setBadgeId(eventFromDatabase.getBadge().getBadgeId());
-                        userEventTicketInDatabase.setExp(eventFromDatabase.getBadge().getExp());
-                        restTemplate.postForEntity(USERSERVICE_URL + "/user/interest", userEventTicketInDatabase, UserJoinEvent.class);
-                        return ResponseEntity.status(HttpStatus.CREATED).body(userEventTicketRespository.save(userEventTicketInDatabase));
+                    System.out.println("!! userEventTicket !!");
+                    System.out.println(userEventTicketInDatabase);
+                    if (userEventTicketInDatabase.isIsParticipate() == false) {
+                        if (userEventTicketInDatabase.getTicketKey().equals(userJoinEvent.getTicketKey()) && userEventTicketInDatabase.getUid().equals(userJoinEvent.getUid())) {
+                            // logic ถูกต้อง validate ตั๋วจริงๆว่ามาจากระบบของเรา
+                            // ทำการบันทึกว่าตั๋วนี้ได้ถูกใช้ไปหลัง check in สำเร็จและ update exp พร้อม interest ของผู้ใช้งานไปยัง UserService
+                            Event eventFromDatabase = eventRepository.findByElasticEventId(userEventTicketInDatabase.getElasticEventId());
+                            userEventTicketInDatabase.setIsParticipate(true);
+                            userEventTicketInDatabase.setParticipateDate(new Timestamp(System.currentTimeMillis()));
+                            userEventTicketInDatabase.setBadgeId(eventFromDatabase.getBadge().getBadgeId());
+                            userEventTicketInDatabase.setExp(eventFromDatabase.getBadge().getExp());
+                            restTemplate.postForEntity(USERSERVICE_URL + "/user/interest", userEventTicketInDatabase, UserJoinEvent.class);
+                            return ResponseEntity.status(HttpStatus.CREATED).body(userEventTicketRespository.save(userEventTicketInDatabase));
+                        }
+                    } else {
+                        responseBody.put("response", "This ticket had been usage !!!");
+                        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseBody);
                     }
-                } else {
-                    responseBody.put("response", "This ticket had been usage !!!");
-                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseBody);
                 }
+
+            }
+        } catch (HttpStatusCodeException exception) {
+            if (exception.getStatusCode().UNAUTHORIZED == HttpStatus.UNAUTHORIZED) {
+                responseBody.put("response", "[Unauthorize] You aren't Admin of " + qrCodeTicket.getOrganize().getOrganizeName() + " organize !!!");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
             }
 
         }
