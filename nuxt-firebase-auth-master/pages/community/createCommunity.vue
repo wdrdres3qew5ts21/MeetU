@@ -125,7 +125,8 @@ export default {
       this.$swal({
                 type: "success",
                 title: "Create community success!!",
-                text: `Enjoy  your community`
+                text: `Enjoy  your community`,
+                
               });
       // console.log(this.communityForm.categorySelected);
     }

@@ -114,7 +114,28 @@
         </v-tab-item>
         <!-- Management Organize -->
         <v-tab-item>
-          <edit-organize-setting :organizeId="$route.params.organizeId" />
+          <br />
+          <h3>Admin Lists</h3>
+          <v-card>
+            <v-list two-line subheader v-if="adminList.userDetail != undefined">
+              <v-list-tile  v-for="(admin, index) in adminList" :key="index" avatar>
+                <v-list-tile-avatar>
+                  <img :src="admin.userDetail[0].photoURL" />
+                </v-list-tile-avatar>
+
+                <v-list-tile-content>
+                  <v-list-tile-title>{{ admin.userDetail[0].displayName }}</v-list-tile-title>
+                  <v-list-tile-sub-title>{{ admin.userDetail[0].displayName }}</v-list-tile-sub-title>
+                </v-list-tile-content>
+
+                <v-list-tile-action>
+                  <v-btn icon ripple @click="removeItem(admin.userDetail[0].uid)">
+                    <v-icon color="primary">delete</v-icon>
+                  </v-btn>
+                </v-list-tile-action>
+              </v-list-tile>
+            </v-list>
+          </v-card>
         </v-tab-item>
         <!-- QR Code Scanner-->
         <v-tab-item v-if="isAdmin==true">
@@ -147,6 +168,8 @@
       </v-tabs>
     </div>
 
+    <v-flex></v-flex>
+    <v-btn @click="loadAdminDetail()">test</v-btn>
     <br />
   </div>
 </template>
@@ -160,6 +183,7 @@ import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
 import { error } from "util";
 import "@mdi/font/css/materialdesignicons.css";
+import { async } from "q";
 export default {
   name: "startedEvent",
   components: {
@@ -169,11 +193,35 @@ export default {
   props: {},
   data() {
     return {
+      showCancelButton: true,
       isAdmin: false,
       isOwner: false,
       isCameraOpen: false,
       currentItem: "tab-Web",
-      items: ["Organize Detail", "View Event"],
+      // items: ["Organize Detail", "View Event"],
+      items: [
+        {
+          id: "1",
+          icon: "folder",
+          iconClass: "grey lighten-1 white--text",
+          title: "Photos",
+          subtitle: "Jan 9, 2014"
+        },
+        {
+          id: "2",
+          icon: "folder",
+          iconClass: "grey lighten-1 white--text",
+          title: "Recipes",
+          subtitle: "Jan 17, 2014"
+        },
+        {
+          id: "3",
+          icon: "folder",
+          iconClass: "grey lighten-1 white--text",
+          title: "Work",
+          subtitle: "Jan 28, 2014"
+        }
+      ],
       text:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
       organizeId: "",
@@ -202,7 +250,9 @@ export default {
         facebook: "",
         twitter: "",
         instagram: ""
-      }
+      },
+
+      adminList: []
     };
   },
   computed: {
@@ -216,6 +266,7 @@ export default {
     this.loadOrganizeDetail();
     if (this.getUser.uid) {
       this.verifyIfUserIsOrganizeMember();
+      this.loadAdminDetail();
     }
   },
   methods: {
@@ -333,6 +384,53 @@ export default {
           console.log(error);
           loader.hide();
         });
+    },
+    loadAdminDetail: async function() {
+      let loader = this.$loading.show();
+      axios
+        .get(`${process.env.USER_SERVICE}/organize/${this.organizeId}/admins`)
+        .then(adminResponse => {
+          this.adminList = adminResponse.data;
+          console.log("HIIII");
+          console.log(adminResponse.data);
+          console.log("Endddd");
+          loader.hide();
+        })
+        .catch(err => {
+          loader.hide();
+        });
+    },
+    removeItem(uid) {
+      this.$swal({
+        type: "Comfirm Delete Admin",
+        text: `Comfirm for delete Admin`,
+        showCancelButton: true,
+        cancelButtonColor: "#FD6363",
+        confirmButtonColor: "#AEAEAE",
+        cancleButtonText: "Cancel",
+        confirmButtonText: "Delete"
+      }).then(button => {
+        console.log(button);
+        if (button.dismiss != "cancel")
+          this.adminList = this.adminList.filter(admin => admin.userDetail[0].uid !== uid);
+
+          axios.delete(`${process.env.USER_SERVICE}/organize/${this.organizeId}/${uid}`)
+          .then(deleteResponse =>{
+            this.$swal({
+              type: "success",
+              title: "Delete Admin success",
+              text: `Delete Admin success`
+            })
+          })
+          .catch(err =>{
+            this.$swal({
+              type: "error",
+              title: "Delete Admin error",
+              text: `Delete Admin success`
+            })
+          })
+
+      });
     }
   }
 };

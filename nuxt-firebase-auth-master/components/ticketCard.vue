@@ -2,7 +2,11 @@
   <v-card color="cyan darken-2" class="white--text">
     <v-layout>
       <v-flex xs5>
-        <v-img src="https://cdn.vuetifyjs.com/images/cards/foster.jpg" height="125px" contain></v-img>
+        <br>
+        <br>
+        <br>
+        <v-img src="https://cdn.vuetifyjs.com/images/cards/foster.jpg" height="150px" contain></v-img>
+
       </v-flex>
       <v-flex xs7>
         <v-card-title primary-title>
@@ -29,6 +33,7 @@ export default {
   },
   data() {
     return {};
-  }
+  },
+  
 };
 </script>
