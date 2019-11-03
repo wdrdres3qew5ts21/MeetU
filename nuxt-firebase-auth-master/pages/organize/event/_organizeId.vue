@@ -114,7 +114,40 @@
         </v-tab-item>
         <!-- Management Organize -->
         <v-tab-item>
-          
+          <br>
+          <h3> Admin Lists</h3>
+          <v-card>
+        <v-list two-line subheader>
+        
+          <v-list-tile
+            v-for="item in items"
+            :key="item.title"
+            avatar
+      
+          >
+            <v-list-tile-avatar>
+              <v-icon :class="[item.iconClass]">{{ item.icon }}</v-icon>
+            </v-list-tile-avatar>
+
+            <v-list-tile-content>
+              <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+              <v-list-tile-sub-title>{{ item.subtitle }}</v-list-tile-sub-title>
+            </v-list-tile-content>
+
+            <v-list-tile-action>
+              <v-btn icon ripple @click="removeItem(item.id)">
+                <v-icon color="primary">delete</v-icon>
+              </v-btn>
+            </v-list-tile-action>
+          </v-list-tile>
+
+       
+        
+        </v-list>
+      </v-card>
+
+
+
         </v-tab-item>
         <!-- QR Code Scanner-->
         <v-tab-item v-if="isAdmin==true">
@@ -167,11 +200,17 @@ export default {
   props: {},
   data() {
     return {
+        showCancelButton: true,
       isAdmin: false,
       isOwner: false,
       isCameraOpen: false,
       currentItem: "tab-Web",
-      items: ["Organize Detail", "View Event"],
+      // items: ["Organize Detail", "View Event"],
+       items: [
+          { id: '1' ,icon: 'folder', iconClass: 'grey lighten-1 white--text', title: 'Photos', subtitle: 'Jan 9, 2014' },
+          { id: '2' ,icon: 'folder', iconClass: 'grey lighten-1 white--text', title: 'Recipes', subtitle: 'Jan 17, 2014' },
+          { id: '3' ,icon: 'folder', iconClass: 'grey lighten-1 white--text', title: 'Work', subtitle: 'Jan 28, 2014' }
+        ],
       text:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
       organizeId: "",
@@ -331,6 +370,30 @@ export default {
           console.log(error);
           loader.hide();
         });
+    },
+  
+      removeItem (id) {
+
+       this.$swal({
+            type: "Comfirm Delete Admin",
+           
+            text: `Comfirm for delete Admin`,
+            showCancelButton: true,
+               cancelButtonColor: "#FD6363",
+            confirmButtonColor: "#AEAEAE",
+         
+          
+            cancleButtonText: "Cancel",
+             confirmButtonText: "Delete"
+
+          }).then((button)=>{
+            console.log(button)
+            if(button.dismiss != "cancel" )
+      this.items = this.items.filter(item => item.id !== id)
+            
+          }, );
+
+
     }
   }
 };
