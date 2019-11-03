@@ -201,6 +201,4 @@ public class UserEventTicket {
         return "UserEventTicket{" + "id=" + id + ", ticketId=" + ticketId + ", uid=" + uid + ", eventName=" + eventName + ", elasticEventId=" + elasticEventId + ", ticketKey=" + ticketKey + ", badgeId=" + badgeId + ", eventTags=" + eventTags + ", participateDate=" + participateDate + ", isParticipate=" + isParticipate + ", deleteMessageDetail=" + deleteMessageDetail + ", isEventDelete=" + isEventDelete + ", eventEndDate=" + eventEndDate + ", eventStartDate=" + eventStartDate + ", organize=" + organize + '}';
     }
 
-    
-
 }

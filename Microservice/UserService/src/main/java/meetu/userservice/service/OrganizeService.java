@@ -61,7 +61,7 @@ public class OrganizeService {
 
     @Autowired
     private UserRepository userRepository;
-    
+
     @Autowired
     private MongoTemplate mongoTemplate;
 
@@ -243,10 +243,8 @@ public class OrganizeService {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 
-
-    
-        public ResponseEntity findAdminInOrganize(String organizeId, int page, int contentPerPage) {
-          LookupOperation lookupOperation = LookupOperation.newLookup()
+    public ResponseEntity findAdminInOrganize(String organizeId, int page, int contentPerPage) {
+        LookupOperation lookupOperation = LookupOperation.newLookup()
                 .from("users")
                 .localField("adminList.uid")
                 .foreignField("uid")
@@ -257,7 +255,7 @@ public class OrganizeService {
         Aggregation aggregation = Aggregation.newAggregation(match, lookupOperation, skip, limitOperation);
         List<BasicDBObject> results = mongoTemplate.aggregate(aggregation, "organizes", BasicDBObject.class).getMappedResults();
         return ResponseEntity.status(HttpStatus.OK).body(results);
-        
+
     }
 
 }
