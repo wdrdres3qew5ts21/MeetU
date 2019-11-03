@@ -42,15 +42,17 @@
     <br />
     <div>
       <v-tabs color="#341646" dark slider-color="white" centered>
-        <v-tab ripple>Organize Detail</v-tab>
+        <v-tab ripple>{{ isAdmin? 'Detail' : 'Organize Detail' }}</v-tab>
         <v-tab ripple>Events</v-tab>
+        <v-tab v-if="isAdmin==true" ripple>Management</v-tab>
         <v-tab v-if="isAdmin==true" ripple>QR code</v-tab>
-
+        <!-- Organize Detail-->
         <v-tab-item>
           <v-card flat>
             <v-card-text>{{ organize.organizeDetail ||'Organize Description ...'}}</v-card-text>
           </v-card>
         </v-tab-item>
+        <!-- Event Of Organize List -->
         <v-tab-item>
           <v-card flat>
             <v-card-text>
@@ -110,7 +112,11 @@
             </v-card-text>
           </v-card>
         </v-tab-item>
-
+        <!-- Management Organize -->
+        <v-tab-item>
+          
+        </v-tab-item>
+        <!-- QR Code Scanner-->
         <v-tab-item v-if="isAdmin==true">
           <v-card flat>
             <center>
@@ -206,7 +212,7 @@ export default {
     console.log(this.$route.params.organizeId);
     this.loadAllEventOfOrganize();
     this.loadOrganizeDetail();
-    if(this.getUser.uid){
+    if (this.getUser.uid) {
       this.verifyIfUserIsOrganizeMember();
     }
   },
@@ -216,8 +222,8 @@ export default {
       let parsedTicket = "";
       try {
         parsedTicket = JSON.parse(decodedString);
-        parsedTicket.organizeId = this.$route.params.organizeId
-        console.log("---- parsed scaning ticket ----")
+        parsedTicket.organizeId = this.$route.params.organizeId;
+        console.log("---- parsed scaning ticket ----");
         console.log(parsedTicket);
       } catch (error) {
         console.log("fail to QR decode", parsedTicket);
