@@ -9,9 +9,71 @@
           <v-flex xs12>
             <div>
               <v-layout>
-                <v-btn flat icon color="#341646">
+                <v-dialog
+                v-model="dialog"
+                fullscreen
+                hide-overlay
+                transition="dialog-bottom-transition"
+              >
+                <template v-slot:activator="{ on }">
+                <v-btn flat icon color="#341646" v-on="on">
                   <v-icon>filter_list</v-icon>
                 </v-btn>
+</template>
+                <v-card>
+                  <v-toolbar dark color="primary">
+                    <v-btn icon dark @click="dialog = false">
+                      <v-icon>navigate_before</v-icon>
+                    </v-btn>
+                    <v-toolbar-title>Filter</v-toolbar-title>
+                    <v-spacer></v-spacer>
+                  </v-toolbar>
+
+                  <v-list three-line subheader>
+                    <br />
+
+                    <v-container grid-list-md>
+                      <v-layout wrap>
+                        
+                        <v-flex xs12>
+                          <v-icon color="primary">category</v-icon>Filter by category
+                        </v-flex>
+
+                        <v-layout class="mb-4">
+                          <v-autocomplete
+                            v-model="selectedCategoryList"
+                            :items="categoryList"
+                            chips
+                            label=" Search by Category"
+                            color="blue-grey lighten-2"
+                            item-text="categoryLabel"
+                            item-value="categoryName"
+                            multiple
+                          >
+                            <template v-slot:selection="data">
+                              <v-chip :selected="data.selected">{{ data.item.categoryName}}</v-chip>
+                            </template>
+                          </v-autocomplete>
+                        </v-layout>
+
+                        
+
+                    
+                      </v-layout>
+                    </v-container>
+                  </v-list>
+
+                  <v-btn
+                    class="white--text"
+                    depressed
+                    large
+                    block
+                    color="#341646"
+                   
+                  >Search</v-btn>
+                 
+                </v-card>
+              </v-dialog>
                 <v-text-field
                   class="questrial no-top-padding"
                   height="20px"
@@ -103,6 +165,13 @@ export default {
     badgeList: [],
     badgeSelect: false
   }),
+   watch: {
+    selectedCategoryList(categorySelected) {
+      if (categorySelected.length > 3) {
+        this.selectedCategoryList.shift();
+      }
+    }
+  },
   computed: {
     ...mapGetters(["getCategory"]),
     icon() {
