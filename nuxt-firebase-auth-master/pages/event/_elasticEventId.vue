@@ -6,6 +6,9 @@
       </v-carousel>-->
       <client-only>
         <carousel :perPage="1" :paginationEnabled="false">
+          <slide>
+            <img width="100%" :src="eventPictureCover" alt srcset />
+          </slide>
           <slide v-for="(pic,i) in eventPictureLists" :key="i">
             <img width="100%" :src="pic" alt srcset />
           </slide>
