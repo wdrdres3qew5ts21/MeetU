@@ -124,7 +124,7 @@ import "firebase/storage";
 import { mapGetters } from "vuex";
 import axios from "axios";
 export default {
-  name: "editOrganizerSettings",
+  name: "editOrganizeSetting",
   data() {
     return {
       organizerNameRules: [v => !!v || "Name is required"],

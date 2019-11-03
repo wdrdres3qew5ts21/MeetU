@@ -114,6 +114,7 @@
         </v-tab-item>
         <!-- Management Organize -->
         <v-tab-item>
+          <edit-organize-setting :organizeId="$route.params.organizeId" />
           <br>
           <h3> Admin Lists</h3>
           <v-card>
@@ -186,6 +187,7 @@
 
 
 <script>
+import editOrganizeSetting from "~/components/editOrganizeSetting"
 import Swal from "sweetalert2";
 import eventCard from "~/components/eventCard";
 import axios from "axios";
@@ -195,7 +197,8 @@ import "@mdi/font/css/materialdesignicons.css";
 export default {
   name: "startedEvent",
   components: {
-    eventCard
+    eventCard,
+    editOrganizeSetting
   },
   props: {},
   data() {
