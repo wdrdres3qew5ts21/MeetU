@@ -57,11 +57,33 @@
       </v-flex>
       <br />
     </div>
+
+
+    <div v-if="userEventTicketList == null">
+               
+              </div>
+
+              <div v-else>
+                <center>
+                  <br />
+                  <v-icon medium>mdi-emoticon-cry-outline</v-icon><br>
+                  
+                  <p style="color:grey">No ticket, let's start to join an event!</p>
+                    <nuxt-link :to="`/`" class="linkToHomepage">
+                    Click here
+                    </nuxt-link>
+
+                  <!-- <p style="color:grey">You can create new event.</p> -->
+                </center>
+              </div>
+
+
   </div>
 </template>
 <script>
 import { mapGetters } from "vuex";
 import axios from "axios";
+import "@mdi/font/css/materialdesignicons.css";
 export default {
   data() {
     return {
@@ -99,7 +121,25 @@ export default {
 };
 </script>
 
-<style >
+<style lang="css">
+  
+.linkToHomepage{
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 18px;
+  color: #100C4B;
+
+
+}  
+.linkToHomepage:hover{
+  text-decoration: underline;
+  font-weight: bold;
+  font-size: 18px;
+  color: #341646;
+
+
+}
+
 .headline{
     font-size: 12px;
     color: #341646;
