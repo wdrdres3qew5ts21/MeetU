@@ -206,7 +206,9 @@ export default {
     console.log(this.$route.params.organizeId);
     this.loadAllEventOfOrganize();
     this.loadOrganizeDetail();
-    this.verifyIfUserIsOrganizeMember();
+    if(this.getUser.uid){
+      this.verifyIfUserIsOrganizeMember();
+    }
   },
   methods: {
     ...mapActions(["testContext"]),
