@@ -26,7 +26,7 @@
       class="elevation-1"
     >
       <template v-slot:no-data>
-        <v-alert :value="true" color="pink" icon="info">
+        <v-alert :value="true" color="primary" icon="info">
           <center>Badge not found !</center>
         </v-alert>
       </template>

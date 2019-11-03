@@ -8,6 +8,7 @@ package meetu.userservice.service;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
+import com.mongodb.BasicDBObject;
 import meetu.userservice.repository.OrganizeRepository;
 import meetu.userservice.repository.UserCommunityRoleRepository;
 import meetu.userservice.repository.UserOrganizeRoleRepository;
@@ -25,6 +26,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.limit;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.skip;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.sort;
+import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
+import org.springframework.data.mongodb.core.aggregation.LimitOperation;
+import org.springframework.data.mongodb.core.aggregation.LookupOperation;
+import org.springframework.data.mongodb.core.aggregation.SkipOperation;
+import org.springframework.data.mongodb.core.aggregation.SortOperation;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.TextCriteria;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,6 +61,9 @@ public class OrganizeService {
 
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     private static Logger log = LoggerFactory.getLogger(OrganizeService.class);
 
@@ -225,6 +241,23 @@ public class OrganizeService {
             java.util.logging.Logger.getLogger(OrganizeService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+    }
+
+
+    
+        public ResponseEntity findAdminInOrganize(String organizeId, int page, int contentPerPage) {
+          LookupOperation lookupOperation = LookupOperation.newLookup()
+                .from("users")
+                .localField("adminList.uid")
+                .foreignField("uid")
+                .as("userDetail");
+        AggregationOperation match = Aggregation.match(Criteria.where("_id").is(organizeId));
+        SkipOperation skip = skip(page);
+        LimitOperation limitOperation = limit(contentPerPage);
+        Aggregation aggregation = Aggregation.newAggregation(match, lookupOperation, skip, limitOperation);
+        List<BasicDBObject> results = mongoTemplate.aggregate(aggregation, "organizes", BasicDBObject.class).getMappedResults();
+        return ResponseEntity.status(HttpStatus.OK).body(results);
+        
     }
 
 }

@@ -41,7 +41,7 @@ public class OrganizeController {
     public ResponseEntity createOrganize(@PathVariable String uid, @RequestBody Organize organize) {
         return organizeService.createOrganize(uid, organize);
     }
-    
+
     @PatchMapping("/organize/{organizeId}")
     public ResponseEntity updateOrganizeDetail(@PathVariable String organizeId, @RequestBody Organize organize) {
         return organizeService.updateOrganizeDetail(organizeId, organize);
@@ -56,12 +56,12 @@ public class OrganizeController {
     public ResponseEntity deleteAdminByUid(@PathVariable String organizeId, @PathVariable String uid) {
         return organizeService.deleteAdminByUid(organizeId, uid);
     }
-    
+
     @GetMapping("/organize/{organizeId}/admin/status")
     public ResponseEntity verifyIfUserIsOrganizeMember(
-            @RequestHeader(required = true, name = "Authorization")String token ,
+            @RequestHeader(required = true, name = "Authorization") String token,
             @PathVariable String organizeId) {
-        return organizeService.verifyIfUserIsOrganizeMember(token,organizeId);
+        return organizeService.verifyIfUserIsOrganizeMember(token, organizeId);
     }
 
     @GetMapping("/organize/user/{uid}")
@@ -72,6 +72,14 @@ public class OrganizeController {
         return organizeService.findAllOrganizeOfUserIsIn(uid, page, contentPerPage);
     }
 
+    @GetMapping("/organize/{organizeId}/admins")
+    public ResponseEntity findAdminInOrganize(
+            @PathVariable String organizeId,
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "20") int contentPerPage) {
+        return organizeService.findAdminInOrganize(organizeId, page, contentPerPage);
+    }
+
     @PostMapping("/organize/{organizeId}/admin/{email}")
     public ResponseEntity addAdminOrganize(@PathVariable String organizeId, @PathVariable String email) {
         return organizeService.addAdminOrganize(organizeId, email);
@@ -79,7 +87,7 @@ public class OrganizeController {
 
     @GetMapping("/organizes")
     public ResponseEntity findAllOrganizes(
-            @RequestParam(required = false) String organizeName, 
+            @RequestParam(required = false) String organizeName,
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "20") int contentPerPage) {
         if (organizeName == null) {

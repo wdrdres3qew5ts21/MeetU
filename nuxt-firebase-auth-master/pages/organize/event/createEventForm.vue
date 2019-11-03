@@ -171,9 +171,7 @@
         </v-time-picker>
       </v-dialog>
       <!-- Event End time -->
-     
-     <v-btn @click="test()"> Test</v-btn>
-
+     <!-- <v-btn @click="test()"> Test</v-btn> -->
     <br />
 
     <span class="location" id="locationMap">Location</span>
