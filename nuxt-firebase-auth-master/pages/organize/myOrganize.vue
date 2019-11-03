@@ -13,7 +13,8 @@
         </v-card>
       </v-flex>
       <v-flex xs6 text-right>
-        <h3>Organizer</h3>
+        <br />
+              <h3>Organizer name: {{userForm.firstName}} {{userForm.lastName}}</h3>
       </v-flex>
     </v-layout>
     <br />
@@ -95,13 +96,34 @@ export default {
   },
   data() {
     return {
-      organizeList: null
+      organizeList: null,
+            userForm: {
+        badgeList: [],
+        interest: [],
+        firstName: "",
+        lastName: "",
+        gender: "",
+        dateArray: [],
+        dateOfBirth: "",
+        phone: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        password: "",
+        website: "",
+        line: "",
+        facebook: "",
+        twitter: "",
+        instagram: ""
+      },
     };
   },
   computed: {
     ...mapGetters(["getUser"])
+    
   },
   mounted() {
+    this.initUserProfile();
     this.loadOrganizeFromUser();
   },
   methods: {
@@ -118,7 +140,36 @@ export default {
           console.log(error);
           loader.hide()
         });
-    }
+    },
+        initUserProfile: function() {
+      let loader = this.$loading.show();
+      axios
+        .get(`${process.env.USER_SERVICE}/user/${this.getUser.uid}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("jwtToken") || ""}`
+          }
+        })
+        .then(userProfileForm => {
+          console.log("organize detail");
+          userProfileForm = userProfileForm.data;
+          console.log(userProfileForm);
+          this.userForm.interest = userProfileForm.interest;
+          this.userForm.firstName = userProfileForm.firstName;
+          this.userForm.lastName = userProfileForm.lastName;
+          this.userForm.email = userProfileForm.email;
+          this.userForm.gender = userProfileForm.gender;
+          this.userForm.facebook = userProfileForm.facebook;
+          this.userForm.line = userProfileForm.line;
+          this.userForm.website = userProfileForm.website;
+          this.userForm.twitter = userProfileForm.twitter;
+          this.userForm.instagram = userProfileForm.instagram;
+          this.userForm.phone = userProfileForm.phone || "";
+          loader.hide();
+        })
+        .catch(err => {
+          loader.hide();
+        });
+    },
   }
 };
 </script>

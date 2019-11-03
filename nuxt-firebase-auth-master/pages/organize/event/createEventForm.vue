@@ -806,6 +806,7 @@ export default {
   color: #341646 !important;
   font-weight: bold !important;
 }
+
 .selectBadge {
   font-family: Roboto !important;
   font-size: 18px;
