@@ -42,53 +42,67 @@
                           ></v-text-field>
                         </v-flex>
 
-                        <v-icon color="primary">category</v-icon>Filter by category
                         <v-flex xs12>
-                          <v-select
+                          <v-icon color="primary">category</v-icon>Filter by category
+                        </v-flex>
+
+                        <v-layout class="mb-4">
+                          <v-autocomplete
+                            v-model="selectedCategoryList"
                             :items="categoryList"
+                            chips
+                            label=" Search by Category"
+                            color="blue-grey lighten-2"
                             item-text="categoryLabel"
                             item-value="categoryName"
-                            label="Category (Limit to 3 tags only)"
-                            v-model="selectedCategoryList"
-                            chips
-                            clearable
-                            attach
                             multiple
-                            sm6
-                            xs2
                           >
-                            <!-- close
-                            @input="remove(data.item.categoryName)"-->
                             <template v-slot:selection="data">
-                              <v-chip :selected="data.selected">
-                                <strong>{{ data.item.categoryName}}</strong>&nbsp;
-                              </v-chip>
+                              <v-chip :selected="data.selected">{{ data.item.categoryName}}</v-chip>
                             </template>
-                          </v-select>
-                        </v-flex>
-
-                      
-                          <v-flex xs12>
-                            <v-checkbox v-model="checkbox" label="Popular Event" ></v-checkbox>
-                          </v-flex>
-                         
+                          </v-autocomplete>
+                        </v-layout>
 
                         <v-flex xs12>
-                          <v-icon color="primary">today</v-icon>Sort by Date
-                          <v-select :items="sortDate" v-model="filterForm.sortByDate" attach></v-select>
+                          <v-icon color="primary">today</v-icon> Filter by Date
                         </v-flex>
 
-                        <v-icon color="primary">room</v-icon>Near your location
+                        <v-layout class="mb-4">
+                          <v-autocomplete
+                            v-model="filterForm.sortByDate"
+                            :items="sortDate"
+                            chips
+                            label=" Sort by Date"
+                            color="blue-grey lighten-2"
+                            item-text="sortDate"
+                            item-value="sortDate"
+                          >
+                            <template v-slot:selection="data">
+                              <v-chip :selected="data.selected">{{ data.item}}</v-chip>
+                            </template>
+                          </v-autocomplete>
+                        </v-layout>
+
+                       
+                          <v-flex xs12>
+                          <v-icon color="primary">room</v-icon>Near your location
+                          </v-flex>
+
+                          
                         <v-layout row wrap>
-                          <v-flex xs9>
+                          <v-flex xs4>
+                            <v-select :items="unit" v-model="filterForm.unit" label="unit "></v-select>
+                          </v-flex>
+                          <v-flex xs3>
                             <v-text-field
-                              label="Enter the distance"
+                              label="distance"
                               type="number"
                               v-model="filterForm.distance"
                             ></v-text-field>
                           </v-flex>
-                          <v-flex xs3>
-                            <v-select :items="unit" v-model="filterForm.unit" label="unit " ></v-select>
+
+                          <v-flex xs5>
+                            <v-checkbox v-model="checkbox" label="Popular Event"></v-checkbox>
                           </v-flex>
                         </v-layout>
                       </v-layout>
@@ -103,7 +117,7 @@
                     color="#341646"
                     @click="searchByFilter()"
                   >Search</v-btn>
-                  {{filterForm.categorySelected}}
+                 
                 </v-card>
               </v-dialog>
 
@@ -223,7 +237,7 @@ export default {
     };
   },
   watch: {
-    "selectedCategoryList"(categorySelected) {
+    selectedCategoryList(categorySelected) {
       if (categorySelected.length > 3) {
         this.selectedCategoryList.shift();
       }
