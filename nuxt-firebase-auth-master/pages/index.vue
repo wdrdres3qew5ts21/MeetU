@@ -2,10 +2,12 @@
   <div>
     <!-- <transition name="router-anim"  leave-active-class="animated slideOutLeft"> -->
     <v-carousel class="mycarousel">
-      <nuxt-link :to="`/event/${popularEvent.elasticEventId}`" v-for="(popularEvent,i) in popularEventList" :key="i">
-        <v-carousel-item
-          :src="popularEvent.eventPictureCover"
-        ></v-carousel-item>
+      <nuxt-link
+        :to="`/event/${popularEvent.elasticEventId}`"
+        v-for="(popularEvent,i) in popularEventList"
+        :key="i"
+      >
+        <v-carousel-item :src="popularEvent.eventPictureCover"></v-carousel-item>
       </nuxt-link>
     </v-carousel>
     <v-container class="bg">
@@ -22,18 +24,20 @@
             </slide>
             <slide>
               <v-flex 3 xs12 sm6 offset-sm>
+                <!-- <v-img :src="testImg"></v-img> -->
                 <nuxt-link :to="`/event?`">
-                  <v-card width="350px" height="320px">
+                  <v-card class="BackgroundImg" width="350px" height="320px">
                     <br />
                     <br />
                     <br />
                     <br />
                     <br />
                     <center>
-                      <v-icon large>add</v-icon>
+                      <v-icon style="color:#fff" large>add_circle_outline</v-icon>
                     </center>
+                    <b></b>
                     <center>
-                      <h2>View More</h2>
+                      <h2 style="color:#fff">View More</h2>
                     </center>
                   </v-card>
                 </nuxt-link>
@@ -54,17 +58,17 @@
           <slide>
             <v-flex 3 xs12 sm6 offset-sm>
               <nuxt-link :to="`/event?`">
-                <v-card width="350px" height="320px">
+                <v-card class="BackgroundImg" width="350px" height="320px">
                   <br />
                   <br />
                   <br />
                   <br />
                   <br />
                   <center>
-                    <v-icon large>add</v-icon>
+                    <v-icon style="color:#fff" large>add_circle_outline</v-icon>
                   </center>
                   <center>
-                    <h2>View More</h2>
+                    <h2 style="color:#fff">View More</h2>
                   </center>
                 </v-card>
               </nuxt-link>
@@ -84,17 +88,17 @@
           <slide>
             <v-flex 3 xs12 sm6 offset-sm>
               <nuxt-link :to="`/event?`">
-                <v-card width="350px" height="320px">
+                <v-card class="BackgroundImg" width="350px" height="320px">
                   <br />
                   <br />
                   <br />
                   <br />
                   <br />
                   <center>
-                    <v-icon large>add</v-icon>
+                    <v-icon style="color:#fff" large>add_circle_outline</v-icon>
                   </center>
                   <center>
-                    <h2>View More</h2>
+                    <h2 style="color:#fff">View More</h2>
                   </center>
                 </v-card>
               </nuxt-link>
@@ -107,13 +111,13 @@
       <!-- Community -->
       <h2>Community</h2>
       <nuxt-link :to="`/community/hhjn`">
-      <!-- <nuxt-link :to="`/community/${community.communityId}`"> -->
-      <community-card
-        v-for="(community, index) in communityList"
-        :key="index"
-        :communityPictureCover="community.communityPictureCover"
-        :communityName="community.communityName"
-      ></community-card>
+        <!-- <nuxt-link :to="`/community/${community.communityId}`"> -->
+        <community-card
+          v-for="(community, index) in communityList"
+          :key="index"
+          :communityPictureCover="community.communityPictureCover"
+          :communityName="community.communityName"
+        ></community-card>
       </nuxt-link>
       <br />
       <br />
@@ -155,6 +159,7 @@ import EventList from "@/components/eventList";
 import CommunityCard from "@/components/communityCard";
 import EventCard from "@/components/eventCard";
 import { isLogin } from "@/utils/loginVerify";
+import "@mdi/font/css/materialdesignicons.css";
 import {
   mockCarouselsPhoto,
   mockCommunityList,
@@ -373,6 +378,20 @@ export default {
 .page {
   position: fixed;
   width: inherit;
+}
+
+/* .testBlur-img{
+   filter: blur(8px);
+  -webkit-filter: blur(8px);
+} */
+
+.BackgroundImg {
+  /* filter: blur(8px);
+  -webkit-filter: blur(8px); */
+  /* background-image: linear-gradient(#ffecd2, #fcb69f); */
+  background-image: url("https://media1.tenor.com/images/dbc9327947163406625e71f4af114f3b/tenor.gif?itemid=13113745");
+  opacity: 0.5;
+  filter: alpha(opacity=50);
 }
 </style>
 
