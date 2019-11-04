@@ -116,26 +116,42 @@
         <v-tab-item>
           <br />
           <h3>Admin Lists</h3>
-          <v-card>
-            <v-list two-line subheader v-if="adminList.userDetail != undefined">
-              <v-list-tile  v-for="(admin, index) in adminList" :key="index" avatar>
-                <v-list-tile-avatar>
-                  <img :src="admin.userDetail[0].photoURL" />
-                </v-list-tile-avatar>
+          <v-layout row>
+            <v-flex xs12>
+            <v-card>
+              <v-list two-line subheader v-if="adminList[0].userDetail.length > 0">
+                <v-list-tile v-for="(admin, index) in adminList" :key="index" avatar>
+                  <v-list-tile-avatar>
+                    <img :src="admin.userDetail[0].photoURL" />
+                  </v-list-tile-avatar>
 
+                  <v-list-tile-content>
+                    <v-list-tile-title>{{ admin.userDetail[0].displayName }}</v-list-tile-title>
+                    <v-list-tile-sub-title>{{ admin.userDetail[0].displayName }}</v-list-tile-sub-title>
+                  </v-list-tile-content>
+
+                  <v-list-tile-action>
+                    <v-btn icon ripple @click="removeItem(admin.userDetail[0].uid)">
+                      <v-icon color="primary">person_add_disable</v-icon>
+                    </v-btn>
+                  </v-list-tile-action>
+                </v-list-tile>
+              </v-list>
+              <!-- ปุ่มเพิ่ม Admin-->
+              <v-list-tile>
                 <v-list-tile-content>
-                  <v-list-tile-title>{{ admin.userDetail[0].displayName }}</v-list-tile-title>
-                  <v-list-tile-sub-title>{{ admin.userDetail[0].displayName }}</v-list-tile-sub-title>
+                  <v-text-field placeholder="add admin email..." v-model="newAdminEmail"></v-text-field>
                 </v-list-tile-content>
 
-                <v-list-tile-action>
-                  <v-btn icon ripple @click="removeItem(admin.userDetail[0].uid)">
-                    <v-icon color="primary">delete</v-icon>
+                <v-list-tile-action @click="addAdminToOrganize()">
+                  <v-btn icon ripple>
+                    <v-icon color="primary">person_add</v-icon>
                   </v-btn>
                 </v-list-tile-action>
               </v-list-tile>
-            </v-list>
-          </v-card>
+            </v-card>
+            </v-flex>
+          </v-layout>
         </v-tab-item>
         <!-- QR Code Scanner-->
         <v-tab-item v-if="isAdmin==true">
@@ -170,13 +186,13 @@
 
     <!-- <v-flex></v-flex>
     <v-btn @click="loadAdminDetail()">test</v-btn>
-    <br /> -->
+    <br />-->
   </div>
 </template>
 
 
 <script>
-import editOrganizeSetting from "~/components/editOrganizeSetting"
+import editOrganizeSetting from "~/components/editOrganizeSetting";
 import Swal from "sweetalert2";
 import eventCardOrganize from "~/components/eventCardOrganize";
 import axios from "axios";
@@ -193,6 +209,7 @@ export default {
   props: {},
   data() {
     return {
+      newAdminEmail: null,
       showCancelButton: true,
       isAdmin: false,
       isOwner: false,
@@ -251,15 +268,17 @@ export default {
         twitter: "",
         instagram: ""
       },
-
-      adminList: []
+      adminList: [
+        {
+          userDetail: []
+        }
+      ]
     };
   },
   computed: {
     ...mapGetters(["getUser"])
   },
   mounted() {
-    this.initUserProfile();
     this.organizeId = this.$route.params.organizeId;
     console.log(this.$route.params.organizeId);
     this.loadAllEventOfOrganize();
@@ -328,33 +347,24 @@ export default {
           console.log(err.response);
         });
     },
-    initUserProfile: function() {
-      let loader = this.$loading.show();
+    addAdminToOrganize() {
       axios
-        .get(`${process.env.USER_SERVICE}/user/${this.getUser.uid}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("jwtToken") || ""}`
-          }
-        })
-        .then(userProfileForm => {
-          console.log("organize detail");
-          userProfileForm = userProfileForm.data;
-          console.log(userProfileForm);
-          this.userForm.interest = userProfileForm.interest;
-          this.userForm.firstName = userProfileForm.firstName;
-          this.userForm.lastName = userProfileForm.lastName;
-          this.userForm.email = userProfileForm.email;
-          this.userForm.gender = userProfileForm.gender;
-          this.userForm.facebook = userProfileForm.facebook;
-          this.userForm.line = userProfileForm.line;
-          this.userForm.website = userProfileForm.website;
-          this.userForm.twitter = userProfileForm.twitter;
-          this.userForm.instagram = userProfileForm.instagram;
-          this.userForm.phone = userProfileForm.phone || "";
-          loader.hide();
+        .post(
+          `${process.env.USER_SERVICE}/organize/${this.organizeId}/admin/${this.newAdminEmail}`
+        )
+        .then(emailResponse => {
+          this.$swal({
+            type: "success",
+            title: "Success to add admin",
+            text: `Success to add admin`
+          });
         })
         .catch(err => {
-          loader.hide();
+          this.$swal({
+            type: "error",
+            title: "Fail to add admin",
+            text: `${err.response.data.response}`
+          });
         });
     },
     loadAllEventOfOrganize: async function() {
@@ -412,24 +422,28 @@ export default {
       }).then(button => {
         console.log(button);
         if (button.dismiss != "cancel")
-          this.adminList = this.adminList.filter(admin => admin.userDetail[0].uid !== uid);
+          this.adminList = this.adminList.filter(
+            admin => admin.userDetail[0].uid !== uid
+          );
 
-          axios.delete(`${process.env.USER_SERVICE}/organize/${this.organizeId}/${uid}`)
-          .then(deleteResponse =>{
+        axios
+          .delete(
+            `${process.env.USER_SERVICE}/organize/${this.organizeId}/${uid}`
+          )
+          .then(deleteResponse => {
             this.$swal({
               type: "success",
               title: "Delete Admin success",
               text: `Delete Admin success`
-            })
+            });
           })
-          .catch(err =>{
+          .catch(err => {
             this.$swal({
               type: "error",
               title: "Delete Admin error",
               text: `Delete Admin success`
-            })
-          })
-
+            });
+          });
       });
     }
   }

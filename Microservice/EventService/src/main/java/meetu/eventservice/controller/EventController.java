@@ -116,6 +116,13 @@ public class EventController {
             @RequestParam(required = false, defaultValue = "20") int contentPerPage) {
         return eventService.findAllPopularEvent();
     }
+    
+    @PostMapping("/events/popular")
+    public ResponseEntity reviewEvent(
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "20") int contentPerPage) {
+        return eventService.findAllPopularEvent();
+    }
 
     @GetMapping("/events")
     public ResponseEntity<List<Event>> searchWithFilter(

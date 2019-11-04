@@ -159,29 +159,40 @@ public class OrganizeService {
             List<Admin> adminList = organizeInDatabase.getAdminList();
             User matchedUser = userRepository.findByEmailEquals(emailAdmin);
             // Optional<Admin> duplicateEmail = adminList.stream().filter(admin -> admin.getEmail().equals(emailAdmin)).findFirst();
-            Admin duplicateAdminEmail = null;
+            if (matchedUser != null) {
+                Admin duplicateAdminEmail = null;
 
-            for (int i = 0; i < adminList.size(); i++) {
-                if (adminList.get(i).getEmail().equalsIgnoreCase(emailAdmin)) {
-                    duplicateAdminEmail = adminList.get(i);
+                for (int i = 0; i < adminList.size(); i++) {
+                    if (adminList.get(i).getEmail().equalsIgnoreCase(emailAdmin)) {
+                        duplicateAdminEmail = adminList.get(i);
+                    }
                 }
-            }
-            if (duplicateAdminEmail == null) {
-                Admin admin = new Admin();
-                admin.setEmail(matchedUser.getEmail());
-                admin.setUid(matchedUser.getUid());
-                admin.setUsername(matchedUser.getUsername());
-                admin.setDisplayName(matchedUser.getDisplayName());
-                organizeInDatabase.getAdminList().add(admin);
-                Organize savedOrganize = organizeRepository.save(organizeInDatabase);
-                return ResponseEntity.status(HttpStatus.OK).body(savedOrganize);
-            } else if (organizeInDatabase.getOrganizeOwner().getEmail().equals(emailAdmin)) {
-                response.put("response", "Email already Exist");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+                if (duplicateAdminEmail == null) {
+                    Admin admin = new Admin();
+                    admin.setEmail(matchedUser.getEmail());
+                    admin.setUid(matchedUser.getUid());
+                    admin.setUsername(matchedUser.getUsername());
+                    admin.setDisplayName(matchedUser.getDisplayName());
+                    System.out.println("---- Admin Email ----");
+                    System.out.println(admin);
+                    adminList.add(admin);
+                    System.out.println(adminList);
+                    organizeInDatabase.setAdminList(adminList);
+                    Organize savedOrganize = organizeRepository.save(organizeInDatabase);
+                    return ResponseEntity.status(HttpStatus.OK).body(savedOrganize);
+                } else if (organizeInDatabase.getOrganizeOwner().getEmail().equals(emailAdmin)) {
+                    response.put("response", "Email already Exist");
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+                } else {
+                    response.put("response", "You already Owner so you can't add your email to be admin again !");
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+                }
+
             } else {
-                response.put("response", "You already Owner so you can't add your email to be admin again !");
+                response.put("response", "Not found this email : " + emailAdmin);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
             }
+
         }
         response.put("response", "Not found this Organize");
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);

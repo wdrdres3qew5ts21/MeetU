@@ -66,7 +66,7 @@ public class Admin {
 
     @Override
     public String toString() {
-        return super.toString()+"Admin{" + "roles=" + roles + '}';
+        return "Admin{" + "uid=" + uid + ", email=" + email + ", username=" + username + ", displayName=" + displayName + ", roles=" + roles + '}';
     }
-    
+
 }
