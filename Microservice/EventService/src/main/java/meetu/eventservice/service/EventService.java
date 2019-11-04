@@ -103,6 +103,7 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.elasticsearch.action.update.UpdateRequest;
 import static org.elasticsearch.common.xcontent.XContentFactory.*;
 import org.elasticsearch.index.get.GetResult;
+import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.springframework.data.domain.Sort;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.sort;
 import org.springframework.data.mongodb.core.aggregation.SortOperation;
@@ -294,7 +295,7 @@ public class EventService {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(responseBody);
     }
 
-    public List<Event> findEventByUsingFilter(String[] eventTags, boolean isRecently, boolean isPopularEvent, String eventDetail, double longitude, double latitude, String areaOfEvent, int page, int contentPerPage) throws IOException {
+    public List<Event> findEventByUsingFilter(String[] eventTags, boolean isRecently,String sortDate, boolean isPopularEvent, String eventDetail, double longitude, double latitude, String areaOfEvent, int page, int contentPerPage) throws IOException {
         BoolQueryBuilder queryFilter = new BoolQueryBuilder();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         SearchRequest searchRequest = new SearchRequest(eventsIndex);
@@ -313,15 +314,30 @@ public class EventService {
             System.out.println("Recently Filter");
             searchSourceBuilder = filterByRecently(searchSourceBuilder, "createEventDate");
         }
+        if(!sortDate.isEmpty()){
+            if(sortDate.equals("asc")){
+                searchSourceBuilder.sort(new FieldSortBuilder("eventStartDate").order(SortOrder.ASC));
+              //  searchSourceBuilder.sorts().add(new FieldSortBuilder("eventStartDate").order(SortOrder.ASC));
+            }else{
+                searchSourceBuilder.sort(new FieldSortBuilder("eventStartDate").order(SortOrder.DESC));
+               // searchSourceBuilder.sorts().add(new FieldSortBuilder("eventStartDate").order(SortOrder.DESC));
+            }
+        }
         if (isPopularEvent == true) {
             System.out.println("Popular Event Filter");
             // filter ต้องอยู่ในช่วงเวลา
             // queryFilter.must(QueryBuilders.rangeQuery("endRegisterDate").lte("now-1d/d"));
-            searchSourceBuilder.sort("totalView", SortOrder.DESC);
+              searchSourceBuilder.sort(new FieldSortBuilder("totalView").order(SortOrder.DESC));
+          //  searchSourceBuilder.sorts().add(new FieldSortBuilder("totalView").order(SortOrder.DESC));
         }
         if (longitude != 0.0 & latitude != 0.0) {
             System.out.println("Geo Filter");
             queryFilter.filter(filterByGeolocation(latitude, longitude, areaOfEvent));
+//            searchSourceBuilder.sorts().add(new GeoDistanceSortBuilder("location.geopoint", latitude, longitude)
+//                            .unit(DistanceUnit.KILOMETERS)
+//                            .order(SortOrder.ASC));
+//                    
+                    
             searchSourceBuilder.sort(
                     new GeoDistanceSortBuilder("location.geopoint", latitude, longitude)
                             .unit(DistanceUnit.KILOMETERS)
@@ -469,7 +485,8 @@ public class EventService {
     }
 
     public SearchSourceBuilder filterByRecently(SearchSourceBuilder searchSourceBuilder, String sortedField) throws IOException {
-        searchSourceBuilder.sort(sortedField, SortOrder.DESC);
+        searchSourceBuilder.sort(new FieldSortBuilder(sortedField).order(SortOrder.DESC));
+      //  searchSourceBuilder.sorts().add(new FieldSortBuilder(sortedField).order(SortOrder.ASC));
         return searchSourceBuilder;
     }
 

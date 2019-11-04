@@ -1,6 +1,6 @@
 <template >
   <div>
-    <transition name="router-anim" enter-active-class="animated slideInRight">
+    <!-- <transition name="router-anim" enter-active-class="animated slideInRight"> -->
       <v-layout row wrap>
         <v-flex xs12>
           <!-- <v-card class="mx-auto" elevation="0" outlined width="100%"> -->
@@ -64,7 +64,7 @@
                         </v-layout>
 
                         <v-flex xs12>
-                          <v-icon color="primary">today</v-icon> Filter by Date
+                          <v-icon color="primary">today</v-icon>Filter by Date
                         </v-flex>
 
                         <v-layout class="mb-4">
@@ -74,24 +74,28 @@
                             chips
                             label=" Sort by Date"
                             color="blue-grey lighten-2"
-                            item-text="sortDate"
-                            item-value="sortDate"
+                            item-text="label"
+                            item-value="value"
                           >
                             <template v-slot:selection="data">
-                              <v-chip :selected="data.selected">{{ data.item}}</v-chip>
+                              <v-chip :selected="data.selected">{{ data.item.label}}</v-chip>
                             </template>
                           </v-autocomplete>
                         </v-layout>
 
-                       
-                          <v-flex xs12>
+                        <v-flex xs12>
                           <v-icon color="primary">room</v-icon>Near your location
-                          </v-flex>
+                        </v-flex>
 
-                          
                         <v-layout row wrap>
                           <v-flex xs4>
-                            <v-select :items="unit" v-model="filterForm.unit" label="unit "></v-select>
+                            <v-select
+                              :items="unit"
+                              item-value="value"
+                              item-text="label"
+                              v-model="filterForm.unit"
+                              label="unit "
+                            ></v-select>
                           </v-flex>
                           <v-flex xs3>
                             <v-text-field
@@ -102,7 +106,7 @@
                           </v-flex>
 
                           <v-flex xs5>
-                            <v-checkbox v-model="checkbox" label="Popular Event"></v-checkbox>
+                            <v-checkbox v-model="isPopular" label="Popular Event"></v-checkbox>
                           </v-flex>
                         </v-layout>
                       </v-layout>
@@ -115,9 +119,8 @@
                     large
                     block
                     color="#341646"
-                    @click="searchByFilter()"
+                    @click="searchEventByFilter()"
                   >Search</v-btn>
-                 
                 </v-card>
               </v-dialog>
 
@@ -171,7 +174,7 @@
             
         </v-btn>-->
       </v-layout>
-    </transition>
+    <!-- </transition> -->
 
     <br />
     <br />
@@ -179,16 +182,16 @@
     <center>
       <div>
         <v-icon medium @click="showTest = !showTest">insert_emoticon</v-icon>
-        <transition
+        <!-- <transition
           name="custom-classes-transition"
           enter-active-class="animated tada"
           leave-active-class="animated tada"
-        >
+        > -->
           <h3 v-if="showTest">You can search event!</h3>
           <br />
 
-          <v-img v-if="showTest" :src="emotionImg" max-width="60"></v-img>
-        </transition>
+          <!-- <v-img v-if="showTest" :src="emotionImg" max-width="60"></v-img> -->
+        <!-- </transition> -->
         <br />
         <br />
       </div>
@@ -217,9 +220,22 @@ export default {
       sound: true,
       widgets: false,
       search: "",
-      sortDate: ["Last Update", "First Update"],
+      sortDate: [
+        { label: "Recently", value: "desc" },
+        { label: "Old date", value: "asc" }
+      ],
       popular: ["Most popular", ""],
-      unit: ["meter", "kilometer"],
+      unit: [
+        {
+          label: "meter",
+          value: "m"
+        },
+        {
+          label: "kilometer",
+          value: "km"
+        }
+      ],
+      isPopular: false,
       isRecently: false,
       isShowEventTag: false,
       categoryList: [],
@@ -294,7 +310,13 @@ export default {
         }
       }
 
+      query += `&isPopularEvent=${this.isPopular}`
+
+      query += `&sortDate=${this.filterForm.sortByDate}`
+
       
+      
+
       console.log(query);
       let searchedEventList = await axios.get(query);
       searchedEventList = searchedEventList.data;

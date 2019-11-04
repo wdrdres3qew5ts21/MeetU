@@ -131,6 +131,7 @@ public class EventController {
             @RequestParam(required = false, defaultValue = "") String eventDetail,
             @RequestParam(required = false) String[] eventTags,
             @RequestParam(required = false, defaultValue = "false") boolean isRecently,
+            @RequestParam(required = false, defaultValue = "") String sortDate,
             @RequestParam(required = false, defaultValue = "false") boolean isPopularEvent,
             @RequestParam(required = false, defaultValue = "0.0", name = "lon") double longitude,
             @RequestParam(required = false, defaultValue = "0.0", name = "lat") double latitude,
@@ -146,7 +147,7 @@ public class EventController {
         }
         return new ResponseEntity<List<Event>>(
                 eventService.findEventByUsingFilter(
-                        eventTags, isRecently, isPopularEvent, eventDetail,
+                        eventTags, isRecently, sortDate,isPopularEvent, eventDetail,
                         longitude, latitude, areaOfEvent,
                         page, contentPerPage), HttpStatus.OK
         );
