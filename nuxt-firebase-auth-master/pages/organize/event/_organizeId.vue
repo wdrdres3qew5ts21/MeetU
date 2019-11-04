@@ -91,7 +91,7 @@
                 </v-btn>
               </v-flex>-->
 
-              <event-card v-for="(event, index) in eventList" :key="index" :event="event" />
+              <event-card-organize v-for="(event, index) in eventList" :key="index" :event="event" />
 
               <br />
 
