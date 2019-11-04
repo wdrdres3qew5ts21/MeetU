@@ -352,12 +352,13 @@ export default {
         .post(
           `${process.env.USER_SERVICE}/organize/${this.organizeId}/admin/${this.newAdminEmail}`
         )
-        .then(emailResponse => {
+        .then(adminResponse => {
           this.$swal({
             type: "success",
             title: "Success to add admin",
             text: `Success to add admin`
           });
+          console.log(adminResponse.datas)
         })
         .catch(err => {
           this.$swal({

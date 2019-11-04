@@ -7,8 +7,18 @@ package meetu.eventservice.scheduler;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import meetu.eventservice.repository.BadgeRepository;
+import meetu.eventservice.repository.CategoryRepository;
+import meetu.eventservice.repository.EventBadgeRepository;
+import meetu.eventservice.repository.EventRepository;
+import meetu.eventservice.repository.UserEventTicketRepository;
+import meetu.eventservice.repository.UserNotificationRepository;
+import org.elasticsearch.client.RestHighLevelClient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 /**
  *
@@ -16,6 +26,21 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class EventScheduler {
+
+    @Autowired
+    private EventRepository eventRepository;
+
+    @Autowired
+    private UserEventTicketRepository userEventTicketRespository;
+
+    @Autowired
+    private UserNotificationRepository userNotificationRepository;
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Scheduled(fixedRate = 60000)
     public void cronJobSch() {

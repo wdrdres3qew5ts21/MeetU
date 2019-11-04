@@ -158,6 +158,7 @@ public class OrganizeService {
         if (organizeInDatabase != null) {
             List<Admin> adminList = organizeInDatabase.getAdminList();
             User matchedUser = userRepository.findByEmailEquals(emailAdmin);
+            User ownerDetail = userRepository.findByUid(organizeInDatabase.getOrganizeOwner().getUid());
             // Optional<Admin> duplicateEmail = adminList.stream().filter(admin -> admin.getEmail().equals(emailAdmin)).findFirst();
             if (matchedUser != null) {
                 Admin duplicateAdminEmail = null;
@@ -165,9 +166,15 @@ public class OrganizeService {
                 for (int i = 0; i < adminList.size(); i++) {
                     if (adminList.get(i).getEmail().equalsIgnoreCase(emailAdmin)) {
                         duplicateAdminEmail = adminList.get(i);
+                        break; 
                     }
                 }
-                if (duplicateAdminEmail == null) {
+                System.out.println("Owner email : "+ownerDetail.getEmail());
+                System.out.println("admin email : "+emailAdmin);
+                if (ownerDetail.getEmail().equals(emailAdmin)) {
+                    response.put("response", "You already Owner so you can't add your email to be admin again !");
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+                }else if (duplicateAdminEmail == null) {
                     Admin admin = new Admin();
                     admin.setEmail(matchedUser.getEmail());
                     admin.setUid(matchedUser.getUid());
@@ -180,11 +187,8 @@ public class OrganizeService {
                     organizeInDatabase.setAdminList(adminList);
                     Organize savedOrganize = organizeRepository.save(organizeInDatabase);
                     return ResponseEntity.status(HttpStatus.OK).body(savedOrganize);
-                } else if (organizeInDatabase.getOrganizeOwner().getEmail().equals(emailAdmin)) {
+                } else if (duplicateAdminEmail != null) {
                     response.put("response", "Email already Exist");
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-                } else {
-                    response.put("response", "You already Owner so you can't add your email to be admin again !");
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
                 }
 
