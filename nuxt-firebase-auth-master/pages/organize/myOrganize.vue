@@ -14,59 +14,43 @@
       </v-flex>
       <v-flex xs6 text-right>
         <br />
-              <h3>Organizer name: {{userForm.firstName}} {{userForm.lastName}}</h3>
-      </v-flex>
-    </v-layout>
+        <div>
+        <h3 >Name: {{userForm.firstName}} {{userForm.lastName}}</h3>
+
+        </div>
+ </v-flex>
+      <div v-if="organizeList == 0">
+        <!-- <h3>Name: {{userForm.firstName}} {{userForm.lastName}}</h3> -->
+        <p style="color:grey">( You are not the organize. )</p>
+        
+     
+    
     <br />
 
+      <center>
+        <!-- <br /> -->
+        <!-- <v-icon medium>mdi-emoticon-cry-outline</v-icon> -->
+        <br />
+        <br />
 
-    <!-- เอาจริงๆ -->
-    <!-- <v-tabs v-model="tabModel" centered color="white" slider-color="#341646">
-      <v-tab v-for="i in tabTopics" :key="i" :href="`#tab-${i}`">{{ i }}</v-tab>
-    </v-tabs>
+        
+        <p style="color:grey">
+          You can
+          <nuxt-link 
+          :to="`/organize/organizerForm`" 
+          class="linkToHomepage">
+          click
+          </nuxt-link> to upgrade account.
+        </p>
+        <!-- <p style="color:grey">You can create new event.</p> -->
+      </center>
 
+      </div>
 
-    <v-tabs-items v-model="tabModel">
-      <v-tab-item v-for="i in tabTopics" :key="i" :value="`tab-${i}`">
-        <v-card flat>
-          <div v-if="organizeList">
-            <nuxt-link
-              v-for="(organize, index) in organizeList"
-              :key="index"
-              :to="`/organize/event/${organize.organizeId}`"
-            >
-              <organize-card :organizeName="organize.organizeName" />
-            </nuxt-link>
-          </div>
-          <div v-else>
-            <center>
-              <br />
-              <p style="color:grey">You not own any Organize.</p>
-            </center>
-          </div>
-        </v-card>
-      </v-tab-item>
-    </v-tabs-items>-->
+      </v-layout>
 
-    <!-- เอาจริงๆ  -->
+    <br />
 
-    <!-- <v-card flat> -->
-    <!-- <div v-if="organizeList">
-      <nuxt-link
-        v-for="(organize, index) in organizeList"
-        :key="index"
-        :to="`/organize/event/${organize.organizeId}`"
-      > -->
-        <!-- <v-badge 
-        overlap 
-        color="#341646">
-          <template v-slot:badge>
-            <v-icon dark small>create</v-icon>
-          </template>
-        </v-badge>-->
-
-        <!-- code ซัน -->
-    
     <div v-if="organizeList">
       <nuxt-link
         v-for="(organize, index) in organizeList"
@@ -82,6 +66,7 @@
         <p style="color:grey">You not own any Organize.</p>
       </center>
     </div>
+    
   </div>
 </template>
 
@@ -97,7 +82,7 @@ export default {
   data() {
     return {
       organizeList: null,
-            userForm: {
+      userForm: {
         badgeList: [],
         interest: [],
         firstName: "",
@@ -115,12 +100,11 @@ export default {
         facebook: "",
         twitter: "",
         instagram: ""
-      },
+      }
     };
   },
   computed: {
     ...mapGetters(["getUser"])
-    
   },
   mounted() {
     this.initUserProfile();
@@ -138,10 +122,10 @@ export default {
         })
         .catch(error => {
           console.log(error);
-          loader.hide()
+          loader.hide();
         });
     },
-        initUserProfile: function() {
+    initUserProfile: function() {
       let loader = this.$loading.show();
       axios
         .get(`${process.env.USER_SERVICE}/user/${this.getUser.uid}`, {
@@ -169,7 +153,7 @@ export default {
         .catch(err => {
           loader.hide();
         });
-    },
+    }
   }
 };
 </script>
@@ -187,6 +171,13 @@ export default {
   background-repeat: no-repeat;
   background-size: cover;
   background: transparent; */
+}
+
+.linkToHomepage {
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 18px;
+  color: #100c4b;
 }
 
 .editOrganizerLink {

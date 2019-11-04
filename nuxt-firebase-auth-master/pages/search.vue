@@ -178,7 +178,7 @@
 
     <center>
       <div>
-        <v-icon size="50" @click="showTest = !showTest">insert_emoticon</v-icon>
+        <v-icon medium @click="showTest = !showTest">insert_emoticon</v-icon>
         <transition
           name="custom-classes-transition"
           enter-active-class="animated tada"
