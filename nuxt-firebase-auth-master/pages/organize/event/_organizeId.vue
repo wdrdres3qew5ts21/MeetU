@@ -364,6 +364,7 @@ export default {
             title: "Success to add admin",
             text: `Success to add admin`
           });
+          this.loadAdminDetail()
           console.log(adminResponse.datas);
         })
         .catch(err => {
@@ -443,6 +444,7 @@ export default {
               title: "Delete Admin success",
               text: `Delete Admin success`
             });
+            this.loadAdminDetail()
           })
           .catch(err => {
             this.$swal({

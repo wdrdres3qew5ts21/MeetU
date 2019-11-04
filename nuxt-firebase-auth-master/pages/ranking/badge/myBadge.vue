@@ -29,9 +29,9 @@
           <td>
             <br />
             <center>
-              <v-avatar size="60">
-                <img :src="props.item.badgePicture" />
-              </v-avatar>
+              <!-- <v-avatar size="60" > -->
+                <img :src="props.item.badgePicture" width="60px"/>
+              <!-- </v-avatar> -->
             </center>
             <br />
           </td>

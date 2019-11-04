@@ -181,6 +181,7 @@ public class OrganizeService {
                     admin.setUsername(matchedUser.getUsername());
                     admin.setDisplayName(matchedUser.getDisplayName());
                     System.out.println("---- Admin Email ----");
+                    adminList.add(admin);
                     organizeInDatabase.setAdminList(adminList);
                     Organize savedOrganize = organizeRepository.save(organizeInDatabase);
                     return ResponseEntity.status(HttpStatus.OK).body(savedOrganize);

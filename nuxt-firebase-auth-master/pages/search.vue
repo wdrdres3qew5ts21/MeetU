@@ -286,12 +286,15 @@ export default {
       let query = `${process.env.EVENT_SERVICE}/events?isRecently=${
         this.isRecently
       }&eventDetail=${this.search.toLowerCase()}`;
+
       if (this.selectedCategoryList.length > 0) {
         query += `&eventTags=`;
         for (let i = 0; i < this.selectedCategoryList.length; i++) {
           query += `${this.selectedCategoryList[i]},`;
         }
       }
+
+      
       console.log(query);
       let searchedEventList = await axios.get(query);
       searchedEventList = searchedEventList.data;
