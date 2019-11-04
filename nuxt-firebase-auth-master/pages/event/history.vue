@@ -63,9 +63,8 @@
       <br />
     </div>
 
-    <div v-if="userEventTicketList == null"></div>
 
-    <div v-else>
+    <div v-if="userEventTicketList.length == 0">
       <center>
         <br />
         <v-icon medium>mdi-emoticon-cry-outline</v-icon>
