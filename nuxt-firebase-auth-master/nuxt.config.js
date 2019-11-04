@@ -27,7 +27,7 @@ module.exports = {
     "display": "standalone",
     "icons": [
       {
-        "src": "~/assets/logo/meetu-alt.png",
+        "src": "~/assets/logo/meetu.png",
         "type": "image/png",
         "sizes": "512x512"
       }

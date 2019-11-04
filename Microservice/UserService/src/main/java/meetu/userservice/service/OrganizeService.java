@@ -181,9 +181,6 @@ public class OrganizeService {
                     admin.setUsername(matchedUser.getUsername());
                     admin.setDisplayName(matchedUser.getDisplayName());
                     System.out.println("---- Admin Email ----");
-                    System.out.println(admin);
-                    adminList.add(admin);
-                    System.out.println(adminList);
                     organizeInDatabase.setAdminList(adminList);
                     Organize savedOrganize = organizeRepository.save(organizeInDatabase);
                     return ResponseEntity.status(HttpStatus.OK).body(savedOrganize);
@@ -238,12 +235,12 @@ public class OrganizeService {
             String uid = decodedToken.getUid();
             Organize adminOrganize = organizeRepository.findByAdminListUidIsInAndOrganizeId(uid, organizeId);
             Organize ownerOrganize = organizeRepository.findByOrganizeOwnerUidAndOrganizeId(uid, organizeId);
-            System.out.println("-- organizeId ---");
-            System.out.println(organizeId);
-            System.out.println("--- owner ---");
-            System.out.println(ownerOrganize);
-            System.out.println("-- admin ---");
-            System.out.println(adminOrganize);
+//            System.out.println("-- organizeId ---");
+//            System.out.println(organizeId);
+//            System.out.println("--- owner ---");
+//            System.out.println(ownerOrganize);
+//            System.out.println("-- admin ---");
+//            System.out.println(adminOrganize);
             if (ownerOrganize != null) {
                 response.put("isOwner", true);
                 response.put("isAdmin", true);

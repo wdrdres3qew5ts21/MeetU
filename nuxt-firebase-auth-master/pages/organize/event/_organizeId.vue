@@ -116,49 +116,74 @@
         <v-tab-item>
           <br />
           <h3>Admin Lists</h3>
-          <v-layout row >
+          <v-layout row>
             <v-flex xs12>
-            <v-card>
-              <v-list two-line subheader v-if="adminList[0].userDetail.length > 0">
-                <v-list-tile v-for="(admin, index) in adminList" :key="index" avatar>
+              <v-card>
+                <v-list two-line subheader v-if="adminList[0].userDetail.length > 0">
+                  <v-list-tile
+                    v-for="(admin, index) in adminList[0].userDetail"
+                    :key="index"
+                    avatar
+                  >
+                    <v-list-tile-avatar>
+                      <img :src="admin.photoURL" />
+                    </v-list-tile-avatar>
+
+                    <v-list-tile-content>
+                      <v-list-tile-title>{{ admin.displayName }}</v-list-tile-title>
+                      <v-list-tile-sub-title>{{ admin.email }}</v-list-tile-sub-title>
+                    </v-list-tile-content>
+
+                    <v-list-tile-action>
+                      <v-btn icon ripple @click="removeItem(admin.uid)">
+                        <v-icon color="primary">person_add_disabled</v-icon>
+                      </v-btn>
+                    </v-list-tile-action>
+                  </v-list-tile>
+                </v-list>
+                <!-- ปุ่มเพิ่ม Admin-->
+
+                <v-list-tile>
                   <v-list-tile-avatar>
-                    <img :src="admin.userDetail[0].photoURL" />
+                    <img />
                   </v-list-tile-avatar>
 
                   <v-list-tile-content>
-                    <v-list-tile-title>{{ admin.userDetail[0].displayName }}</v-list-tile-title>
-                    <v-list-tile-sub-title>{{ admin.userDetail[0].displayName }}</v-list-tile-sub-title>
+                    <v-text-field placeholder="add admin email..." v-model="newAdminEmail"></v-text-field>
                   </v-list-tile-content>
-
-                  <v-list-tile-action>
-                    <v-btn icon ripple @click="removeItem(admin.userDetail[0].uid)">
-                      <v-icon color="primary">person_add_disabled</v-icon>
+                  <v-list-tile-action @click="addAdminToOrganize()">
+                    <v-btn icon ripple>
+                      <v-icon color="primary">person_add</v-icon>
                     </v-btn>
                   </v-list-tile-action>
                 </v-list-tile>
-              </v-list>
-              <!-- ปุ่มเพิ่ม Admin-->
-              <v-list-tile>
-                <v-list-tile-content>
-                  <v-text-field placeholder="add admin email..." v-model="newAdminEmail"></v-text-field>
-                </v-list-tile-content>
-
-                <v-list-tile-action @click="addAdminToOrganize()">
-                  <v-btn icon ripple>
-                    <v-icon color="primary">person_add</v-icon>
-                  </v-btn>
-                </v-list-tile-action>
-              </v-list-tile>
-            </v-card>
+              </v-card>
             </v-flex>
           </v-layout>
+          <br />
+          <!-- <v-text-field
+            label="Add new admin"
+            placeholder="Fill admin email to assign role of admin"
+            append-outer-icon="person_add"
+          ></v-text-field>-->
+
+          <!-- <v-layout row wrap>
+                    <v-flex xs11>
+                 <v-text-field placeholder="add admin email..." v-model="newAdminEmail"></v-text-field>
+              </v-flex>
+              <v-flex >
+                <v-btn icon ripple>
+                    <v-icon color="primary">person_add</v-icon>
+                  </v-btn>
+              </v-flex>
+          </v-layout>-->
         </v-tab-item>
         <!-- QR Code Scanner-->
         <v-tab-item v-if="isAdmin==true">
           <v-card flat>
             <center>
               <br />
-              <h3 class="h3Text">You are {{userForm.firstName}} {{userForm.lastName}}</h3>
+              <h3 class="h3Text">You are {{getUser.firstName}} {{getUser.lastName}}</h3>
               <br />
               <div v-if="isCameraOpen">
                 <client-only placeholder="loading...">
@@ -249,25 +274,6 @@ export default {
       },
       defaultImage:
         "https://www.elegantthemes.com/blog/wp-content/uploads/2017/03/Facebook-Groups-for-Bloggers-shutterstock_555845587-ProStockStudio-FT.png",
-      userForm: {
-        badgeList: [],
-        interest: [],
-        firstName: "",
-        lastName: "",
-        gender: "",
-        dateArray: [],
-        dateOfBirth: "",
-        phone: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-        password: "",
-        website: "",
-        line: "",
-        facebook: "",
-        twitter: "",
-        instagram: ""
-      },
       adminList: [
         {
           userDetail: []
@@ -358,7 +364,7 @@ export default {
             title: "Success to add admin",
             text: `Success to add admin`
           });
-          console.log(adminResponse.datas)
+          console.log(adminResponse.datas);
         })
         .catch(err => {
           this.$swal({
