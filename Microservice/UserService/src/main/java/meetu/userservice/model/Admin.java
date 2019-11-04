@@ -17,7 +17,7 @@ public class Admin {
     private String uid;
     
     private String email;
-
+    
     private String username;
     
     private String displayName;

@@ -116,7 +116,7 @@
         <v-tab-item>
           <br />
           <h3>Admin Lists</h3>
-          <v-layout row>
+          <v-layout row >
             <v-flex xs12>
             <v-card>
               <v-list two-line subheader v-if="adminList[0].userDetail.length > 0">
@@ -132,7 +132,7 @@
 
                   <v-list-tile-action>
                     <v-btn icon ripple @click="removeItem(admin.userDetail[0].uid)">
-                      <v-icon color="primary">person_add_disable</v-icon>
+                      <v-icon color="primary">person_add_disabled</v-icon>
                     </v-btn>
                   </v-list-tile-action>
                 </v-list-tile>
