@@ -14,17 +14,17 @@
       </v-flex>
       <v-flex xs6 text-right>
         <br />
-        <div v-if="organizeList == null">
-        <h3 >Organizer name: {{userForm.firstName}} {{userForm.lastName}}</h3>
+        <div>
+        <h3 >Name: {{userForm.firstName}} {{userForm.lastName}}</h3>
 
         </div>
-
-        <div v-else>
-        <h3>Name: {{userForm.firstName}} {{userForm.lastName}}</h3>
+ </v-flex>
+      <div v-if="organizeList == 0">
+        <!-- <h3>Name: {{userForm.firstName}} {{userForm.lastName}}</h3> -->
         <p style="color:grey">( You are not the organize. )</p>
-        </div>
-      </v-flex>
-    </v-layout>
+        
+     
+    
     <br />
 
       <center>
@@ -45,6 +45,10 @@
         <!-- <p style="color:grey">You can create new event.</p> -->
       </center>
 
+      </div>
+
+      </v-layout>
+
     <br />
 
     <div v-if="organizeList">
@@ -62,6 +66,7 @@
         <p style="color:grey">You not own any Organize.</p>
       </center>
     </div>
+    
   </div>
 </template>
 
