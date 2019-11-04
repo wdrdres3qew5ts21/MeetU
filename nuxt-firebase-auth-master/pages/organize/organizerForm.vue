@@ -74,7 +74,7 @@
         </span>
         <br />
 
-        <v-flex xs12>
+        <!-- <v-flex xs12>
           <v-alert :value="isUserEmailNotFound" color="error" outline>{{userEmailNotFound}}</v-alert>
         </v-flex>
         <v-flex xs12 d-flex>
@@ -92,7 +92,7 @@
               </v-chip>
             </template>
           </v-combobox>
-        </v-flex>
+        </v-flex> -->
 
         <v-checkbox v-model="agreement" :rules="[rules.required]" color="#341646">
           <template v-slot:label>

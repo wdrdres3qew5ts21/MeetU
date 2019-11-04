@@ -219,6 +219,7 @@ export default {
       );
       console.log("-- recommend ---");
       console.log(recommendEventList.data);
+
       this.recommendedEventList = recommendEventList.data.body;
     },
     getPopularEvent: async function() {
@@ -229,6 +230,7 @@ export default {
         )
         .then(popularEventList => {
           this.popularEventList = popularEventList.data;
+
           console.log(this.recentlyEventList);
         })
         .catch(error => {

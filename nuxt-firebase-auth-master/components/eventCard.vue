@@ -5,13 +5,13 @@
       <v-container fill-height fluid pa-2>
         <v-layout fill-height>
           <v-flex xs12 align-end flexbox>
-            <span class="textName" v-text="event.eventName"></span>
+            <span class="textName" v-text="event.eventName.length > 20 ? event.eventName.substr(0,40)+'...' :event.eventName "></span>
           </v-flex>
         </v-layout>
       </v-container>
-      <v-card-actions>
+      <!-- <v-card-actions>
         <h3 class="#AEAEAE--text">{{event.eventName}}</h3>
-      </v-card-actions>
+      </v-card-actions> -->
 
       <!-- <v-flex class="text-xs-right">
          <v-btn fab dark small color="#341646" @click=" isEditing= !isEditing">
