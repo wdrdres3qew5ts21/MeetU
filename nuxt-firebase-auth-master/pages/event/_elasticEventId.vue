@@ -50,7 +50,6 @@
         </v-flex>
         <v-flex xs12 sm5 md5 offset-(xs0 | lg2) class="content">
           <v-icon size="23">alarm</v-icon>
-
           {{formatAMPM(eventStartDate)}}
         </v-flex>
       </v-layout>
@@ -72,7 +71,17 @@
       <div>
         <p></p>
         <p class="eventDate">Event Detail</p>
-        <p class="text-justify content">{{eventDetail}}</p>
+        <div>
+          <span>{{readMoreActivated ? eventDetail : eventDetail.slice(0, 200) }}</span>
+          <br />
+          <br />
+          <center>
+            <a
+              @click="readMoreActivated = !readMoreActivated"
+            >{{readMoreActivated ? 'Show less' : 'Read more'}}</a>
+          </center>
+        </div>
+        <!-- <div class="a content">{{eventDetail}}</div> -->
       </div>
       <br />
       <p></p>
@@ -82,7 +91,9 @@
           <img :src="badge.badgePicture" />
         </v-list-tile-avatar>
         <v-list-tile-content>
-          <v-list-tile-title ><b>{{badge.badgeName}}</b></v-list-tile-title>
+          <v-list-tile-title>
+            <b>{{badge.badgeName}}</b>
+          </v-list-tile-title>
           <v-list-tile-sub-title>Exp: {{badge.exp}}</v-list-tile-sub-title>
         </v-list-tile-content>
 
@@ -93,9 +104,9 @@
       <br />
       <br />
       <p class="eventDate">Location</p>
-     
-        <p class="content">{{location.detail}}</p>
-      
+
+      <p class="content">{{location.detail}}</p>
+
       <center>
         <v-container>
           <v-layout row wrap>
@@ -129,11 +140,11 @@
         </v-container>
         <br />
       </center>
-      <br>
+      <br />
       <p class="eventDate">Tickets</p>
-     
-        <p>{{eventName}}</p>
-   
+
+      <p>{{eventName}}</p>
+
       <v-layout row wrap>
         <v-flex xs7>Free</v-flex>
         <v-spacer></v-spacer>
@@ -178,7 +189,7 @@
       {{organizeName || '404 Network might be trouble...'}}
       <br />
 
-      <b>Website {{website || 'Not have information...'}} :</b>
+      <b>Website : {{website || 'Not have information...'}}</b>
       <br />
       <b>Email : {{email || 'Not have information...'}}</b>
       <br />
@@ -212,7 +223,10 @@ export default {
   },
   data() {
     return {
+       show: true,
+      readMoreActivated: false,
       reserveTicket: {},
+      readMore: false,
       qrCodeSrc: "demo",
       isTicketSelected: true,
       isViewTicketDetail: true,
@@ -411,6 +425,9 @@ export default {
       let time = date.toLocaleTimeString("en-US", options);
       return time;
     },
+    activateReadMore() {
+      this.readMoreActivated = true;
+    },
     formatDateForReadable: function(formatDate) {
       const months = [
         "Jan",
@@ -462,9 +479,29 @@ export default {
 .content {
   font-size: 16px;
 }
-.eventName{
-   color: #341646;
-   font-size: 25px;
+.eventName {
+  color: #341646;
+  font-size: 25px;
+}
+div.a {
+  white-space: nowrap;
+  width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 100px;
+}
+
+div.a:hover {
+  overflow: visible;
+}
+.a {
+  font-weight: 600;
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>
 
