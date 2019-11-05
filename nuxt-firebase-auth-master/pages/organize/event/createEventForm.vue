@@ -842,7 +842,9 @@ export default {
       console.log(this.eventForm.eventEndDate);
 
       // let date = new Date(eventEndDateAndTime);
-      // eventEndDateAndTime = date.getDate()  + "-" + date.getMonth() + "-" + date.getFullYear() + "  Time  "+ date.getHours() + ":" + date.getMinutes();
+      // eventEndDateAndTime = date.getDate3
+      
+      ()  + "-" + date.getMonth() + "-" + date.getFullYear() + "  Time  "+ date.getHours() + ":" + date.getMinutes();
       // console.log(eventEndDateAndTime);
     }
   }
