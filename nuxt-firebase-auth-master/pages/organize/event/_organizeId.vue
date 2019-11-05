@@ -91,10 +91,14 @@
                 </v-btn>
               </v-flex>-->
 
-              <event-card v-for="(event, index) in eventList" :key="index" 
-              @editEvent="editEvent"
-              @deleteEvent="deleteEvent"
-              :event="event" :isOwner="isOwner" />
+              <event-card
+                v-for="(event, index) in eventList"
+                :key="index"
+                @editEvent="editEvent"
+                @deleteEvent="deleteEvent"
+                :event="event"
+                :isOwner="isOwner"
+              />
 
               <br />
 
@@ -127,6 +131,7 @@
                     v-for="(admin, index) in adminList[0].userDetail"
                     :key="index"
                     avatar
+                    @click="$router.push(`/userProfile/${admin.uid}`)"
                   >
                     <v-list-tile-avatar>
                       <img :src="admin.photoURL" />
@@ -350,18 +355,19 @@ export default {
           });
         });
     },
-    editEvent: function(event){
-      console.log(event)
+    editEvent: function(event) {
+      console.log(event);
+      this.$router.push("/organize");
     },
     deleteEvent: async function(event) {
-      console.log(event)
+      console.log(event);
       const { value: formValues } = await Swal.fire({
         title: "Do you want to delete this event?",
         html:
-        `<p>ElasticEvent ID : <b>${event.elasticEventId}</b></p> ` +
-        `<p>Event Name : <b>${event.eventName}</b></p>` +
-        `<p> <input id="confirmDelete" placeholder='Type  "confirmed" to delete this event' class="swal2-input"> <p>` +
-        `<p> <input id="deleteMessageDetail"   placeholder='Please type reason for delete this event'  class="swal2-input"> </p>`,
+          `<p>ElasticEvent ID : <b>${event.elasticEventId}</b></p> ` +
+          `<p>Event Name : <b>${event.eventName}</b></p>` +
+          `<p> <input id="confirmDelete" placeholder='Type  "confirmed" to delete this event' class="swal2-input"> <p>` +
+          `<p> <input id="deleteMessageDetail"   placeholder='Please type reason for delete this event'  class="swal2-input"> </p>`,
         // inputPlaceholder: "Type  'confirmed' to delete this event ",
         // input: "text",
         inputAttributes: {
@@ -369,18 +375,19 @@ export default {
         },
         preConfirm: () => {
           return {
-            confirmDelete: document.getElementById('confirmDelete').value,
-            deleteMessageDetail: document.getElementById('deleteMessageDetail').value
-          }
+            confirmDelete: document.getElementById("confirmDelete").value,
+            deleteMessageDetail: document.getElementById("deleteMessageDetail")
+              .value
+          };
         },
         showCancelButton: true,
         confirmButtonText: "Confirm",
         allowOutsideClick: () => !Swal.isLoading()
-      })
+      });
 
-      if(formValues ) {
-        console.log(formValues)
-        
+      if (formValues) {
+        console.log(formValues);
+
         if (formValues) {
           Swal.fire({
             title: "Are you sure?",
@@ -396,22 +403,31 @@ export default {
             cancelButtonText: "No, keep it!"
           }).then(result => {
             if (result.value) {
-              axios.post(`${process.env.EVENT_SERVICE}/event/delete`,{
-                elasticEventId: event.elasticEventId,
-                confirmDelete: formValues.confirmDelete,
-                deleteMessageDetail: formValues.deleteMessageDetail,
-              }).then(deleteResponse=>{
-                Swal.fire("Deleted!", "Your event has been deleted.", "success");
-                this.loadAllEventOfOrganize()
-              }).catch(err=>{
-                Swal.fire("Failed to delete !", err.response.data.response, "error")
-              })
+              axios
+                .post(`${process.env.EVENT_SERVICE}/event/delete`, {
+                  elasticEventId: event.elasticEventId,
+                  confirmDelete: formValues.confirmDelete,
+                  deleteMessageDetail: formValues.deleteMessageDetail
+                })
+                .then(deleteResponse => {
+                  Swal.fire(
+                    "Deleted!",
+                    "Your event has been deleted.",
+                    "success"
+                  );
+                  this.loadAllEventOfOrganize();
+                })
+                .catch(err => {
+                  Swal.fire(
+                    "Failed to delete !",
+                    err.response.data.response,
+                    "error"
+                  );
+                });
             }
           });
         }
-      };
-
-
+      }
     },
     verifyIfUserIsOrganizeMember() {
       console.log("------ verify status ------");
@@ -540,7 +556,7 @@ export default {
           });
       });
     },
-        initUserProfile: function() {
+    initUserProfile: function() {
       let loader = this.$loading.show();
       axios
         .get(`${process.env.USER_SERVICE}/user/${this.getUser.uid}`, {

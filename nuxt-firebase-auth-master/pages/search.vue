@@ -142,6 +142,8 @@
                 >Search</v-btn>
               </v-flex>
             </v-layout>
+
+            <br>
             <v-layout row wrap>
               <v-chip
                 v-for="(categoryChip, index) in selectedCategoryList"
@@ -181,7 +183,9 @@
 
     <center>
       <div v-if="searchedEventList.length==0">
-        <v-icon medium @click="showTest = !showTest">insert_emoticon</v-icon>
+        
+        <!-- <v-icon large @click="showTest = !showTest"> mdi-calendar-search </v-icon> -->
+        <v-icon large @click="showTest = !showTest">mdi mdi-emoticon-excited-outline spin</v-icon>
         <transition
           name="custom-classes-transition"
           enter-active-class="animated tada"
@@ -207,6 +211,7 @@ import { mapActions, mapGetters } from "vuex";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { mockCategoryList } from "@/utils/categoryJson";
+import "@mdi/font/css/materialdesignicons.css";
 
 export default {
   name: "search",
@@ -352,5 +357,21 @@ export default {
   background-repeat: no-repeat;
   background-size: cover;
   background: transparent; */
+}
+
+@keyframes spin {
+    from {
+        transform:rotate(0deg);
+    }
+    to {
+        transform:rotate(360deg);
+    }
+}
+
+.spin {
+  animation-name: spin;
+  animation-duration: 4000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
 }
 </style>
