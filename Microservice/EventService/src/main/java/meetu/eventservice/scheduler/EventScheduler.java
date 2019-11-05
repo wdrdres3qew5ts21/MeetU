@@ -13,6 +13,7 @@ import meetu.eventservice.repository.EventBadgeRepository;
 import meetu.eventservice.repository.EventRepository;
 import meetu.eventservice.repository.UserEventTicketRepository;
 import meetu.eventservice.repository.UserNotificationRepository;
+import meetu.eventservice.service.EventService;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -35,6 +36,9 @@ public class EventScheduler {
 
     @Autowired
     private UserNotificationRepository userNotificationRepository;
+    
+    @Autowired
+    private EventService eventService;
 
     @Autowired
     private MongoTemplate mongoTemplate;
@@ -42,12 +46,14 @@ public class EventScheduler {
     @Autowired
     private RestTemplate restTemplate;
 
-    @Scheduled(fixedRate = 60000)
+    // 5 minute ระบบจะทำการ Query ขึ้นมาเช็ค Event ที่จะทำการเตือน
+    @Scheduled(fixedRate = 300000)
     public void cronJobSch() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         Date now = new Date();
         String strDate = sdf.format(now);
         System.out.println("Java cron job expression:: " + strDate);
+        eventService.pushNotificationForRemindEvent();
     }
 
 }

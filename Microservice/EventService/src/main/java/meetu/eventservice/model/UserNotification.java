@@ -6,6 +6,7 @@
 package meetu.eventservice.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -21,6 +22,19 @@ public class UserNotification {
     private String notificationToken;
     
     private String uid;
+    
+    @Transient
+    private String messageDetail;
+
+    public String getMessageDetail() {
+        return messageDetail;
+    }
+
+    public void setMessageDetail(String messageDetail) {
+        this.messageDetail = messageDetail;
+    }
+    
+    
 
     public String getNotificationToken() {
         return notificationToken;

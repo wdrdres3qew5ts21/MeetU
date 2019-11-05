@@ -68,10 +68,40 @@ public class Event {
     
     private double totalRating;
     
+    private boolean isNotificationBeforeDay;
+    
+    private boolean isNotificationBeforeHour;
+    
+    private boolean isNotificationAtStart;
+    
     private boolean isEventStart;
     
     private boolean isEventEnd;
 
+    public boolean isIsNotificationBeforeDay() {
+        return isNotificationBeforeDay;
+    }
+
+    public void setIsNotificationBeforeDay(boolean isNotificationBeforeDay) {
+        this.isNotificationBeforeDay = isNotificationBeforeDay;
+    }
+
+    public boolean isIsNotificationBeforeHour() {
+        return isNotificationBeforeHour;
+    }
+
+    public void setIsNotificationBeforeHour(boolean isNotificationBeforeHour) {
+        this.isNotificationBeforeHour = isNotificationBeforeHour;
+    }
+
+    public boolean isIsNotificationAtStart() {
+        return isNotificationAtStart;
+    }
+
+    public void setIsNotificationAtStart(boolean isNotificationAtStart) {
+        this.isNotificationAtStart = isNotificationAtStart;
+    }
+    
     public double getTotalRating() {
         return totalRating;
     }

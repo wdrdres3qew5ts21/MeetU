@@ -142,7 +142,7 @@
                       <v-list-tile-sub-title>{{ admin.email }}</v-list-tile-sub-title>
                     </v-list-tile-content>
 
-                    <v-list-tile-action>
+                    <v-list-tile-action v-if="isOwner">
                       <v-btn icon ripple @click="removeItem(admin.uid)">
                         <v-icon color="primary">person_add_disabled</v-icon>
                       </v-btn>
@@ -151,7 +151,7 @@
                 </v-list>
                 <!-- ปุ่มเพิ่ม Admin-->
 
-                <v-list-tile>
+                <v-list-tile v-if="isOwner">
                   <v-list-tile-avatar>
                     <img />
                   </v-list-tile-avatar>

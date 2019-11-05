@@ -5,6 +5,7 @@
  */
 package meetu.eventservice.controller;
 
+import com.google.firebase.messaging.FirebaseMessagingException;
 import meetu.eventservice.model.Category;
 import java.io.IOException;
 import java.util.HashMap;
@@ -57,6 +58,19 @@ public class EventController {
         return eventService.createEvent(event);
     }
     
+    @PostMapping("/event/subscribe/{elasticEventId}")
+    public ResponseEntity subscribeEventTopic(@RequestBody UserNotification userNotification, @PathVariable String subscribeElasticEventId) throws FirebaseMessagingException{
+        return eventService.subscribeEventTopic(userNotification.getNotificationToken(), subscribeElasticEventId);
+    }
+    
+    @PostMapping("/event/force/push/{elasticEventId}")
+    public ResponseEntity forcePushNotificationFromAdmin(
+            @PathVariable String elasticEventId, 
+            @RequestBody UserNotification notification) throws FirebaseMessagingException{
+        String token= "";
+        return eventService.forcePushNotificationFromAdmin(token, elasticEventId, notification.getMessageDetail());
+    }
+    
     @GetMapping("/events/organize/{organizeId}")
     public ResponseEntity findAllEventOfOrganize(@PathVariable String organizeId) {
         return eventService.findAllEventOfOrganize(organizeId);
@@ -105,9 +119,10 @@ public class EventController {
         return eventService.deleteEventByElasticId(deletedEvent);
     }
     
-    @PostMapping("/fuck")
-    public ResponseEntity deleteEventByElasticIdTest(@RequestBody  UserEventTicket deletedEvent) {
-        return eventService.deleteEventByElasticIdTest(deletedEvent);
+    @GetMapping("/test/{elasticEventId}")
+    public ResponseEntity deleteEventByElasticIdTest(@PathVariable  String elasticEventId) {
+        eventService.pushNotificationForRemindEvent();
+        return null;
     }
 
     @GetMapping("/events/popular")

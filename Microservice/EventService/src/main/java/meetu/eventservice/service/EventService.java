@@ -51,9 +51,11 @@ import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.FuzzyQueryBuilder;
 import com.google.firebase.messaging.BatchResponse;
+import com.google.firebase.messaging.FcmOptions;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Notification;
+import com.google.firebase.messaging.TopicManagementResponse;
 import com.google.firebase.messaging.WebpushConfig;
 import com.mongodb.BasicDBObject;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
@@ -159,7 +161,7 @@ public class EventService {
 
     private final String eventsIndex = "events";
 
-    public void pushNotificationOfEvent(String eventName, String eventDetail) {
+    public void pushNotificationToAllUserWhenEventCreate(String eventName, String eventDetail) {
         // Create a list containing up to 100 messages.
         List<UserNotification> userNotifications = userNotificationRepository.findAll();
         List<Message> messages = new ArrayList<>();
@@ -181,9 +183,6 @@ public class EventService {
             } catch (FirebaseMessagingException ex) {
                 Logger.getLogger(EventService.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-// See the BatchResponse reference documentation
-// for the contents of response.
             System.out.println(response.getSuccessCount() + " messages were sent successfully");
         }
 
@@ -255,7 +254,7 @@ public class EventService {
                 }
             }
         }
-        this.pushNotificationOfEvent(event.getEventName(), event.getEventDetail());
+        this.pushNotificationToAllUserWhenEventCreate(event.getEventName(), event.getEventDetail());
         return ResponseEntity.status(HttpStatus.CREATED).body(savedEventMongoDB);
     }
 
@@ -267,7 +266,7 @@ public class EventService {
         DeleteResponse deleteResponse = null;
         Event eventForDelete = eventRepository.findByElasticEventId(elasticEventId);
         if (eventForDelete != null) {
-            if (deletedEvent.getConfirmDelete().equals("confirmed") & !deletedEvent.getDeleteMessageDetail().isEmpty() ) {
+            if (deletedEvent.getConfirmDelete().equals("confirmed") & !deletedEvent.getDeleteMessageDetail().isEmpty()) {
                 System.out.println("--- delete detail -----");
                 System.out.println(deletedEvent);
                 try {
@@ -801,6 +800,98 @@ public class EventService {
         mongoTemplate.findAndModify(query, updateDeletedEventDetailToUserTicket, UserEventTicket.class);
 
         return null;
+    }
+
+    public void pushNotificationForRemindEvent() {
+        Event event = eventRepository.findByElasticEventId("KL3RO24BGta3uOKHWgJy");
+        Date nowDate = new Date();
+        Date createEventDate = event.getEventStartDate();
+        
+        long diff = createEventDate.getTime() - nowDate.getTime();
+        long diffSeconds = diff / 1000 % 60;
+        long diffMinutes = diff / (60 * 1000) % 60;
+        long diffHours = diff / (60 * 60 * 1000);
+        int diffInDays = (int) ((createEventDate.getTime() - nowDate.getTime()) / (1000 * 60 * 60 * 24));
+        System.out.println("diff "+ diff);
+        System.out.println("diff day " + diffInDays);
+        System.out.println("diff hour " + diffHours);
+        System.out.println("diff min "  + diffMinutes);
+        System.out.println("diff sec " + diffSeconds);
+        
+        
+        AggregationOperation match = Aggregation.match(
+                Criteria.where("eventStartDate").lte(new Date())
+                        .and("eventStartDate").gte(  new Date())
+        ) ;
+        SortOperation sortByTicketCreateTime = sort(new Sort(Sort.Direction.DESC, "_id"));
+        //Aggregation aggregation = Aggregation.newAggregation(lookupOperation, match, sortByTicketCreateTime);
+      //  List<BasicDBObject> results = mongoTemplate.aggregate(aggregation, "userEventTicket", BasicDBObject.class).getMappedResults();
+
+        if (diffInDays > 1) {
+            System.err.println("Difference in number of days (2) : " + diffInDays);
+        } else if (diffHours > 24) {
+            System.err.println(">24");
+        } else if ((diffHours == 24) && (diffMinutes >= 1)) {
+            System.err.println("minutes");
+        }
+        
+        HashMap<String, String> response = new HashMap<>();
+
+    }
+
+    public ResponseEntity forcePushNotificationFromAdmin(String token, String elasticEventId, String messageDetail) throws FirebaseMessagingException {
+        System.out.println("-- force push ---");
+        Event elasticEventInDatabase = eventRepository.findByElasticEventId(elasticEventId);
+        HashMap<String, String> response = new HashMap<>();
+        if (elasticEventInDatabase != null) {
+            List<String> userListUid = elasticEventInDatabase.getUserLists();
+            List<UserNotification> userNotificationList = userNotificationRepository.findByUidIsIn(userListUid);
+            if (userNotificationList != null) {
+                elasticEventInDatabase.getEventStartDate();
+                List<Message> messages = new ArrayList<>();
+                HashMap<String, String> dataPayload = new HashMap<>();
+                dataPayload.put("link", "https://meetu-69b29.firebaseapp.com/event/"+elasticEventId);
+                for (UserNotification userNotification : userNotificationList) {
+                    messages = Arrays.asList(
+                            Message.builder()
+                                    .setNotification(new Notification(
+                                            elasticEventInDatabase.getEventName(),
+                                            messageDetail))
+                                    .setToken(userNotification.getNotificationToken())
+                                    .setWebpushConfig(WebpushConfig.builder().putAllData(dataPayload).build() )
+                                    .build()
+                    );
+                }
+                BatchResponse responsePush = null;
+                try {
+                    responsePush = FirebaseMessaging.getInstance().sendAll(messages);
+                } catch (FirebaseMessagingException ex) {
+                    Logger.getLogger(EventService.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                System.out.println(responsePush.getSuccessCount() + " messages were sent successfully");
+                response.put("response", responsePush.getSuccessCount() + " messages were sent successfully");
+                return ResponseEntity.status(HttpStatus.OK).body(response);
+            } else {
+                response.put("response", "Not have any user to push notification");
+                return ResponseEntity.status(HttpStatus.OK).body(response);
+            }
+        } else {
+            response.put("response", "Not found this event : " + elasticEventId);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+    }
+
+    public void pushNotificationForUserThatHaveTicket(String elasticEventId, String messageDetail) {
+        return;
+    }
+
+    public ResponseEntity subscribeEventTopic(String notificationToken, String subscribeElasticEventId) throws FirebaseMessagingException {
+        List<String> registrationTokens = Arrays.asList(
+                notificationToken
+        );
+        TopicManagementResponse response = FirebaseMessaging.getInstance().subscribeToTopic(registrationTokens, subscribeElasticEventId);
+        System.out.println(response.getSuccessCount() + " tokens were subscribed successfully");
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
 }

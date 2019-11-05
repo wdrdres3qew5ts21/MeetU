@@ -5,6 +5,7 @@
  */
 package meetu.eventservice.repository;
 
+import java.util.List;
 import meetu.eventservice.model.UserNotification;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
@@ -15,5 +16,8 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 public interface UserNotificationRepository extends MongoRepository<UserNotification, String> {
     
     public UserNotification findByUid(String uid);
+
+    public List<UserNotification> findByUidIsIn(List<String> userList);
+
     
 }
