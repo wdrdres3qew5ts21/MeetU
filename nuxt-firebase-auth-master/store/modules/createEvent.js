@@ -20,11 +20,17 @@ const state = () => ({
         endRegisterDate: "",
         eventStartDate: "",
         eventEndDate: "",
+        eventStartDateTempt: "",
+        eventEndDateTempt: "",
+        eventStartTimeTempt: "",
+        eventEndTimeTempt: "",
         eventPictureCoverBase: "",
         eventPictureListsBase: [],
         location: {
             place: '',
             detail: '',
+            streetNumber: '',
+            road: '',
             subDistrict: '',
             distrct: '',
             province: '',
@@ -49,8 +55,14 @@ const mutations = {
         state.eventTemplate.eventName = eventTemplate.eventName;
         state.eventTemplate.eventDetail = eventTemplate.eventDetail;
         state.eventTemplate.eventTags = eventTemplate.eventTags;
+        console.log('--- iso date --')
         state.eventTemplate.eventStartDate = eventTemplate.eventStartDate;
         state.eventTemplate.eventEndDate = eventTemplate.eventEndDate;
+        console.log('---tempt date ---')
+        state.eventTemplate.eventStartDateTempt = eventTemplate.eventStartDateTempt;
+        state.eventTemplate.eventEndDateTempt = eventTemplate.eventEndDateTempt;
+        state.eventTemplate.eventStartTimeTempt = eventTemplate.eventStartTimeTempt;
+        state.eventTemplate.eventEndTimeTempt = eventTemplate.eventEndTimeTempt;
         state.eventTemplate.numberOfTicket = eventTemplate.numberOfTicket;
     },
     setPictureDetail(state, pictureDetail) {
@@ -63,18 +75,19 @@ const mutations = {
         state.eventTemplate.badge.exp = parseFloat(badge.exp);
     },
     setEventLocation(state, location) {
-        // state.eventTemplate.location.place = location.place
-        // state.eventTemplate.location = location.addresscomponents
-        // state.eventTemplate.location = location.addressDetail
-        // state.eventTemplate.location = location.streetNumber
-        // state.eventTemplate.location = location.road
-        // state.eventTemplate.location = location.subDistrict
-        // state.eventTemplate.location = location.distrct
-        // state.eventTemplate.location = location.province
-        // state.eventTemplate.location = location.country
-        state.eventTemplate.location = location
+        state.eventTemplate.location.place = location.place
+        state.eventTemplate.location.detail = location.detail
+        state.eventTemplate.location.streetNumber = location.streetNumber
+        state.eventTemplate.location.road = location.road
+      //  state.eventTemplate.location.subDistrict = location.subDistrict
+        state.eventTemplate.location.distrct = location.distrct
+        state.eventTemplate.location.province = location.province
+        state.eventTemplate.location.country = location.country
+        //state.eventTemplate.location = location
     },
     setGeopoint(state, geopoint) {
+        console.log('--Geopoint last-')
+        console.log(geopoint)
         state.eventTemplate.location.geopoint = geopoint
     }
 };
