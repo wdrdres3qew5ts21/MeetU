@@ -183,7 +183,7 @@
           <v-card flat>
             <center>
               <br />
-              <h3 class="h3Text">You are {{getUser.firstName}} {{getUser.lastName}}</h3>
+              <h3 class="h3Text">You are {{userForm.firstName}} {{userForm.lastName}}</h3>
               <br />
               <div v-if="isCameraOpen">
                 <client-only placeholder="loading...">
@@ -275,7 +275,26 @@ export default {
         {
           userDetail: []
         }
-      ]
+      ],
+      userForm: {
+        badgeList: [],
+        interest: [],
+        firstName: "",
+        lastName: "",
+        gender: "",
+        dateArray: [],
+        dateOfBirth: "",
+        phone: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        password: "",
+        website: "",
+        line: "",
+        facebook: "",
+        twitter: "",
+        instagram: ""
+      }
     };
   },
   computed: {
@@ -286,6 +305,7 @@ export default {
     console.log(this.$route.params.organizeId);
     this.loadAllEventOfOrganize();
     this.loadOrganizeDetail();
+    this.initUserProfile();
     if (this.getUser.uid) {
       this.verifyIfUserIsOrganizeMember();
       this.loadAdminDetail();
@@ -361,7 +381,7 @@ export default {
             title: "Success to add admin",
             text: `Success to add admin`
           });
-          this.loadAdminDetail()
+          this.loadAdminDetail();
           console.log(adminResponse.datas);
         })
         .catch(err => {
@@ -441,7 +461,7 @@ export default {
               title: "Delete Admin success",
               text: `Delete Admin success`
             });
-            this.loadAdminDetail()
+            this.loadAdminDetail();
           })
           .catch(err => {
             this.$swal({
@@ -451,6 +471,35 @@ export default {
             });
           });
       });
+    },
+        initUserProfile: function() {
+      let loader = this.$loading.show();
+      axios
+        .get(`${process.env.USER_SERVICE}/user/${this.getUser.uid}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("jwtToken") || ""}`
+          }
+        })
+        .then(userProfileForm => {
+          console.log("organize detail");
+          userProfileForm = userProfileForm.data;
+          console.log(userProfileForm);
+          this.userForm.interest = userProfileForm.interest;
+          this.userForm.firstName = userProfileForm.firstName;
+          this.userForm.lastName = userProfileForm.lastName;
+          this.userForm.email = userProfileForm.email;
+          this.userForm.gender = userProfileForm.gender;
+          this.userForm.facebook = userProfileForm.facebook;
+          this.userForm.line = userProfileForm.line;
+          this.userForm.website = userProfileForm.website;
+          this.userForm.twitter = userProfileForm.twitter;
+          this.userForm.instagram = userProfileForm.instagram;
+          this.userForm.phone = userProfileForm.phone || "";
+          loader.hide();
+        })
+        .catch(err => {
+          loader.hide();
+        });
     }
   }
 };
