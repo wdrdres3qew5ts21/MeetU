@@ -1,172 +1,173 @@
 <template >
+  <!-- <transition name="slide"> -->
   <div>
     <!-- <transition name="router-anim" enter-active-class="animated slideInRight"> -->
-      <v-layout row wrap>
-        <v-flex xs12>
-          <!-- <v-card class="mx-auto" elevation="0" outlined width="100%"> -->
-          <div>
-            <v-layout>
-              <v-dialog
-                v-model="dialog"
-                fullscreen
-                hide-overlay
-                transition="dialog-bottom-transition"
-              >
-                <template v-slot:activator="{ on }">
-                  <v-btn flat icon color="#341646" v-on="on">
-                    <v-icon>filter_list</v-icon>
+    <v-layout row wrap>
+      <v-flex xs12>
+        <!-- <v-card class="mx-auto" elevation="0" outlined width="100%"> -->
+        <div>
+          <v-layout>
+            <v-dialog
+              v-model="dialog"
+              fullscreen
+              hide-overlay
+              transition="dialog-bottom-transition"
+            >
+              <template v-slot:activator="{ on }">
+                <v-btn flat icon color="#341646" v-on="on">
+                  <v-icon>filter_list</v-icon>
+                </v-btn>
+              </template>
+              <v-card>
+                <v-toolbar dark color="primary">
+                  <v-btn icon dark @click="dialog = false">
+                    <v-icon>navigate_before</v-icon>
                   </v-btn>
-                </template>
-                <v-card>
-                  <v-toolbar dark color="primary">
-                    <v-btn icon dark @click="dialog = false">
-                      <v-icon>navigate_before</v-icon>
-                    </v-btn>
-                    <v-toolbar-title>Filter</v-toolbar-title>
-                    <v-spacer></v-spacer>
-                  </v-toolbar>
+                  <v-toolbar-title>Filter</v-toolbar-title>
+                  <v-spacer></v-spacer>
+                </v-toolbar>
 
-                  <v-list three-line subheader>
-                    <br />
+                <v-list three-line subheader>
+                  <br />
 
-                    <v-container grid-list-md>
-                      <v-layout wrap>
-                        <v-icon color="primary">description</v-icon>Search by Detail
-                        <v-flex xs12>
+                  <v-container grid-list-md>
+                    <v-layout wrap>
+                      <v-icon color="primary">description</v-icon>Search by Detail
+                      <v-flex xs12>
+                        <v-text-field
+                          class="questrial no-top-padding"
+                          height="20px"
+                          placeholder="Search..."
+                          v-model="search"
+                          @keyup.enter="searchEventByFilter()"
+                        ></v-text-field>
+                      </v-flex>
+
+                      <v-flex xs12>
+                        <v-icon color="primary">category</v-icon>Filter by category
+                      </v-flex>
+
+                      <v-layout class="mb-4">
+                        <v-autocomplete
+                          v-model="selectedCategoryList"
+                          :items="categoryList"
+                          chips
+                          label=" Search by Category"
+                          color="blue-grey lighten-2"
+                          item-text="categoryLabel"
+                          item-value="categoryName"
+                          multiple
+                        >
+                          <template v-slot:selection="data">
+                            <v-chip :selected="data.selected">{{ data.item.categoryName}}</v-chip>
+                          </template>
+                        </v-autocomplete>
+                      </v-layout>
+
+                      <v-flex xs12>
+                        <v-icon color="primary">today</v-icon>Filter by Date
+                      </v-flex>
+
+                      <v-layout class="mb-4">
+                        <v-autocomplete
+                          v-model="filterForm.sortByDate"
+                          :items="sortDate"
+                          chips
+                          label=" Sort by Date"
+                          color="blue-grey lighten-2"
+                          item-text="label"
+                          item-value="value"
+                        >
+                          <template v-slot:selection="data">
+                            <v-chip :selected="data.selected">{{ data.item.label}}</v-chip>
+                          </template>
+                        </v-autocomplete>
+                      </v-layout>
+
+                      <v-flex xs12>
+                        <v-icon color="primary">room</v-icon>Near your location
+                      </v-flex>
+
+                      <v-layout row wrap>
+                        <v-flex xs4>
+                          <v-select
+                            :items="unit"
+                            item-value="value"
+                            item-text="label"
+                            v-model="filterForm.unit"
+                            label="unit "
+                          ></v-select>
+                        </v-flex>
+                        <v-flex xs3>
                           <v-text-field
-                            class="questrial no-top-padding"
-                            height="20px"
-                            placeholder="Search..."
-                            v-model="search"
-                            @keyup.enter="searchEventByFilter()"
+                            label="distance"
+                            type="number"
+                            v-model="filterForm.distance"
                           ></v-text-field>
                         </v-flex>
 
-                        <v-flex xs12>
-                          <v-icon color="primary">category</v-icon>Filter by category
+                        <v-flex xs5>
+                          <v-checkbox v-model="isPopular" label="Popular Event"></v-checkbox>
                         </v-flex>
-
-                        <v-layout class="mb-4">
-                          <v-autocomplete
-                            v-model="selectedCategoryList"
-                            :items="categoryList"
-                            chips
-                            label=" Search by Category"
-                            color="blue-grey lighten-2"
-                            item-text="categoryLabel"
-                            item-value="categoryName"
-                            multiple
-                          >
-                            <template v-slot:selection="data">
-                              <v-chip :selected="data.selected">{{ data.item.categoryName}}</v-chip>
-                            </template>
-                          </v-autocomplete>
-                        </v-layout>
-
-                        <v-flex xs12>
-                          <v-icon color="primary">today</v-icon>Filter by Date
-                        </v-flex>
-
-                        <v-layout class="mb-4">
-                          <v-autocomplete
-                            v-model="filterForm.sortByDate"
-                            :items="sortDate"
-                            chips
-                            label=" Sort by Date"
-                            color="blue-grey lighten-2"
-                            item-text="label"
-                            item-value="value"
-                          >
-                            <template v-slot:selection="data">
-                              <v-chip :selected="data.selected">{{ data.item.label}}</v-chip>
-                            </template>
-                          </v-autocomplete>
-                        </v-layout>
-
-                        <v-flex xs12>
-                          <v-icon color="primary">room</v-icon>Near your location
-                        </v-flex>
-
-                        <v-layout row wrap>
-                          <v-flex xs4>
-                            <v-select
-                              :items="unit"
-                              item-value="value"
-                              item-text="label"
-                              v-model="filterForm.unit"
-                              label="unit "
-                            ></v-select>
-                          </v-flex>
-                          <v-flex xs3>
-                            <v-text-field
-                              label="distance"
-                              type="number"
-                              v-model="filterForm.distance"
-                            ></v-text-field>
-                          </v-flex>
-
-                          <v-flex xs5>
-                            <v-checkbox v-model="isPopular" label="Popular Event"></v-checkbox>
-                          </v-flex>
-                        </v-layout>
                       </v-layout>
-                    </v-container>
-                  </v-list>
+                    </v-layout>
+                  </v-container>
+                </v-list>
 
-                  <v-btn
-                    class="white--text"
-                    depressed
-                    large
-                    block
-                    color="#341646"
-                    @click="searchEventByFilter()"
-                  >Search</v-btn>
-                </v-card>
-              </v-dialog>
-
-              <v-text-field
-                class="questrial no-top-padding"
-                height="20px"
-                placeholder="Search..."
-                v-model="search"
-                @keyup.enter="searchEventByFilter()"
-              ></v-text-field>
-              <v-flex class="text-xs-right">
                 <v-btn
                   class="white--text"
                   depressed
-                  small
+                  large
+                  block
                   color="#341646"
-                  ref="searchButton"
                   @click="searchEventByFilter()"
                 >Search</v-btn>
-              </v-flex>
-            </v-layout>
+              </v-card>
+            </v-dialog>
 
-            <br>
-            <v-layout row wrap>
-              <v-chip
-                v-for="(categoryChip, index) in selectedCategoryList"
-                @click="$router.push(`/event?category=${categoryChip}`)"
-                :key="index"
-              >
-                <strong>{{ categoryChip}}</strong>&nbsp;
-              </v-chip>
-            </v-layout>
-          </div>
-          <!-- </v-card> -->
-        </v-flex>
-        <br />
+            <v-text-field
+              class="questrial no-top-padding"
+              height="20px"
+              placeholder="Search..."
+              v-model="search"
+              @keyup.enter="searchEventByFilter()"
+            ></v-text-field>
+            <v-flex class="text-xs-right">
+              <v-btn
+                class="white--text"
+                depressed
+                small
+                color="#341646"
+                ref="searchButton"
+                @click="searchEventByFilter()"
+              >Search</v-btn>
+            </v-flex>
+          </v-layout>
 
-        <event-list v-if="searchedEventList.length>0" :eventList="searchedEventList"></event-list>
-        <center v-else></center>
-        <!-- <v-flex xs12 v-else>
+          <br />
+          <v-layout row wrap>
+            <v-chip
+              v-for="(categoryChip, index) in selectedCategoryList"
+              @click="$router.push(`/event?category=${categoryChip}`)"
+              :key="index"
+            >
+              <strong>{{ categoryChip}}</strong>&nbsp;
+            </v-chip>
+          </v-layout>
+        </div>
+        <!-- </v-card> -->
+      </v-flex>
+      <br />
+
+      <event-list v-if="searchedEventList.length>0" :eventList="searchedEventList"></event-list>
+      <center v-else></center>
+      <!-- <v-flex xs12 v-else>
           <h3>
             <center>You can search event ;)</center>
           </h3>
-        </v-flex>-->
+      </v-flex>-->
 
-        <!-- <v-btn
+      <!-- <v-btn
             color="#fc5577"
             
             :round="true"
@@ -174,39 +175,47 @@
             @click="findEventInArea()">
             Click to search nearby event for {{areaOfEvent}}
             
-        </v-btn>-->
-      </v-layout>
+      </v-btn>-->
+    </v-layout>
     <!-- </transition> -->
-
-    <br />
-    <br />
 
     <center>
       <div v-if="searchedEventList.length==0">
-        
         <!-- <v-icon large @click="showTest = !showTest"> mdi-calendar-search </v-icon> -->
-        <v-icon large @click="showTest = !showTest">mdi mdi-emoticon-excited-outline spin</v-icon>
+        <!-- <v-icon large @click="showTest = !showTest">mdi mdi-emoticon-excited-outline spin</v-icon>
         <transition
           name="custom-classes-transition"
           enter-active-class="animated tada"
           leave-active-class="animated tada"
         >
-          <h3 v-if="showTest">You can search event!</h3>
+          <p v-if="showTest">You can search event!</p>
           <br />
+        
 
-          <v-img v-if="showTest" :src="emotionImg" max-width="60"></v-img>
-        </transition>
-        <br />
-        <br />
+        </transition>-->
+
+        <v-img class="searchImg" v-if="showTest" :src="searchImg"></v-img>
+
+        <!-- <v-flex align-center>
+          <v-btn
+            class="#341646--text"
+            depressed
+            color outline="#341646"
+            ref="searchButton"
+            @click="searchEventByFilter()"
+          >Let's started !</v-btn>
+
+
+        </v-flex>-->
       </div>
     </center>
   </div>
+  <!-- </transition> -->
 </template>
 
 
 <script>
 import EventList from "@/components/eventList";
-
 import { mapActions, mapGetters } from "vuex";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -254,7 +263,7 @@ export default {
         unit: ""
       },
       showTest: true,
-      emotionImg: require("@/assets/smile.png")
+      searchImg: require("@/assets/searchImg.png")
     };
   },
   watch: {
@@ -315,12 +324,9 @@ export default {
         }
       }
 
-      query += `&isPopularEvent=${this.isPopular}`
+      query += `&isPopularEvent=${this.isPopular}`;
 
-      query += `&sortDate=${this.filterForm.sortByDate}`
-
-      
-      
+      query += `&sortDate=${this.filterForm.sortByDate}`;
 
       console.log(query);
       let searchedEventList = await axios.get(query);
@@ -345,13 +351,13 @@ export default {
   position: fixed;
   width: inherit;
 } */
-
 .v-content {
   max-width: 100%;
   background-color: #eeeeee;
   font-family: Roboto;
-  /* background-image: url(../assets/bg.png) !important; */
+  /* background-image: url(../assets/bgCom1.png) !important; */
   /* background-repeat: repeat; */
+  /* background-size: 100px; */
   /* background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
@@ -359,7 +365,7 @@ export default {
   background: transparent; */
 }
 
-@keyframes spin {
+/* @keyframes spin {
     from {
         transform:rotate(0deg);
     }
@@ -367,11 +373,24 @@ export default {
         transform:rotate(360deg);
     }
 }
-
 .spin {
   animation-name: spin;
   animation-duration: 4000ms;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
+} */
+
+/* .slide-fade-enter-active {
+  transition: all 0.3s ease;
 }
+.slide-fade-leave-active {
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.slide-fade-enter,.slide-fade-leave-to {
+  transform: translateX(10px);
+  opacity: 0;
+} */
 </style>
+
+
+

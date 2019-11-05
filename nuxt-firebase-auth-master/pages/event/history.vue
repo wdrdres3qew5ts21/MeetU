@@ -133,7 +133,6 @@ export default {
   background-size: cover;
   background: transparent; */
 }
-
 .linkToHomepage {
   text-decoration: none;
   font-weight: bold;
@@ -146,7 +145,6 @@ export default {
   font-size: 18px;
   color: #341646;
 }
-
 .headline {
   font-size: 12px;
   color: #341646;

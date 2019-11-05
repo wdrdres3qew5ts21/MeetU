@@ -1,7 +1,8 @@
 <template>
+  <!-- <transition name="slide"> -->
   <div>
     <!-- <transition name="router-anim"  leave-active-class="animated slideOutLeft"> -->
-    <v-carousel class="mycarousel">
+    <v-carousel class="mycarousel" prev-icon="mdi-arrow-left" next-icon="mdi-arrow-right">
       <nuxt-link
         :to="`/event/${popularEvent.elasticEventId}`"
         v-for="(popularEvent,i) in popularEventList"
@@ -13,15 +14,16 @@
     <v-container class="bg">
       <!-- Event List -->
       <div v-show="getUser.uid!=null">
-        <nuxt-link to="/selectGenres">
+        <!-- <nuxt-link to="/selectGenres">
           <h3>Setting Recommedation</h3>
-        </nuxt-link>
+        </nuxt-link>-->
+        <br />
         <h2>Recomended Event</h2>
         <client-only>
           <carousel :perPage="1" :paginationEnabled="false">
             <slide v-for="(event, index) in recommendedEventList" :key="index">
               <nuxt-link :to="`/event/${event.elasticEventId}`">
-                <event-card :event="event" :location="event.location"  :badge="event.badge"></event-card>
+                <event-card :event="event" :location="event.location" :badge="event.badge"></event-card>
               </nuxt-link>
             </slide>
             <slide>
@@ -56,10 +58,8 @@
         <carousel :perPage="1" :paginationEnabled="false">
           <slide v-for="(event, index) in popularEventList" :key="index">
             <nuxt-link :to="`/event/${event.elasticEventId}`">
-              <event-card :event="event"  :location="event.location"  :badge="event.badge"></event-card>
-
+              <event-card :event="event" :location="event.location" :badge="event.badge"></event-card>
             </nuxt-link>
-            
           </slide>
           <slide>
             <v-flex 3 xs12 sm6 offset-sm>
@@ -90,9 +90,8 @@
         <carousel :perPage="1" :paginationEnabled="false">
           <slide v-for="(event, index) in recentlyEventList" :key="index">
             <nuxt-link :to="`/event/${event.elasticEventId}`">
-             <event-card :event="event" :location="event.location" :badge="event.badge"></event-card>
+              <event-card :event="event" :location="event.location" :badge="event.badge"></event-card>
             </nuxt-link>
-           
           </slide>
           <slide>
             <v-flex 3 xs12 sm6 offset-sm>
@@ -403,6 +402,40 @@ export default {
   background-image: url("https://media1.tenor.com/images/dbc9327947163406625e71f4af114f3b/tenor.gif?itemid=13113745");
   opacity: 0.5;
   filter: alpha(opacity=50);
+}
+
+/* .slide-fade-enter-active {
+  transition: all 0.3s ease;
+}
+.slide-fade-leave-active {
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.slide-fade-enter,.slide-fade-leave-to {
+  transform: translateX(10px);
+  opacity: 0;
+} */
+
+.v-carousel-control-prev-icon,
+.v-carousel-control-next-icon {
+  height: 100px;
+  width: 100px;
+  color: black;
+  background-size: 100%, 100%;
+  border-radius: 50%;
+  border: 1px solid black;
+  background-image: none;
+}
+
+.v-carousel-control-next-icon:after {
+  content: ">";
+  font-size: 55px;
+  color: #341646;
+}
+
+.v-carousel-control-prev-icon:after {
+  content: "<";
+  font-size: 55px;
+  color: #341646;
 }
 </style>
 
