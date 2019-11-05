@@ -5,13 +5,16 @@
       <v-container fill-height fluid pa-2>
         <v-layout fill-height>
           <v-flex xs12 align-end flexbox>
-            <span class="textName" v-text="event.eventName.length > 20 ? event.eventName.substr(0,40)+'...' :event.eventName "></span>
+            <span
+              class="textName"
+              v-text="event.eventName.length > 20 ? event.eventName.substr(0,40)+'...' :event.eventName "
+            ></span>
           </v-flex>
         </v-layout>
       </v-container>
       <!-- <v-card-actions>
         <h3 class="#AEAEAE--text">{{event.eventName}}</h3>
-      </v-card-actions> -->
+      </v-card-actions>-->
 
       <!-- <v-flex class="text-xs-right">
          <v-btn fab dark small color="#341646" @click=" isEditing= !isEditing">
@@ -24,24 +27,22 @@
 
       <v-slide-y-transition>
         <v-card-text>
-          <v-layout row wrap>
-            <v-flex class="text-justify-left ">
-           
-              <h2 class="eventDate">
-             
-          {{formatDate(event.createEventDate)}}
-           </h2>
-
-          <span class="eventMonth">
-             
-          {{formatDateForReadable(event.createEventDate)}}
-           </span>
-          </v-flex>
-          <br />
-          <v-flex>
-          <b>location</b>
+          
+          <v-layout >
+        <v-flex   class="eventMonth">
+          
+            <v-icon size="20">today</v-icon>
+            {{formatDateForReadable(event.eventStartDate)}}
+        </v-flex>
+        <v-flex xs7 class="eventMonth" >
+            <v-icon size="20" >alarm</v-icon>
+            {{formatAMPM(event.eventStartDate)}}
         </v-flex>
           </v-layout>
+         
+
+          <v-icon size="20"> room</v-icon>
+         {{ location.detail }}     
           <!-- {{event.location.province?event.location.province:'Thailand'}} -->
         </v-card-text>
       </v-slide-y-transition>
@@ -55,17 +56,23 @@ export default {
   components: {},
   data() {
     return {
-      isEditing: true
+      isEditing: true,
+
     };
   },
+  
   props: {
-    event: Object
+    event: Object,
+    location: {
+      type: Object,
+      default :function () { return { } }
+    }
   },
   methods: {
-    formatDate: function(dateFormat){
-    let date = new Date(dateFormat);
-    dateFormat = date.getDate()
-    return dateFormat
+    formatDate: function(dateFormat) {
+      let date = new Date(dateFormat);
+      dateFormat = date.getDate();
+      return dateFormat;
     },
     formatDateForReadable: function(formatDate) {
       const months = [
@@ -84,15 +91,28 @@ export default {
       ];
       let date = new Date(formatDate);
       formatDate =
-      
-        months[date.getMonth()] 
-        // "-" +
-        // date.getFullYear();
+        date.getDate() +
+        " " +
+        months[date.getMonth()] +
+        " " +
+        date.getFullYear();
+      // "-" +
+      // date.getFullYear();
       console.log(formatDate);
       return formatDate;
     },
+    formatAMPM: function(AMPM) {
+      let date = new Date(AMPM);
+      const options = {
+        hour: "2-digit",
+        minute: "2-digit"
+      };
+      let time = date.toLocaleTimeString("en-US", options);
+      return time;
+    },
     getTime: function(time) {
       let date = new Date(time);
+
       time = date.getHours() + ":" + date.getMinutes() + " ";
       return time;
     },
@@ -190,12 +210,11 @@ export default {
   padding: 20px;
   text-align: left;
 }
-.eventDate{
- 
+.eventDate {
   color: #341646;
 }
-.eventMonth{
- font-size: 18px ;
- font-weight: bold;
+.eventMonth {
+  font-size: 15px;
+
 }
 </style>

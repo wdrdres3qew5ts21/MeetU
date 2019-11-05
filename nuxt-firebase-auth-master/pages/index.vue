@@ -20,7 +20,7 @@
         <client-only>
           <carousel :perPage="1" :paginationEnabled="false">
             <slide v-for="(event, index) in recommendedEventList" :key="index">
-              <event-card :event="event"></event-card>
+              <event-card :event="event" :location="event.location"></event-card>
             </slide>
             <slide>
               <v-flex 3 xs12 sm6 offset-sm>
@@ -53,7 +53,7 @@
       <client-only>
         <carousel :perPage="1" :paginationEnabled="false">
           <slide v-for="(event, index) in popularEventList" :key="index">
-            <event-card :event="event"></event-card>
+            <event-card :event="event" :location="event.location"></event-card>
           </slide>
           <slide>
             <v-flex 3 xs12 sm6 offset-sm>
@@ -83,7 +83,7 @@
       <client-only>
         <carousel :perPage="1" :paginationEnabled="false">
           <slide v-for="(event, index) in recentlyEventList" :key="index">
-            <event-card :event="event"></event-card>
+            <event-card :event="event" :location="event.location"></event-card>
           </slide>
           <slide>
             <v-flex 3 xs12 sm6 offset-sm>

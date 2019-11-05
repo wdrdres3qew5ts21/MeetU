@@ -1,5 +1,7 @@
 <template>
+
   <div>
+    
     <div v-if="isViewTicketDetail">
       <!-- <v-carousel hide-delimiters hide-controls xs6 sm12 height="200px;">
         <v-carousel-item v-for="(pic,i) in eventPictureLists" :key="i" :src="pic"></v-carousel-item>
@@ -17,36 +19,70 @@
       <br />
       <h3>{{eventName}}</h3>
       <br />
-
+     
+  <v-flex>
       <v-chip v-for="(eventTag,index) in eventTags" :key="index" text-color="#341646">
         <v-avatar>
           <v-icon color="primary">local_offer</v-icon>
         </v-avatar>
         <nuxt-link :to="`/event?category=${eventTag}`">{{eventTag}}</nuxt-link>
       </v-chip>
+  </v-flex>
 
-      <br />
-      <v-btn
+      <v-flex>
+   <v-btn
         block
         color="#341646"
         style="color:white"
         @click="$vuetify.goTo('#ticketSection')"
       >View Ticket</v-btn>
-      <br />
-      <br />
-      <br>
+      </v-flex>
+       <br>
+       <br>
+       <br>
+       <v-flex>
       <p class="eventDate">Date & Time</p>
-         <p class="text-justify content">{{formatDateForReadable(createEventDate)}} {{formatAMPM(createEventDate)}}</p>
-          
-         <br> 
-   <br>
-   <br>
-      <p></p>
+       </v-flex>
+      Start
+      <br />
 
+      <v-layout>
+        <v-flex xs12 sm5 md3 class="content">
+          <v-icon size="23">today</v-icon>
+          {{formatDateForReadable(eventStartDate)}}
+        </v-flex>
+        <v-flex xs12 sm5 md5 offset-(xs0 | lg2) class="content">
+          <v-icon size="23">alarm</v-icon>
+          {{formatAMPM(eventStartDate)}}
+          
+
+        </v-flex>
+   
+
+      </v-layout>
+      <p> </p>
+      End
+      <v-layout>
+        <v-flex xs12 sm5 md3 class="content">
+          <v-icon size="23">today</v-icon>
+          {{formatDateForReadable(eventEndDate)}}
+        </v-flex>
+        <v-flex xs12 sm5 md5 offset-(xs0 | lg2) class="content">
+          <v-icon size="23">alarm</v-icon>
+          {{formatAMPM(eventEndDate)}}
+        </v-flex>
+      </v-layout>
+
+      <br />
+      <br />
+   
+      <div>
+        <p> </p>
       <p class="eventDate">Event Detail</p>
       <p class="text-justify content">{{eventDetail}}</p>
+      </div>
       <br />
-      <p> </p>
+      <p></p>
       <p class="eventDate">Location</p>
       <p>
         <b>{{location.country}}, {{location.province}}</b>
@@ -149,6 +185,7 @@
       <confirmTicket :reserveTicket="reserveTicket"></confirmTicket>
     </div>
   </div>
+
 </template> 
  
 <script>
@@ -178,6 +215,8 @@ export default {
       eventName: "",
       numberOfTicket: 0,
       eventDetail: "",
+      eventStartDate: "",
+      eventEndDate: "",
       createEventDate: "",
       website: "",
       location: "",
@@ -224,6 +263,8 @@ export default {
           eventDetail: data.eventDetail,
           eventPictureCover: data.eventPictureCover,
           eventPictureLists: data.eventPictureLists,
+          eventStartDate: data.eventStartDate,
+          eventEndDate: data.eventEndDate,
           createEventDate: data.createEventDate,
           location: data.location,
           organizeId: data.organize.organizeId,
@@ -351,13 +392,16 @@ export default {
         console.log("not support fuq");
       }
     },
-    formatAMPM: function(formatDate){
-      let date = new Date(formatDate);    
-     let time = date.toLocaleTimeString('en-US')
-      return time
+    formatAMPM: function(AMPM) {
+      let date = new Date(AMPM);
+      const options = {
+        hour: "2-digit",
+        minute: "2-digit"
+      };
+      let time = date.toLocaleTimeString("en-US", options);
+      return time;
     },
     formatDateForReadable: function(formatDate) {
-      const days =["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
       const months = [
         "Jan",
         "Feb",
@@ -374,15 +418,11 @@ export default {
       ];
       let date = new Date(formatDate);
       formatDate =
-     
-      days[date.getDate()] + 
-        ", " +
         date.getDate() +
         " " +
         months[date.getMonth()] +
         " " +
-        date.getFullYear() +
-        "    " ;
+        date.getFullYear();
       console.log(formatDate);
       return formatDate;
     }
@@ -405,13 +445,14 @@ export default {
   background: transparent;
 }
 .eventDate {
-  font-weight: 800;
-  font-size: 17px;
+  font-weight: 600;
+  font-size: 16px;
   color: #341646;
 }
-.content{
+.content {
   font-size: 16px;
 }
+
 </style>
 
  
