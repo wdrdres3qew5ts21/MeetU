@@ -20,9 +20,8 @@
         <client-only>
           <carousel :perPage="1" :paginationEnabled="false">
             <slide v-for="(event, index) in recommendedEventList" :key="index">
-              <event-card :event="event" :location="event.location"></event-card>
               <nuxt-link :to="`/event/${event.elasticEventId}`">
-                <event-card :event="event"></event-card>
+                <event-card :event="event" :location="event.location"  :badge="event.badge"></event-card>
               </nuxt-link>
             </slide>
             <slide>
@@ -57,9 +56,10 @@
         <carousel :perPage="1" :paginationEnabled="false">
           <slide v-for="(event, index) in popularEventList" :key="index">
             <nuxt-link :to="`/event/${event.elasticEventId}`">
+              <event-card :event="event"  :location="event.location"  :badge="event.badge"></event-card>
+
             </nuxt-link>
-              <event-card :event="event"></event-card>
-            <event-card :event="event" :location="event.location"></event-card>
+            
           </slide>
           <slide>
             <v-flex 3 xs12 sm6 offset-sm>
@@ -90,9 +90,9 @@
         <carousel :perPage="1" :paginationEnabled="false">
           <slide v-for="(event, index) in recentlyEventList" :key="index">
             <nuxt-link :to="`/event/${event.elasticEventId}`">
-            <event-card :event="event"></event-card>
+             <event-card :event="event" :location="event.location" :badge="event.badge"></event-card>
             </nuxt-link>
-            <event-card :event="event" :location="event.location"></event-card>
+           
           </slide>
           <slide>
             <v-flex 3 xs12 sm6 offset-sm>

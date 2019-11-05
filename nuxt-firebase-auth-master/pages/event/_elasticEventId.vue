@@ -1,7 +1,5 @@
 <template>
-
   <div>
-    
     <div v-if="isViewTicketDetail">
       <!-- <v-carousel hide-delimiters hide-controls xs6 sm12 height="200px;">
         <v-carousel-item v-for="(pic,i) in eventPictureLists" :key="i" :src="pic"></v-carousel-item>
@@ -17,33 +15,32 @@
         </carousel>
       </client-only>
       <br />
-      <h3>{{eventName}}</h3>
+      <h3 class="eventName">{{eventName}}</h3>
       <br />
-     
-  <v-flex>
-      <v-chip v-for="(eventTag,index) in eventTags" :key="index" text-color="#341646">
-        <v-avatar>
-          <v-icon color="primary">local_offer</v-icon>
-        </v-avatar>
-        <nuxt-link :to="`/event?category=${eventTag}`">{{eventTag}}</nuxt-link>
-      </v-chip>
-  </v-flex>
 
       <v-flex>
-   <v-btn
-        block
-        color="#341646"
-        style="color:white"
-        @click="$vuetify.goTo('#ticketSection')"
-      >View Ticket</v-btn>
+        <v-chip v-for="(eventTag,index) in eventTags" :key="index" text-color="#341646">
+          <v-avatar>
+            <v-icon color="primary">local_offer</v-icon>
+          </v-avatar>
+          <nuxt-link :to="`/event?category=${eventTag}`">{{eventTag}}</nuxt-link>
+        </v-chip>
       </v-flex>
-       <br>
-       <br>
-       <br>
-       <v-flex>
-      <p class="eventDate">Date & Time</p>
-       </v-flex>
-      Start
+
+      <v-flex>
+        <v-btn
+          block
+          color="#341646"
+          style="color:white"
+          @click="$vuetify.goTo('#ticketSection')"
+        >View Ticket</v-btn>
+      </v-flex>
+      <br />
+      <br />
+      <br />
+      <v-flex>
+        <p class="eventDate">Date & Time</p>
+      </v-flex>Start
       <br />
 
       <v-layout>
@@ -53,15 +50,11 @@
         </v-flex>
         <v-flex xs12 sm5 md5 offset-(xs0 | lg2) class="content">
           <v-icon size="23">alarm</v-icon>
+
           {{formatAMPM(eventStartDate)}}
-          
-
         </v-flex>
-   
-
       </v-layout>
-      <p> </p>
-      End
+      <p></p>End
       <v-layout>
         <v-flex xs12 sm5 md3 class="content">
           <v-icon size="23">today</v-icon>
@@ -75,18 +68,34 @@
 
       <br />
       <br />
-   
+
       <div>
-        <p> </p>
-      <p class="eventDate">Event Detail</p>
-      <p class="text-justify content">{{eventDetail}}</p>
+        <p></p>
+        <p class="eventDate">Event Detail</p>
+        <p class="text-justify content">{{eventDetail}}</p>
       </div>
       <br />
       <p></p>
+      <p class="eventDate">Badge</p>
+      <v-layout row>
+        <v-list-tile-avatar size="45">
+          <img :src="badge.badgePicture" />
+        </v-list-tile-avatar>
+        <v-list-tile-content>
+          <v-list-tile-title ><b>{{badge.badgeName}}</b></v-list-tile-title>
+          <v-list-tile-sub-title>Exp: {{badge.exp}}</v-list-tile-sub-title>
+        </v-list-tile-content>
+
+        <br />
+      </v-layout>
+
+      <br />
+      <br />
+      <br />
       <p class="eventDate">Location</p>
-      <p>
-        <b>{{location.country}}, {{location.province}}</b>
-      </p>
+     
+        <p class="content">{{location.detail}}</p>
+      
       <center>
         <v-container>
           <v-layout row wrap>
@@ -120,11 +129,11 @@
         </v-container>
         <br />
       </center>
-
+      <br>
       <p class="eventDate">Tickets</p>
-      <p>
-        <b>{{eventName}}</b>
-      </p>
+     
+        <p>{{eventName}}</p>
+   
       <v-layout row wrap>
         <v-flex xs7>Free</v-flex>
         <v-spacer></v-spacer>
@@ -185,7 +194,6 @@
       <confirmTicket :reserveTicket="reserveTicket"></confirmTicket>
     </div>
   </div>
-
 </template> 
  
 <script>
@@ -223,6 +231,7 @@ export default {
       infoWindowPos: null,
       infoWinOpen: false,
       currentMidx: null,
+      badge: "",
       areaOfEvent: "",
       infoOptions: {
         pixelOffset: {
@@ -267,6 +276,7 @@ export default {
           eventEndDate: data.eventEndDate,
           createEventDate: data.createEventDate,
           location: data.location,
+          badge: data.badge,
           organizeId: data.organize.organizeId,
           organizeName: data.organize.organizeName,
           eventTags: data.eventTags,
@@ -452,7 +462,10 @@ export default {
 .content {
   font-size: 16px;
 }
-
+.eventName{
+   color: #341646;
+   font-size: 25px;
+}
 </style>
 
  
