@@ -25,7 +25,17 @@ public class Organize {
     private String organizeImageProfile;
 
     private String organizeImageCover;
+    
+    private double totalRating;
 
+    public double getTotalRating() {
+        return totalRating;
+    }
+
+    public void setTotalRating(double totalRating) {
+        this.totalRating = totalRating;
+    }
+    
     public String getOrganizeId() {
         return organizeId;
     }

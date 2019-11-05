@@ -65,6 +65,38 @@ public class Event {
     
     @DBRef
     private List<Review> reviewList;
+    
+    private double totalRating;
+    
+    private boolean isEventStart;
+    
+    private boolean isEventEnd;
+
+    public double getTotalRating() {
+        return totalRating;
+    }
+
+    public void setTotalRating(double totalRating) {
+        this.totalRating = totalRating;
+    }
+
+    public boolean isIsEventStart() {
+        return isEventStart;
+    }
+
+    public void setIsEventStart(boolean isEventStart) {
+        this.isEventStart = isEventStart;
+    }
+
+    public boolean isIsEventEnd() {
+        return isEventEnd;
+    }
+
+    public void setIsEventEnd(boolean isEventEnd) {
+        this.isEventEnd = isEventEnd;
+    }
+    
+    
 
     public List<Review> getReviewList() {
         return reviewList;
