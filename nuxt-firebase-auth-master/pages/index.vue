@@ -20,7 +20,9 @@
         <client-only>
           <carousel :perPage="1" :paginationEnabled="false">
             <slide v-for="(event, index) in recommendedEventList" :key="index">
-              <event-card :event="event"></event-card>
+              <nuxt-link :to="`/event/${event.elasticEventId}`">
+                <event-card :event="event"></event-card>
+              </nuxt-link>
             </slide>
             <slide>
               <v-flex 3 xs12 sm6 offset-sm>
@@ -53,7 +55,9 @@
       <client-only>
         <carousel :perPage="1" :paginationEnabled="false">
           <slide v-for="(event, index) in popularEventList" :key="index">
-            <event-card :event="event"></event-card>
+            <nuxt-link :to="`/event/${event.elasticEventId}`">
+              <event-card :event="event"></event-card>
+            </nuxt-link>
           </slide>
           <slide>
             <v-flex 3 xs12 sm6 offset-sm>
@@ -83,7 +87,9 @@
       <client-only>
         <carousel :perPage="1" :paginationEnabled="false">
           <slide v-for="(event, index) in recentlyEventList" :key="index">
+            <nuxt-link :to="`/event/${event.elasticEventId}`">
             <event-card :event="event"></event-card>
+            </nuxt-link>
           </slide>
           <slide>
             <v-flex 3 xs12 sm6 offset-sm>

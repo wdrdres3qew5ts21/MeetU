@@ -25,13 +25,13 @@ module.exports = {
   manifest: {
     "name": "MeetU",
     "display": "standalone",
-    "icons": [
-      {
-        "src": "~/assets/logo/meetu.png",
-        "type": "image/png",
-        "sizes": "512x512"
-      }
-    ],
+    // "icons": [
+    //   {
+    //     "src": "/static/logo.png",
+    //     "type": "image/png",
+    //     "sizes": "512x512"
+    //   }
+    // ],
     "gcm_sender_id": "1058128161659"
   },
   build: {

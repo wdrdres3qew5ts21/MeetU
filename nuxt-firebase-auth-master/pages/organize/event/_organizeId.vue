@@ -91,7 +91,10 @@
                 </v-btn>
               </v-flex>-->
 
-              <event-card-organize v-for="(event, index) in eventList" :key="index" :event="event" />
+              <event-card v-for="(event, index) in eventList" :key="index" 
+              @editEvent="editEvent"
+              @deleteEvent="deleteEvent"
+              :event="event" :isOwner="isOwner" />
 
               <br />
 
@@ -216,6 +219,7 @@
 <script>
 import editOrganizeSetting from "~/components/editOrganizeSetting";
 import Swal from "sweetalert2";
+import eventCard from "~/components/eventCard";
 import eventCardOrganize from "~/components/eventCardOrganize";
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
@@ -226,7 +230,8 @@ export default {
   name: "startedEvent",
   components: {
     eventCardOrganize,
-    editOrganizeSetting
+    editOrganizeSetting,
+    eventCard
   },
   props: {},
   data() {
@@ -324,6 +329,69 @@ export default {
             text: `${err.response.data.response}`
           });
         });
+    },
+    editEvent: function(event){
+      console.log(event)
+    },
+    deleteEvent: async function(event) {
+      console.log(event)
+      const { value: formValues } = await Swal.fire({
+        title: "Do you want to delete this event?",
+        html:
+        `<p>ElasticEvent ID : <b>${event.elasticEventId}</b></p> ` +
+        `<p>Event Name : <b>${event.eventName}</b></p>` +
+        `<p> <input id="confirmDelete" placeholder='Type  "confirmed" to delete this event' class="swal2-input"> <p>` +
+        `<p> <input id="deleteMessageDetail"   placeholder='Please type reason for delete this event'  class="swal2-input"> </p>`,
+        // inputPlaceholder: "Type  'confirmed' to delete this event ",
+        // input: "text",
+        inputAttributes: {
+          autocapitalize: "off"
+        },
+        preConfirm: () => {
+          return {
+            confirmDelete: document.getElementById('confirmDelete').value,
+            deleteMessageDetail: document.getElementById('deleteMessageDetail').value
+          }
+        },
+        showCancelButton: true,
+        confirmButtonText: "Confirm",
+        allowOutsideClick: () => !Swal.isLoading()
+      })
+
+      if(formValues ) {
+        console.log(formValues)
+        
+        if (formValues) {
+          Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            type: "warning",
+            inputAttributes: {
+              autocapitalize: "off"
+            },
+            showCancelButton: true,
+            confirmButtonColor: "#FD6363",
+            cancelButtonColor: "#4CAF50",
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "No, keep it!"
+          }).then(result => {
+            if (result.value) {
+              axios.post(`${process.env.EVENT_SERVICE}/event/delete`,{
+                elasticEventId: event.elasticEventId,
+                confirmDelete: formValues.confirmDelete,
+                deleteMessageDetail: formValues.deleteMessageDetail,
+              }).then(deleteResponse=>{
+                Swal.fire("Deleted!", "Your event has been deleted.", "success");
+                this.loadAllEventOfOrganize()
+              }).catch(err=>{
+                Swal.fire("Failed to delete !", err.response.data.response, "error")
+              })
+            }
+          });
+        }
+      };
+
+
     },
     verifyIfUserIsOrganizeMember() {
       console.log("------ verify status ------");
