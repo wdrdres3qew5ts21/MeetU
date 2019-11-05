@@ -2,7 +2,6 @@
   <div>
     <v-layout>
       <h2 style="color:#341646">My Profile</h2>
-
     </v-layout>
 
     <br />
@@ -32,7 +31,6 @@
     <v-btn class="logoutButton" outline color="red" depressed large block @click="logout()">LOG OUT</v-btn>
     <br />
 
-
     <v-layout column>
       <v-form ref="form" v-model="valid">
         <v-layout row wrap>
@@ -49,21 +47,20 @@
         <br />
         <v-layout row>
           <v-flex class="text-xs-left">
-          <h3>Your interest</h3>
+            <h3>Your interest</h3>
           </v-flex>
 
-
-          <nuxt-link to="/selectGenres" class="linkToGenres">Edit genes 
-          <!-- <v-icon color="primary">edit</v-icon> -->
-          </nuxt-link>  
+          <nuxt-link to="/selectGenres" class="linkToGenres">
+            Edit genes
+            <!-- <v-icon color="primary">edit</v-icon> -->
+          </nuxt-link>
           <!-- <v-flex class="text-xs-right">
             <nuxt-link to="/selectGenres" style="color:red">
               <v-btn fab dark small color="#341646">
                 <v-icon color="#fff" size="25">edit</v-icon>
               </v-btn>
             </nuxt-link>
-          </v-flex> -->
-
+          </v-flex>-->
         </v-layout>
         <v-chip
           v-for="(userInterest,index) in userForm.interest"
@@ -97,16 +94,13 @@
         -->
 
         <br />
-            <v-layout>
-      
-   
+        <v-layout>
+          <h2>Information</h2>
 
-    <h2>Information</h2>
-    
-      <v-flex class="text-xs-right">
-        <!-- ปุ่มสแกน qr code -->
+          <v-flex class="text-xs-right">
+            <!-- ปุ่มสแกน qr code -->
 
-        <!-- <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
+            <!-- <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
           <template v-slot:activator="{ on }">
             <v-btn v-on="on" @click="isCameraOpen = !isCameraOpen" fab dark small color="primary">
               <v-icon medium>mdi-qrcode-scan</v-icon>
@@ -145,17 +139,16 @@
               <h3>Just scan a QR code for join an event!</h3>
             </center>
           </v-card>
-        </v-dialog>-->
+            </v-dialog>-->
 
-        <v-btn fab dark small color="#341646" @click=" isEditing= !isEditing">
-          <v-icon v-if="isEditing" color="#fff" size="25">mdi-pencil</v-icon>
-          <v-icon v-else color="#fff" size="25">mdi-close</v-icon>
-        </v-btn>
-      </v-flex>
+            <v-btn fab dark small color="#341646" @click=" isEditing= !isEditing">
+              <v-icon v-if="isEditing" color="#fff" size="25">mdi-pencil</v-icon>
+              <v-icon v-else color="#fff" size="25">mdi-close</v-icon>
+            </v-btn>
+          </v-flex>
+        </v-layout>
 
-       </v-layout>
-
-    <br />
+        <br />
 
         <v-text-field
           :disabled="isEditing"
@@ -594,19 +587,20 @@ export default {
  
  
 <style lang="css">
-
 .v-content {
   max-width: 100%;
   background-color: #eeeeee;
+  font-family: Roboto;
+  /* background-image: url(@/assets/test1.png) */
 }
 
-.linkToGenres{
+.linkToGenres {
   text-decoration: underline;
   /* font-weight: bold; */
   /* font-size: 16px; */
   color: #100c4b;
 }
-  
+
 .accountButton {
   width: 500px;
 }
