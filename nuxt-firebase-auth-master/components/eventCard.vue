@@ -1,45 +1,64 @@
 <template>
   <!-- <nuxt-link :to="`/event/${event.elasticEventId}`"> -->
-    <v-card>
-      <v-img :src="event.eventPictureCover" height="200px"></v-img>
-      <v-container fill-height fluid pa-2>
-        <v-layout fill-height>
-          <v-flex xs12 align-end flexbox>
-            <span
-              class="textName"
-              v-text="event.eventName.length > 20 ? event.eventName.substr(0,40)+'...' :event.eventName "
-            ></span>
-          </v-flex>
-        </v-layout>
-      </v-container>
-      <!-- <v-card-actions>
+  <v-card>
+    <v-img :src="event.eventPictureCover" height="200px"></v-img>
+    <v-container fill-height fluid pa-2>
+      <v-layout fill-height>
+        <v-flex xs12 align-end flexbox>
+          <span
+            class="textName"
+            v-text="event.eventName.length > 20 ? event.eventName.substr(0,40)+'...' :event.eventName "
+          ></span>
+        </v-flex>
+      </v-layout>
+    </v-container>
+    <!-- <v-card-actions>
         <h3 class="#AEAEAE--text">{{event.eventName}}</h3>
-      </v-card-actions>-->
-      <v-flex v-if="isOwner" class="text-xs-right">
-        <v-btn fab dark small color="#341646" @click="$emit('editEvent', event)" >
-          <v-icon color="#fff" medium>edit</v-icon>
-        </v-btn>
-        <v-btn fab dark small color="red"  @click="$emit('deleteEvent', event)">
-          <v-icon color="#fff" medium>delete</v-icon>
-        </v-btn>
-      </v-flex>
+    </v-card-actions>-->
+    <v-flex v-if="isOwner" class="text-xs-right">
+      <v-btn fab dark small color="#341646" @click="$emit('editEvent', event)">
+        <v-icon color="#fff" medium>edit</v-icon>
+      </v-btn>
+      <v-btn fab dark small color="red" @click="$emit('deleteEvent', event)">
+        <v-icon color="#fff" medium>delete</v-icon>
+      </v-btn>
+    </v-flex>
 
-      <v-slide-y-transition>
-        <v-card-text>
-          <v-layout row wrap>
-            <v-flex class="text-justify-left">
-              <h2 class="eventDate">{{formatDate(event.createEventDate)}}</h2>
-              <span class="eventMonth">{{formatDateForReadable(event.createEventDate)}}</span>
+    <v-slide-y-transition>
+      <v-card-text>
+        <v-layout row wrap>
+          
+
+          <v-layout>
+            <v-flex class="eventMonth">
+              <v-icon size="20">today</v-icon>
+              {{formatDateForReadable(event.eventStartDate)}}
             </v-flex>
-            <br />
-            <v-flex>
-              <b>location</b>
+            <v-flex xs7 class="eventMonth">
+              <v-icon size="20">alarm</v-icon>
+              {{formatAMPM(event.eventStartDate)}}
             </v-flex>
+           
+           
+           
           </v-layout>
-          <!-- {{event.location.province?event.location.province:'Thailand'}} -->
-        </v-card-text>
-      </v-slide-y-transition>
-    </v-card>
+
+         
+        </v-layout>
+     
+         <!-- <span
+           
+            v-text="location.detail.length > 20 ? location.detail.substr(0,40)+'...' :location.detail"
+          ></span> -->
+          <div class="b">
+             <v-icon size="20">room</v-icon>
+          {{ location.detail }}
+          </div>
+        
+        <!-- {{event.location.province?event.location.province:'Thailand'}} -->
+      </v-card-text>
+    </v-slide-y-transition>
+  </v-card>
   <!-- </nuxt-link> -->
 </template>
 <script>
@@ -52,16 +71,24 @@ export default {
       isEditing: true
     };
   },
+
   props: {
     event: Object,
-    isOwner: Boolean
+    isOwner: Boolean,
+    location: {
+      type: Object,
+      default: function() {
+        return {};
+      }
+    },
+    badge: {
+     type: Object,
+     default: function(){
+       return {};
+     }
+    }
   },
   methods: {
-    formatDate: function(dateFormat) {
-      let date = new Date(dateFormat);
-      dateFormat = date.getDate();
-      return dateFormat;
-    },
     formatDateForReadable: function(formatDate) {
       const months = [
         "JAN",
@@ -78,14 +105,27 @@ export default {
         "DEC"
       ];
       let date = new Date(formatDate);
-      formatDate = months[date.getMonth()];
-      // "-" +
-      // date.getFullYear();
+      formatDate =
+        date.getDate() +
+        " " +
+        months[date.getMonth()] +
+        " " +
+        date.getFullYear();
       console.log(formatDate);
       return formatDate;
     },
+    formatAMPM: function(AMPM) {
+      let date = new Date(AMPM);
+      const options = {
+        hour: "2-digit",
+        minute: "2-digit"
+      };
+      let time = date.toLocaleTimeString("en-US", options);
+      return time;
+    },
     getTime: function(time) {
       let date = new Date(time);
+
       time = date.getHours() + ":" + date.getMinutes() + " ";
       return time;
     },
@@ -95,8 +135,7 @@ export default {
     },
     deActivateInEditMode() {
       this.isEditing = true;
-    },
-
+    }
   }
 };
 </script>
@@ -141,7 +180,15 @@ export default {
   color: #341646;
 }
 .eventMonth {
-  font-size: 18px;
-  font-weight: bold;
+  font-size: 15px;
+ 
 }
+div.b {
+  white-space: nowrap; 
+  width: 250px; 
+  overflow: hidden;
+  text-overflow: ellipsis; 
+ 
+}
+
 </style>

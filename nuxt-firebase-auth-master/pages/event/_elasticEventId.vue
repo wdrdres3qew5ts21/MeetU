@@ -15,42 +15,87 @@
         </carousel>
       </client-only>
       <br />
-      <h3>{{eventName}}</h3>
+      <h3 class="eventName">{{eventName}}</h3>
       <br />
 
-      <v-chip v-for="(eventTag,index) in eventTags" :key="index" text-color="#341646">
-        <v-avatar>
-          <v-icon color="primary">local_offer</v-icon>
-        </v-avatar>
-        <nuxt-link :to="`/event?category=${eventTag}`">{{eventTag}}</nuxt-link>
-      </v-chip>
+      <v-flex>
+        <v-chip v-for="(eventTag,index) in eventTags" :key="index" text-color="#341646">
+          <v-avatar>
+            <v-icon color="primary">local_offer</v-icon>
+          </v-avatar>
+          <nuxt-link :to="`/event?category=${eventTag}`">{{eventTag}}</nuxt-link>
+        </v-chip>
+      </v-flex>
+
+      <v-flex>
+        <v-btn
+          block
+          color="#341646"
+          style="color:white"
+          @click="$vuetify.goTo('#ticketSection')"
+        >View Ticket</v-btn>
+      </v-flex>
+      <br />
+      <br />
+      <br />
+      <v-flex>
+        <p class="eventDate">Date & Time</p>
+      </v-flex>Start
+      <br />
+
+      <v-layout>
+        <v-flex xs12 sm5 md3 class="content">
+          <v-icon size="23">today</v-icon>
+          {{formatDateForReadable(eventStartDate)}}
+        </v-flex>
+        <v-flex xs12 sm5 md5 offset-(xs0 | lg2) class="content">
+          <v-icon size="23">alarm</v-icon>
+
+          {{formatAMPM(eventStartDate)}}
+        </v-flex>
+      </v-layout>
+      <p></p>End
+      <v-layout>
+        <v-flex xs12 sm5 md3 class="content">
+          <v-icon size="23">today</v-icon>
+          {{formatDateForReadable(eventEndDate)}}
+        </v-flex>
+        <v-flex xs12 sm5 md5 offset-(xs0 | lg2) class="content">
+          <v-icon size="23">alarm</v-icon>
+          {{formatAMPM(eventEndDate)}}
+        </v-flex>
+      </v-layout>
 
       <br />
-      <v-btn
-        block
-        color="#341646"
-        style="color:white"
-        @click="$vuetify.goTo('#ticketSection')"
-      >View Ticket</v-btn>
       <br />
+
+      <div>
+        <p></p>
+        <p class="eventDate">Event Detail</p>
+        <p class="text-justify content">{{eventDetail}}</p>
+      </div>
       <br />
-      <br>
-      <p class="eventDate">Date & Time</p>
-         <p class="text-justify content">{{formatDateForReadable(createEventDate)}} {{formatAMPM(createEventDate)}}</p>
-          
-         <br> 
-   <br>
-   <br>
       <p></p>
+      <p class="eventDate">Badge</p>
+      <v-layout row>
+        <v-list-tile-avatar size="45">
+          <img :src="badge.badgePicture" />
+        </v-list-tile-avatar>
+        <v-list-tile-content>
+          <v-list-tile-title ><b>{{badge.badgeName}}</b></v-list-tile-title>
+          <v-list-tile-sub-title>Exp: {{badge.exp}}</v-list-tile-sub-title>
+        </v-list-tile-content>
 
-      <p class="eventDate">Event Detail</p>
-      <p class="text-justify content">{{eventDetail}}</p>
+        <br />
+      </v-layout>
+
       <br />
-      <p> </p>
+      <br />
+      <br />
       <p class="eventDate">Location</p>
-      <p>
-        <b>{{location.country}}, {{location.province}}</b>
-      </p>
+     
+        <p class="content">{{location.detail}}</p>
+      
       <center>
         <v-container>
           <v-layout row wrap>
@@ -84,11 +129,11 @@
         </v-container>
         <br />
       </center>
-
+      <br>
       <p class="eventDate">Tickets</p>
-      <p>
-        <b>{{eventName}}</b>
-      </p>
+     
+        <p>{{eventName}}</p>
+   
       <v-layout row wrap>
         <v-flex xs7>Free</v-flex>
         <v-spacer></v-spacer>
@@ -178,12 +223,15 @@ export default {
       eventName: "",
       numberOfTicket: 0,
       eventDetail: "",
+      eventStartDate: "",
+      eventEndDate: "",
       createEventDate: "",
       website: "",
       location: "",
       infoWindowPos: null,
       infoWinOpen: false,
       currentMidx: null,
+      badge: "",
       areaOfEvent: "",
       infoOptions: {
         pixelOffset: {
@@ -224,8 +272,11 @@ export default {
           eventDetail: data.eventDetail,
           eventPictureCover: data.eventPictureCover,
           eventPictureLists: data.eventPictureLists,
+          eventStartDate: data.eventStartDate,
+          eventEndDate: data.eventEndDate,
           createEventDate: data.createEventDate,
           location: data.location,
+          badge: data.badge,
           organizeId: data.organize.organizeId,
           organizeName: data.organize.organizeName,
           eventTags: data.eventTags,
@@ -351,13 +402,16 @@ export default {
         console.log("not support fuq");
       }
     },
-    formatAMPM: function(formatDate){
-      let date = new Date(formatDate);    
-     let time = date.toLocaleTimeString('en-US')
-      return time
+    formatAMPM: function(AMPM) {
+      let date = new Date(AMPM);
+      const options = {
+        hour: "2-digit",
+        minute: "2-digit"
+      };
+      let time = date.toLocaleTimeString("en-US", options);
+      return time;
     },
     formatDateForReadable: function(formatDate) {
-      const days =["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
       const months = [
         "Jan",
         "Feb",
@@ -374,15 +428,11 @@ export default {
       ];
       let date = new Date(formatDate);
       formatDate =
-     
-      days[date.getDate()] + 
-        ", " +
         date.getDate() +
         " " +
         months[date.getMonth()] +
         " " +
-        date.getFullYear() +
-        "    " ;
+        date.getFullYear();
       console.log(formatDate);
       return formatDate;
     }
@@ -405,12 +455,16 @@ export default {
   background: transparent;
 }
 .eventDate {
-  font-weight: 800;
-  font-size: 17px;
+  font-weight: 600;
+  font-size: 16px;
   color: #341646;
 }
-.content{
+.content {
   font-size: 16px;
+}
+.eventName{
+   color: #341646;
+   font-size: 25px;
 }
 </style>
 
