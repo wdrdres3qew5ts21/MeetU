@@ -356,7 +356,6 @@
       <br />
       <br />
       <center>
-        <v-btn color="success" @click="formatDateTimeToIsoWhenSave()" block>stupid time</v-btn>
         <v-btn
           block
           class="saveButton white--text"
