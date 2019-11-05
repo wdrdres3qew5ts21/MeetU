@@ -180,18 +180,18 @@
     <br />
 
     <center>
-      <div>
+      <div v-if="searchedEventList.length==0">
         <v-icon medium @click="showTest = !showTest">insert_emoticon</v-icon>
-        <!-- <transition
+        <transition
           name="custom-classes-transition"
           enter-active-class="animated tada"
           leave-active-class="animated tada"
-        > -->
+        >
           <h3 v-if="showTest">You can search event!</h3>
           <br />
 
-          <!-- <v-img v-if="showTest" :src="emotionImg" max-width="60"></v-img> -->
-        <!-- </transition> -->
+          <v-img v-if="showTest" :src="emotionImg" max-width="60"></v-img>
+        </transition>
         <br />
         <br />
       </div>
