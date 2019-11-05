@@ -358,6 +358,7 @@
       <center>
         <v-btn
           block
+          :disabled="!valid"
           class="saveButton white--text"
           color="#341646"
           depressed
@@ -844,8 +845,6 @@ export default {
       // let date = new Date(eventEndDateAndTime);
       // eventEndDateAndTime = date.getDate3
       
-      ()  + "-" + date.getMonth() + "-" + date.getFullYear() + "  Time  "+ date.getHours() + ":" + date.getMinutes();
-      // console.log(eventEndDateAndTime);
     }
   }
 };

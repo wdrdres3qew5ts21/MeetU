@@ -87,7 +87,7 @@
       <p></p>
       <p class="eventDate">Badge</p>
       <v-layout row>
-        <v-list-tile-avatar size="45">
+        <v-list-tile-avatar size="125">
           <img :src="badge.badgePicture" />
         </v-list-tile-avatar>
         <v-list-tile-content>
