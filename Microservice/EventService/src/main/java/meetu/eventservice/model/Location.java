@@ -14,7 +14,11 @@ import org.elasticsearch.common.geo.GeoPoint;
 public class Location {
 
     private String detail;
-
+    
+    private String home;
+   
+    private String road;
+    
     private String subDistrict;
 
     private String district;
@@ -65,6 +69,24 @@ public class Location {
         this.detail = detail;
     }
 
+    public String getHome() {
+        return home;
+    }
+
+    public void setHome(String home) {
+        this.home = home;
+    }
+
+    public String getRoad() {
+        return road;
+    }
+
+    public void setRoad(String road) {
+        this.road = road;
+    }
+
+    
+    
     public GeoDetail getGeopoint() {
         return geopoint;
     }

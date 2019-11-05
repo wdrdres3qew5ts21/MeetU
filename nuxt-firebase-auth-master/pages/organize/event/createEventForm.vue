@@ -1,86 +1,87 @@
 <template>
   <div>
-    <br>
+    <br />
     <h2 class="h2">Create New Events</h2>
     <br />
     <v-form ref="form" v-model="valid" :lazy-validation="false">
-    <v-flex xs12 sm5 d-flex>
-      <v-autocomplete
-        :items="organizeList"
-        item-text="organizeName"
-        item-value="organizeId"
-        :menu-props="{ maxHeight: '400' }"
-        label="* Select Organize"
-        v-model="eventForm.organize.organizeId"
-        persistent-hint        
-        required
-        :rules="[v => !!v || 'organize is required']"
-      ></v-autocomplete>
-    </v-flex>
-    <v-text-field v-model="eventForm.eventName" label="* Event Name" required :rules="nameRules"></v-text-field>
-    <!-- <v-text-field v-model="eventForm.eventDetail"  placeholder="Event Detail" required></v-text-field> -->
-    <v-layout class="mb-4">
-      <v-textarea name="description" label="Description" v-model="eventForm.eventDetail" rows="3" required
-        :rules="[v => !!v || 'Description is required']"
-      ></v-textarea>
-    </v-layout>
-    <v-flex xs12 sm5 d-flex>
-      
-      <v-autocomplete
-        :items="getCategory"
-        item-text="categoryLabel"
-        item-value="categoryName"
-        :menu-props="{ maxHeight: '400' }"
-        label="Category (Limit to 3 tags only)"
-        v-model="eventForm.eventTags"
-        multiple
-        persistent-hint
-        required
-        :rules="[v => !!v || 'Category is required']"
-      ></v-autocomplete>
-
-<!-- <v-date-picker v-model="eventForm.eventStartDate"></v-date-picker>
-         <v-time-picker v-model="eventForm.eventStartTime" format="24hr"></v-time-picker> -->
-         
-    </v-flex>
-    <!-- Evant Start Date -->
-        
-         
-    <v-menu
-      ref="menu"
-      v-model="menuEventStartDate"
-      :close-on-content-click="false"
-      transition="scale-transition"
-      offset-y
-      full-width
-      min-width="290px"
-
-    >
-      <template v-slot:activator="{ on }">
-        <v-text-field
-          v-model="eventForm.eventStartDate"
-          label="eventStartDate"
-          prepend-icon="today"
-          readonly
-          v-on="on"
+      <v-flex xs12 sm5 d-flex>
+        <v-autocomplete
+          :items="organizeList"
+          item-text="organizeName"
+          item-value="organizeId"
+          :menu-props="{ maxHeight: '400' }"
+          label="* Select Organize"
+          v-model="eventForm.organize.organizeId"
+          persistent-hint
           required
-          :rules="[v => !!v || 'eventStartDate is required']"
-        ></v-text-field>
-      </template>
-      <v-date-picker
-        ref="picker"
-        v-model="eventForm.eventStartDate"
-        :min="nowDate"      
-        @change="save"       
-      ></v-date-picker>
-    </v-menu>
-     
-    <!-- Evant Start Date -->
-<!-- Event Start time -->
-  <v-dialog
+          :rules="[v => !!v || 'organize is required']"
+        ></v-autocomplete>
+      </v-flex>
+      <v-text-field v-model="eventForm.eventName" label="* Event Name" required :rules="nameRules"></v-text-field>
+      <!-- <v-text-field v-model="eventForm.eventDetail"  placeholder="Event Detail" required></v-text-field> -->
+      <v-layout class="mb-4">
+        <v-textarea
+          name="description"
+          label="Description"
+          v-model="eventForm.eventDetail"
+          rows="3"
+          required
+          :rules="[v => !!v || 'Description is required']"
+        ></v-textarea>
+      </v-layout>
+      <v-flex xs12 sm5 d-flex>
+        <v-autocomplete
+          :items="getCategory"
+          item-text="categoryLabel"
+          item-value="categoryName"
+          :menu-props="{ maxHeight: '400' }"
+          label="Category (Limit to 3 tags only)"
+          v-model="eventForm.eventTags"
+          multiple
+          persistent-hint
+          required
+          :rules="[v => !!v || 'Category is required']"
+        ></v-autocomplete>
+
+        <!-- <v-date-picker v-model="eventForm.eventStartDate"></v-date-picker>
+        <v-time-picker v-model="eventForm.eventStartTime" format="24hr"></v-time-picker>-->
+      </v-flex>
+      <!-- Evant Start Date -->
+
+      <v-menu
+        ref="menu"
+        v-model="menuEventStartDate"
+        :close-on-content-click="false"
+        transition="scale-transition"
+        offset-y
+        full-width
+        min-width="290px"
+      >
+        <template v-slot:activator="{ on }">
+          <v-text-field
+            v-model="eventForm.eventStartDateTempt"
+            label="eventStartDate"
+            prepend-icon="today"
+            readonly
+            v-on="on"
+            required
+            :rules="[v => !!v || 'eventStartDate is required']"
+          ></v-text-field>
+        </template>
+        <v-date-picker
+          ref="picker"
+          v-model="eventForm.eventStartDateTempt"
+          :min="nowDate"
+          @change="save"
+        ></v-date-picker>
+      </v-menu>
+
+      <!-- Evant Start Date -->
+      <!-- Event Start time -->
+      <v-dialog
         ref="dialogEventStartTime"
         v-model="modalForStartTime"
-        :return-value.sync="eventForm.eventStartTime"
+        :return-value.sync="eventForm.eventStartTimeTempt"
         persistent
         lazy
         full-width
@@ -88,7 +89,7 @@
       >
         <template v-slot:activator="{ on }">
           <v-text-field
-            v-model="eventForm.eventStartTime"
+            v-model="eventForm.eventStartTimeTempt"
             label="eventStartTime"
             prepend-icon="access_time"
             readonly
@@ -97,50 +98,54 @@
         </template>
         <v-time-picker
           v-if="modalForStartTime"
-          v-model="eventForm.eventStartTime"
+          v-model="eventForm.eventStartTimeTempt"
           full-width
-           use-seconds
+          use-seconds
         >
           <v-spacer></v-spacer>
           <v-btn flat color="primary" @click="modalForStartTime = false">Cancel</v-btn>
-          <v-btn flat color="primary" @click="$refs.dialogEventStartTime.save(eventForm.eventStartTime)">OK</v-btn>
+          <v-btn
+            flat
+            color="primary"
+            @click="$refs.dialogEventStartTime.save(eventForm.eventStartTimeTempt)"
+          >OK</v-btn>
         </v-time-picker>
       </v-dialog>
 
-
-
       <!-- Event Start time -->
-    <!-- Event End Date -->
-    <v-menu
-      ref="menu"
-      v-model="menuEventEndDate"
-      :close-on-content-click="false"
-      transition="scale-transition"
-      offset-y
-      full-width
-      min-width="290px"
-    >
-      <template v-slot:activator="{ on }">
-        <v-text-field
-          :disabled="eventForm.eventStartDate ==''"
-          v-model="eventForm.eventEndDate"
-          required
-          label="eventEndDate"
-          prepend-icon="today"
-          readonly
-          v-on="on"
-          :rules="[v => !!v || 'eventEndDate is required']"
-        ></v-text-field>
-      </template>
-      <v-date-picker ref="picker" v-model="eventForm.eventEndDate" 
-      :min="eventForm.eventStartDate"  @change="save"></v-date-picker>
-    </v-menu>
-<!-- Event End Date -->
+      <!-- Event End Date -->
+      <v-menu
+        ref="menu"
+        v-model="menuEventEndDate"
+        :close-on-content-click="false"
+        transition="scale-transition"
+        offset-y
+        full-width
+        min-width="290px"
+      >
+        <template v-slot:activator="{ on }">
+          <v-text-field
+            :disabled="eventForm.eventStartDateTempt ==''"
+            v-model="eventForm.eventEndDateTempt"
+            required
+            label="eventEndDate"
+            prepend-icon="today"
+            readonly
+            v-on="on"
+            :rules="[v => !!v || 'eventEndDate is required']"
+          ></v-text-field>
+        </template>
+        <v-date-picker
+          ref="picker"
+          v-model="eventForm.eventEndDateTempt"
+          :min="eventForm.eventStartDateTempt"
+          @change="save"
+        ></v-date-picker>
+      </v-menu>
+      <!-- Event End Date -->
 
-       
-      
       <!-- Event End time -->
-       <v-dialog
+      <v-dialog
         ref="dialogEventEndTime"
         v-model="modalForEndTime"
         persistent
@@ -149,10 +154,9 @@
         width="290px"
       >
         <template v-slot:activator="{ on }">
-          <v-text-field         
-            :disabled="eventForm.eventStartTime == null"
-            
-            v-model="eventForm.eventEndTime"           
+          <v-text-field
+            :disabled="eventForm.eventStartTimeTempt == null"
+            v-model="eventForm.eventEndTimeTempt"
             label="eventEndTime"
             prepend-icon="access_time"
             readonly
@@ -161,74 +165,83 @@
         </template>
         <v-time-picker
           v-if="modalForEndTime"
-          v-model="eventForm.eventEndTime"
+          v-model="eventForm.eventEndTimeTempt"
           full-width
-           use-seconds
+          use-seconds
         >
           <v-spacer></v-spacer>
           <v-btn flat color="primary" @click="modalForEndTime = false">Cancel</v-btn>
-          <v-btn flat color="primary" @click="$refs.dialogEventEndTime.save(eventForm.eventEndTime)">OK</v-btn>
+          <v-btn
+            flat
+            color="primary"
+            @click="$refs.dialogEventEndTime.save(eventForm.eventEndTimeTempt)"
+          >OK</v-btn>
         </v-time-picker>
       </v-dialog>
       <!-- Event End time -->
-     <!-- <v-btn @click="test()"> Test</v-btn> -->
-    <br />
+      <!-- <v-btn @click="test()"> Test</v-btn> -->
+      <br />
 
-    <span class="location" id="locationMap">Location</span>
-    <p>{{getEventTemplate.location.detail}}</p>
-    <v-btn class="addLocationButton" color="white" @click="addLocation()">Add Location</v-btn>
-    <v-layout v-show="isShowLocation" row wrap>
-      <client-only>
-        <label>
-          AutoComplete
-          <GmapAutocomplete @place_changed="setPlace"></GmapAutocomplete>
-          <button @click="usePlace">Add</button>
-        </label>
-        <br />
-        <GmapMap
-          :center="marker.position"
-          :zoom="14"
-          map-type-id="terrain"
-          style="width: 500px; height: 300px"
-          :options="{
+      <span class="location" id="locationMap">Location</span>
+      <p>{{getEventTemplate.location.detail}}</p>
+      <v-btn class="addLocationButton" color="white" @click="addLocation()">Add Location</v-btn>
+      <v-layout v-show="isShowLocation" row wrap>
+        <client-only>
+          <label>
+            AutoComplete
+            <GmapAutocomplete @place_changed="setPlace"></GmapAutocomplete>
+            <button @click="usePlace">Add</button>
+          </label>
+          <br />
+          <GmapMap
+            :center="marker.position"
+            :zoom="14"
+            map-type-id="terrain"
+            style="width: 500px; height: 300px"
+            :options="{
                 scaleControl: true
             }"
-        >
-          <gmap-info-window
-            :position="infoWindowPos"
-            :opened="infoWinOpen"
-            @closeclick="infoWinOpen=false"
           >
-            <p>{{getEventTemplate.location.detail}}</p>
-          </gmap-info-window>
+            <gmap-info-window
+              :position="infoWindowPos"
+              :opened="infoWinOpen"
+              @closeclick="infoWinOpen=false"
+            >
+              <p>{{getEventTemplate.location.detail}}</p>
+            </gmap-info-window>
 
-          <GmapMarker
-            :position="marker.position"
-            @click="toggleInfoWindow(marker,0)"
-            :clickable="true"
-          />
-        </GmapMap>
-      </client-only>
-    </v-layout>
-    <br />
-    <br />
-    <span class="location" id="locationMap">Event Detail</span>
-    <v-text-field type="number" v-model="eventForm.numberOfTicket" 
-    label="amount of ticket" hint="Please fill number of ticket for this event." required
-    :rules="[v => !!v || 'Number of Ticket is required']"></v-text-field>
-    <br />
-    <v-flex xs12>
+            <GmapMarker
+              :position="marker.position"
+              @click="toggleInfoWindow(marker,0)"
+              :clickable="true"
+            />
+          </GmapMap>
+        </client-only>
+      </v-layout>
+      <br />
+      <br />
+      <span class="location" id="locationMap">Event Detail</span>
       <v-text-field
-        v-model="eventForm.badge.exp"
-        placeholder="Exp of Event"
-        label="Exp Of Event"
         type="number"
+        v-model="eventForm.numberOfTicket"
+        label="amount of ticket"
+        hint="Please fill number of ticket for this event."
         required
-      :rules="[v => !!v || '']"
+        :rules="[v => !!v || 'Number of Ticket is required']"
       ></v-text-field>
-    </v-flex>
+      <br />
+      <v-flex xs12>
+        <v-text-field
+          v-model="eventForm.badge.exp"
+          placeholder="Exp of Event"
+          label="Exp Of Event"
+          type="number"
+          required
+          :rules="[v => !!v || '']"
+        ></v-text-field>
+      </v-flex>
 
-    <!-- <v-flex xs12 sm5 d-flex @click="findMatchingBadge()">
+      <!-- <v-flex xs12 sm5 d-flex @click="findMatchingBadge()">
       <v-autocomplete
         :items="badgeList"
         item-text="badgeName"
@@ -238,57 +251,57 @@
         v-model="eventForm.badge.badgeId"
         persistent-hint
       ></v-autocomplete>
-    </v-flex>-->
+      </v-flex>-->
 
-    <!-- test -->
+      <!-- test -->
 
-    <v-flex xs12 d-flex @click="findMatchingBadge()">
-      <v-autocomplete
-        v-model="eventForm.badge.badgeId"
-        :items="badgeList"
-        box
-        chips
-        color="#341646"
-        label="Select Badge"
-        item-value="badgeId"
-        required
-        :rules="[v => !!v || 'badge is required']"
-      >
-        <template v-slot:selection="data">
-          <v-chip
-            v-bind="data.attrs"
-            :selected="data.selected"
-            color="#341646"
-            class="chip--select-multi white--text"
-            @click:close="remove(data.item)"
-          >
-            <v-avatar>
-              <img :src="data.item.badgePicture"/>
-            </v-avatar>
-            <h3>{{ data.item.badgeName }}</h3>
-          </v-chip>
-        </template>
-        <template v-slot:item="data">
-          <template v-if="typeof data.item !== 'object'">
-            <v-list-tile-content v-text="data.item"></v-list-tile-content>
+      <v-flex xs12 d-flex @click="findMatchingBadge()">
+        <v-autocomplete
+          v-model="eventForm.badge.badgeId"
+          :items="badgeList"
+          box
+          chips
+          color="#341646"
+          label="Select Badge"
+          item-value="badgeId"
+          required
+          :rules="[v => !!v || 'badge is required']"
+        >
+          <template v-slot:selection="data">
+            <v-chip
+              v-bind="data.attrs"
+              :selected="data.selected"
+              color="#341646"
+              class="chip--select-multi white--text"
+              @click:close="remove(data.item)"
+            >
+              <v-avatar>
+                <img :src="data.item.badgePicture" />
+              </v-avatar>
+              <h3>{{ data.item.badgeName }}</h3>
+            </v-chip>
           </template>
-          <template v-else>
-            <v-list-tile-avatar>
-              <img :src="data.item.badgePicture" />
-            </v-list-tile-avatar>
-            <v-list-tile-content>
-              <v-list-tile-title v-html="data.item.badgeName"></v-list-tile-title>
-            </v-list-tile-content>
+          <template v-slot:item="data">
+            <template v-if="typeof data.item !== 'object'">
+              <v-list-tile-content v-text="data.item"></v-list-tile-content>
+            </template>
+            <template v-else>
+              <v-list-tile-avatar>
+                <img :src="data.item.badgePicture" />
+              </v-list-tile-avatar>
+              <v-list-tile-content>
+                <v-list-tile-title v-html="data.item.badgeName"></v-list-tile-title>
+              </v-list-tile-content>
+            </template>
           </template>
-        </template>
-      </v-autocomplete>
-    </v-flex>
+        </v-autocomplete>
+      </v-flex>
 
-    <!-- ----- -->
+      <!-- ----- -->
 
-    <!-- Test อีกรอบ -->
+      <!-- Test อีกรอบ -->
 
-          <!-- <v-flex xs12 d-flex @click="findMatchingBadge()">
+      <!-- <v-flex xs12 d-flex @click="findMatchingBadge()">
             <v-autocomplete
               v-model="badgeSelect"
               :items="badgeList"
@@ -328,52 +341,46 @@
                 </template>
               </template>
             </v-autocomplete>
-          </v-flex> -->
+      </v-flex>-->
 
-    <!--  -->
+      <!--  -->
 
-    <p style="margin:0" class="uploadPosterImg" @click="goToBadgeSettingPage()">Create Badge</p>
-    <!-- <p
+      <p style="margin:0" class="uploadPosterImg" @click="goToBadgeSettingPage()">Create Badge</p>
+      <!-- <p
       style="margin:0"
       class="uploadPosterImg"
       @click="goToEventConditionPage()"
-    >Event Conditions Setting</p> -->
-    <p style="margin:0" class="uploadPosterImg" @click="goToUploadImagePage()">Upload poster image</p>
+      >Event Conditions Setting</p>-->
+      <p style="margin:0" class="uploadPosterImg" @click="goToUploadImagePage()">Upload poster image</p>
 
-    <br />
-    <br />
-    <center>
+      <br />
+      <br />
+      <center>
+        <v-btn
+          block
+          class="saveButton white--text"
+          color="#341646"
+          depressed
+          large
+          height="50"
+          @click="goToPreviewEvent()"
+        >Preview Event</v-btn>
 
+        <v-btn
+          block
+          color="#AEAEAE"
+          class="white--text"
+          depressed
+          large
+          height="50"
+          @click="$router.back()"
+        >Cancle</v-btn>
+      </center>
 
-      <v-btn
-        block
-        class="saveButton white--text"
-        color="#341646"
-        depressed
-        large
-        height="50"
-      :disabled="!valid"
-        @click="goToPreviewEvent()"
-      >Preview Event</v-btn>
-
-
-
-      <v-btn
-        block
-        color="#AEAEAE"
-        class="white--text"
-        depressed
-        large
-        height="50"
-        @click="$router.back()"
-      >Cancle</v-btn>
-    </center>
-
-    <br />
-    <br />
-      </v-form>
+      <br />
+      <br />
+    </v-form>
   </div>
-  
 </template>
 
 
@@ -384,7 +391,7 @@ export default {
   name: "createEventForm",
   data() {
     return {
-      nowDate: new Date().toISOString().slice(0,10),
+      nowDate: new Date().toISOString().slice(0, 10),
       srcs: [
         "https://vignette.wikia.nocookie.net/badges/images/7/70/Collaborator-icon.png/revision/latest?cb=20131203084742",
         "https://vignette.wikia.nocookie.net/badges/images/8/83/Lucky_Edit-icon.png/revision/latest?cb=20131203085335",
@@ -411,6 +418,12 @@ export default {
         eventEndDate: "",
         eventStartTime: null,
         eventEndTime: null,
+
+        eventStartDateTempt: "",
+        eventEndDateTempt: "",
+        eventStartTimeTempt: null,
+        eventEndTimeTempt: null,
+
         selectedCategory: "",
         location: {
           detail: "",
@@ -434,7 +447,7 @@ export default {
           // { name: "Lucky", avatar: this.srcs[1] },
           // { name: "Making a Difference", avatar: this.srcs[2] },
           // { name: "Speaker", avatar: this.srcs[3] }
-        ],
+        ]
       },
       categoryEventList: [
         "Arts",
@@ -461,8 +474,8 @@ export default {
       },
       badgeList: [],
       nameRules: [
-        v => !!v || 'Name is required',
-        v => v.length <= 100 || 'Name must be less than 100 characters'
+        v => !!v || "Name is required",
+        v => v.length <= 100 || "Name must be less than 100 characters"
       ],
       badgeSelect: false,
       description: "",
@@ -485,7 +498,6 @@ export default {
       },
       modalForStartTime: false,
       modalForEndTime: false
- 
     };
   },
   computed: {
@@ -495,32 +507,32 @@ export default {
       "getCurrentLocation",
       "getUser"
     ]),
-    eventStartDateTime () {
-        const startDate = new Date(this.eventForm.eventStartDate)
-        if (typeof this.eventForm.eventStartTime === 'string') {
-          let hours = this.eventForm.eventStartTime.match(/^(\d+)/)[1]
-          const minutes = this.eventForm.eventStartTime.match(/:(\d+)/)[1]
-          startDate.setHours(hours)
-          startDate.setMinutes(minutes)
-        } else {
-          startDate.setHours(this.eventForm.eventStartTime.getHours())
-          startDate.setMinutes(this.eventForm.eventStartTime.getMinutes())
-        }
-        return startDate
-      },
-       eventEndDateTime () {
-        const endDate = new Date(this.eventForm.eventEndDate)
-        if (typeof this.eventForm.eventEndTime === 'string') {
-          let hours = this.eventForm.eventEndTime.match(/^(\d+)/)[1]
-          const minutes = this.eventForm.eventEndTime.match(/:(\d+)/)[1]
-          endDate.setHours(hours)
-          endDate.setMinutes(minutes)
-        } else {
-          endDate.setHours(this.eventForm.eventEndTime.getHours())
-          endDate.setMinutes(this.eventForm.eventEndTime.getMinutes())
-        }
-        return endDate
+    eventStartDateTime() {
+      const startDate = new Date(this.eventForm.eventStartDateTempt);
+      if (typeof this.eventForm.eventStartTimeTempt === "string") {
+        let hours = this.eventForm.eventStartTimeTempt.match(/^(\d+)/)[1];
+        const minutes = this.eventForm.eventStartTimeTempt.match(/:(\d+)/)[1];
+        startDate.setHours(hours);
+        startDate.setMinutes(minutes);
+      } else {
+        startDate.setHours(this.eventForm.eventStartTimeTempt.getHours());
+        startDate.setMinutes(this.eventForm.eventStartTimeTempt.getMinutes());
       }
+      return startDate;
+    },
+    eventEndDateTime() {
+      const endDate = new Date(this.eventForm.eventEndDateTempt);
+      if (typeof this.eventForm.eventEndTimeTempt === "string") {
+        let hours = this.eventForm.eventEndTimeTempt.match(/^(\d+)/)[1];
+        const minutes = this.eventForm.eventEndTimeTempt.match(/:(\d+)/)[1];
+        endDate.setHours(hours);
+        endDate.setMinutes(minutes);
+      } else {
+        endDate.setHours(this.eventForm.eventEndTimeTempt.getHours());
+        endDate.setMinutes(this.eventForm.eventEndTimeTempt.getMinutes());
+      }
+      return endDate;
+    }
   },
   watch: {
     menu(val) {
@@ -531,15 +543,16 @@ export default {
         this.eventForm.eventTags.shift();
       }
     }
-    
   },
   mounted() {
     this.loadEventTemplate();
     this.loadOrganizeFromUser();
     this.findMatchingBadge();
-    let presetOrganizeId = this.$route.query.organizeId
-    this.eventForm.organize.organizeId = presetOrganizeId
-    console.log(presetOrganizeId)
+    if(this.$route.query.organizeId){
+      let presetOrganizeId = this.$route.query.organizeId;
+      this.eventForm.organize.organizeId = presetOrganizeId;
+      console.log(presetOrganizeId);
+    }
   },
   methods: {
     ...mapActions([
@@ -596,39 +609,89 @@ export default {
           console.log(error);
         });
     },
+    getAddressObject(address_components) {
+      let ShouldBeComponent = {
+        home: ["street_number"],
+        postal_code: ["postal_code"],
+        street: ["street_address", "route"],
+        region: [
+          "administrative_area_level_1",
+          "administrative_area_level_2",
+          "administrative_area_level_3",
+          "administrative_area_level_4",
+          "administrative_area_level_5"
+        ],
+        city: [
+          "locality",
+          "sublocality",
+          "sublocality_level_1",
+          "sublocality_level_2",
+          "sublocality_level_3",
+          "sublocality_level_4"
+        ],
+        country: ["country"]
+      };
+
+      let address = {
+        home: "",
+        postal_code: "",
+        street: "",
+        region: "",
+        city: "",
+        country: ""
+      };
+      address_components.forEach(component => {
+        for (var shouldBe in ShouldBeComponent) {
+          if (ShouldBeComponent[shouldBe].indexOf(component.types[0]) !== -1) {
+            if (shouldBe === "country") {
+              address[shouldBe] = component.short_name;
+            } else {
+              address[shouldBe] = component.long_name;
+            }
+          }
+        }
+      });
+      console.log("--------------- parsed fuck you -----------");
+      console.log(address);
+      return address;
+    },
     setPlace(place) {
       this.place = place;
       console.log("----set place----");
       console.log(this.place);
+
       let addresscomponents = this.place.address_components;
-      let detail = this.place.formatted_address;
-      // let streetNumber = addresscomponents[0].long_name;
-      // let road = addresscomponents[1].long_name;
-      // let subDistrict = addresscomponents[2].long_name;
-      // let distrct = addresscomponents[3].long_name;
-      // let province = addresscomponents[4].long_name;
-      // let country = addresscomponents[5].long_name;
+      let parsedAddress = this.getAddressObject(addresscomponents);
+      this.usePlace(this.place);
+
+      let detail = place.formatted_address;
+      let streetNumber = parsedAddress.home;
+      let road = parsedAddress.street;
+      // let subDistrict = parsedAddress;
+      let distrct = parsedAddress.region;
+      let province = parsedAddress.city;
+      let country = parsedAddress.country;
+
       this.setEventLocation({
         place,
         detail,
-        // streetNumber,
-        // road,
+        streetNumber,
+        road,
         // subDistrict,
-        // distrct,
-        // province,
-        // country
+        distrct,
+        province,
+        country
       });
       console.log({
         place,
         detail,
-        // streetNumber,
-        // road,
+        streetNumber,
+        road,
         // subDistrict,
-        // distrct,
-        // province,
-        // country
-      })
-      this.usePlace(this.place);
+        distrct,
+        province,
+        country
+      });
     },
     usePlace(place) {
       if (this.place) {
@@ -660,11 +723,18 @@ export default {
       this.eventForm.endRegisterDate = eventTemplate.endRegisterDate;
       this.eventForm.eventStartDate = eventTemplate.eventStartDate;
       this.eventForm.eventEndDate = eventTemplate.eventEndDate;
+
+      this.eventForm.eventStartDateTempt = eventTemplate.eventStartDateTempt;
+      this.eventForm.eventEndDateTempt = eventTemplate.eventEndDateTempt;
+      this.eventForm.eventStartTimeTempt = eventTemplate.eventStartTimeTempt;
+      this.eventForm.eventEndTimeTempt = eventTemplate.eventEndTimeTempt;
+
       this.eventForm.badge = eventTemplate.badge;
       this.eventForm.exp = eventTemplate.exp;
       this.eventForm.organize.organizeId = eventTemplate.organize.organizeId;
       this.eventForm.numberOfTicket = eventTemplate.numberOfTicket;
       let geopoint = eventTemplate.location.geopoint;
+
       if ((geopoint.lat === 0) & (geopoint.lon === 0)) {
         console.log("initital value");
         navigator.geolocation.getCurrentPosition(location => {
@@ -705,7 +775,6 @@ export default {
       this.$vuetify.goTo("#locationMap");
     },
     goToPreviewEvent() {
-     
       this.saveEventTemplate();
       this.$router.push("/organize/event/previewEvent");
     },
@@ -724,6 +793,7 @@ export default {
     saveEventTemplate() {
       console.log("SAve Tempalte");
       console.log(this.eventForm);
+      this.formatDateTimeToIsoWhenSave();
       this.setEventTemplate(this.eventForm);
       this.setBadgeDetail(this.eventForm.badge);
     },
@@ -750,35 +820,31 @@ export default {
     createEvent() {
       axios.post(`${process.env.EVENT_SERVICE}/event`);
     },
-    remove (item) {
-      const index = this.badgeSelect.indexOf(item.badgeName)
-        if (index >= 0) this.badgeSelect.splice(index, 1)
+    remove(item) {
+      const index = this.badgeSelect.indexOf(item.badgeName);
+      if (index >= 0) this.badgeSelect.splice(index, 1);
       // console.log(item.badgeName)
       //   // const index = this.badgeSelect.indexOf(item.badgeSelect)
       //   console.log(this.badgeSelect)
       //   console.log(index)
       //   if (index >= 0) this.badgeSelect.splice(index, 1)
-      },
-       validate() {
-        if (this.$refs.form.validate()) {
-          this.snackbar = true
-        }
-      },
-      test() {
-        let eventStartDateAndTime = this.eventStartDateTime;
-        console.log(eventStartDateAndTime)
-        console.log("---------------")
-        let eventEndDateAndTime= this.eventEndDateTime;
-        console.log(eventEndDateAndTime)
+    },
+    validate() {
+      if (this.$refs.form.validate()) {
+        this.snackbar = true;
+      }
+    },
+    formatDateTimeToIsoWhenSave() {
+      this.eventForm.eventStartDate = this.eventStartDateTime;
+      this.eventForm.eventEndDate = this.eventEndDateTime;
+      console.log("------Parsed date to iso8601---------");
+      console.log(this.eventForm.eventStartDate);
+      console.log(this.eventForm.eventEndDate);
+
       // let date = new Date(eventEndDateAndTime);
       // eventEndDateAndTime = date.getDate()  + "-" + date.getMonth() + "-" + date.getFullYear() + "  Time  "+ date.getHours() + ":" + date.getMinutes();
       // console.log(eventEndDateAndTime);
-      },
-      time(){
-        if (this.eventForm.eventStartDate == this.eventForm.eventEndDate){
-          this.eventForm.eventEndTime > this.eventForm.eventStartTime
-        }
-      }
+    }
   }
 };
 </script>
