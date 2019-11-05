@@ -33,17 +33,21 @@
         @click="$vuetify.goTo('#ticketSection')"
       >View Ticket</v-btn>
       <br />
-
-      <p>Date</p>
-      <p>
-        <b>{{formatDateForReadable(createEventDate)}}</b>
-      </p>
+      <br />
+      <br>
+      <p class="eventDate">Date & Time</p>
+         <p class="text-justify content">{{formatDateForReadable(createEventDate)}} {{formatAMPM(createEventDate)}}</p>
+          
+         <br> 
+   <br>
+   <br>
       <p></p>
 
-      <p>Event Detail</p>
-      <p class="text-justify">{{eventDetail}}</p>
-
-      <p>Location</p>
+      <p class="eventDate">Event Detail</p>
+      <p class="text-justify content">{{eventDetail}}</p>
+      <br />
+      <p> </p>
+      <p class="eventDate">Location</p>
       <p>
         <b>{{location.country}}, {{location.province}}</b>
       </p>
@@ -81,7 +85,7 @@
         <br />
       </center>
 
-      <h3>Tickets</h3>
+      <p class="eventDate">Tickets</p>
       <p>
         <b>{{eventName}}</b>
       </p>
@@ -245,7 +249,7 @@ export default {
     console.log(this.$route.params.elasticEventId);
     console.log(this.getUser.uid);
     this.userViewEvent();
-    this.loadOrganizeDetail()
+    this.loadOrganizeDetail();
   },
   computed: {
     ...mapGetters(["getCurrentLocation", "getUser"])
@@ -258,11 +262,10 @@ export default {
         .then(organizeResponse => {
           organizeResponse = organizeResponse.data;
           console.log(organizeResponse);
-          this.organizeImageCover = organizeResponse.organizeImageCover
-          this.organizeName = organizeResponse.organizeName
-          this.email = organizeResponse.email
-          this.website = organizeResponse.website
-          
+          this.organizeImageCover = organizeResponse.organizeImageCover;
+          this.organizeName = organizeResponse.organizeName;
+          this.email = organizeResponse.email;
+          this.website = organizeResponse.website;
         });
     },
     userViewEvent: function() {
@@ -348,32 +351,38 @@ export default {
         console.log("not support fuq");
       }
     },
+    formatAMPM: function(formatDate){
+      let date = new Date(formatDate);    
+     let time = date.toLocaleTimeString('en-US')
+      return time
+    },
     formatDateForReadable: function(formatDate) {
+      const days =["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
       const months = [
-        "JAN",
-        "FEB",
-        "MAR",
-        "APR",
-        "MAY",
-        "JUN",
-        "JUL",
-        "AUG",
-        "SEP",
-        "OCT",
-        "NOV",
-        "DEC"
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec"
       ];
       let date = new Date(formatDate);
       formatDate =
+     
+      days[date.getDate()] + 
+        ", " +
         date.getDate() +
-        "-" +
+        " " +
         months[date.getMonth()] +
-        "-" +
+        " " +
         date.getFullYear() +
-        "  Time  " +
-        date.getHours() +
-        ":" +
-        date.getMinutes();
+        "    " ;
       console.log(formatDate);
       return formatDate;
     }
@@ -394,6 +403,14 @@ export default {
   background-repeat: no-repeat;
   background-size: cover;
   background: transparent;
+}
+.eventDate {
+  font-weight: 800;
+  font-size: 17px;
+  color: #341646;
+}
+.content{
+  font-size: 16px;
 }
 </style>
 

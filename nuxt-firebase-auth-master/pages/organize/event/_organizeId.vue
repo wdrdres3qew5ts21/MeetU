@@ -208,10 +208,7 @@
         </v-tab-item>
       </v-tabs>
     </div>
-
-    <!-- <v-flex></v-flex>
-    <v-btn @click="loadAdminDetail()">test</v-btn>
-    <br />-->
+    <br />
   </div>
 </template>
 

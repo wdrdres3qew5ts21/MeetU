@@ -24,11 +24,24 @@
 
       <v-slide-y-transition>
         <v-card-text>
+          <v-layout row wrap>
+            <v-flex class="text-justify-left ">
+           
+              <h2 class="eventDate">
+             
+          {{formatDate(event.createEventDate)}}
+           </h2>
+
+          <span class="eventMonth">
+             
           {{formatDateForReadable(event.createEventDate)}}
+           </span>
+          </v-flex>
           <br />
-
+          <v-flex>
           <b>location</b>
-
+        </v-flex>
+          </v-layout>
           <!-- {{event.location.province?event.location.province:'Thailand'}} -->
         </v-card-text>
       </v-slide-y-transition>
@@ -49,6 +62,11 @@ export default {
     event: Object
   },
   methods: {
+    formatDate: function(dateFormat){
+    let date = new Date(dateFormat);
+    dateFormat = date.getDate()
+    return dateFormat
+    },
     formatDateForReadable: function(formatDate) {
       const months = [
         "JAN",
@@ -66,11 +84,10 @@ export default {
       ];
       let date = new Date(formatDate);
       formatDate =
-        date.getDate() +
-        "-" +
-        months[date.getMonth()] +
-        "-" +
-        date.getFullYear();
+      
+        months[date.getMonth()] 
+        // "-" +
+        // date.getFullYear();
       console.log(formatDate);
       return formatDate;
     },
@@ -172,5 +189,13 @@ export default {
   width: 100%;
   padding: 20px;
   text-align: left;
+}
+.eventDate{
+ 
+  color: #341646;
+}
+.eventMonth{
+ font-size: 18px ;
+ font-weight: bold;
 }
 </style>
