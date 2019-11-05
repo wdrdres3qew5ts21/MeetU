@@ -51,12 +51,23 @@ public class UserEventTicket {
     private Date eventStartDate;
     
     @Transient
+    private String confirmDelete;
+    
+    @Transient
     private String organizeId;
 
     private Organize organize;
     
     private double exp;
 
+    public String getConfirmDelete() {
+        return confirmDelete;
+    }
+
+    public void setConfirmDelete(String confirmDelete) {
+        this.confirmDelete = confirmDelete;
+    }
+    
     public String getOrganizeId() {
         return organizeId;
     }

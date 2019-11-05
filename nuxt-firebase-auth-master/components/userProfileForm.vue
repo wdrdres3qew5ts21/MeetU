@@ -100,13 +100,19 @@
           <v-flex class="text-xs-left">
           <h3>Your interest</h3>
           </v-flex>
-          <v-flex class="text-xs-right">
+
+
+          <nuxt-link to="/selectGenres" class="linkToGenres">Edit genes 
+          <!-- <v-icon color="primary">edit</v-icon> -->
+          </nuxt-link>  
+          <!-- <v-flex class="text-xs-right">
             <nuxt-link to="/selectGenres" style="color:red">
               <v-btn fab dark small color="#341646">
                 <v-icon color="#fff" size="25">edit</v-icon>
               </v-btn>
             </nuxt-link>
-          </v-flex>
+          </v-flex> -->
+
         </v-layout>
         <v-chip
           v-for="(userInterest,index) in userForm.interest"
@@ -576,7 +582,20 @@ export default {
 </script> 
  
  
-<style>
+<style lang="css">
+
+.v-content {
+  max-width: 100%;
+  background-color: #eeeeee;
+}
+
+.linkToGenres{
+  text-decoration: underline;
+  /* font-weight: bold; */
+  /* font-size: 16px; */
+  color: #100c4b;
+}
+  
 .accountButton {
   width: 500px;
 }

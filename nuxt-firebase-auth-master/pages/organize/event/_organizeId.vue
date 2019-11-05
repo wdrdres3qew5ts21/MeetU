@@ -91,7 +91,10 @@
                 </v-btn>
               </v-flex>-->
 
-              <event-card-organize v-for="(event, index) in eventList" :key="index" :event="event" />
+              <event-card v-for="(event, index) in eventList" :key="index" 
+              @editEvent="editEvent"
+              @deleteEvent="deleteEvent"
+              :event="event" :isOwner="isOwner" />
 
               <br />
 
@@ -183,7 +186,7 @@
           <v-card flat>
             <center>
               <br />
-              <h3 class="h3Text">You are {{getUser.firstName}} {{getUser.lastName}}</h3>
+              <h3 class="h3Text">You are {{userForm.firstName}} {{userForm.lastName}}</h3>
               <br />
               <div v-if="isCameraOpen">
                 <client-only placeholder="loading...">
@@ -216,6 +219,7 @@
 <script>
 import editOrganizeSetting from "~/components/editOrganizeSetting";
 import Swal from "sweetalert2";
+import eventCard from "~/components/eventCard";
 import eventCardOrganize from "~/components/eventCardOrganize";
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
@@ -226,7 +230,8 @@ export default {
   name: "startedEvent",
   components: {
     eventCardOrganize,
-    editOrganizeSetting
+    editOrganizeSetting,
+    eventCard
   },
   props: {},
   data() {
@@ -275,7 +280,26 @@ export default {
         {
           userDetail: []
         }
-      ]
+      ],
+      userForm: {
+        badgeList: [],
+        interest: [],
+        firstName: "",
+        lastName: "",
+        gender: "",
+        dateArray: [],
+        dateOfBirth: "",
+        phone: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        password: "",
+        website: "",
+        line: "",
+        facebook: "",
+        twitter: "",
+        instagram: ""
+      }
     };
   },
   computed: {
@@ -286,6 +310,7 @@ export default {
     console.log(this.$route.params.organizeId);
     this.loadAllEventOfOrganize();
     this.loadOrganizeDetail();
+    this.initUserProfile();
     if (this.getUser.uid) {
       this.verifyIfUserIsOrganizeMember();
       this.loadAdminDetail();
@@ -325,6 +350,69 @@ export default {
           });
         });
     },
+    editEvent: function(event){
+      console.log(event)
+    },
+    deleteEvent: async function(event) {
+      console.log(event)
+      const { value: formValues } = await Swal.fire({
+        title: "Do you want to delete this event?",
+        html:
+        `<p>ElasticEvent ID : <b>${event.elasticEventId}</b></p> ` +
+        `<p>Event Name : <b>${event.eventName}</b></p>` +
+        `<p> <input id="confirmDelete" placeholder='Type  "confirmed" to delete this event' class="swal2-input"> <p>` +
+        `<p> <input id="deleteMessageDetail"   placeholder='Please type reason for delete this event'  class="swal2-input"> </p>`,
+        // inputPlaceholder: "Type  'confirmed' to delete this event ",
+        // input: "text",
+        inputAttributes: {
+          autocapitalize: "off"
+        },
+        preConfirm: () => {
+          return {
+            confirmDelete: document.getElementById('confirmDelete').value,
+            deleteMessageDetail: document.getElementById('deleteMessageDetail').value
+          }
+        },
+        showCancelButton: true,
+        confirmButtonText: "Confirm",
+        allowOutsideClick: () => !Swal.isLoading()
+      })
+
+      if(formValues ) {
+        console.log(formValues)
+        
+        if (formValues) {
+          Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            type: "warning",
+            inputAttributes: {
+              autocapitalize: "off"
+            },
+            showCancelButton: true,
+            confirmButtonColor: "#FD6363",
+            cancelButtonColor: "#4CAF50",
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "No, keep it!"
+          }).then(result => {
+            if (result.value) {
+              axios.post(`${process.env.EVENT_SERVICE}/event/delete`,{
+                elasticEventId: event.elasticEventId,
+                confirmDelete: formValues.confirmDelete,
+                deleteMessageDetail: formValues.deleteMessageDetail,
+              }).then(deleteResponse=>{
+                Swal.fire("Deleted!", "Your event has been deleted.", "success");
+                this.loadAllEventOfOrganize()
+              }).catch(err=>{
+                Swal.fire("Failed to delete !", err.response.data.response, "error")
+              })
+            }
+          });
+        }
+      };
+
+
+    },
     verifyIfUserIsOrganizeMember() {
       console.log("------ verify status ------");
       axios
@@ -361,7 +449,7 @@ export default {
             title: "Success to add admin",
             text: `Success to add admin`
           });
-          this.loadAdminDetail()
+          this.loadAdminDetail();
           console.log(adminResponse.datas);
         })
         .catch(err => {
@@ -441,7 +529,7 @@ export default {
               title: "Delete Admin success",
               text: `Delete Admin success`
             });
-            this.loadAdminDetail()
+            this.loadAdminDetail();
           })
           .catch(err => {
             this.$swal({
@@ -451,6 +539,35 @@ export default {
             });
           });
       });
+    },
+        initUserProfile: function() {
+      let loader = this.$loading.show();
+      axios
+        .get(`${process.env.USER_SERVICE}/user/${this.getUser.uid}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("jwtToken") || ""}`
+          }
+        })
+        .then(userProfileForm => {
+          console.log("organize detail");
+          userProfileForm = userProfileForm.data;
+          console.log(userProfileForm);
+          this.userForm.interest = userProfileForm.interest;
+          this.userForm.firstName = userProfileForm.firstName;
+          this.userForm.lastName = userProfileForm.lastName;
+          this.userForm.email = userProfileForm.email;
+          this.userForm.gender = userProfileForm.gender;
+          this.userForm.facebook = userProfileForm.facebook;
+          this.userForm.line = userProfileForm.line;
+          this.userForm.website = userProfileForm.website;
+          this.userForm.twitter = userProfileForm.twitter;
+          this.userForm.instagram = userProfileForm.instagram;
+          this.userForm.phone = userProfileForm.phone || "";
+          loader.hide();
+        })
+        .catch(err => {
+          loader.hide();
+        });
     }
   }
 };

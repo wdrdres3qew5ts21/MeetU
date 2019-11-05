@@ -11,24 +11,24 @@
         </v-container>
       </v-img>
       <v-card-actions>
-        <br>
+        <br />
         <h3 class="#AEAEAE--text">{{event.eventName}}</h3>
       </v-card-actions>
-      
+
       <v-flex class="text-xs-right">
-         <v-btn fab dark small color="#341646" @click=" isEditing= !isEditing">
+        <v-btn fab dark small color="#341646" @click=" isEditing= !isEditing">
           <v-icon color="#fff" medium>edit</v-icon>
         </v-btn>
-            <v-btn fab dark small color="red" @click="confirmPopup">
-              <v-icon color="#fff" medium>delete</v-icon>
-            </v-btn>
-          </v-flex>
-      
+        <v-btn fab dark small color="red" @click="confirmPopup">
+          <v-icon color="#fff" medium>delete</v-icon>
+        </v-btn>
+      </v-flex>
+
       <v-slide-y-transition>
         <v-card-text>
           {{formatDateForReadable(event.createEventDate)}}
           <br />
-          
+
           <b>location</b>
 
           <!-- {{event.location.province?event.location.province:'Thailand'}} -->
@@ -41,15 +41,11 @@
 import Swal from "sweetalert2";
 export default {
   name: "EventCardOrganize",
-  components:{
-
-  },
-  data(){
-    return{
-
-            isEditing: true,
-
-    }
+  components: {},
+  data() {
+    return {
+      isEditing: true
+    };
   },
   props: {
     event: Object
@@ -86,7 +82,7 @@ export default {
       return time;
     },
 
-        activateInEditMode() {
+    activateInEditMode() {
       this.isEditing = false;
     },
     deActivateInEditMode() {
@@ -145,7 +141,6 @@ export default {
 
 
 <style lang="css">
-
 .v-content {
   max-width: 100%;
   background-color: #eeeeee;
@@ -158,5 +153,4 @@ export default {
   background-size: cover;
   background: transparent; */
 }
-  
 </style>

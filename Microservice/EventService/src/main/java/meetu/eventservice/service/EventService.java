@@ -265,37 +265,52 @@ public class EventService {
         String elasticEventId = deletedEvent.getElasticEventId();
         DeleteRequest deleteRequest = new DeleteRequest(eventsIndex, elasticEventId);
         DeleteResponse deleteResponse = null;
-        try {
-            deleteResponse = elasticClient.delete(deleteRequest, RequestOptions.DEFAULT);
-        } catch (IOException ex) {
-            Logger.getLogger(EventService.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        if (deleteResponse.getResult() == DocWriteResponse.Result.DELETED) {
-            System.out.println(deleteResponse);
-            try {
-                System.out.println("---- initial delete item ----");
-                // แสดงรายละเอียดการลบกิจกรรมไปยังตั๋ว Ticket ที่ User ครอบครอง
-                Query query = Query.query(Criteria.where("elasticEventId").is(elasticEventId));
-                Update updateDeletedEventDetailToUserTicket = new Update();
-                updateDeletedEventDetailToUserTicket.set("deleteMessageDetail", deletedEvent.getDeleteMessageDetail());
-                updateDeletedEventDetailToUserTicket.set("isEventDelete", true);
-                mongoTemplate.findAndModify(query, updateDeletedEventDetailToUserTicket, UserEventTicket.class);
-                // ลบตั๋วจริงๆออกจาก MongoDB
-                eventRepository.deleteByElasticEventId(elasticEventId);
+        Event eventForDelete = eventRepository.findByElasticEventId(elasticEventId);
+        if (eventForDelete != null) {
+            if (deletedEvent.getConfirmDelete().equals("confirmed") & !deletedEvent.getDeleteMessageDetail().isEmpty() ) {
+                System.out.println("--- delete detail -----");
+                System.out.println(deletedEvent);
+                try {
+                    deleteResponse = elasticClient.delete(deleteRequest, RequestOptions.DEFAULT);
+                } catch (IOException ex) {
+                    Logger.getLogger(EventService.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                if (deleteResponse.getResult() == DocWriteResponse.Result.DELETED) {
+                    System.out.println(deleteResponse);
+                    try {
+                        System.out.println("---- initial delete item ----");
+                        // แสดงรายละเอียดการลบกิจกรรมไปยังตั๋ว Ticket ที่ User ครอบครอง
+                        Query query = Query.query(Criteria.where("elasticEventId").is(elasticEventId));
+                        Update updateDeletedEventDetailToUserTicket = new Update();
+                        updateDeletedEventDetailToUserTicket.set("deleteMessageDetail", deletedEvent.getDeleteMessageDetail());
+                        updateDeletedEventDetailToUserTicket.set("isEventDelete", true);
+                        mongoTemplate.findAndModify(query, updateDeletedEventDetailToUserTicket, UserEventTicket.class);
+                        // ลบตั๋วจริงๆออกจาก MongoDB
+                        eventRepository.deleteByElasticEventId(elasticEventId);
+                        System.out.println("---- Deleted Event Mongo ----");
 
-                System.out.println("---- Deleted Event Mongo ----");
-            } catch (Exception ex) {
-                Logger.getLogger(EventService.class.getName()).log(Level.SEVERE, null, ex);
+                        responseBody.put("response", "Delete Contenet successs");
+                        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(responseBody);
+
+                    } catch (Exception ex) {
+                        Logger.getLogger(EventService.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else {
+                    responseBody.put("response", "remove " + elasticEventId + " fail !");
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
+                }
+
+            } else {
+                responseBody.put("response", "Please check your confirmation again !");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
             }
-        } else {
-            responseBody.put("response", "remove " + elasticEventId + " fail !");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
         }
-        responseBody.put("response", "remove " + elasticEventId + " successful !");
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(responseBody);
+
+        responseBody.put("response", "Please check your confirmation again !");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
     }
 
-    public List<Event> findEventByUsingFilter(String[] eventTags, boolean isRecently,String sortDate, boolean isPopularEvent, String eventDetail, double longitude, double latitude, String areaOfEvent, int page, int contentPerPage) throws IOException {
+    public List<Event> findEventByUsingFilter(String[] eventTags, boolean isRecently, String sortDate, boolean isPopularEvent, String eventDetail, double longitude, double latitude, String areaOfEvent, int page, int contentPerPage) throws IOException {
         BoolQueryBuilder queryFilter = new BoolQueryBuilder();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         SearchRequest searchRequest = new SearchRequest(eventsIndex);
@@ -314,21 +329,21 @@ public class EventService {
             System.out.println("Recently Filter");
             searchSourceBuilder = filterByRecently(searchSourceBuilder, "createEventDate");
         }
-        if(!sortDate.isEmpty()){
-            if(sortDate.equals("asc")){
+        if (!sortDate.isEmpty()) {
+            if (sortDate.equals("asc")) {
                 searchSourceBuilder.sort(new FieldSortBuilder("eventStartDate").order(SortOrder.ASC));
-              //  searchSourceBuilder.sorts().add(new FieldSortBuilder("eventStartDate").order(SortOrder.ASC));
-            }else{
+                //  searchSourceBuilder.sorts().add(new FieldSortBuilder("eventStartDate").order(SortOrder.ASC));
+            } else {
                 searchSourceBuilder.sort(new FieldSortBuilder("eventStartDate").order(SortOrder.DESC));
-               // searchSourceBuilder.sorts().add(new FieldSortBuilder("eventStartDate").order(SortOrder.DESC));
+                // searchSourceBuilder.sorts().add(new FieldSortBuilder("eventStartDate").order(SortOrder.DESC));
             }
         }
         if (isPopularEvent == true) {
             System.out.println("Popular Event Filter");
             // filter ต้องอยู่ในช่วงเวลา
             // queryFilter.must(QueryBuilders.rangeQuery("endRegisterDate").lte("now-1d/d"));
-              searchSourceBuilder.sort(new FieldSortBuilder("totalView").order(SortOrder.DESC));
-          //  searchSourceBuilder.sorts().add(new FieldSortBuilder("totalView").order(SortOrder.DESC));
+            searchSourceBuilder.sort(new FieldSortBuilder("totalView").order(SortOrder.DESC));
+            //  searchSourceBuilder.sorts().add(new FieldSortBuilder("totalView").order(SortOrder.DESC));
         }
         if (longitude != 0.0 & latitude != 0.0) {
             System.out.println("Geo Filter");
@@ -337,7 +352,7 @@ public class EventService {
 //                            .unit(DistanceUnit.KILOMETERS)
 //                            .order(SortOrder.ASC));
 //                    
-                    
+
             searchSourceBuilder.sort(
                     new GeoDistanceSortBuilder("location.geopoint", latitude, longitude)
                             .unit(DistanceUnit.KILOMETERS)
@@ -473,6 +488,7 @@ public class EventService {
         QueryStringQueryBuilder alreadyFilterByEventDetail = QueryBuilders.queryStringQuery(eventDetail + "~")
                 .field("eventName").boost(3.0f)
                 .field("eventDetail").boost(4.0f)
+                .field("badgeTags").boost(2.0f)
                 .field("location.*").boost(2.0f)
                 .fuzzyTranspositions(true);
         return alreadyFilterByEventDetail;
@@ -486,7 +502,7 @@ public class EventService {
 
     public SearchSourceBuilder filterByRecently(SearchSourceBuilder searchSourceBuilder, String sortedField) throws IOException {
         searchSourceBuilder.sort(new FieldSortBuilder(sortedField).order(SortOrder.DESC));
-      //  searchSourceBuilder.sorts().add(new FieldSortBuilder(sortedField).order(SortOrder.ASC));
+        //  searchSourceBuilder.sorts().add(new FieldSortBuilder(sortedField).order(SortOrder.ASC));
         return searchSourceBuilder;
     }
 
@@ -570,36 +586,6 @@ public class EventService {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
 
-//    public ResponseEntity userJoinEvent(String token ,UserEventTicket userJoinEvent) {
-//        HashMap<String, Object> responseBody = new HashMap<>();
-//        System.out.println("USer Join Event From Frpntend");
-//        System.out.println(userJoinEvent);
-//        System.out.println("------ Rest Template ------");
-//        UserEventTicket userEventTicketInDatabase = userEventTicketRespository.findByTicketId(userJoinEvent.getTicketId());
-//        if (userEventTicketInDatabase != null) {
-//
-//            System.out.println("!! userEventTicket !!");
-//            System.out.println(userEventTicketInDatabase);
-//            if (userEventTicketInDatabase.isIsParticipate() == false) {
-//                if (userEventTicketInDatabase.getTicketKey().equals(userJoinEvent.getTicketKey()) && userEventTicketInDatabase.getUid().equals(userJoinEvent.getUid())) {
-//                    // logic ถูกต้อง validate ตั๋วจริงๆว่ามาจากระบบของเรา
-//                    // ทำการบันทึกว่าตั๋วนี้ได้ถูกใช้ไปหลัง check in สำเร็จและ update exp พร้อม interest ของผู้ใช้งานไปยัง UserService
-//                    Event eventFromDatabase = eventRepository.findByElasticEventId(userEventTicketInDatabase.getElasticEventId());
-//                    userEventTicketInDatabase.setIsParticipate(true);
-//                    userEventTicketInDatabase.setParticipateDate(new Timestamp(System.currentTimeMillis()));
-//                    userEventTicketInDatabase.setBadgeId(eventFromDatabase.getBadge().getBadgeId());
-//                    userEventTicketInDatabase.setExp(eventFromDatabase.getBadge().getExp());
-//                    restTemplate.postForEntity(USERSERVICE_URL + "/user/interest", userEventTicketInDatabase, UserJoinEvent.class);
-//                    return ResponseEntity.status(HttpStatus.CREATED).body(userEventTicketRespository.save(userEventTicketInDatabase));
-//                }
-//            } else {
-//                responseBody.put("response", "This ticket had been usage !!!");
-//                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseBody);
-//            }
-//        }
-//        responseBody.put("response", "This ticket is wrong perhaps not our ticket !!!");
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
-//    }
     public ResponseEntity userReserveTicket(UserEventTicket userReserveTicket) {
         HashMap<String, Object> responseBody = new HashMap<>();
         Event eventInDatabase = eventRepository.findByElasticEventId(userReserveTicket.getElasticEventId());

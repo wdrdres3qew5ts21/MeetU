@@ -240,7 +240,7 @@ export default {
         { label: "Event", link: "/event" },
         { label: "Community", link: "/community" },
         { label: "Organize", link: "/organize/organizerForm" },
-        { label: "Contact Us", link: "/" }
+        { label: "Contact Us", link: "/contactUs" }
       ],
       communityMenuList: [
         { label: "Create Community", link: "/community/createCommunity" },
@@ -312,7 +312,23 @@ export default {
 };
 </script>
 
-<style>
+<style lang= "css">
+
+
+.v-content {
+  max-width: 100%;
+  background-color: #eeeeee;
+  font-family: Roboto;
+  /* background-image: url(../assets/bg.png) !important; */
+  /* background-repeat: repeat; */
+  /* background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background: transparent; */
+}
+
+
 .textfield {
   text-decoration-line: none !important;
   text-decoration: none !important;

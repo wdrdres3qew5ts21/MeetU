@@ -1,5 +1,5 @@
 <template>
-  <nuxt-link :to="`/event/${event.elasticEventId}`">
+  <!-- <nuxt-link :to="`/event/${event.elasticEventId}`"> -->
     <v-card>
       <v-img :src="event.eventPictureCover" height="200px"></v-img>
       <v-container fill-height fluid pa-2>
@@ -15,18 +15,26 @@
       <!-- <v-card-actions>
         <h3 class="#AEAEAE--text">{{event.eventName}}</h3>
       </v-card-actions>-->
-
-      <!-- <v-flex class="text-xs-right">
-         <v-btn fab dark small color="#341646" @click=" isEditing= !isEditing">
+      <v-flex v-if="isOwner" class="text-xs-right">
+        <v-btn fab dark small color="#341646" @click="$emit('editEvent', event)" >
           <v-icon color="#fff" medium>edit</v-icon>
         </v-btn>
-            <v-btn fab dark small color="red" @click="confirmPopup">
-              <v-icon color="#fff" medium>delete</v-icon>
-            </v-btn>
-      </v-flex>-->
+        <v-btn fab dark small color="red"  @click="$emit('deleteEvent', event)">
+          <v-icon color="#fff" medium>delete</v-icon>
+        </v-btn>
+      </v-flex>
 
       <v-slide-y-transition>
         <v-card-text>
+          <v-layout row wrap>
+            <v-flex class="text-justify-left">
+              <h2 class="eventDate">{{formatDate(event.createEventDate)}}</h2>
+              <span class="eventMonth">{{formatDateForReadable(event.createEventDate)}}</span>
+            </v-flex>
+            <br />
+            <v-flex>
+              <b>location</b>
+            </v-flex>
           
           <v-layout >
         <v-flex   class="eventMonth">
@@ -47,7 +55,7 @@
         </v-card-text>
       </v-slide-y-transition>
     </v-card>
-  </nuxt-link>
+  <!-- </nuxt-link> -->
 </template>
 <script>
 import Swal from "sweetalert2";
@@ -62,6 +70,8 @@ export default {
   },
   
   props: {
+    event: Object,
+    isOwner: Boolean
     event: Object,
     location: {
       type: Object,
@@ -124,52 +134,6 @@ export default {
       this.isEditing = true;
     },
 
-    confirmPopup: function(e) {
-      Swal.fire({
-        title: "Do you want to delete this event?",
-        inputPlaceholder: "Enter organize name for confirmation",
-        input: "text",
-        inputAttributes: {
-          autocapitalize: "off"
-        },
-        showCancelButton: true,
-        confirmButtonText: "Confirm",
-        showLoaderOnConfirm: true,
-        preConfirm: login => {
-          return fetch(`//api.github.com/users/${login}`)
-            .then(response => {
-              if (!response.ok) {
-                throw new Error(response.statusText);
-              }
-              return response.json();
-            })
-            .catch(error => {
-              Swal.showValidationMessage(`Request failed: ${error}`);
-            });
-        },
-        allowOutsideClick: () => !Swal.isLoading()
-      }).then(result => {
-        if (result.value) {
-          Swal.fire({
-            title: "Are you sure?",
-            text: "You won't be able to revert this!",
-            type: "warning",
-            inputAttributes: {
-              autocapitalize: "off"
-            },
-            showCancelButton: true,
-            confirmButtonColor: "#FD6363",
-            cancelButtonColor: "#4CAF50",
-            confirmButtonText: "Yes, delete it!",
-            cancelButtonText: "No, keep it!"
-          }).then(result => {
-            if (result.value) {
-              Swal.fire("Deleted!", "Your event has been deleted.", "success");
-            }
-          });
-        }
-      });
-    }
   }
 };
 </script>
@@ -214,7 +178,7 @@ export default {
   color: #341646;
 }
 .eventMonth {
-  font-size: 15px;
-
+  font-size: 18px;
+  font-weight: bold;
 }
 </style>
