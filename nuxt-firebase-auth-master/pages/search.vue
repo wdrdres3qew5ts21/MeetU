@@ -1,6 +1,7 @@
 <template >
-  <div>
-    <!-- <transition name="router-anim" enter-active-class="animated slideInRight"> -->
+  <!-- <transition name="slide"> -->
+    <div>
+      <!-- <transition name="router-anim" enter-active-class="animated slideInRight"> -->
       <v-layout row wrap>
         <v-flex xs12>
           <!-- <v-card class="mx-auto" elevation="0" outlined width="100%"> -->
@@ -143,7 +144,7 @@
               </v-flex>
             </v-layout>
 
-            <br>
+            <br />
             <v-layout row wrap>
               <v-chip
                 v-for="(categoryChip, index) in selectedCategoryList"
@@ -176,37 +177,46 @@
             
         </v-btn>-->
       </v-layout>
-    <!-- </transition> -->
+      <!-- </transition> -->
 
-    <br />
-    <br />
-
-    <center>
-      <div v-if="searchedEventList.length==0">
-        
-        <!-- <v-icon large @click="showTest = !showTest"> mdi-calendar-search </v-icon> -->
-        <v-icon large @click="showTest = !showTest">mdi mdi-emoticon-excited-outline spin</v-icon>
+      <center>
+        <div v-if="searchedEventList.length==0">
+          <!-- <v-icon large @click="showTest = !showTest"> mdi-calendar-search </v-icon> -->
+          <!-- <v-icon large @click="showTest = !showTest">mdi mdi-emoticon-excited-outline spin</v-icon>
         <transition
           name="custom-classes-transition"
           enter-active-class="animated tada"
           leave-active-class="animated tada"
         >
-          <h3 v-if="showTest">You can search event!</h3>
+          <p v-if="showTest">You can search event!</p>
           <br />
+        
 
-          <v-img v-if="showTest" :src="emotionImg" max-width="60"></v-img>
-        </transition>
-        <br />
-        <br />
-      </div>
-    </center>
-  </div>
+          </transition>-->
+
+          <v-img class="searchImg" v-if="showTest" :src="searchImg"></v-img>
+
+          <!-- <v-flex align-center>
+          <v-btn
+            class="#341646--text"
+            depressed
+            color outline="#341646"
+            ref="searchButton"
+            @click="searchEventByFilter()"
+          >Let's started !</v-btn>
+
+
+          </v-flex> -->
+
+        </div>
+      </center>
+    </div>
+  <!-- </transition> -->
 </template>
 
 
 <script>
 import EventList from "@/components/eventList";
-
 import { mapActions, mapGetters } from "vuex";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -254,7 +264,7 @@ export default {
         unit: ""
       },
       showTest: true,
-      emotionImg: require("@/assets/smile.png")
+      searchImg: require("@/assets/searchImg.png")
     };
   },
   watch: {
@@ -315,12 +325,9 @@ export default {
         }
       }
 
-      query += `&isPopularEvent=${this.isPopular}`
+      query += `&isPopularEvent=${this.isPopular}`;
 
-      query += `&sortDate=${this.filterForm.sortByDate}`
-
-      
-      
+      query += `&sortDate=${this.filterForm.sortByDate}`;
 
       console.log(query);
       let searchedEventList = await axios.get(query);
@@ -345,13 +352,13 @@ export default {
   position: fixed;
   width: inherit;
 } */
-
 .v-content {
   max-width: 100%;
   background-color: #eeeeee;
   font-family: Roboto;
-  /* background-image: url(../assets/bg.png) !important; */
+  /* background-image: url(../assets/bgCom1.png) !important; */
   /* background-repeat: repeat; */
+  /* background-size: 100px; */
   /* background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
@@ -359,7 +366,7 @@ export default {
   background: transparent; */
 }
 
-@keyframes spin {
+/* @keyframes spin {
     from {
         transform:rotate(0deg);
     }
@@ -367,11 +374,29 @@ export default {
         transform:rotate(360deg);
     }
 }
-
 .spin {
   animation-name: spin;
   animation-duration: 4000ms;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
+} */
+
+/* .slide-fade-enter-active {
+  transition: all 0.3s ease;
 }
+.slide-fade-leave-active {
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.slide-fade-enter,.slide-fade-leave-to {
+  transform: translateX(10px);
+  opacity: 0;
+} */
+
+
+
+
+
 </style>
+
+
+
