@@ -3,54 +3,6 @@
     <v-layout>
       <h2 style="color:#341646">My Profile</h2>
 
-      <v-flex class="text-xs-right">
-        <!-- ปุ่มสแกน qr code -->
-
-        <!-- <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
-          <template v-slot:activator="{ on }">
-            <v-btn v-on="on" @click="isCameraOpen = !isCameraOpen" fab dark small color="primary">
-              <v-icon medium>mdi-qrcode-scan</v-icon>
-            </v-btn>
-          </template>
-          <v-card>
-            <v-toolbar dark color="primary">
-              <v-btn icon dark  
-              @click.native="isCameraOpen=false"
-              @click="dialog = false" 
-             >
-                <v-icon>mdi-arrow-left</v-icon>
-              </v-btn>
-            </v-toolbar>
-            <br />
-            <br />
-
-
-
-            <center>
-
-              <br />
-        <h3>You are {{userForm.firstName}} : {{organize.organizeName}} Organize
-        </h3>
-        <br />
-
-
-              <div v-if="isCameraOpen">
-                <client-only placeholder="loading...">
-                  <qrcode-stream @decode="onDecode"></qrcode-stream>
-                </client-only>
-              </div>
-
-              <br />
-
-              <h3>Just scan a QR code for join an event!</h3>
-            </center>
-          </v-card>
-        </v-dialog>-->
-
-        <v-btn fab dark small color="#341646" @click=" isEditing= !isEditing">
-          <v-icon color="#fff" size="25">edit</v-icon>
-        </v-btn>
-      </v-flex>
     </v-layout>
 
     <br />
@@ -80,8 +32,7 @@
     <v-btn class="logoutButton" outline color="red" depressed large block @click="logout()">LOG OUT</v-btn>
     <br />
 
-    <h2>Information</h2>
-    <br />
+
     <v-layout column>
       <v-form ref="form" v-model="valid">
         <v-layout row wrap>
@@ -146,6 +97,66 @@
         -->
 
         <br />
+            <v-layout>
+      
+   
+
+    <h2>Information</h2>
+    
+      <v-flex class="text-xs-right">
+        <!-- ปุ่มสแกน qr code -->
+
+        <!-- <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
+          <template v-slot:activator="{ on }">
+            <v-btn v-on="on" @click="isCameraOpen = !isCameraOpen" fab dark small color="primary">
+              <v-icon medium>mdi-qrcode-scan</v-icon>
+            </v-btn>
+          </template>
+          <v-card>
+            <v-toolbar dark color="primary">
+              <v-btn icon dark  
+              @click.native="isCameraOpen=false"
+              @click="dialog = false" 
+             >
+                <v-icon>mdi-arrow-left</v-icon>
+              </v-btn>
+            </v-toolbar>
+            <br />
+            <br />
+
+
+
+            <center>
+
+              <br />
+        <h3>You are {{userForm.firstName}} : {{organize.organizeName}} Organize
+        </h3>
+        <br />
+
+
+              <div v-if="isCameraOpen">
+                <client-only placeholder="loading...">
+                  <qrcode-stream @decode="onDecode"></qrcode-stream>
+                </client-only>
+              </div>
+
+              <br />
+
+              <h3>Just scan a QR code for join an event!</h3>
+            </center>
+          </v-card>
+        </v-dialog>-->
+
+        <v-btn fab dark small color="#341646" @click=" isEditing= !isEditing">
+          <v-icon v-if="isEditing" color="#fff" size="25">mdi-pencil</v-icon>
+          <v-icon v-else color="#fff" size="25">mdi-close</v-icon>
+        </v-btn>
+      </v-flex>
+
+       </v-layout>
+
+    <br />
+
         <v-text-field
           :disabled="isEditing"
           v-model="userForm.firstName"
