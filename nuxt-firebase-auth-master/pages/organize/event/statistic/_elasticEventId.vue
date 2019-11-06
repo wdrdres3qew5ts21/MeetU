@@ -133,7 +133,6 @@
           </v-layout>
         </div>
         <v-container grid-list-xs fluid style="padding:5px">
-          <br />
              <v-list>
             <v-list-tile-content>
               <div class="textarea" contenteditable="false">{{review.reviewDetail}}</div>
@@ -157,7 +156,6 @@
             outlined
             v-for="(comment,commentIndex ) in reviewList[postIndex].commentList "
             :key="commentIndex"
-            
           >
             <v-container grid-list-xs xs4 fluid style="padding:5px">
               <v-list-tile xs4>
@@ -172,9 +170,7 @@
                         <v-list-tile-title class="margin-name">
                           <font size="2">{{ getUser.displayName}}</font>
                         </v-list-tile-title>
-                        <v-list-tile-sub-title class="margin-comment">
-                          <font size="2">{{comment}}</font>
-                        </v-list-tile-sub-title>
+                    
                       </v-card> 
                     </v-list-tile-content>
                   </div>
@@ -231,6 +227,7 @@ export default {
       name: "",     
       show: false,
       marker: true,
+      event: {},
       communityForm: {
          communityName: "",
          communityDetail: ""
@@ -253,6 +250,8 @@ export default {
        axios.get(`${process.env.EVENT_SERVICE}/event/reviews/${this.$route.params.elasticEventId}`)
        .then(reviewResponse =>{
            console.log(reviewResponse.data.reviewList)
+           this.event = reviewResponse.data
+           this.reviewList = reviewResponse.data.reviewList
             loader.hide()
 
        })
