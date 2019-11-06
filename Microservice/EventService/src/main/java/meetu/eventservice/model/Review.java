@@ -25,7 +25,7 @@ public class Review {
     
     private String displayName;
     
-    private String photoUrl;
+    private String photoURL;
     
     private String elasticEventId;
     
@@ -43,12 +43,12 @@ public class Review {
         this.displayName = displayName;
     }
 
-    public String getPhotoUrl() {
-        return photoUrl;
+    public String getPhotoURL() {
+        return photoURL;
     }
 
-    public void setPhotoUrl(String photoUrl) {
-        this.photoUrl = photoUrl;
+    public void setPhotoURL(String photoURL) {
+        this.photoURL = photoURL;
     }
     
     public String getReviewId() {
@@ -101,7 +101,7 @@ public class Review {
 
     @Override
     public String toString() {
-        return "Review{" + "reviewId=" + reviewId + ", uid=" + uid + ", displayName=" + displayName + ", photoUrl=" + photoUrl + ", elasticEventId=" + elasticEventId + ", rating=" + rating + ", reviewDetail=" + reviewDetail + ", reviewDate=" + reviewDate + '}';
+        return "Review{" + "reviewId=" + reviewId + ", uid=" + uid + ", displayName=" + displayName + ", photoUrl=" + photoURL + ", elasticEventId=" + elasticEventId + ", rating=" + rating + ", reviewDetail=" + reviewDetail + ", reviewDate=" + reviewDate + '}';
     }
 
    
