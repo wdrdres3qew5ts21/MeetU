@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.graalvm.compiler.core.common.util.ReversedList;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Reference;
 import org.springframework.data.mongodb.core.index.IndexDirection;
@@ -129,6 +130,10 @@ public class Event {
     
 
     public List<Review> getReviewList() {
+        if(reviewList ==  null){
+            reviewList = new ArrayList<Review>();
+            return reviewList;
+        }
         return reviewList;
     }
 

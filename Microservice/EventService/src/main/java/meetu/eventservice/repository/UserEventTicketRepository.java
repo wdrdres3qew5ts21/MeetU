@@ -19,6 +19,8 @@ public interface UserEventTicketRepository  extends MongoRepository<UserEventTic
     public UserEventTicket findByTicketId(String ticketId);
     
     public List<UserEventTicket> findByUid(String uid);
+
+    public UserEventTicket findByUidAndElasticEventIdAndIsParticipate(String uid, String elasticEventId, boolean isParticipate);
     
     
 }

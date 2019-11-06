@@ -1,9 +1,12 @@
 <template>
   <v-container>
+    <p>#{{ticketEvent.ticketId}}</p>
     <!-- <h1>Ticket(s)</h1> -->
     <!-- <ticketDetail :ticketEvent="ticketEvent"></ticketDetail> -->
+    <div v-if="isParticipate">
+      <rating-event :ticketEvent="ticketEvent" />
+    </div>
     <div class="text-center">
-      #{{ticketEvent.ticketId}}
       <br />
       <br />
       <h2>{{ ticketEvent.eventName}}</h2>
@@ -17,14 +20,23 @@
       </center>
 
       <div class="text-center">
-        <v-btn v-if="!ticketEvent.isEventDelete" block @click="$router.push(`/event/${ticketEvent.elasticEventId}`)" color="#341646" class="mb-2 white--text">View Event Detail</v-btn>
-        <v-btn v-else block color="#341646" @click="$router.push(`/event/history`)" class="mb-2 white--text">Back to My Ticket</v-btn>
+        <v-btn
+          v-if="!ticketEvent.isEventDelete"
+          block
+          @click="$router.push(`/event/${ticketEvent.elasticEventId}`)"
+          color="#341646"
+          class="mb-2 white--text"
+        >View Event Detail</v-btn>
+        <v-btn
+          v-else
+          block
+          color="#341646"
+          @click="$router.push(`/event/history`)"
+          class="mb-2 white--text"
+        >Back to My Ticket</v-btn>
       </div>
       <br />
       <br />
-
- 
-      <div></div>
 
       <!-- <div align="left">
         <br />
@@ -44,7 +56,7 @@
         <br />
         <br />
         <h3>{{ticketEvent.organize.organizeName}}</h3>
-      </div> -->
+      </div>-->
     </div>
   </v-container>
 </template>
@@ -52,16 +64,21 @@
 <script>
 import axios from "axios";
 import { mapGetters } from "vuex";
+import ratingEvent from "~/components/ratingEvent";
 
 export default {
   components: {
+    ratingEvent
   },
   data() {
     return {
       isCameraOpen: false,
       ticketEvent: {
-        ticketDetail: [{ eventName: "E-Ticket", organize: {organizeName:""} }]
+        ticketDetail: [
+          { eventName: "E-Ticket", organize: { organizeName: "" } }
+        ]
       },
+      isParticipate: false,
       qrCodeSrc: {}
     };
   },
@@ -83,7 +100,8 @@ export default {
         .then(ticketResponse => {
           this.ticketEvent = ticketResponse.data[0];
           let ticketEvent = ticketResponse.data[0];
-          let test = ticketEvent.ticketId
+          let test = ticketEvent.ticketId;
+          this.isParticipate = ticketEvent.isParticipate;
 
           console.log(ticketEvent);
           this.qrCodeSrc = JSON.stringify({

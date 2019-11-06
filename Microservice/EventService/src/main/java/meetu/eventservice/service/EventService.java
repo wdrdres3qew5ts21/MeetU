@@ -8,6 +8,9 @@ package meetu.eventservice.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseToken;
 import com.google.firebase.messaging.AndroidConfig;
 import com.google.firebase.messaging.BatchResponse;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -58,16 +61,20 @@ import com.google.firebase.messaging.Notification;
 import com.google.firebase.messaging.TopicManagementResponse;
 import com.google.firebase.messaging.WebpushConfig;
 import com.mongodb.BasicDBObject;
+import com.mongodb.client.model.Aggregates;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import java.beans.Expression;
 import java.nio.charset.Charset;
 import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
+import meetu.eventservice.controller.EventController;
 import meetu.eventservice.model.Badge;
 import meetu.eventservice.model.BadgeReward;
 import meetu.eventservice.model.Category;
 import meetu.eventservice.model.EventBadge;
 import meetu.eventservice.model.Organize;
+import meetu.eventservice.model.Review;
 import meetu.eventservice.model.UserEventTicket;
 import meetu.eventservice.model.UserJoinEvent;
 import meetu.eventservice.model.UserViewEvent;
@@ -101,6 +108,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import meetu.eventservice.repository.CategoryRepository;
 import meetu.eventservice.repository.EventBadgeRepository;
+import meetu.eventservice.repository.ReviewRepository;
 import org.apache.commons.lang.RandomStringUtils;
 import org.elasticsearch.action.update.UpdateRequest;
 import static org.elasticsearch.common.xcontent.XContentFactory.*;
@@ -108,7 +116,13 @@ import org.elasticsearch.index.get.GetResult;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.springframework.data.domain.Sort;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.sort;
+import org.springframework.data.mongodb.core.aggregation.AggregationExpression;
+import org.springframework.data.mongodb.core.aggregation.ArithmeticOperators;
+import org.springframework.data.mongodb.core.aggregation.ComparisonOperators;
+import org.springframework.data.mongodb.core.aggregation.ConditionalOperators;
+import org.springframework.data.mongodb.core.aggregation.ProjectionOperation;
 import org.springframework.data.mongodb.core.aggregation.SortOperation;
+import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.HttpEntity;
@@ -140,6 +154,9 @@ public class EventService {
 
     @Autowired
     private EventBadgeRepository eventBadgeRepository;
+    
+    @Autowired
+    private ReviewRepository reviewRepository;
 
     @Autowired
     private MongoTemplate mongoTemplate;
@@ -802,30 +819,34 @@ public class EventService {
         return null;
     }
 
-    public void pushNotificationForRemindEvent() {
+    public ResponseEntity pushNotificationForRemindEvent() {
         Event event = eventRepository.findByElasticEventId("KL3RO24BGta3uOKHWgJy");
         Date nowDate = new Date();
         Date createEventDate = event.getEventStartDate();
-        
+
         long diff = createEventDate.getTime() - nowDate.getTime();
         long diffSeconds = diff / 1000 % 60;
         long diffMinutes = diff / (60 * 1000) % 60;
         long diffHours = diff / (60 * 60 * 1000);
         int diffInDays = (int) ((createEventDate.getTime() - nowDate.getTime()) / (1000 * 60 * 60 * 24));
-        System.out.println("diff "+ diff);
+        System.out.println("diff " + diff);
         System.out.println("diff day " + diffInDays);
         System.out.println("diff hour " + diffHours);
-        System.out.println("diff min "  + diffMinutes);
+        System.out.println("diff min " + diffMinutes);
         System.out.println("diff sec " + diffSeconds);
-        
-        
-        AggregationOperation match = Aggregation.match(
-                Criteria.where("eventStartDate").lte(new Date())
-                        .and("eventStartDate").gte(  new Date())
-        ) ;
-        SortOperation sortByTicketCreateTime = sort(new Sort(Sort.Direction.DESC, "_id"));
-        //Aggregation aggregation = Aggregation.newAggregation(lookupOperation, match, sortByTicketCreateTime);
-      //  List<BasicDBObject> results = mongoTemplate.aggregate(aggregation, "userEventTicket", BasicDBObject.class).getMappedResults();
+        // "{$expr:{$gt:[ {'$subtract':[  '$date' ,  '$eventStartDate'  ]}, 1000*60*60*2 ]}}"
+        //BasicDBObject parse = BasicDBObject.parse("{'$gte':[{'$subtract':[ {'$ifNull':['$acceptedDate', {'$date': " + System.currentTimeMillis() + "}]}, '$eventStartDate']},1296000000]}" );
+        long DAY_ELASPE = 86400000;
+
+        // work code
+//        Query query = new BasicQuery("{$expr: {$gte:[{\"$subtract\":[\"$date\",\"$eventStartDate\"]}, "+  DAY_ELASPE +"]} }"   );
+        Query query = new BasicQuery("{$expr: {$gte:[{\"$subtract\":[ new Date() ,\"$eventStartDate\"]}, " + DAY_ELASPE + "]} }");
+        //   query=  new BasicQuery(" { $project: { time: { $subtract: [ new Date() , \"$eventStartDate\" ] } } }");
+        ProjectionOperation projectionOperation = new ProjectionOperation();
+        // ต้องลบกันแล้วเพิ่มเวลาออกมาจากระบบ จากนั้นนำเวลาไปเข้า if else push
+
+        // mongoTemplate.aggregate(Aggregates.addFields("dateDifferecne",) , BasicDBObject.class)
+        List<BasicDBObject> find = mongoTemplate.find(query, BasicDBObject.class, "events");
 
         if (diffInDays > 1) {
             System.err.println("Difference in number of days (2) : " + diffInDays);
@@ -834,9 +855,10 @@ public class EventService {
         } else if ((diffHours == 24) && (diffMinutes >= 1)) {
             System.err.println("minutes");
         }
-        
+
         HashMap<String, String> response = new HashMap<>();
 
+        return ResponseEntity.status(HttpStatus.OK).body(find);
     }
 
     public ResponseEntity forcePushNotificationFromAdmin(String token, String elasticEventId, String messageDetail) throws FirebaseMessagingException {
@@ -850,7 +872,7 @@ public class EventService {
                 elasticEventInDatabase.getEventStartDate();
                 List<Message> messages = new ArrayList<>();
                 HashMap<String, String> dataPayload = new HashMap<>();
-                dataPayload.put("link", "https://meetu-69b29.firebaseapp.com/event/"+elasticEventId);
+                dataPayload.put("link", "https://meetu-69b29.firebaseapp.com/event/" + elasticEventId);
                 for (UserNotification userNotification : userNotificationList) {
                     messages = Arrays.asList(
                             Message.builder()
@@ -858,7 +880,7 @@ public class EventService {
                                             elasticEventInDatabase.getEventName(),
                                             messageDetail))
                                     .setToken(userNotification.getNotificationToken())
-                                    .setWebpushConfig(WebpushConfig.builder().putAllData(dataPayload).build() )
+                                    .setWebpushConfig(WebpushConfig.builder().putAllData(dataPayload).build())
                                     .build()
                     );
                 }
@@ -892,6 +914,48 @@ public class EventService {
         TopicManagementResponse response = FirebaseMessaging.getInstance().subscribeToTopic(registrationTokens, subscribeElasticEventId);
         System.out.println(response.getSuccessCount() + " tokens were subscribed successfully");
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    public ResponseEntity userReviewEvent(String token, Review userReview) {
+        HashMap<String, String> response = new HashMap<>();
+        Event eventInDatabase = eventRepository.findByElasticEventId(userReview.getElasticEventId());
+        System.out.println("--- Review ----");
+        System.out.println(userReview);
+        token = token.replace("Bearer ", "");
+        if (eventInDatabase != null) {
+            try {
+                FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
+                String uid = decodedToken.getUid();
+                try {
+                    ResponseEntity<User> userResponse = restTemplate.getForEntity(USERSERVICE_URL + "/user/" + uid, User.class);
+                    User user = userResponse.getBody();
+                    UserEventTicket eventThatUserJoin = userEventTicketRespository.findByUidAndElasticEventIdAndIsParticipate(uid, eventInDatabase.getElasticEventId(), true);
+                    if (eventThatUserJoin!=null) {
+                        userReview.setDisplayName(user.getDisplayName());
+                        userReview.setPhotoUrl(user.getPhotoUrl());
+                        userReview.setUid(user.getUid());
+                        userReview.setReviewDate(new Date());
+                        List<Review> reviewList = eventInDatabase.getReviewList();
+                        reviewList.add(userReview);
+                        reviewRepository.saveAll(reviewList);
+                        eventRepository.save(eventInDatabase);
+                        response.put("response", "Not Found Event To Review !!!");
+                        return ResponseEntity.status(HttpStatus.CREATED).body(userReview);
+                    }
+                } catch (HttpStatusCodeException codeException) {
+                    if (codeException.getStatusCode() == HttpStatus.NOT_FOUND) {
+                        response.put("response", "Not found this user so you can't comment!!");
+                    };
+                }
+
+            } catch (FirebaseAuthException ex) {
+                Logger.getLogger(EventController.class.getName()).log(Level.SEVERE, null, ex);
+                response.put("response", "You need to be login !");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+            }
+        }
+        response.put("response", "Not Found Event To Review !!!");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
 }

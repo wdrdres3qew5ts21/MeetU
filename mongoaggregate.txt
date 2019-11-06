@@ -1,0 +1,44 @@
+{$expr:{$gt:[{'$subtract':['$lastUpdate','$eventStartDate']},1000*60*60*24]}}
+
+
+// work
+db.events.find( {$expr: {$lte:[{"$subtract":["$date","$eventStartDate"]}, 60000000]  } }   )
+
+
+// เวลาผ่านไปแล้วแต่ยังไม่เคยปลัก flag ก็ต้องดึงขึ้นมาแปะป้าย
+
+// เวลาผ่านไปแล้ว 
+
+db.events.find( {$expr: {  $or: [ {$lte:[{"$subtract":["$date","$eventStartDate"]}, 60000000] } ,  {$eq: ["$isEventStart", false] } ]} }   )
+
+
+
+db.events.find( $expr: {  $and: [       ]         } )
+
+
+
+
+db.events.aggregate( [ { $project: { time: { $subtract: [ new Date() , "$eventStartDate" ] } }  }, {
+     $addFields: {
+       totalHomework: { $subtract: [ new Date() , "$eventStartDate" ] } ,
+       totalQuiz: { $subtract: [ new Date() , "$eventStartDate" ] }
+     }
+   } ] );
+
+
+
+db.events.aggregate( [ { $project: { totalHourSpent:{$divide : [{$subtract: ["$date","$date"]}, 3600000] }  } } ] );
+
+
+db.events.aggregate([
+  {
+    $addFields: {
+      dateDifference: {
+        $subtract: [
+          "$date",
+          "$eventStartDate"
+        ]
+      }
+    }
+  },
+])

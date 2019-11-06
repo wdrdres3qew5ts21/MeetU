@@ -7,6 +7,7 @@ package meetu.eventservice.model;
 
 import java.util.Date;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -19,6 +20,7 @@ public class Review {
     @Id
     private String reviewId;
     
+    @Indexed
     private String uid;
     
     private String displayName;
@@ -99,7 +101,8 @@ public class Review {
 
     @Override
     public String toString() {
-        return "Review{" + "reviewId=" + reviewId + ", uid=" + uid + ", elasticEventId=" + elasticEventId + ", rating=" + rating + ", reviewDetail=" + reviewDetail + ", reviewDate=" + reviewDate + '}';
+        return "Review{" + "reviewId=" + reviewId + ", uid=" + uid + ", displayName=" + displayName + ", photoUrl=" + photoUrl + ", elasticEventId=" + elasticEventId + ", rating=" + rating + ", reviewDetail=" + reviewDetail + ", reviewDate=" + reviewDate + '}';
     }
-    
+
+   
 }

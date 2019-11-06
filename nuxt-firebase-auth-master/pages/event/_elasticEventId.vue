@@ -354,8 +354,8 @@ export default {
           }
         })
         .then(reserveTicket => {
-          console.log(reserveTicket);
-          this.reserveTicket = reserveTicket;
+          console.log(reserveTicket.data);
+          this.reserveTicket = reserveTicket.data;
           this.isViewTicketDetail = !this.isViewTicketDetail;
         })
         .catch(error => {

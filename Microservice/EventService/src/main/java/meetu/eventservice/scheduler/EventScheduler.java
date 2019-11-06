@@ -47,7 +47,7 @@ public class EventScheduler {
     private RestTemplate restTemplate;
 
     // 5 minute ระบบจะทำการ Query ขึ้นมาเช็ค Event ที่จะทำการเตือน
-    @Scheduled(fixedRate = 300000)
+//    @Scheduled(fixedRate = 300000)
     public void cronJobSch() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         Date now = new Date();

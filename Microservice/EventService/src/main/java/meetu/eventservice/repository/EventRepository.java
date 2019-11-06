@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface EventRepository extends MongoRepository<Event, String> {
-
+    
     public List<Event> findByEventDetailLike(String eventDetail);
     
     public Event findByElasticEventId(String elasticEventId);

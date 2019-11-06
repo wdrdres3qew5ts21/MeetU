@@ -5,16 +5,23 @@
  */
 package meetu.eventservice.controller;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseToken;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import meetu.eventservice.model.Category;
 import java.io.IOException;
 import java.util.HashMap;
 import meetu.eventservice.service.EventService;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletResponse;
 import meetu.eventservice.model.Badge;
 import meetu.eventservice.model.Event;
 import meetu.eventservice.model.EventTicket;
+import meetu.eventservice.model.Review;
 import meetu.eventservice.model.User;
 import meetu.eventservice.model.UserNotification;
 import meetu.eventservice.model.UserEventTicket;
@@ -122,7 +129,7 @@ public class EventController {
     @GetMapping("/test/{elasticEventId}")
     public ResponseEntity deleteEventByElasticIdTest(@PathVariable  String elasticEventId) {
         eventService.pushNotificationForRemindEvent();
-        return null;
+        return eventService.pushNotificationForRemindEvent();
     }
 
     @GetMapping("/events/popular")
@@ -132,11 +139,10 @@ public class EventController {
         return eventService.findAllPopularEvent();
     }
     
-    @PostMapping("/events/popular")
-    public ResponseEntity reviewEvent(
-            @RequestParam(required = false, defaultValue = "0") int page,
-            @RequestParam(required = false, defaultValue = "20") int contentPerPage) {
-        return eventService.findAllPopularEvent();
+    @PostMapping("/event/review")
+    public ResponseEntity reviewEvent(@RequestHeader(name = "Authorization", required = true) String token,@RequestBody Review userReview) {
+   
+        return eventService.userReviewEvent(token,userReview);
     }
 
     @GetMapping("/events")

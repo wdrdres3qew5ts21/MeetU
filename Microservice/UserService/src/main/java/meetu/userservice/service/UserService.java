@@ -92,7 +92,7 @@ public class UserService {
 
         HashMap<String, String> response = new HashMap();
         response.put("message", "not found user in database!");
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
     public List<User> findByFirstName(String firstName) {

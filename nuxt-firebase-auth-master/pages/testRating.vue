@@ -1,8 +1,6 @@
 <template>
   <div>
-    <v-container>
-      <rating-event></rating-event>
-    </v-container>
+    <rating-event></rating-event>
   </div>
 </template>
 
