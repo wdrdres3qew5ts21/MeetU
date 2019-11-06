@@ -17,7 +17,7 @@
     </v-card-actions>-->
     <v-flex v-if="isOwner" class="text-xs-right">
       <v-btn fab dark small color="#341646" @click="$emit('editEvent', event)">
-        <v-icon color="#fff" medium>edit</v-icon>
+        <v-icon color="white" medium>poll</v-icon>
       </v-btn>
       <v-btn fab dark small color="red" @click="$emit('deleteEvent', event)">
         <v-icon color="#fff" medium>delete</v-icon>

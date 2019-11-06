@@ -154,7 +154,7 @@ public class EventService {
 
     @Autowired
     private EventBadgeRepository eventBadgeRepository;
-    
+
     @Autowired
     private ReviewRepository reviewRepository;
 
@@ -930,7 +930,7 @@ public class EventService {
                     ResponseEntity<User> userResponse = restTemplate.getForEntity(USERSERVICE_URL + "/user/" + uid, User.class);
                     User user = userResponse.getBody();
                     UserEventTicket eventThatUserJoin = userEventTicketRespository.findByUidAndElasticEventIdAndIsParticipate(uid, eventInDatabase.getElasticEventId(), true);
-                    if (eventThatUserJoin!=null) {
+                    if (eventThatUserJoin != null) {
                         userReview.setDisplayName(user.getDisplayName());
                         userReview.setPhotoUrl(user.getPhotoUrl());
                         userReview.setUid(user.getUid());
@@ -956,6 +956,17 @@ public class EventService {
         }
         response.put("response", "Not Found Event To Review !!!");
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    public ResponseEntity findAllReviewOfEvent(String elasticEventId) {
+        Event eventInDatabase = eventRepository.findByElasticEventId(elasticEventId);
+        if (eventInDatabase != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(eventInDatabase);
+        } else {
+            HashMap<String, String> response = new HashMap<>();
+            response.put("response", "Not found Event");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
     }
 
 }

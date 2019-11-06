@@ -357,7 +357,7 @@ export default {
     },
     editEvent: function(event) {
       console.log(event);
-      this.$router.push("/organize");
+      this.$router.push(`/organize/event/statistic/${event.elasticEventId}`);
     },
     deleteEvent: async function(event) {
       console.log(event);

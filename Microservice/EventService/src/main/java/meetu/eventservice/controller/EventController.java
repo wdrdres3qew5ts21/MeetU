@@ -144,6 +144,13 @@ public class EventController {
    
         return eventService.userReviewEvent(token,userReview);
     }
+    
+    @GetMapping("/event/reviews/{elasticEventId}")
+    public ResponseEntity findAllReviewOfEvent(@PathVariable String elasticEventId) {
+        
+                return eventService.findAllReviewOfEvent(elasticEventId);
+
+    }
 
     @GetMapping("/events")
     public ResponseEntity<List<Event>> searchWithFilter(
