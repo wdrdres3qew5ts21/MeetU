@@ -98,89 +98,56 @@
       </v-flex>
     </v-layout>
     <p size="1px">User Comment</p>
-
-    <br />
-
-    <!-- Edit Description Admin only -->
-
-    <!-- ------------posted card + small viewcomment + post picture If have :) 
-    No upload in firebase yet container------------>
-    <br />
     <div v-for="(review,postIndex ) in reviewList " :key="postIndex">
-      <v-card rounded outlined>
-        <br />
-        <div>
-          <v-layout>
-            <v-container grid-list-xs fluid style="padding:10px">
-              <v-flex xs12 class="text-xs-left">
-                <v-avatar size="60">
-                  <v-img :aspect-ratio="1/1" :src="review.photoUrl"></v-img>
-                </v-avatar>
-                {{ review.displayName}}
-              </v-flex>
-            </v-container>
-            <v-flex xs12 class="text-xs-right">
-              <v-btn text icon>
-                <v-icon>expand_more</v-icon>
-              </v-btn>
+      <v-card>
+        <v-layout row wrap align-start justify-center fill-height>
+          <v-layout row pt-2>
+            <v-flex xs1 md1 lg1 mt-3 ml-3>
+              <v-icon>today</v-icon>
+              <!-- <v-img  max-width="40" max-height="40" left></v-img> -->
+            </v-flex>
+            <v-flex xs11 md11 lg11 mt-1 ml-3 mr-1>
+              <div>{{review.displayName}}</div>
+           
+              <p
+                class="date"
+              >{{formatDateForReadable(review.reviewDate)}} {{formatAMPM(review.reviewDate)}}</p>
             </v-flex>
           </v-layout>
-        </div>
-        <v-container grid-list-xs fluid style="padding:5px">
-          <v-list>
-            <v-list-tile-content>
-              <div class="textarea" contenteditable="false">{{review.reviewDetail}}</div>
-            </v-list-tile-content>
-          </v-list>
-        </v-container>
 
-        <v-card-text rounded outlined class="mx-auto">
-          <v-divider></v-divider>
-          <v-flex class="text-right"></v-flex>
-        </v-card-text>
-        <v-list>
-          <v-card
-            xs6
-            rounded
-            outlined
-            v-for="(comment,commentIndex ) in reviewList[postIndex].commentList "
-            :key="commentIndex"
-          >
-            <v-container grid-list-xs xs4 fluid style="padding:5px">
-              <v-list-tile xs4>
-                <v-list-tile-avatar>
-                  <v-img :aspect-ratio="1/1" :src="getUser.photoURL"></v-img>
-                </v-list-tile-avatar>
-                <v-list-tile>
-                  <div>
-                    <v-list-tile-content>
-                      <!-- max-width="240px" -->
-                      <v-card color="#F5F5F5" class="rounded-card" max-width="240px">
-                        <v-list-tile-title class="margin-name">
-                          <font size="2">{{ getUser.displayName}}</font>
-                        </v-list-tile-title>
-                      </v-card>
-                    </v-list-tile-content>
-                  </div>
-                </v-list-tile>
-              </v-list-tile>
-            </v-container>
-          </v-card>
-        </v-list>
+          <v-card-text class="px-3 pt-3 pb-0">{{review.reviewDetail}} <br>
+          
+          <v-layout row>
+            <v-flex  >
+          Given rating :
+            </v-flex>
+            <v-flex xs7>
+       
+      <v-rating
+      readonly
+        v-model="review.rating"
+        color="yellow accent-4"
+        dense
+        half-increments
+        hover
+        size="18"
+      ></v-rating>
+            </v-flex>
+      <v-flex xs1>
+            ({{review.rating}})
+      </v-flex>
+
+          </v-layout>
+          </v-card-text>
+
+        </v-layout>
+        <br />
       </v-card>
       <br />
     </div>
-    <!-- ------------ Close of : post+ small viewcomment + post picture If have :) 
-    No upload in firebase yet container------------>
+
+    <br />
   </div>
-  <!-- remove Post button -->
-  <!-- <v-btn
-                  @click="removePost(todo)"
-                  color="#341646"
-                  class="mb-2 white--text"
-                  type="button"
-                  name="button"
-  >Remove</v-btn>-->
 </template> 
   
 <script>
@@ -207,6 +174,7 @@ export default {
       newPost: "",
       reviewList: [],
       commentInPost: "",
+      reviewDate: "",
       comment: "",
       postIndex: 0,
       dialogOfComment: false,
@@ -336,6 +304,22 @@ export default {
     },
     handleUploaded(resp) {
       this.userAvatar = resp.relative_url;
+    },
+    formatDateForReadable: function(formatDate) {
+      let date = new Date(formatDate);
+      formatDate =
+        date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
+      console.log(formatDate);
+      return formatDate;
+    },
+    formatAMPM: function(AMPM) {
+      let date = new Date(AMPM);
+      const options = {
+        hour: "2-digit",
+        minute: "2-digit"
+      };
+      let time = date.toLocaleTimeString("en-US", options);
+      return time;
     }
   }
 };
@@ -394,5 +378,8 @@ export default {
 }
 h2 {
   color: #341646;
+}
+.date {
+  font-size: 14px;
 }
 </style>
