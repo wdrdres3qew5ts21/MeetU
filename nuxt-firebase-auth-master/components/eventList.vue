@@ -2,7 +2,9 @@
   <v-container fluid grid-list-md>
     <v-layout row wrap>
       <v-flex v-for="(event, index) in eventList" :key="index" >
-        <event-card :event="event"></event-card>
+        <nuxt-link :to="`/event/${event.elasticEventId}`">
+          <event-card :event="event"></event-card>
+        </nuxt-link>
       </v-flex>
     </v-layout>
     <center>
