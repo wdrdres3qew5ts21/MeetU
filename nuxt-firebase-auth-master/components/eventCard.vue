@@ -89,31 +89,40 @@ export default {
     }
   },
   methods: {
-    formatDateForReadable: function(formatDate) {
-      const months = [
-        "JAN",
-        "FEB",
-        "MAR",
-        "APR",
-        "MAY",
-        "JUN",
-        "JUL",
-        "AUG",
-        "SEP",
-        "OCT",
-        "NOV",
-        "DEC"
-      ];
+    formatDateForReadable: function(formatDate){
       let date = new Date(formatDate);
-      formatDate =
-        date.getDate() +
-        " " +
-        months[date.getMonth()] +
-        " " +
-        date.getFullYear();
-      console.log(formatDate);
-      return formatDate;
+      let YYYY = date.getFullYear() + '';
+      let  MM = (date.getMonth() + 1) + '';
+      MM = (MM.length === 1) ? '0' + MM : MM;
+      let DD = date.getDate() + '';
+      DD = (DD.length === 1 ) ? '0' + DD : DD;
+      return DD + "-" + MM + "-" + YYYY;
     },
+    // formatDateForReadable: function(formatDate) {
+    //   const months = [
+    //     "JAN",
+    //     "FEB",
+    //     "MAR",
+    //     "APR",
+    //     "MAY",
+    //     "JUN",
+    //     "JUL",
+    //     "AUG",
+    //     "SEP",
+    //     "OCT",
+    //     "NOV",
+    //     "DEC"
+    //   ];
+    //   let date = new Date(formatDate);
+    //   formatDate =
+    //     date.getDate() +
+    //     " " +
+    //     months[date.getMonth()] +
+    //     " " +
+    //     date.getFullYear();
+    //   console.log(formatDate);
+    //   return formatDate;
+    // },
     formatAMPM: function(AMPM) {
       let date = new Date(AMPM);
       const options = {
