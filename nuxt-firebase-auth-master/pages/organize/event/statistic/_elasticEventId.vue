@@ -108,38 +108,40 @@
             </v-flex>
             <v-flex xs11 md11 lg11 mt-1 ml-3 mr-1>
               <div>{{review.displayName}}</div>
-           
+
               <p
                 class="date"
               >{{formatDateForReadable(review.reviewDate)}} {{formatAMPM(review.reviewDate)}}</p>
             </v-flex>
           </v-layout>
 
-          <v-card-text class="px-3 pt-3 pb-0">{{review.reviewDetail}} <br>
+          <v-card-text class="px-3 pt-3 pb-0">
           
-          <v-layout row>
-            <v-flex  >
-          Given rating :
-            </v-flex>
-            <v-flex xs7>
-       
-      <v-rating
-      readonly
-        v-model="review.rating"
-        color="yellow accent-4"
-        dense
-        half-increments
-        hover
-        size="18"
-      ></v-rating>
-            </v-flex>
-      <v-flex xs1>
-            ({{review.rating}})
-      </v-flex>
-
-          </v-layout>
+          {{readMoreActivated ? review.reviewDetail : review.reviewDetail.slice(0, 200) }}
+             <center>
+            <a class="textViewMore"
+              @click="readMoreActivated = !readMoreActivated"
+            >{{readMoreActivated ? 'Show less' : 'Read more'}}</a>
+          </center>
           </v-card-text>
 
+          <v-card-text class="px-3 pt-3 pb-0">
+            <v-layout row>
+              <v-flex>Given rating :</v-flex>
+              <v-flex xs7>
+                <v-rating
+                  readonly
+                  v-model="review.rating"
+                  color="yellow accent-4"
+                  dense
+                  half-increments
+                  hover
+                  size="18"
+                ></v-rating>
+              </v-flex>
+              <v-flex xs1>({{review.rating}})</v-flex>
+            </v-layout>
+          </v-card-text>
         </v-layout>
         <br />
       </v-card>
@@ -160,6 +162,7 @@ export default {
   data() {
     return {
       dialogOfEdit: false,
+      readMoreActivated: false,
       join: false,
       imageUrl: "",
       image: null,
@@ -381,5 +384,10 @@ h2 {
 }
 .date {
   font-size: 14px;
+}
+
+.textViewMore{
+  font-size: 15px;
+  font-weight: 800;
 }
 </style>
