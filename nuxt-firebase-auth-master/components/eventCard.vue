@@ -1,7 +1,16 @@
 <template>
   <!-- <nuxt-link :to="`/event/${event.elasticEventId}`"> -->
   <v-card>
-    <v-img :src="event.eventPictureCover" height="200px"></v-img>
+    <v-img :src="event.eventPictureCover" height="200px">
+      <v-flex v-if="isOwner" class="text-xs-right button">
+      <v-btn fab dark small color="#341646"  @click="$emit('editEvent', event)">
+        <v-icon color="white" medium>poll</v-icon>
+      </v-btn>
+      <v-btn fab dark small color="red"  @click="$emit('deleteEvent', event)">
+        <v-icon color="#fff" medium>delete</v-icon>
+      </v-btn>
+    </v-flex>
+    </v-img>
     <v-container fill-height fluid pa-2>
       <v-layout fill-height>
         <v-flex xs12 align-end flexbox>
@@ -15,20 +24,17 @@
     <!-- <v-card-actions>
         <h3 class="#AEAEAE--text">{{event.eventName}}</h3>
     </v-card-actions>-->
-    <v-flex v-if="isOwner" class="text-xs-right">
+    <!-- <v-flex v-if="isOwner" class="text-xs-right">
       <v-btn fab dark small color="#341646" @click="$emit('editEvent', event)">
         <v-icon color="white" medium>poll</v-icon>
       </v-btn>
       <v-btn fab dark small color="red" @click="$emit('deleteEvent', event)">
         <v-icon color="#fff" medium>delete</v-icon>
       </v-btn>
-    </v-flex>
-
+    </v-flex> -->
     <v-slide-y-transition>
       <v-card-text>
         <v-layout row wrap>
-          
-
           <v-layout>
             <v-flex class="eventMonth">
               <v-icon size="20">today</v-icon>
@@ -38,12 +44,7 @@
               <v-icon size="20">alarm</v-icon>
               {{formatAMPM(event.eventStartDate)}}
             </v-flex>
-           
-           
-           
-          </v-layout>
-
-         
+          </v-layout> 
         </v-layout>
      
          <!-- <span
@@ -89,40 +90,31 @@ export default {
     }
   },
   methods: {
-    formatDateForReadable: function(formatDate){
+    formatDateForReadable: function(formatDate) {
+      const months = [
+        "JAN",
+        "FEB",
+        "MAR",
+        "APR",
+        "MAY",
+        "JUN",
+        "JUL",
+        "AUG",
+        "SEP",
+        "OCT",
+        "NOV",
+        "DEC"
+      ];
       let date = new Date(formatDate);
-      let YYYY = date.getFullYear() + '';
-      let  MM = (date.getMonth() + 1) + '';
-      MM = (MM.length === 1) ? '0' + MM : MM;
-      let DD = date.getDate() + '';
-      DD = (DD.length === 1 ) ? '0' + DD : DD;
-      return DD + "-" + MM + "-" + YYYY;
+      formatDate =
+        date.getDate() +
+        " " +
+        months[date.getMonth()] +
+        " " +
+        date.getFullYear();
+      console.log(formatDate);
+      return formatDate;
     },
-    // formatDateForReadable: function(formatDate) {
-    //   const months = [
-    //     "JAN",
-    //     "FEB",
-    //     "MAR",
-    //     "APR",
-    //     "MAY",
-    //     "JUN",
-    //     "JUL",
-    //     "AUG",
-    //     "SEP",
-    //     "OCT",
-    //     "NOV",
-    //     "DEC"
-    //   ];
-    //   let date = new Date(formatDate);
-    //   formatDate =
-    //     date.getDate() +
-    //     " " +
-    //     months[date.getMonth()] +
-    //     " " +
-    //     date.getFullYear();
-    //   console.log(formatDate);
-    //   return formatDate;
-    // },
     formatAMPM: function(AMPM) {
       let date = new Date(AMPM);
       const options = {
@@ -198,6 +190,11 @@ div.b {
   overflow: hidden;
   text-overflow: ellipsis; 
  
+}
+.button{
+  margin-right: 0%;
+  margin-top: 45%;
+
 }
 
 </style>
