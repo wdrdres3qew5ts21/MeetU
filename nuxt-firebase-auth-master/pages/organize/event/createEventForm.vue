@@ -242,20 +242,6 @@
         ></v-select>
       </v-flex>
 
-      <!-- <v-flex xs12 sm5 d-flex @click="findMatchingBadge()">
-      <v-autocomplete
-        :items="badgeList"
-        item-text="badgeName"
-        item-value="badgeId"
-        :menu-props="{ maxHeight: '400' }"
-        label="Select Existing Badge"
-        v-model="eventForm.badge.badgeId"
-        persistent-hint
-      ></v-autocomplete>
-      </v-flex>-->
-
-      <!-- test -->
-
       <v-flex xs12 d-flex @click="findMatchingBadge()">
         <v-autocomplete
           v-model="eventForm.badge.badgeId"
@@ -298,68 +284,20 @@
         </v-autocomplete>
       </v-flex>
 
-      <!-- ----- -->
-
-      <!-- Test อีกรอบ -->
-
-      <!-- <v-flex xs12 d-flex @click="findMatchingBadge()">
-            <v-autocomplete
-              v-model="badgeSelect"
-              :items="badgeList"
-              box
-              chips
-              color="#341646"
-              label="Select Badge"
-              item-value="badgeId"
-              multiple
-            >
-              <template v-slot:selection="data">
-                <v-chip
-                  :selected="data.selected"
-                  close
-                  color="grey"
-                  class="chip--select-multi white--text"
-                  @input="remove(data.item)"
-                >
-                  <v-avatar>
-                    <img :src="data.item.badgePicture" />
-                  </v-avatar>
-                  {{ data.item.name }}
-                </v-chip>
-              </template>
-              <template v-slot:item="data">
-                <template v-if="typeof data.item !== 'object'">
-                  <v-list-tile-content v-text="data.item.badgeName"></v-list-tile-content>
-                </template>
-                <template v-else>
-                  <v-list-tile-avatar>
-                    <img :src="data.item.badgePicture" />
-                  </v-list-tile-avatar>
-                  <v-list-tile-content>
-                    <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
-                    <v-list-tile-sub-title v-html="data.item.badgeName"></v-list-tile-sub-title>
-                  </v-list-tile-content>
-                </template>
-              </template>
-            </v-autocomplete>
-      </v-flex>-->
-
-      <!--  -->
-
       <p style="margin:0" class="uploadPosterImg" @click="goToBadgeSettingPage()">Create Badge</p>
       <!-- <p
       style="margin:0"
       class="uploadPosterImg"
       @click="goToEventConditionPage()"
       >Event Conditions Setting</p>-->
-      <p style="margin:0" class="uploadPosterImg" @click="goToUploadImagePage()">Upload poster image</p>
+      <p style="margin:0" class="uploadPosterImg" @click="goToUploadImagePage()">{{getEventTemplate.eventPictureCoverBase == ''? 'Please Upload Cover': `Already Upload : ${1 + getEventTemplate.eventPictureListsBase.length} Picture (Click to Edit)`}}</p>
 
       <br />
       <br />
       <center>
         <v-btn
           block
-          :disabled="!valid"
+          :disabled=" (!valid | getEventTemplate.location.detail == '') || getEventTemplate.eventPictureCoverBase == '' "
           class="saveButton white--text"
           color="#341646"
           depressed
