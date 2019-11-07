@@ -231,14 +231,15 @@
       ></v-text-field>
       <br />
       <v-flex xs12>
-        <v-text-field
+        <v-select
+          :items="expOfEventPreset"
           v-model="eventForm.badge.exp"
           placeholder="Exp of Event"
           label="Exp Of Event"
           type="number"
           required
           :rules="[v => !!v || '']"
-        ></v-text-field>
+        ></v-select>
       </v-flex>
 
       <!-- <v-flex xs12 sm5 d-flex @click="findMatchingBadge()">
@@ -399,6 +400,7 @@ export default {
         "https://vignette.wikia.nocookie.net/badges/images/2/28/Making_a_Difference-icon.png/revision/latest?cb=20131203084745",
         "https://vignette.wikia.nocookie.net/badges/images/1/1f/Speaker-icon.png/revision/latest?cb=20131203085342"
       ],
+      expOfEventPreset: [30, 50, 75, 150],
       isShowLocation: false,
       menuEventStartDate: false,
       menuEventEndDate: false,
@@ -439,7 +441,7 @@ export default {
         },
         badge: {
           badgeId: "",
-          exp: 0
+          exp: 30
         },
         badgeSelect: ["", ""],
         badgeImg: [
@@ -549,7 +551,7 @@ export default {
     this.loadEventTemplate();
     this.loadOrganizeFromUser();
     this.findMatchingBadge();
-    if(this.$route.query.organizeId){
+    if (this.$route.query.organizeId) {
       let presetOrganizeId = this.$route.query.organizeId;
       this.eventForm.organize.organizeId = presetOrganizeId;
       console.log(presetOrganizeId);
@@ -836,15 +838,21 @@ export default {
       }
     },
     formatDateTimeToIsoWhenSave() {
-      this.eventForm.eventStartDate = this.eventStartDateTime;
-      this.eventForm.eventEndDate = this.eventEndDateTime;
-      console.log("------Parsed date to iso8601---------");
-      console.log(this.eventForm.eventStartDate);
-      console.log(this.eventForm.eventEndDate);
+      if (
+        this.eventStartDateTempt === "" &&
+        this.eventEndDateTempt === "" &&
+        (thisbundleRenderer.renderToStreameventStartTimeTempt === null &&
+          this.eventEndTimeTempt)
+      ) {
+        this.eventForm.eventStartDate = this.eventStartDateTime;
+        this.eventForm.eventEndDate = this.eventEndDateTime;
+        console.log("------Parsed date to iso8601---------");
+        console.log(this.eventForm.eventStartDate);
+        console.log(this.eventForm.eventEndDate);
+      }
 
       // let date = new Date(eventEndDateAndTime);
       // eventEndDateAndTime = date.getDate3
-      
     }
   }
 };
