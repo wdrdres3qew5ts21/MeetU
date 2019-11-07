@@ -63,6 +63,7 @@
                 >
                   <br />
                   <v-btn
+                    v-if="isOwner"
                     class="createEvent white--text"
                     color="#341646"
                     depressed

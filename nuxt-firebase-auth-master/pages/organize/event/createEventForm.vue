@@ -231,29 +231,16 @@
       ></v-text-field>
       <br />
       <v-flex xs12>
-        <v-text-field
+        <v-select
+          :items="expOfEventPreset"
           v-model="eventForm.badge.exp"
           placeholder="Exp of Event"
           label="Exp Of Event"
           type="number"
           required
           :rules="[v => !!v || '']"
-        ></v-text-field>
+        ></v-select>
       </v-flex>
-
-      <!-- <v-flex xs12 sm5 d-flex @click="findMatchingBadge()">
-      <v-autocomplete
-        :items="badgeList"
-        item-text="badgeName"
-        item-value="badgeId"
-        :menu-props="{ maxHeight: '400' }"
-        label="Select Existing Badge"
-        v-model="eventForm.badge.badgeId"
-        persistent-hint
-      ></v-autocomplete>
-      </v-flex>-->
-
-      <!-- test -->
 
       <v-flex xs12 d-flex @click="findMatchingBadge()">
         <v-autocomplete
@@ -297,68 +284,20 @@
         </v-autocomplete>
       </v-flex>
 
-      <!-- ----- -->
-
-      <!-- Test อีกรอบ -->
-
-      <!-- <v-flex xs12 d-flex @click="findMatchingBadge()">
-            <v-autocomplete
-              v-model="badgeSelect"
-              :items="badgeList"
-              box
-              chips
-              color="#341646"
-              label="Select Badge"
-              item-value="badgeId"
-              multiple
-            >
-              <template v-slot:selection="data">
-                <v-chip
-                  :selected="data.selected"
-                  close
-                  color="grey"
-                  class="chip--select-multi white--text"
-                  @input="remove(data.item)"
-                >
-                  <v-avatar>
-                    <img :src="data.item.badgePicture" />
-                  </v-avatar>
-                  {{ data.item.name }}
-                </v-chip>
-              </template>
-              <template v-slot:item="data">
-                <template v-if="typeof data.item !== 'object'">
-                  <v-list-tile-content v-text="data.item.badgeName"></v-list-tile-content>
-                </template>
-                <template v-else>
-                  <v-list-tile-avatar>
-                    <img :src="data.item.badgePicture" />
-                  </v-list-tile-avatar>
-                  <v-list-tile-content>
-                    <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
-                    <v-list-tile-sub-title v-html="data.item.badgeName"></v-list-tile-sub-title>
-                  </v-list-tile-content>
-                </template>
-              </template>
-            </v-autocomplete>
-      </v-flex>-->
-
-      <!--  -->
-
       <p style="margin:0" class="uploadPosterImg" @click="goToBadgeSettingPage()">Create Badge</p>
       <!-- <p
       style="margin:0"
       class="uploadPosterImg"
       @click="goToEventConditionPage()"
       >Event Conditions Setting</p>-->
-      <p style="margin:0" class="uploadPosterImg" @click="goToUploadImagePage()">Upload poster image</p>
+      <p style="margin:0" class="uploadPosterImg" @click="goToUploadImagePage()">{{getEventTemplate.eventPictureCoverBase == ''? 'Please Upload Cover': `Already Upload : ${1 + getEventTemplate.eventPictureListsBase.length} Picture (Click to Edit)`}}</p>
 
       <br />
       <br />
       <center>
         <v-btn
           block
-          :disabled="!valid"
+          :disabled=" (!valid | getEventTemplate.location.detail == '') || getEventTemplate.eventPictureCoverBase == '' "
           class="saveButton white--text"
           color="#341646"
           depressed
@@ -399,6 +338,7 @@ export default {
         "https://vignette.wikia.nocookie.net/badges/images/2/28/Making_a_Difference-icon.png/revision/latest?cb=20131203084745",
         "https://vignette.wikia.nocookie.net/badges/images/1/1f/Speaker-icon.png/revision/latest?cb=20131203085342"
       ],
+      expOfEventPreset: [30, 50, 75, 150],
       isShowLocation: false,
       menuEventStartDate: false,
       menuEventEndDate: false,
@@ -439,7 +379,7 @@ export default {
         },
         badge: {
           badgeId: "",
-          exp: 0
+          exp: 30
         },
         badgeSelect: ["", ""],
         badgeImg: [
@@ -549,7 +489,7 @@ export default {
     this.loadEventTemplate();
     this.loadOrganizeFromUser();
     this.findMatchingBadge();
-    if(this.$route.query.organizeId){
+    if (this.$route.query.organizeId) {
       let presetOrganizeId = this.$route.query.organizeId;
       this.eventForm.organize.organizeId = presetOrganizeId;
       console.log(presetOrganizeId);
@@ -836,15 +776,21 @@ export default {
       }
     },
     formatDateTimeToIsoWhenSave() {
-      this.eventForm.eventStartDate = this.eventStartDateTime;
-      this.eventForm.eventEndDate = this.eventEndDateTime;
-      console.log("------Parsed date to iso8601---------");
-      console.log(this.eventForm.eventStartDate);
-      console.log(this.eventForm.eventEndDate);
+      if (
+        this.eventStartDateTempt === "" &&
+        this.eventEndDateTempt === "" &&
+        (thisbundleRenderer.renderToStreameventStartTimeTempt === null &&
+          this.eventEndTimeTempt)
+      ) {
+        this.eventForm.eventStartDate = this.eventStartDateTime;
+        this.eventForm.eventEndDate = this.eventEndDateTime;
+        console.log("------Parsed date to iso8601---------");
+        console.log(this.eventForm.eventStartDate);
+        console.log(this.eventForm.eventEndDate);
+      }
 
       // let date = new Date(eventEndDateAndTime);
       // eventEndDateAndTime = date.getDate3
-      
     }
   }
 };
