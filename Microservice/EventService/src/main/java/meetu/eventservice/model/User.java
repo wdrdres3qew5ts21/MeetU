@@ -25,7 +25,7 @@ public class User {
     
     private String displayName;
     
-    private String photoUrl;
+    private String photoURL;
 
     private String role;
 
@@ -47,12 +47,12 @@ public class User {
 
     private List<String> interest = new ArrayList();
 
-    public String getPhotoUrl() {
-        return photoUrl;
+    public String getPhotoURL() {
+        return photoURL;
     }
 
-    public void setPhotoUrl(String photoUrl) {
-        this.photoUrl = photoUrl;
+    public void setPhotoURL(String photoURL) {
+        this.photoURL = photoURL;
     }
     
     

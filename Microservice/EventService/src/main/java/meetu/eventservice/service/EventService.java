@@ -932,7 +932,7 @@ public class EventService {
                     UserEventTicket eventThatUserJoin = userEventTicketRespository.findByUidAndElasticEventIdAndIsParticipate(uid, eventInDatabase.getElasticEventId(), true);
                     if (eventThatUserJoin != null) {
                         userReview.setDisplayName(user.getDisplayName());
-                        userReview.setPhotoURL(user.getPhotoUrl());
+                        userReview.setPhotoURL(user.getPhotoURL());
                         userReview.setUid(user.getUid());
                         userReview.setReviewDate(new Date());
                         List<Review> reviewList = eventInDatabase.getReviewList();

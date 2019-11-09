@@ -76,6 +76,7 @@ export default {
   props: {
     event: Object,
     isOwner: Boolean,
+    isAdmin: Boolean,
     location: {
       type: Object,
       default: function() {

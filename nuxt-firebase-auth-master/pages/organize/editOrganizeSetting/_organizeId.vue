@@ -168,70 +168,115 @@ export default {
           this.organizeForm.organizeOwner.uid = this.getUser.uid;
           console.log("-----organize ----");
           console.log(organizeResponse.data);
-          loader.hide()
+          loader.hide();
         })
         .catch(err => {
           console.log("eefdsfdsfds");
-          loader.hide()
+          loader.hide();
         });
     },
     updateOrganize() {
-      let loader = this.$loading.show()
+      let loader = this.$loading.show();
       let dateobj = new Date();
-      let fileName = this.filename + "_" + dateobj.toISOString();
-      let storage = firebase.storage();
-      let storageRef = storage.ref("/organize");
-      let setupFile = storageRef.child(fileName);
-      setupFile
-        .putString(this.organizeForm.organizeImageCover, "data_url", {
-          contentType: "image/jpeg"
-        })
-        .then(snapshot => {
-          snapshot.ref.getDownloadURL().then(organizeImageCover => {
-            this.organizeForm.organizeImageCover = organizeImageCover;
-            axios
-              .patch(
-                `${process.env.USER_SERVICE}/organize/${this.$route.params.organizeId}`,
-                this.organizeForm
-              )
-              .then(organizeResponse => {
-                this.$swal({
-                  type: "success",
-                  title: "Update Organize Profile success !!!",
-                  text: "update Organize Profile success !!!"
-                });
-                // setupFile = storageRef.child(this.originalFileToDelete);
-                // setupFile
-                //   .delete()
-                //   .then(() => {
-                    
-                //     // File deleted successfully
-                //     console.log("delete originalfile after uplaod new pic");
-                //   })
-                //   .catch(error => {
-                //     // Uh-oh, an error occurred!
-                //   });
-                  loader.hide()
-              })
-              .catch(err => {
-                setupFile
-                  .delete()
-                  .then(() => {
-                    // File deleted successfully
-                    console.log("delete file success because upload fail");
-                  })
-                  .catch(error => {
-                    // Uh-oh, an error occurred!
+
+      if (this.filename != "") {
+        let fileName = this.filename + "_" + dateobj.toISOString();
+        let storage = firebase.storage();
+        let storageRef = storage.ref("/organize");
+        let setupFile = storageRef.child(fileName);
+        setupFile
+          .putString(this.organizeForm.organizeImageCover, "data_url", {
+            contentType: "image/jpeg"
+          })
+          .then(snapshot => {
+            snapshot.ref.getDownloadURL().then(organizeImageCover => {
+              this.organizeForm.organizeImageCover = organizeImageCover;
+              axios
+                .patch(
+                  `${process.env.USER_SERVICE}/organize/${this.$route.params.organizeId}`,
+                  this.organizeForm
+                )
+                .then(organizeResponse => {
+                  this.$swal({
+                    type: "success",
+                    title: "Update Organize Profile success !!!",
+                    text: "update Organize Profile success !!!"
                   });
-                this.$swal({
-                  type: "error",
-                  title: "Failed to Update Organize!!!",
-                  text: `${err.response.data.response}`
+                  // setupFile = storageRef.child(this.originalFileToDelete);
+                  // setupFile
+                  //   .delete()
+                  //   .then(() => {
+
+                  //     // File deleted successfully
+                  //     console.log("delete originalfile after uplaod new pic");
+                  //   })
+                  //   .catch(error => {
+                  //     // Uh-oh, an error occurred!
+                  //   });
+                  loader.hide();
+                })
+                .catch(err => {
+                  setupFile
+                    .delete()
+                    .then(() => {
+                      // File deleted successfully
+                      console.log("delete file success because upload fail");
+                    })
+                    .catch(error => {
+                      // Uh-oh, an error occurred!
+                    });
+                  this.$swal({
+                    type: "error",
+                    title: "Failed to Update Organize!!!",
+                    text: `${err.response.data.response}`
+                  });
+                  loader.hide();
                 });
-                loader.hide()
-              });
+            });
           });
-        });
+      } else {
+        axios
+          .patch(
+            `${process.env.USER_SERVICE}/organize/${this.$route.params.organizeId}`,
+            this.organizeForm
+          )
+          .then(organizeResponse => {
+            this.$swal({
+              type: "success",
+              title: "Update Organize Profile success !!!",
+              text: "update Organize Profile success !!!"
+            });
+            // setupFile = storageRef.child(this.originalFileToDelete);
+            // setupFile
+            //   .delete()
+            //   .then(() => {
+
+            //     // File deleted successfully
+            //     console.log("delete originalfile after uplaod new pic");
+            //   })
+            //   .catch(error => {
+            //     // Uh-oh, an error occurred!
+            //   });
+            loader.hide();
+          })
+          .catch(err => {
+            setupFile
+              .delete()
+              .then(() => {
+                // File deleted successfully
+                console.log("delete file success because upload fail");
+              })
+              .catch(error => {
+                // Uh-oh, an error occurred!
+              });
+            this.$swal({
+              type: "error",
+              title: "Failed to Update Organize!!!",
+              text: `${err.response.data.response}`
+            });
+            loader.hide();
+          });
+      }
     },
     onCoverPictureUpload(event) {
       console.log("uplaod din");
