@@ -103,8 +103,10 @@
         <v-layout row wrap align-start justify-center fill-height>
           <v-layout row pt-2>
             <v-flex xs1 md1 lg1 mt-3 ml-3>
-              <v-icon>today</v-icon>
-              <!-- <v-img  max-width="40" max-height="40" left></v-img> -->
+              <!-- <v-icon>today</v-icon> -->
+              <v-avatar size="40" color="grey">
+                <v-img :src="review.photoURL"></v-img>
+              </v-avatar>
             </v-flex>
             <v-flex xs11 md11 lg11 mt-1 ml-3 mr-1>
               <div>{{review.displayName}}</div>
@@ -116,13 +118,13 @@
           </v-layout>
 
           <v-card-text class="px-3 pt-3 pb-0">
-          
-          {{readMoreActivated ? review.reviewDetail : review.reviewDetail.slice(0, 200) }}
-             <center>
-            <a class="textViewMore"
-              @click="readMoreActivated = !readMoreActivated"
-            >{{readMoreActivated ? 'Show less' : 'Read more'}}</a>
-          </center>
+            {{readMoreActivated ? review.reviewDetail : review.reviewDetail.slice(0, 200) }}
+            <center>
+              <a
+                class="textViewMore"
+                @click="readMoreActivated = !readMoreActivated"
+              >{{readMoreActivated ? 'Show less' : 'Read more'}}</a>
+            </center>
           </v-card-text>
 
           <v-card-text class="px-3 pt-3 pb-0">
@@ -386,7 +388,7 @@ h2 {
   font-size: 14px;
 }
 
-.textViewMore{
+.textViewMore {
   font-size: 15px;
   font-weight: 800;
 }
