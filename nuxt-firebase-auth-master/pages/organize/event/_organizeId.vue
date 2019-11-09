@@ -27,7 +27,7 @@
       <v-flex class="text-xs-right">
         <div v-if="isOwner">
           <nuxt-link :to="`/organize/editOrganizeSetting/${$route.params.organizeId}`">
-            <v-btn fab dark small color="#341646" @click=" isEditing= !isEditing">
+            <v-btn fab dark small color="#341646" >
               <v-icon color="#fff" medium>edit</v-icon>
             </v-btn>
           </nuxt-link>
@@ -99,6 +99,7 @@
                 @deleteEvent="deleteEvent"
                 :event="event"
                 :isOwner="isOwner"
+                :isAdmin="isAdmin"
               />
 
               <br />
@@ -320,6 +321,7 @@ export default {
     if (this.getUser.uid) {
       this.verifyIfUserIsOrganizeMember();
       this.loadAdminDetail();
+      console.log('verify is login')
     }
   },
   methods: {
