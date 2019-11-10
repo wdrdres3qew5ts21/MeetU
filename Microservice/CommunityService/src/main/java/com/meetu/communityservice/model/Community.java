@@ -30,7 +30,7 @@ public class Community {
 
     private String communityDescription;
 
-    private String communityImageCover;
+    private String communityPictureCover;
 
     private List<String> interestTags;
    
@@ -74,12 +74,12 @@ public class Community {
         this.communityDescription = communityDescription;
     }
 
-    public String getCommunityImageCover() {
-        return communityImageCover;
+    public String getCommunityPictureCover() {
+        return communityPictureCover;
     }
 
-    public void setCommunityImageCover(String communityImageCover) {
-        this.communityImageCover = communityImageCover;
+    public void setCommunityPictureCover(String communityPictureCover) {
+        this.communityPictureCover = communityPictureCover;
     }
 
     public List<String> getInterestTags() {
@@ -120,7 +120,7 @@ public class Community {
 
     @Override
     public String toString() {
-        return "Community{" + "communityId=" + communityId + ", communityName=" + communityName + ", communityDescription=" + communityDescription + ", communityImageCover=" + communityImageCover + ", interestTags=" + interestTags + ", userLists=" + userLists + ", postLists=" + postLists + '}';
+        return "Community{" + "communityId=" + communityId + ", communityName=" + communityName + ", communityDescription=" + communityDescription + ", communityImageCover=" + communityPictureCover + ", interestTags=" + interestTags + ", userLists=" + userLists + ", postLists=" + postLists + '}';
     }
 
 }

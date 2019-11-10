@@ -109,12 +109,14 @@
       </v-container>
       <!-- content of community list from search -->
       <div v-if="communityList.length > 0">
-        <community-card
-          v-for="(community, index) in communityList"
-          :key="index"
-          :communityPictureCover="community.communityPictureCover"
-          :communityName="community.communityName"
-        ></community-card>
+        <div v-for="(community, index) in communityList" :key="index">
+          <nuxt-link :to="`/community/${community.communityId}`">
+            <community-card
+              :communityPictureCover="community.communityPictureCover"
+              :communityName="community.communityName"
+            ></community-card>
+          </nuxt-link>
+        </div>
         <client-only>
           <infinite-loading spinner="spiral" @infinite="infiniteScroll">
             <div slot="no-results">
