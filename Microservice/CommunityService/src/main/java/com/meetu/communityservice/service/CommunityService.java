@@ -126,7 +126,7 @@ public class CommunityService {
                         newPostOfCommunity.setCommunityId(communityId);
                         community.getPostLists().add(newPostOfCommunity);
                         Post savedPost = postRepository.save(newPostOfCommunity);
-                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(savedPost);
+                        return ResponseEntity.status(HttpStatus.CREATED).body(savedPost);
                     } else {
                         HashMap<String, String> response = new HashMap<>();
                         response.put("resonse", "Not found community");
