@@ -34,6 +34,16 @@
 
                       <v-container grid-list-md>
                         <v-layout wrap>
+                          <v-icon color="primary">description</v-icon>Badge Name
+                          <v-flex xs12>
+                            <v-text-field
+                              class="questrial no-top-padding"
+                              height="20px"
+                              placeholder="Search..."
+                              v-model="badgeName"
+                              @keyup.enter="findMatchingBadge()"
+                            ></v-text-field>
+                          </v-flex>
                           <v-flex xs12>
                             <v-icon color="primary">category</v-icon>Filter by category
                           </v-flex>
