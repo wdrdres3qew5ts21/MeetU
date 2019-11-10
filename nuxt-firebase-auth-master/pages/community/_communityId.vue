@@ -4,7 +4,6 @@
             <v-text-field
             :append-outer-icon="comment ? 'send' : 'send'"
             box
-            value
             v-model="comment"
             clear-icon="close"
             clearable
@@ -15,7 +14,7 @@
             @click:clear="clearMessage"
           ></v-text-field>
     -->
-<!-- Upload Cover picture Do not do any thing now -->
+    <!-- Upload Cover picture Do not do any thing now -->
     <v-flex align="center">
       <div v-if="imageUrl == ''">
         <v-img
@@ -51,86 +50,85 @@
       accept="image/*"
       @change="onFilePicked"
     />
-        <!-- Upload Cover picture  not do any thing now -->
+    <!-- Upload Cover picture  not do any thing now -->
 
-         <!-- ------Button for Joined community and un Joined-------  -->
-      <v-btn block color="primary" @click="join = !join">{{ join ? 'Unfollow ' : 'follow' }}</v-btn>
+    <!-- ------Button for Joined community and un Joined-------  -->
+    <v-btn block color="primary" @click="join = !join">{{ join ? 'Unfollow ' : 'follow' }}</v-btn>
 
-
-          <!-- Edit Description Admin only -->
-          <v-layout row wrap>
-            <v-flex class="text-xs-left">
-    <h2>{{  communityForm.communityName=='' ? 'Community Name': communityForm.communityName}}</h2> 
-            </v-flex>
-    <v-flex class="text-xs-right">
-    <v-dialog v-model="dialogOfEdit" persistent max-width="600px">
-      <template v-slot:activator="{ on }">
-        <v-btn depressed flat v-on="on"><v-icon color="#341646" medium >edit</v-icon>  </v-btn>
-      </template>
-      <v-card>
-        <v-card-title>
-          <h2>Edit Community</h2>
-        </v-card-title>
-        <v-card-text>
-          <v-container grid-list-md>
-            Community Name
-            <v-text-field
-      v-model="communityForm.communityName"
-      
-      label="* Community Name"
-      required
-    ></v-text-field>
-            Community Description
-            <br>
-            <br>
-               <v-textarea
-               outline
-                 name="description"
-                label="Description"
-                color="pink"
-                rows="10"
-                required
-                hide-details
-                v-model="communityForm.communityDetail"
+    <!-- Edit Description Admin only -->
+    <v-layout row wrap>
+      <v-flex class="text-xs-left">
+        <h2>{{ communityForm.communityName=='' ? 'Community Name': communityForm.communityName}}</h2>
+      </v-flex>
+      <v-flex class="text-xs-right">
+        <v-dialog v-model="dialogOfEdit" persistent max-width="600px">
+          <template v-slot:activator="{ on }">
+            <v-btn depressed flat v-on="on">
+              <v-icon color="#341646" medium>edit</v-icon>
+            </v-btn>
+          </template>
+          <v-card>
+            <v-card-title>
+              <h2>Edit Community</h2>
+            </v-card-title>
+            <v-card-text>
+              <v-container grid-list-md>
+                Community Name
+                <v-text-field
+                  v-model="communityForm.communityName"
+                  label="* Community Name"
+                  required
+                ></v-text-field>Community Description
+                <br />
+                <br />
+                <v-textarea
+                  outline
+                  name="description"
+                  label="Description"
+                  color="pink"
+                  rows="10"
+                  required
+                  hide-details
+                  v-model="communityForm.communityDetail"
                 ></v-textarea>
-        </v-container>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="#341646" flat @click="dialogOfEdit = false">Close</v-btn>
-          <v-btn color="#341646" flat @click="dialogOfEdit = false">Save</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-    </v-flex>
-          </v-layout>
-          <v-layout v-if="communityForm.comunityName !='' " row wrap>
-            <v-chip 
-                  v-for="(categoryChip, index) in communityForm.interestTags"
-                  @click="$router.push(`/event?category=${categoryChip}`)"
-                  :key="index"
-                >
-              <strong>{{ categoryChip}}</strong>&nbsp;
-            </v-chip>
-          </v-layout>
-    <p size="1px">{{  communityForm.communityName=='' ? 'Description about community': communityForm.communityDetail}}</p>
+              </v-container>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="#341646" flat @click="dialogOfEdit = false">Close</v-btn>
+              <v-btn color="#341646" flat @click="dialogOfEdit = false">Save</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-flex>
+    </v-layout>
+    <v-layout v-if="communityForm.comunityName !='' " row wrap>
+      <v-chip
+        v-for="(categoryChip, index) in communityForm.interestTags"
+        @click="$router.push(`/event?category=${categoryChip}`)"
+        :key="index"
+      >
+        <strong>{{ categoryChip}}</strong>&nbsp;
+      </v-chip>
+    </v-layout>
+    <p
+      size="1px"
+    >{{ communityForm.communityName=='' ? 'Description about community': communityForm.communityDetail}}</p>
 
     <br />
 
-        <!-- Edit Description Admin only -->
+    <!-- Edit Description Admin only -->
 
-   
-
- <!-- ------Button for Joined community and un Joined-------  -->
+    <!-- ------Button for Joined community and un Joined-------  -->
 
     <div v-show="join">
       <v-card rounded outlined class="mx-auto">
         <div class="px-3">
-          <form>
+          <v-form>
             <v-layout>
               <v-flex xs12>
-                <br />     
-                 <!-- <div v-if="postPictureListsUrl.length>0">       
+                <br />
+                <!-- <div v-if="postPictureListsUrl.length>0">       
                  </div>  
                 <v-img
           v-for="(image, index) in postPictureListsUrl "
@@ -148,9 +146,7 @@
         type="file"
         @change="onPictureListUpload"
         accept="image/*"
-          />  -->
-               
-   
+                />-->
 
                 <v-text-field
                   v-model="newPost"
@@ -162,7 +158,7 @@
             </v-layout>
             <v-layout>
               <v-flex xs12 class="text-xs-left">
-                <v-btn style="margin-right: 0px"  icon>
+                <v-btn style="margin-right: 0px" icon>
                   <v-icon>photo_camera</v-icon>
                 </v-btn>
                 <v-btn style="margin: 0px" icon>
@@ -176,21 +172,19 @@
                 <v-btn text color="#341646" class="mb-2 white--text" @click="addPost()">Post</v-btn>
               </v-flex>
             </v-layout>
-          </form>
+          </v-form>
         </div>
       </v-card>
     </div>
 
-
     <!-- ------------posted card + small viewcomment + post picture If have :) 
-    No upload in firebase yet container---------- -->
+    No upload in firebase yet container------------>
     <br />
     <div v-for="(todo,postIndex ) in postList " :key="postIndex">
       <v-card rounded outlined>
         <br />
         <div>
           <v-layout>
-  
             <v-container grid-list-xs fluid style="padding:10px">
               <v-flex xs12 class="text-xs-left">
                 <v-avatar size="60">
@@ -208,20 +202,20 @@
         </div>
         <v-container grid-list-xs fluid style="padding:5px">
           <br />
-             <v-list>
+          <v-list>
             <v-list-tile-content>
               <div class="textarea" contenteditable="false">{{todo.post}}</div>
             </v-list-tile-content>
           </v-list>
           <v-img
-          v-for="(image, index) in postPictureListsUrl "
-          :key="index"
-          :src="image.url"
-          aspect-ratio="1"
-          class="grey lighten-2"
-          max-width="1250"
-          max-height="250"
-        ></v-img>
+            v-for="(image, index) in postPictureListsUrl "
+            :key="index"
+            :src="image.url"
+            aspect-ratio="1"
+            class="grey lighten-2"
+            max-width="1250"
+            max-height="250"
+          ></v-img>
           <!-- <input
             v-show="false"
            ref="pictureListUpload"
@@ -229,8 +223,7 @@
         type="file"
         @change="onPictureListUpload"
         accept="image/*"
-          />  -->
-        
+          />-->
         </v-container>
 
         <v-card-text rounded outlined class="mx-auto">
@@ -239,7 +232,6 @@
             <v-btn text block flat @click="getCommentFromPost(postIndex)">
               <v-icon>comment</v-icon>Comment
             </v-btn>
-            
           </v-flex>
         </v-card-text>
         <v-list>
@@ -249,25 +241,24 @@
             outlined
             v-for="(comment,commentIndex ) in postList[postIndex].commentList "
             :key="commentIndex"
-            
           >
             <v-container grid-list-xs xs4 fluid style="padding:5px">
               <v-list-tile xs4>
                 <v-list-tile-avatar>
                   <v-img :aspect-ratio="1/1" :src="getUser.photoURL"></v-img>
                 </v-list-tile-avatar>
-                 <v-list-tile>
+                <v-list-tile>
                   <div>
                     <v-list-tile-content>
                       <!-- max-width="240px" -->
-                      <v-card color="#F5F5F5" class="rounded-card" max-width="240px" >
+                      <v-card color="#F5F5F5" class="rounded-card" max-width="240px">
                         <v-list-tile-title class="margin-name">
                           <font size="2">{{ getUser.displayName}}</font>
                         </v-list-tile-title>
                         <v-list-tile-sub-title class="margin-comment">
                           <font size="2">{{comment}}</font>
                         </v-list-tile-sub-title>
-                      </v-card> 
+                      </v-card>
                     </v-list-tile-content>
                   </div>
                 </v-list-tile>
@@ -278,16 +269,18 @@
       </v-card>
       <br />
     </div>
-      <!-- ------------ Close of : post+ small viewcomment + post picture If have :) 
-                                  No upload in firebase yet container---------- -->
+    <!-- ------------ Close of : post+ small viewcomment + post picture If have :) 
+    No upload in firebase yet container------------>
 
-
-
-      <!-- -----------------------Show dialog with full comment and comment button----------------------- -->
+    <!-- -----------------------Show dialog with full comment and comment button----------------------- -->
     <div v-if="postList.length != 0">
-      <v-dialog v-model="dialogOfComment" fullscreen hide-overlay transition="dialog-bottom-transition">
-        <template v-slot:activator="{ on }">
-        </template>
+      <v-dialog
+        v-model="dialogOfComment"
+        fullscreen
+        hide-overlay
+        transition="dialog-bottom-transition"
+      >
+        <template v-slot:activator="{ on }"></template>
         <v-card height="auto">
           <v-toolbar dark color="primary">
             <v-btn icon dark @click="dialogOfComment = false">
@@ -301,36 +294,32 @@
           >
             <v-card rounded outlined grid-list-xs>
               <v-container grid-list-xs fluid style="padding:5px">
-               
-            
-                <v-layout row wrap  justify-start >
-                      <v-flex xs2 >
-                           <v-list-tile-avatar >
-                      <v-img :aspect-ratio="1/1" :src="getUser.photoURL" size="80" ></v-img>
-                  </v-list-tile-avatar>
-                          </v-flex>
-                    <v-flex xs10>
-                  <v-list-tile-content>
-                    <div class="text-comment-area " contenteditable="false" >
-                     <font class="margin-name" > {{ getUser.displayName}}</font>
-                      <br>
-                      <font color="grey" > {{comment}}</font>
-                    </div>
-                  </v-list-tile-content>
-                    </v-flex>
+                <v-layout row wrap justify-start>
+                  <v-flex xs2>
+                    <v-list-tile-avatar>
+                      <v-img :aspect-ratio="1/1" :src="getUser.photoURL" size="80"></v-img>
+                    </v-list-tile-avatar>
+                  </v-flex>
+                  <v-flex xs10>
+                    <v-list-tile-content>
+                      <div class="text-comment-area" contenteditable="false">
+                        <font class="margin-name">{{ getUser.displayName}}</font>
+                        <br />
+                        <font color="grey">{{comment}}</font>
+                      </div>
+                    </v-list-tile-content>
+                  </v-flex>
                 </v-layout>
-              
               </v-container>
             </v-card>
           </div>
-          <form>
+          <v-form>
             <v-layout ma-3>
               <v-layout row wrap>
                 <v-flex xs12>
-                  <v-text-field 
-                   :append-outer-icon="comment ? 'send' : 'send'"
+                  <v-text-field
+                    :append-outer-icon="comment ? 'send' : 'send'"
                     box
-                    value
                     v-model="comment"
                     clear-icon="close"
                     clearable
@@ -338,11 +327,12 @@
                     type="text"
                     @click:append="toggleMarker"
                     @click:append-outer="addComment(postIndex)"
-                    @click:clear="clearComment"></v-text-field>
+                    @click:clear="clearComment"
+                  ></v-text-field>
                 </v-flex>
               </v-layout>
             </v-layout>
-          </form>
+          </v-form>
         </v-card>
       </v-dialog>
       <!-- -----------------------Show dialog with full comment and comment button----------------------- -->
@@ -355,7 +345,7 @@
                   class="mb-2 white--text"
                   type="button"
                   name="button"
-            >Remove</v-btn>-->
+  >Remove</v-btn>-->
 </template> 
   
 <script>
@@ -375,26 +365,27 @@ export default {
       imagePost: null,
       postPictureListsUrl: [],
       postPictureLists: null,
-      defaultImage: "https://www.elegantthemes.com/blog/wp-content/uploads/2017/03/Facebook-Groups-for-Bloggers-shutterstock_555845587-ProStockStudio-FT.png",
+      defaultImage:
+        "https://www.elegantthemes.com/blog/wp-content/uploads/2017/03/Facebook-Groups-for-Bloggers-shutterstock_555845587-ProStockStudio-FT.png",
       remove: ["remove"],
       post: "",
-      newPost:"" ,
+      newPost: "",
       postList: [],
       commentInPost: "",
       comment: "",
       postIndex: 0,
       dialogOfComment: false,
-      name: "",     
+      name: "",
       show: false,
       marker: true,
       communityForm: {
-         communityName: "",
-         communityDetail: ""
+        communityName: "",
+        communityDetail: ""
       }
     };
   },
   mounted() {
-    this.loadCommunityDetail()
+    this.loadCommunityDetail();
   },
   computed: {
     ...mapGetters(["getUser"]),
@@ -403,15 +394,16 @@ export default {
     }
   },
   methods: {
-    loadCommunityDetail(){
-      axios.get(`${process.env.COMMUNITY_SERVICE}/community/${this.$route.params.communityId}`)
-      .then(communityResponse=>{
-        this.communityForm = communityResponse.data
-        console.log(this.communityForm)
-      })
-      .catch(err=>{
-
-      })
+    loadCommunityDetail() {
+      axios
+        .get(
+          `${process.env.COMMUNITY_SERVICE}/community/${this.$route.params.communityId}`
+        )
+        .then(communityResponse => {
+          this.communityForm = communityResponse.data;
+          console.log(this.communityForm);
+        })
+        .catch(err => {});
     },
     onFileChanged(event) {
       this.selectedFile = event.target.files[0];
@@ -458,7 +450,8 @@ export default {
     // },
 
     addPost() {
-      var value = this.newPost && this.newPost.trim() || this.postPictureLists;
+      var value =
+        (this.newPost && this.newPost.trim()) || this.postPictureLists;
       if (!value) {
         return;
       }
@@ -468,13 +461,11 @@ export default {
       });
       this.newPost = "";
       console.log(this.postList);
-    
     },
     // removePost(todo) {
     //   const postIndex = this.postList.indexOf(todo);
     //   this.postList.splice(postIndex, 1);
     // },
-
 
     addComment(postIndex) {
       var value = this.comment && this.comment.trim();
@@ -514,9 +505,9 @@ export default {
     resetIcon() {
       this.iconIndex = 0;
     },
-      handleUploaded(resp) {
-        this.userAvatar = resp.relative_url;
-      }
+    handleUploaded(resp) {
+      this.userAvatar = resp.relative_url;
+    }
   }
 };
 </script> 
@@ -530,7 +521,6 @@ export default {
 
 .margin-name {
   margin-right: 9px;
-
 }
 
 .textarea {
@@ -538,7 +528,6 @@ export default {
   min-height: 50px;
   height: auto;
   max-height: auto;
- 
 }
 .text-comment-area {
   padding: 1%;
@@ -547,7 +536,7 @@ export default {
   min-height: 50px;
   height: auto;
   max-height: auto;
-  background-color: #F5F5F5;
+  background-color: #f5f5f5;
 }
 .button {
   height: 40px;
