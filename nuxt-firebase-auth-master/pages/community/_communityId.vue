@@ -51,9 +51,10 @@
       accept="image/*"
       @change="onFilePicked"
     />
-    <br />
-    <br />
         <!-- Upload Cover picture  not do any thing now -->
+
+         <!-- ------Button for Joined community and un Joined-------  -->
+      <v-btn block color="primary" @click="join = !join">{{ join ? 'Unfollow ' : 'follow' }}</v-btn>
 
 
           <!-- Edit Description Admin only -->
@@ -79,7 +80,6 @@
       label="* Community Name"
       required
     ></v-text-field>
-            <br>
             Community Description
             <br>
             <br>
@@ -88,7 +88,7 @@
                  name="description"
                 label="Description"
                 color="pink"
-                rows="6"
+                rows="10"
                 required
                 hide-details
                 v-model="communityForm.communityDetail"
@@ -104,23 +104,23 @@
     </v-dialog>
     </v-flex>
           </v-layout>
+          <v-layout v-if="communityForm.comunityName !='' " row wrap>
+            <v-chip 
+                  v-for="(categoryChip, index) in communityForm.interestTags"
+                  @click="$router.push(`/event?category=${categoryChip}`)"
+                  :key="index"
+                >
+              <strong>{{ categoryChip}}</strong>&nbsp;
+            </v-chip>
+          </v-layout>
     <p size="1px">{{  communityForm.communityName=='' ? 'Description about community': communityForm.communityDetail}}</p>
 
     <br />
 
         <!-- Edit Description Admin only -->
 
+   
 
-
-    <!-- ------Button for Joined community and un Joined-------  -->
-    <v-flex class="text-xs-left">
-      <v-btn
-        text
-        color="grey lighten-3"
-        @click="join = !join"
-      >{{ join ? 'Unfollow ' : 'follow' }}</v-btn>
-    </v-flex>
-    <br>
  <!-- ------Button for Joined community and un Joined-------  -->
 
     <div v-show="join">
