@@ -5,10 +5,12 @@
  */
 package com.meetu.communityservice.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.IndexDirection;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -30,8 +32,9 @@ public class Community {
 
     private List<String> interestTags;
    
-    private List<User> userLists;
-
+    private List<String> userLists;
+    
+    @DBRef
     private List<Post> postLists;
 
     public String getCommunityId() {
@@ -67,6 +70,10 @@ public class Community {
     }
 
     public List<String> getInterestTags() {
+        if(interestTags == null){
+            interestTags = new ArrayList<>();
+            return interestTags;
+        }
         return interestTags;
     }
 
@@ -74,15 +81,23 @@ public class Community {
         this.interestTags = interestTags;
     }
 
-    public List<User> getUserLists() {
+    public List<String> getUserLists() {
+        if(userLists == null){
+            userLists = new ArrayList<>();
+            return userLists;
+        }
         return userLists;
     }
 
-    public void setUserLists(List<User> userLists) {
+    public void setUserLists(List<String> userLists) {
         this.userLists = userLists;
     }
 
     public List<Post> getPostLists() {
+        if(postLists == null){
+            postLists = new ArrayList<>();
+            return postLists;
+        }
         return postLists;
     }
 

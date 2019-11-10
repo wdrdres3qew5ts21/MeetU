@@ -24,14 +24,19 @@ import org.springframework.format.annotation.DateTimeFormat;
  *
  * @author wdrdr
  */
-@Document
+@Document(collection = "posts")
 public class Post {
 
+    @Id
     private String postId;
+    
+    private String communityId;
 
     private String uid;
 
     private String displayName;
+    
+    private String photoURL;
     
     private String picture;
 
@@ -44,6 +49,22 @@ public class Post {
 
     private Date postOfDate;
 
+    public String getCommunityId() {
+        return communityId;
+    }
+
+    public void setCommunityId(String communityId) {
+        this.communityId = communityId;
+    }
+
+    public String getPhotoURL() {
+        return photoURL;
+    }
+
+    public void setPhotoURL(String photoURL) {
+        this.photoURL = photoURL;
+    }
+    
     public String getPicture() {
         return picture;
     }
@@ -51,8 +72,6 @@ public class Post {
     public void setPicture(String picture) {
         this.picture = picture;
     }
-
-    
     
     public String getPostId() {
         return postId;

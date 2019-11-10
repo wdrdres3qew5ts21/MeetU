@@ -13,12 +13,15 @@ import java.util.Date;
 import java.util.List;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 /**
  *
@@ -26,6 +29,15 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class CommunityService {
+    
+    @Value("${event.service}")
+    private String EVENTSERVICE_URL;
+
+    @Value("${user.service}")
+    private String USERSERVICE_URL;
+    
+    @Autowired
+    private RestTemplate restTemplate;
     
     @Autowired
     private CommunityRepository communityRepository;
@@ -35,10 +47,14 @@ public class CommunityService {
     }
     
     public Page<Community> findByCommunityNameLike(String communityName,int page, int contTentPerPage) {
-        return communityRepository.findByCommunityNameIgnoreCaseLike(communityName, PageRequest.of(page, contTentPerPage));
+        return communityRepository.findByCommunityNameIgnoreCaseLike(communityName, PageRequest.of(page, page, Sort.Direction.DESC, "communityId"));
     }
     
     public ResponseEntity<Community> createCommunity(Community community) {
+        Community communityInDatabase = communityRepository.findByCommunityNameIgnoreCase(community.getCommunityName());
+        if(communityInDatabase == null){
+            communityRepository.save(community);
+        }
         return null;
     }
     

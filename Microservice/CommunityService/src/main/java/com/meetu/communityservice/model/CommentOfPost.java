@@ -7,18 +7,26 @@ package com.meetu.communityservice.model;
 
 import java.util.Date;
 import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  *
  * @author wdrdr
  */
+@Document("comments")
 public class CommentOfPost {
 
+    @Id
     private String commentOfPostId;
+    
+    private String postId;
 
     private String uid;
 
     private String displayName;
+    
+    private String photoURL;
     
     private String picture;
 
@@ -26,6 +34,22 @@ public class CommentOfPost {
     
     private Date commentOfPostDate;
 
+    public String getPostId() {
+        return postId;
+    }
+
+    public void setPostId(String postId) {
+        this.postId = postId;
+    }
+    
+    public String getPhotoURL() {
+        return photoURL;
+    }
+
+    public void setPhotoURL(String photoURL) {
+        this.photoURL = photoURL;
+    }
+    
     public String getPicture() {
         return picture;
     }
@@ -34,8 +58,6 @@ public class CommentOfPost {
         this.picture = picture;
     }
 
-    
-    
     public String getCommentOfPostId() {
         return commentOfPostId;
     }
