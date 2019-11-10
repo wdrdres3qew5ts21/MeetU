@@ -53,7 +53,7 @@
           ></span> -->
           <div class="b">
              <v-icon size="20">room</v-icon>
-          {{ location.detail }}
+          {{ location.detail===''?'Not have inforamtion yet...' :location.detail }}
           </div>
         
         <!-- {{event.location.province?event.location.province:'Thailand'}} -->
@@ -79,8 +79,8 @@ export default {
     isAdmin: Boolean,
     location: {
       type: Object,
-      default: function() {
-        return {};
+      default: {
+        detail: 'Not have information yet...'
       }
     },
     badge: {

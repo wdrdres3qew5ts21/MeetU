@@ -3,7 +3,7 @@
     <v-layout row wrap>
       <v-flex v-for="(event, index) in eventList" :key="index" >
         <nuxt-link :to="`/event/${event.elasticEventId}`">
-          <event-card :event="event"></event-card>
+          <event-card :event="event" :location="event.location"></event-card>
         </nuxt-link>
       </v-flex>
     </v-layout>

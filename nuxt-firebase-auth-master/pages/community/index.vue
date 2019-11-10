@@ -1,24 +1,20 @@
 <template>
   <div>
-
     <br>
     <center>
       <h2>Let's Get Started !</h2>
 
-
-      <nuxt-link :to="`/community/createCommunity`" style="text-decoration-line:none;">
+      <!-- <nuxt-link :to="`/community/createCommunity`" style="text-decoration-line:none;">
         <v-btn
           class="createCummunityButton white--text"
           depressed
           large
           color="#341646"
         >Create community</v-btn>
-      </nuxt-link>
+      </nuxt-link> -->
     </center>
   </div>
 </template>
-
-
 <style>
 </style>
 <script>
@@ -33,21 +29,7 @@ export default {
   data() {
     return {
       communityList: [],
-      items: [
-        {
-          src: "https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
-        }
-      ],
       dialog: false,
-      linksFooter: [
-        "Home",
-        "About Us",
-        "Team",
-        "Services",
-        "Blog",
-        "Contact Us"
-      ],
-
     };
   },
   mounted() {

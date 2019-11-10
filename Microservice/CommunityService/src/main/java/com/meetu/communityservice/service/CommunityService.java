@@ -13,6 +13,9 @@ import java.util.Date;
 import java.util.List;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -27,12 +30,12 @@ public class CommunityService {
     @Autowired
     private CommunityRepository communityRepository;
     
-    public List<Community> findAllCommunityList() {
-        return communityRepository.findAll();
+    public Page<Community> findAllCommunityList(int page, int contTentPerPage) {
+        return communityRepository.findAll(PageRequest.of(page, contTentPerPage));
     }
     
-    public List<Community> findByCommunityNameLike(String communityName) {
-        return communityRepository.findByCommunityNameIgnoreCaseLike(communityName);
+    public Page<Community> findByCommunityNameLike(String communityName,int page, int contTentPerPage) {
+        return communityRepository.findByCommunityNameIgnoreCaseLike(communityName, PageRequest.of(page, contTentPerPage));
     }
     
     public ResponseEntity<Community> createCommunity(Community community) {
@@ -72,5 +75,9 @@ public class CommunityService {
             }
         }
         return postOfCommunity;
+    }
+
+    public ResponseEntity findAllCommunityThatUserSubscribe(String uid, int page, int contentPerPage) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

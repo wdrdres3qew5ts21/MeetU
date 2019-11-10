@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.meetu.communityservice.model.Community;
 import com.meetu.communityservice.model.Post;
+import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,11 +35,22 @@ public class CommunityController {
     private CommunityService communityService;
 
     @GetMapping("/communitys")
-    public List<Community> findAllCommunityList(@RequestParam(required = false) String communityName) {
+    public Page<Community> findAllCommunityList(
+            @RequestParam(required = false) String communityName,
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "25") int contentPerPage) {
         if (communityName == null) {
-            return communityService.findAllCommunityList();
+            return communityService.findAllCommunityList(page, contentPerPage);
         }
-        return communityService.findByCommunityNameLike(communityName);
+        return communityService.findByCommunityNameLike(communityName,page, contentPerPage);
+    }
+
+    @GetMapping("/communitys/user/{uid}")
+    public ResponseEntity findAllCommunityThatUserSubscribe(
+            @PathVariable String uid,
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "25") int contentPerPage) {
+        return communityService.findAllCommunityThatUserSubscribe(uid, page, contentPerPage);
     }
 
     @PostMapping("/community")
