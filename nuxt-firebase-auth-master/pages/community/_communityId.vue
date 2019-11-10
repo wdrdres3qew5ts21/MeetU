@@ -388,6 +388,7 @@ export default {
   mounted() {
     this.communityId = this.$route.params.communityId;
     this.loadCommunityDetail();
+    this.loadAllPostInCommunity();
   },
   computed: {
     ...mapGetters(["getUser"]),
@@ -451,15 +452,15 @@ export default {
     loadAllPostInCommunity() {
       axios
         .get(
-          `${process.env.COMMUNITY_SERVICE}/community/${this.communityId}/post/{postId}`
+          `${process.env.COMMUNITY_SERVICE}/community/${this.communityId}/posts`
         )
-        .then(communityResponse => {
-          this.communityForm = communityResponse.data;
-          console.log(this.communityForm);
+        .then(postListResponse => {
+          this.postList = postListResponse.data;
         })
         .catch(err => {});
     },
     addPost() {
+      let loader = this.$loading.show();
       let value =
         (this.newPost && this.newPost.trim()) || this.postPictureLists;
       if (!value) {
@@ -472,9 +473,11 @@ export default {
 
       axios
         .post(
-          `${process.env.COMMUNITY_SERVICE}/community/${this.communityId}/post`, postTemplate, {
-            'headers': {
-              "Authorization": `Bearer ${localStorage.getItem('jwtToken')}`
+          `${process.env.COMMUNITY_SERVICE}/community/${this.communityId}/post`,
+          postTemplate,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
             }
           }
         )
@@ -482,9 +485,15 @@ export default {
           this.postList.push(postTemplate);
           this.newPost = "";
           console.log(this.postList);
+          loader.hide();
         })
-        .catch(err=>{
-          
+        .catch(err => {
+          this.$swal({
+            type: "error",
+            title: "Fail to post !!!",
+            text: `${err.resposne.data.response}`
+          });
+          loader.hide();
         });
     },
     // removePost(todo) {

@@ -182,6 +182,7 @@ public class CommunityService {
     }
 
     public ResponseEntity getAllPostFromCommunity(String communityId, int page, int contentPerPage) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Page<Post> postListFromCommunity = postRepository.findByCommunityId(communityId, PageRequest.of(page, contentPerPage, Sort.Direction.DESC, "postDate"));
+        return ResponseEntity.status(HttpStatus.OK).body(postListFromCommunity);
     }
 }
