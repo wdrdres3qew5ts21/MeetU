@@ -122,14 +122,13 @@
 
     <!-- ------Button for Joined community and un Joined-------  -->
 
-    <div v-show="join">
-      <v-card rounded outlined class="mx-auto">
-        <div class="px-3">
-          <v-form>
-            <v-layout>
-              <v-flex xs12>
-                <br />
-                <!-- <div v-if="postPictureListsUrl.length>0">       
+    <v-card rounded outlined class="mx-auto">
+      <div class="px-3">
+        <v-form>
+          <v-layout>
+            <v-flex xs12>
+              <br />
+              <!-- <div v-if="postPictureListsUrl.length>0">       
                  </div>  
                 <v-img
           v-for="(image, index) in postPictureListsUrl "
@@ -147,36 +146,35 @@
         type="file"
         @change="onPictureListUpload"
         accept="image/*"
-                />-->
+              />-->
 
-                <v-text-field
-                  v-model="newPost"
-                  name="newPost"
-                  placeholder="Write Something..."
-                  id="newPost"
-                ></v-text-field>
-              </v-flex>
-            </v-layout>
-            <v-layout>
-              <v-flex xs12 class="text-xs-left">
-                <v-btn style="margin-right: 0px" icon>
-                  <v-icon>photo_camera</v-icon>
-                </v-btn>
-                <v-btn style="margin: 0px" icon>
-                  <v-icon>assessment</v-icon>
-                </v-btn>
-                <v-btn style="margin: 0px" icon>
-                  <v-icon>event</v-icon>
-                </v-btn>
-              </v-flex>
-              <v-flex xs class="text-xs-right">
-                <v-btn text color="#341646" class="mb-2 white--text" @click="addPost()">Post</v-btn>
-              </v-flex>
-            </v-layout>
-          </v-form>
-        </div>
-      </v-card>
-    </div>
+              <v-text-field
+                v-model="newPost"
+                name="newPost"
+                placeholder="Write Something..."
+                id="newPost"
+              ></v-text-field>
+            </v-flex>
+          </v-layout>
+          <v-layout>
+            <v-flex xs12 class="text-xs-left">
+              <v-btn style="margin-right: 0px" icon>
+                <v-icon>photo_camera</v-icon>
+              </v-btn>
+              <v-btn style="margin: 0px" icon>
+                <v-icon>assessment</v-icon>
+              </v-btn>
+              <v-btn style="margin: 0px" icon>
+                <v-icon>event</v-icon>
+              </v-btn>
+            </v-flex>
+            <v-flex xs class="text-xs-right">
+              <v-btn text color="#341646" class="mb-2 white--text" @click="addPost()">Post</v-btn>
+            </v-flex>
+          </v-layout>
+        </v-form>
+      </div>
+    </v-card>
 
     <!-- ------------posted card + small viewcomment + post picture If have :) 
     No upload in firebase yet container------------>
@@ -353,7 +351,6 @@
 import Swal from "sweetalert2";
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
-
 export default {
   name: "communityDetail",
   data() {
@@ -435,7 +432,7 @@ export default {
           `${process.env.COMMUNITY_SERVICE}/community/${this.communityId}/subscribe/status`,
           {
             headers: {
-              "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+              Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
             }
           }
         )
@@ -449,28 +446,41 @@ export default {
     },
     followCommunity() {
       let loader = this.$loading.show();
-      axios
-        .post(
-          `${process.env.COMMUNITY_SERVICE}/community/${this.communityId}/subscribe`,
-          null,
-          {
-            headers: {
-              "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
-            }
-          }
-        )
-        .then(joinCommunityResponse => {
-          this.isSubscribe = !this.isSubscribe;
-          loader.hide();
-        })
-        .catch(err => {
-          this.$swal({
-            type: "error",
-            title: "Failed to subscribe community !!!",
-            text: `${err.response.data.response}`
-          });
-          loader.hide();
+      if (
+        localStorage.getItem("jwtToken") == null ||
+        localStorage.getItem("jwtToken") === undefined
+      ) {
+        this.$swal({
+          type: "error",
+          title: "Please login first !!!",
+          text: `Please login first !!!`
         });
+        this.$router.push("/login");
+        loader.hide();
+      } else {
+        axios
+          .post(
+            `${process.env.COMMUNITY_SERVICE}/community/${this.communityId}/subscribe`,
+            null,
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+              }
+            }
+          )
+          .then(joinCommunityResponse => {
+            this.isSubscribe = !this.isSubscribe;
+            loader.hide();
+          })
+          .catch(err => {
+            this.$swal({
+              type: "error",
+              title: "Failed to subscribe community !!!",
+              text: `${err.response.data.response}`
+            });
+            loader.hide();
+          });
+      }
     },
     unfollowCommunity() {
       let loader = this.$loading.show();
@@ -480,7 +490,7 @@ export default {
           null,
           {
             headers: {
-              "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+              Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
             }
           }
         )
@@ -542,31 +552,43 @@ export default {
         postDetail: this.newPost,
         done: false
       };
-
-      axios
-        .post(
-          `${process.env.COMMUNITY_SERVICE}/community/${this.communityId}/post`,
-          postTemplate,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
-            }
-          }
-        )
-        .then(postResponse => {
-          this.postList.push(postTemplate);
-          this.newPost = "";
-          console.log(this.postList);
-          loader.hide();
-        })
-        .catch(err => {
-          this.$swal({
-            type: "error",
-            title: "Fail to post !!!",
-            text: `${err.response.data.response}`
-          });
-          loader.hide();
+      if (
+        localStorage.getItem("jwtToken") == null ||
+        localStorage.getItem("jwtToken") === undefined
+      ) {
+        this.$swal({
+          type: "error",
+          title: "Please login first !!!",
+          text: `Please login first !!!`
         });
+        this.$router.push("/login");
+        loader.hide();
+      } else {
+        axios
+          .post(
+            `${process.env.COMMUNITY_SERVICE}/community/${this.communityId}/post`,
+            postTemplate,
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+              }
+            }
+          )
+          .then(postResponse => {
+            this.postList.push(postTemplate);
+            this.newPost = "";
+            console.log(this.postList);
+            loader.hide();
+          })
+          .catch(err => {
+            this.$swal({
+              type: "error",
+              title: "Fail to post !!!",
+              text: `${err.response.data.response}`
+            });
+            loader.hide();
+          });
+      }
     },
     // removePost(todo) {
     //   const postIndex = this.postList.indexOf(todo);
