@@ -12,8 +12,10 @@ import com.meetu.communityservice.model.CommentOfPost;
 import com.meetu.communityservice.model.Community;
 import com.meetu.communityservice.model.Post;
 import com.meetu.communityservice.model.User;
+import com.meetu.communityservice.model.UserCommunity;
 import com.meetu.communityservice.repository.CommunityRepository;
 import com.meetu.communityservice.repository.PostRepository;
+import com.meetu.communityservice.repository.UserCommunityRepository;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -50,6 +52,9 @@ public class CommunityService {
 
     @Autowired
     private CommunityRepository communityRepository;
+
+    @Autowired
+    private UserCommunityRepository userCommunityRepository;
 
     @Autowired
     private PostRepository postRepository;
@@ -184,5 +189,43 @@ public class CommunityService {
     public ResponseEntity getAllPostFromCommunity(String communityId, int page, int contentPerPage) {
         Page<Post> postListFromCommunity = postRepository.findByCommunityId(communityId, PageRequest.of(page, contentPerPage, Sort.Direction.DESC, "postDate"));
         return ResponseEntity.status(HttpStatus.OK).body(postListFromCommunity);
+    }
+
+    public ResponseEntity subscribeToCommunity(String token, String communityId) {
+        token = token.replace("Bearer ", "");
+        try {
+            FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
+            String uid = decodedToken.getUid();
+            try {
+                Community communityInDatabase = communityRepository.findById(communityId).get();
+                ResponseEntity<User> userFromRest = restTemplate.getForEntity(USERSERVICE_URL + "/user/" + uid, User.class);
+                User userBody = userFromRest.getBody();
+                if (userBody != null) {
+                    if (communityInDatabase != null) {
+                        UserCommunity userCommunity = new UserCommunity();
+                        userCommunity.setUid(uid);
+                        userCommunity.setCommunityId(communityId);
+                        userCommunity.setDisplayName(userBody.getDisplayName());
+                        userCommunity.setPhotoURL(userBody.getPhotoURL());
+                        UserCommunity savedUserCommunity = userCommunityRepository.save(userCommunity);
+                        return ResponseEntity.status(HttpStatus.CREATED).body(savedUserCommunity);
+                    } else {
+                        HashMap<String, String> response = new HashMap<>();
+                        response.put("resonse", "Not found community");
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+                    }
+                }
+            } catch (HttpStatusCodeException ex) {
+                HashMap<String, String> response = new HashMap<>();
+                response.put("resonse", "Not found this user");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+        } catch (FirebaseAuthException ex) {
+            Logger.getLogger(CommunityService.class.getName()).log(Level.SEVERE, null, ex);
+            HashMap<String, String> response = new HashMap<>();
+            response.put("resonse", "Your JWT Login Credential is Invalid");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+        return null;
     }
 }

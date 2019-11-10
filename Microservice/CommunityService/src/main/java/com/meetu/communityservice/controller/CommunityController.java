@@ -41,9 +41,9 @@ public class CommunityController {
             @RequestParam(required = false) String[] interestTags,
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "25") int contentPerPage) {
-        return communityService.findByCommunityNameLike(communityName, interestTags,page, contentPerPage);
+        return communityService.findByCommunityNameLike(communityName, interestTags, page, contentPerPage);
     }
-    
+
     @GetMapping("/community/{communityId}")
     public ResponseEntity findCommunityById(
             @PathVariable String communityId,
@@ -51,8 +51,15 @@ public class CommunityController {
             @RequestParam(required = false, defaultValue = "25") int contentPerPage) {
         return communityService.findCommunityById(communityId, page, contentPerPage);
     }
-    
-      @GetMapping("/communitys/user/{uid}")
+
+    @PostMapping("/community/{communityId}/join")
+    public ResponseEntity subscribeToCommunity(
+            @RequestHeader(name = "Authorization") String token,
+            @PathVariable String communityId) {
+        return communityService.subscribeToCommunity(token, communityId);
+    }
+
+    @GetMapping("/communitys/user/{uid}")
     public ResponseEntity findAllCommunityThatUserSubscribe(
             @PathVariable String uid,
             @RequestParam(required = false, defaultValue = "0") int page,
@@ -62,9 +69,9 @@ public class CommunityController {
 
     @PostMapping("/community")
     public ResponseEntity createCommunity(@RequestHeader(name = "Authorization") String token, @RequestBody Community community) {
-        return communityService.createCommunity(token,community);
+        return communityService.createCommunity(token, community);
     }
-    
+
     @GetMapping("/community/{communityId}/posts")
     public ResponseEntity getAllPostFromCommunity(@PathVariable String communityId,
             @RequestParam(required = false, defaultValue = "0") int page,
@@ -80,7 +87,7 @@ public class CommunityController {
     @PostMapping("/community/{communityId}/post")
     public ResponseEntity<Post> createPostToCommunity(
             @RequestHeader(name = "Authorization") String token,
-            @PathVariable String communityId, 
+            @PathVariable String communityId,
             @RequestBody Post newPostOfCommunity) {
         return communityService.createPostToCommunity(token, communityId, newPostOfCommunity);
     }

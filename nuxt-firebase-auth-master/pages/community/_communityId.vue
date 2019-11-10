@@ -455,7 +455,7 @@ export default {
           `${process.env.COMMUNITY_SERVICE}/community/${this.communityId}/posts`
         )
         .then(postListResponse => {
-          this.postList = postListResponse.data;
+          this.postList = postListResponse.data.content;
         })
         .catch(err => {});
     },
