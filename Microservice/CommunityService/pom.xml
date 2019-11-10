@@ -21,6 +21,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.google.firebase</groupId>
+            <artifactId>firebase-admin</artifactId>
+            <version>6.9.0</version>
+        </dependency>
+        <dependency>
             <groupId>co.elastic.apm</groupId>
             <artifactId>apm-agent-attach</artifactId>
             <version>1.10.0</version>

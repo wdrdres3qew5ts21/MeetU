@@ -82,8 +82,8 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public ResponseEntity findByUId(String id) {
-        User userInDatabase = userRepository.findByUid(id);
+    public ResponseEntity findByUId(String uid) {
+        User userInDatabase = userRepository.findByUid(uid);
         if (userInDatabase != null) {
             System.out.println("Foundd user");
             System.out.println(userInDatabase);

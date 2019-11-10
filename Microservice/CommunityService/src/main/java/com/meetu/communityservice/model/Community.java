@@ -7,6 +7,7 @@ package com.meetu.communityservice.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.validation.constraints.NotNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.IndexDirection;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -24,6 +25,7 @@ public class Community {
     @Indexed(direction = IndexDirection.ASCENDING)
     private String communityId;
 
+    @NotNull(message = "Community Name Can't be Empty")
     private String communityName;
 
     private String communityDescription;
@@ -36,6 +38,9 @@ public class Community {
     
     @DBRef
     private List<Post> postLists;
+    
+    @NotNull(message = "Community Owner can't be Null")
+    private User communityOwner;
 
     public String getCommunityId() {
         return communityId;
@@ -53,6 +58,14 @@ public class Community {
         this.communityName = communityName;
     }
 
+    public User getCommunityOwner() {
+        return communityOwner;
+    }
+
+    public void setCommunityOwner(User communityOwner) {
+        this.communityOwner = communityOwner;
+    }
+    
     public String getCommunityDescription() {
         return communityDescription;
     }

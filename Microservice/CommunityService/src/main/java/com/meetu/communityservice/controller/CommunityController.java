@@ -21,13 +21,14 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
  * @author wdrdr
  */
-@CrossOrigin("*")
+@CrossOrigin(origins = "*")
 @RestController
 public class CommunityController {
 
@@ -54,8 +55,8 @@ public class CommunityController {
     }
 
     @PostMapping("/community")
-    public ResponseEntity createCommunity(@RequestBody Community community) {
-        return communityService.createCommunity(community);
+    public ResponseEntity createCommunity(@RequestHeader(name = "Authorization") String token, @RequestBody Community community) {
+        return communityService.createCommunity(token,community);
     }
 
     @GetMapping("/community/{communityId}/post/{postId}")
