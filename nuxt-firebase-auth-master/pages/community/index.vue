@@ -1,7 +1,7 @@
 <template>
   <div>
     <center>
-      <h2>Let's Find Community !</h2>
+      <h2 id="top">Let's Find Community !</h2>
       <v-container>
         <v-layout row wrap>
           <v-flex xs12>
@@ -89,7 +89,7 @@
                     depressed
                     small
                     color="#341646"
-                    ref="searchButton"
+                    id="searchButton"
                     @click="findMatchingCommunity()"
                   >Search</v-btn>
                 </v-flex>
@@ -107,15 +107,22 @@
           </v-flex>
         </v-layout>
       </v-container>
-
-      <!-- <nuxt-link :to="`/community/createCommunity`" style="text-decoration-line:none;">
-        <v-btn
-          class="createCummunityButton white--text"
-          depressed
-          large
-          color="#341646"
-        >Create community</v-btn>
-      </nuxt-link>-->
+      <!-- content of community list from search -->
+      <div v-if="communityList.length > 0">
+        <community-card
+          v-for="(community, index) in communityList"
+          :key="index"
+          :communityPictureCover="community.communityPictureCover"
+          :communityName="community.communityName"
+        ></community-card>
+        <client-only>
+          <infinite-loading spinner="spiral" @infinite="infiniteScroll">
+            <div slot="no-results">
+              <v-btn color="primary" block @click="$vuetify.goTo('#top')">Go to Top</v-btn>
+            </div>
+          </infinite-loading>
+        </client-only>
+      </div>
     </center>
   </div>
 </template>
@@ -132,6 +139,7 @@ export default {
   },
   data() {
     return {
+      page: 0,
       communityList: [],
       dialog: false,
       interestTags: [],
@@ -149,10 +157,41 @@ export default {
   },
   mounted() {
     this.loadCategoryList();
-    this.communityList = mockCommunityList;
+    //  this.communityList = mockCommunityList;
   },
   methods: {
     ...mapActions(["autoSignIn", "setCategory", "setBadgeDetail"]),
+    infiniteScroll($state) {
+      this.page++;
+      setTimeout(() => {
+        this.page++;
+        console.log(this.page);
+        let interestTags = "";
+        if (this.interestTags.length > 0) {
+          interestTags = "&interestTags=";
+          for (let i = 0; i < this.interestTags.length; i++) {
+            interestTags += `${this.interestTags[i]},`;
+          }
+        }
+        axios
+          .get(
+            `${process.env.COMMUNITY_SERVICE}/communitys?communityName=${this.communityName}${interestTags}&page=${this.page}`
+          )
+          .then(response => {
+            if (response.data.length > 1) {
+              response.data.forEach(community =>
+                this.communityList.push(community)
+              );
+              $state.loaded();
+            } else {
+              $state.complete();
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }, 500);
+    },
     loadCategoryList() {
       axios
         .get(`${process.env.EVENT_SERVICE}/category`)
@@ -177,13 +216,12 @@ export default {
         .get(
           `${process.env.COMMUNITY_SERVICE}/communitys?communityName=${this.communityName}${interestTags}`
         )
-        .then(badgeResponse => {
-          this.badgeList = badgeResponse.data;
-          console.log(badgeResponse.data);
+        .then(communityListResponse => {
+          this.communityList = communityListResponse.data.content;
+          console.log(communityList.data);
         })
         .catch(error => {});
       this.dialog = false;
-
     },
     remove: function(item) {
       console.log(item);
