@@ -7,6 +7,7 @@ package com.meetu.communityservice.repository;
 
 import com.meetu.communityservice.model.UserCommunity;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 /**
@@ -16,6 +17,10 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface UserCommunityRepository extends MongoRepository<UserCommunity, String>{
     
-    public Page<UserCommunity> findByUid(String uid);
+    public Page<UserCommunity> findByUid(String uid, Pageable pageable);
+    
+    public UserCommunity findByUidAndCommunityId(String uid, String communityId);
+    
+    public void deleteById(String communityId);
     
 }

@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  *
  * @author Test
  */
-@Document("usercommunitys")
+@Document("userCommunitys")
 public class UserCommunity {
     
     @Id

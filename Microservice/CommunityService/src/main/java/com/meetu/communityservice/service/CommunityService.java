@@ -16,6 +16,8 @@ import com.meetu.communityservice.model.UserCommunity;
 import com.meetu.communityservice.repository.CommunityRepository;
 import com.meetu.communityservice.repository.PostRepository;
 import com.meetu.communityservice.repository.UserCommunityRepository;
+import com.mongodb.BasicDBObject;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +30,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
+import org.springframework.data.mongodb.core.aggregation.LookupOperation;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -58,6 +65,9 @@ public class CommunityService {
 
     @Autowired
     private PostRepository postRepository;
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     public Page<Community> findAllCommunityList(int page, int contTentPerPage) {
         return communityRepository.findAll(PageRequest.of(page, contTentPerPage));
@@ -179,7 +189,17 @@ public class CommunityService {
     }
 
     public ResponseEntity findAllCommunityThatUserSubscribe(String uid, int page, int contentPerPage) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        LookupOperation lookupOperation = LookupOperation.newLookup()
+                .from("userCommunitys")
+                .localField("communityId")
+                .foreignField("communityId")
+                .as("communityDetail");
+        AggregationOperation uidMatch = Aggregation.match(Criteria.where("uid").is(uid));
+        Aggregation aggregation = Aggregation.newAggregation(lookupOperation, uidMatch);
+        List<Community> results = mongoTemplate.aggregate(aggregation, "communitys", Community.class).getMappedResults();
+        System.out.println("----------------------");
+        System.out.println(results);
+        return ResponseEntity.status(HttpStatus.OK).body(results);
     }
 
     public ResponseEntity findCommunityById(String communityId, int page, int contentPerPage) {
@@ -202,13 +222,19 @@ public class CommunityService {
                 User userBody = userFromRest.getBody();
                 if (userBody != null) {
                     if (communityInDatabase != null) {
-                        UserCommunity userCommunity = new UserCommunity();
-                        userCommunity.setUid(uid);
-                        userCommunity.setCommunityId(communityId);
-                        userCommunity.setDisplayName(userBody.getDisplayName());
-                        userCommunity.setPhotoURL(userBody.getPhotoURL());
-                        UserCommunity savedUserCommunity = userCommunityRepository.save(userCommunity);
-                        return ResponseEntity.status(HttpStatus.CREATED).body(savedUserCommunity);
+                        UserCommunity userCommunityInDatabase = userCommunityRepository.findByUidAndCommunityId(userBody.getUid(), communityInDatabase.getCommunityId());
+                        if (userCommunityInDatabase == null) {
+                            UserCommunity userCommunity = new UserCommunity();
+                            userCommunity.setUid(userBody.getUid());
+                            userCommunity.setCommunityId(communityInDatabase.getCommunityId());
+                            userCommunity.setDisplayName(userBody.getDisplayName());
+                            userCommunity.setPhotoURL(userBody.getPhotoURL());
+                            UserCommunity savedUserCommunity = userCommunityRepository.save(userCommunity);
+                            return ResponseEntity.status(HttpStatus.CREATED).body(savedUserCommunity);
+                        } else {
+                            userCommunityRepository.deleteById(userCommunityInDatabase.getUserCommunityId());
+                            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+                        }
                     } else {
                         HashMap<String, String> response = new HashMap<>();
                         response.put("resonse", "Not found community");

@@ -53,7 +53,11 @@
     <!-- Upload Cover picture  not do any thing now -->
 
     <!-- ------Button for Joined community and un Joined-------  -->
-    <v-btn block color="primary" @click="join = !join">{{ join ? 'Unfollow ' : 'follow' }}</v-btn>
+    <v-btn
+      block
+      color="primary"
+      @click="joinOrUnFollowCommunity()"
+    >{{ join ? 'Unfollow ' : 'follow' }}</v-btn>
 
     <!-- Edit Description Admin only -->
     <v-layout row wrap>
@@ -425,6 +429,30 @@ export default {
       fileReader.readAsDataURL(files[0]);
       this.image = files[0];
     },
+    joinOrUnFollowCommunity() {
+      let loader = this.$loading.show();
+      axios
+        .post(
+          `${process.env.COMMUNITY_SERVICE}/community/${this.communityId}/join`, null,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+            }
+          }
+        )
+        .then(joinCommunityResponse => {
+          this.join = !this.join;
+          loader.hide();
+        })
+        .catch(err => {
+          this.$swal({
+            type: "error",
+            title: "Failed to subscribe community !!!",
+            text: `${err.response.data.response}`
+          });
+          loader.hide();
+        });
+    },
     getCommentFromPost(postIndex) {
       this.dialogOfComment = true;
       this.postIndex = postIndex;
@@ -491,7 +519,7 @@ export default {
           this.$swal({
             type: "error",
             title: "Fail to post !!!",
-            text: `${err.resposne.data.response}`
+            text: `${err.response.data.response}`
           });
           loader.hide();
         });
