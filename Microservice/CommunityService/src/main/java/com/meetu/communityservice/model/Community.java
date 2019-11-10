@@ -22,6 +22,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Community {
 
     @Id
+    private String id;
+    
     @Indexed(direction = IndexDirection.ASCENDING)
     private String communityId;
 
@@ -42,6 +44,14 @@ public class Community {
     @NotNull(message = "Community Owner can't be Null")
     private User communityOwner;
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+    
     public String getCommunityId() {
         return communityId;
     }

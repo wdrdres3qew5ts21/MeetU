@@ -8,6 +8,7 @@ package com.meetu.communityservice.repository;
 import com.meetu.communityservice.model.Community;
 import com.meetu.communityservice.model.Post;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,5 +31,7 @@ public interface CommunityRepository extends MongoRepository<Community, String>{
     public Page<Community> findByCommunityNameIgnoreCaseLike(String communityName, PageRequest of);
 
     public Page<Community> findByInterestTagsIsIn(String[] interestTags, PageRequest of);
+
+    public Optional<Community> findByCommunityId(String communityId);
     
 }

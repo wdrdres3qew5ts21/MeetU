@@ -89,7 +89,6 @@ public class CommunityService {
     }
 
     public ResponseEntity createCommunity(String token, Community community) {
-        System.out.println("fuck in");
         try {
             token = token.replace("Bearer ", "");
             FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
@@ -100,6 +99,7 @@ public class CommunityService {
                     Community communityInDatabase = communityRepository.findByCommunityNameIgnoreCase(community.getCommunityName());
                     if (communityInDatabase == null) {
                         community.setCommunityOwner(userFromRest.getBody());
+                        community.setCommunityId(new ObjectId().toHexString());
                         Community savedCommunity = communityRepository.save(community);
                         return ResponseEntity.status(HttpStatus.CREATED).body(savedCommunity);
                     } else {
@@ -131,9 +131,9 @@ public class CommunityService {
                 ResponseEntity<User> userFromRest = restTemplate.getForEntity(USERSERVICE_URL + "/user/" + uid, User.class);
                 User userBody = userFromRest.getBody();
                 if (userBody != null) {
-                    Community communityInDatabase = communityRepository.findById(communityId).get();
+                    Community communityInDatabase = communityRepository.findByCommunityId(communityId).get();
                     if (communityInDatabase != null) {
-                        Community community = communityRepository.findById(communityId).get();
+                        Community community = communityRepository.findByCommunityId(communityId).get();
                         newPostOfCommunity.setPostOfDate(new Date());
                         newPostOfCommunity.setUid(userBody.getUid());
                         newPostOfCommunity.setDisplayName(userBody.getDisplayName());
@@ -163,7 +163,7 @@ public class CommunityService {
     }
 
     public Post addCommentToPostOfCommunity(String communityId, String postId, CommentOfPost commentOfPost) {
-        Community community = communityRepository.findById(communityId).get();
+        Community community = communityRepository.findByCommunityId(communityId).get();
         Post postForAddComment = findPostFromComunityByPostId(community, postId);
         commentOfPost.setCommentOfPostId(new ObjectId().toString());
         commentOfPost.setCommentOfPostDate(new Date());
@@ -173,7 +173,7 @@ public class CommunityService {
     }
 
     public Post getPostFromCommunityById(String communityId, String postId) {
-        Community community = communityRepository.findById(communityId).get();
+        Community community = communityRepository.findByCommunityId(communityId).get();
         return findPostFromComunityByPostId(community, postId);
     }
 
@@ -190,20 +190,20 @@ public class CommunityService {
 
     public ResponseEntity findAllCommunityThatUserSubscribe(String uid, int page, int contentPerPage) {
         LookupOperation lookupOperation = LookupOperation.newLookup()
-                .from("userCommunitys")
+                .from("communitys")
                 .localField("communityId")
                 .foreignField("communityId")
                 .as("communityDetail");
         AggregationOperation uidMatch = Aggregation.match(Criteria.where("uid").is(uid));
         Aggregation aggregation = Aggregation.newAggregation(lookupOperation, uidMatch);
-        List<Community> results = mongoTemplate.aggregate(aggregation, "communitys", Community.class).getMappedResults();
+        List<BasicDBObject> results = mongoTemplate.aggregate(aggregation, "userCommunitys", BasicDBObject.class).getMappedResults();
         System.out.println("----------------------");
         System.out.println(results);
         return ResponseEntity.status(HttpStatus.OK).body(results);
     }
 
     public ResponseEntity findCommunityById(String communityId, int page, int contentPerPage) {
-        return ResponseEntity.status(HttpStatus.OK).body(communityRepository.findById(communityId).get());
+        return ResponseEntity.status(HttpStatus.OK).body(communityRepository.findByCommunityId(communityId).get());
     }
 
     public ResponseEntity getAllPostFromCommunity(String communityId, int page, int contentPerPage) {
@@ -217,7 +217,7 @@ public class CommunityService {
             FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
             String uid = decodedToken.getUid();
             try {
-                Community communityInDatabase = communityRepository.findById(communityId).get();
+                Community communityInDatabase = communityRepository.findByCommunityId(communityId).get();
                 ResponseEntity<User> userFromRest = restTemplate.getForEntity(USERSERVICE_URL + "/user/" + uid, User.class);
                 User userBody = userFromRest.getBody();
                 if (userBody != null) {
@@ -225,6 +225,7 @@ public class CommunityService {
                         UserCommunity userCommunityInDatabase = userCommunityRepository.findByUidAndCommunityId(userBody.getUid(), communityInDatabase.getCommunityId());
                         if (userCommunityInDatabase == null) {
                             UserCommunity userCommunity = new UserCommunity();
+                            userCommunity.setUserCommunityId(communityInDatabase.getCommunityId());
                             userCommunity.setUid(userBody.getUid());
                             userCommunity.setCommunityId(communityInDatabase.getCommunityId());
                             userCommunity.setDisplayName(userBody.getDisplayName());
@@ -261,14 +262,14 @@ public class CommunityService {
             FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
             String uid = decodedToken.getUid();
             try {
-                Community communityInDatabase = communityRepository.findById(communityId).get();
+                Community communityInDatabase = communityRepository.findByCommunityId(communityId).get();
                 ResponseEntity<User> userFromRest = restTemplate.getForEntity(USERSERVICE_URL + "/user/" + uid, User.class);
                 User userBody = userFromRest.getBody();
                 if (userBody != null) {
                     if (communityInDatabase != null) {
                         UserCommunity userCommunityInDatabase = userCommunityRepository.findByUidAndCommunityId(userBody.getUid(), communityInDatabase.getCommunityId());
                         if (userCommunityInDatabase != null) {
-                            userCommunityRepository.deleteById(userCommunityInDatabase.getUserCommunityId());
+                            userCommunityRepository.deleteById(userCommunityInDatabase.getId());
                             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
                         }
                     } else {

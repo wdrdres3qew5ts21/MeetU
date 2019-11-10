@@ -14,18 +14,28 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Document("userCommunitys")
 public class UserCommunity {
-    
+
     @Id
+    private String id;
+
     private String userCommunityId;
-    
+
     private String photoURL;
-    
+
     private String displayName;
-    
+
     private String uid;
-    
+
     private String communityId;
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+    
     public String getPhotoURL() {
         return photoURL;
     }
@@ -41,7 +51,7 @@ public class UserCommunity {
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
-    
+
     public String getUserCommunityId() {
         return userCommunityId;
     }
