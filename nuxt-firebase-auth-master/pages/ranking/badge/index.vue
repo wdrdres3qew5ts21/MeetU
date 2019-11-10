@@ -10,70 +10,64 @@
             <div>
               <v-layout>
                 <v-dialog
-                v-model="dialog"
-                fullscreen
-                hide-overlay
-                transition="dialog-bottom-transition"
-              >
-                <template v-slot:activator="{ on }">
-                <v-btn flat icon color="#341646" v-on="on">
-                  <v-icon>filter_list</v-icon>
-                </v-btn>
-</template>
-                <v-card>
-                  <v-toolbar dark color="primary">
-                    <v-btn icon dark @click="dialog = false">
-                      <v-icon>navigate_before</v-icon>
+                  v-model="dialog"
+                  fullscreen
+                  hide-overlay
+                  transition="dialog-bottom-transition"
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-btn flat icon color="#341646" v-on="on">
+                      <v-icon>filter_list</v-icon>
                     </v-btn>
-                    <v-toolbar-title>Filter</v-toolbar-title>
-                    <v-spacer></v-spacer>
-                  </v-toolbar>
+                  </template>
+                  <v-card>
+                    <v-toolbar dark color="primary">
+                      <v-btn icon dark @click="dialog = false">
+                        <v-icon>navigate_before</v-icon>
+                      </v-btn>
+                      <v-toolbar-title>Filter</v-toolbar-title>
+                      <v-spacer></v-spacer>
+                    </v-toolbar>
 
-                  <v-list three-line subheader>
-                    <br />
+                    <v-list three-line subheader>
+                      <br />
 
-                    <v-container grid-list-md>
-                      <v-layout wrap>
-                        
-                        <v-flex xs12>
-                          <v-icon color="primary">category</v-icon>Filter by category
-                        </v-flex>
+                      <v-container grid-list-md>
+                        <v-layout wrap>
+                          <v-flex xs12>
+                            <v-icon color="primary">category</v-icon>Filter by category
+                          </v-flex>
 
-                        <v-layout class="mb-4">
-                          <v-autocomplete
-                            v-model="selectedCategoryList"
-                            :items="categoryList"
-                            chips
-                            label=" Search by Category"
-                            color="blue-grey lighten-2"
-                            item-text="categoryLabel"
-                            item-value="categoryName"
-                            multiple
-                          >
-                            <template v-slot:selection="data">
-                              <v-chip :selected="data.selected">{{ data.item.categoryName}}</v-chip>
-                            </template>
-                          </v-autocomplete>
+                          <v-layout class="mb-4">
+                            <v-autocomplete
+                              v-model="badgeTags"
+                              :items="categoryList"
+                              chips
+                              label=" Search by Category"
+                              color="blue-grey lighten-2"
+                              item-text="categoryLabel"
+                              item-value="categoryName"
+                              multiple
+                            >
+                              <template v-slot:selection="data">
+                                <v-chip :selected="data.selected">{{ data.item.categoryName}}</v-chip>
+                              </template>
+                            </v-autocomplete>
+                          </v-layout>
                         </v-layout>
+                      </v-container>
+                    </v-list>
 
-                        
-
-                    
-                      </v-layout>
-                    </v-container>
-                  </v-list>
-
-                  <v-btn
-                    class="white--text"
-                    depressed
-                    large
-                    block
-                    color="#341646"
-                   
-                  >Search</v-btn>
-                 
-                </v-card>
-              </v-dialog>
+                    <v-btn
+                      class="white--text"
+                      depressed
+                      large
+                      block
+                      color="#341646"
+                      @click="findMatchingBadge()"
+                    >Search</v-btn>
+                  </v-card>
+                </v-dialog>
                 <v-text-field
                   class="questrial no-top-padding"
                   height="20px"
@@ -91,6 +85,15 @@
                     @click="findMatchingBadge()"
                   >Search</v-btn>
                 </v-flex>
+              </v-layout>
+              <v-layout row wrap>
+                <v-chip
+                  v-for="(categoryChip, index) in badgeTags"
+                  @click="$router.push(`/event?category=${categoryChip}`)"
+                  :key="index"
+                >
+                  <strong>{{ categoryChip}}</strong>&nbsp;
+                </v-chip>
               </v-layout>
             </div>
           </v-flex>
@@ -152,9 +155,6 @@ export default {
     selectedCategoryList: [],
     badgeName: "",
     badgeTags: [],
-    filterForm: {
-      categorySelected: []
-    },
     pagination: {
       sortBy: "name"
     },
@@ -165,7 +165,7 @@ export default {
     badgeList: [],
     badgeSelect: false
   }),
-   watch: {
+  watch: {
     selectedCategoryList(categorySelected) {
       if (categorySelected.length > 3) {
         this.selectedCategoryList.shift();
@@ -199,18 +199,23 @@ export default {
       console.log("mating badge");
       let badgeTags = "";
       if (this.badgeTags.length > 0) {
-        badgeTags= "&badgeTags="
+        badgeTags = "&badgeTags=";
         for (let i = 0; i < this.badgeTags.length; i++) {
           badgeTags += `${this.badgeTags[i]},`;
         }
       }
       axios
-        .get(`${process.env.USER_SERVICE}/badges?badgeName=${this.badgeName}${badgeTags}`)
+        .get(
+          `${process.env.USER_SERVICE}/badges?badgeName=${this.badgeName}${badgeTags}`
+        )
         .then(badgeResponse => {
           this.badgeList = badgeResponse.data;
           console.log(badgeResponse.data);
         })
         .catch(error => {});
+      console.log(this.dialog);
+      this.dialog = false;
+      console.log(this.dialog);
     },
     remove: function(item) {
       console.log(item);
