@@ -53,11 +53,8 @@
     <!-- Upload Cover picture  not do any thing now -->
 
     <!-- ------Button for Joined community and un Joined-------  -->
-    <v-btn
-      block
-      color="primary"
-      @click="joinOrUnFollowCommunity()"
-    >{{ join ? 'Unfollow ' : 'follow' }}</v-btn>
+    <v-btn v-if="isSubscribe" block color="primary" @click="unfollowCommunity()">Unfollow Community</v-btn>
+    <v-btn v-else block color="primary" @click="followCommunity()">Follow Community</v-btn>
 
     <!-- Edit Description Admin only -->
     <v-layout row wrap>
@@ -386,13 +383,15 @@ export default {
         communityName: "",
         communityDetail: ""
       },
-      communityId: ""
+      communityId: "",
+      isSubscribe: false
     };
   },
   mounted() {
     this.communityId = this.$route.params.communityId;
     this.loadCommunityDetail();
     this.loadAllPostInCommunity();
+    this.verifyIfUserSubscribeCommunity();
   },
   computed: {
     ...mapGetters(["getUser"]),
@@ -429,19 +428,64 @@ export default {
       fileReader.readAsDataURL(files[0]);
       this.image = files[0];
     },
-    joinOrUnFollowCommunity() {
+    verifyIfUserSubscribeCommunity() {
+      let loader = this.$loading.show();
+      axios
+        .get(
+          `${process.env.COMMUNITY_SERVICE}/community/${this.communityId}/subscribe/status`,
+          {
+            headers: {
+              "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+            }
+          }
+        )
+        .then(subscribeCommunityResponse => {
+          this.isSubscribe = subscribeCommunityResponse.data.isSubscribe;
+          loader.hide();
+        })
+        .catch(err => {
+          loader.hide();
+        });
+    },
+    followCommunity() {
       let loader = this.$loading.show();
       axios
         .post(
-          `${process.env.COMMUNITY_SERVICE}/community/${this.communityId}/join`, null,
+          `${process.env.COMMUNITY_SERVICE}/community/${this.communityId}/subscribe`,
+          null,
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+              "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
             }
           }
         )
         .then(joinCommunityResponse => {
-          this.join = !this.join;
+          this.isSubscribe = !this.isSubscribe;
+          loader.hide();
+        })
+        .catch(err => {
+          this.$swal({
+            type: "error",
+            title: "Failed to subscribe community !!!",
+            text: `${err.response.data.response}`
+          });
+          loader.hide();
+        });
+    },
+    unfollowCommunity() {
+      let loader = this.$loading.show();
+      axios
+        .post(
+          `${process.env.COMMUNITY_SERVICE}/community/${this.communityId}/unsubscribe`,
+          null,
+          {
+            headers: {
+              "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+            }
+          }
+        )
+        .then(joinCommunityResponse => {
+          this.isSubscribe = !this.isSubscribe;
           loader.hide();
         })
         .catch(err => {

@@ -1,67 +1,66 @@
 <template>
   <v-container>
     <div>
-    <br>
-    <h2>Create New Community</h2>
-<v-form ref="form" v-model="valid" :lazy-validation="false">
-    <v-text-field
-      v-model="communityForm.communityName"
-    
-      label="* Community Name"
-      required
-        :rules="[v => !!v || 'Community name is required']"
-    ></v-text-field>
-    <v-layout class="mb-4">
- <v-layout class="mb-4">
-                    <v-combobox
-                      :items="categoryList"
-                      item-text="categoryLabel"
-                      item-value="categoryName"
-                      label="Category (Limit to 3 tags only)"
-                      chips
-                      clearable
-                      v-model="communityForm.categorySelected"
-                      multiple
-                      sm6
-                      xs2
-                      required
-                    >
-                      <template v-slot:selection="data">
-                        <v-chip
-                          :selected="data.selected"
-                        >
-                          <strong>{{ data.item.categoryName}}</strong>&nbsp;
-                        </v-chip>
-                      </template>
-                    </v-combobox>
-                  </v-layout>
-                   <!-- {{communityForm.categorySelected}} -->
-      <!-- <v-autocomplete label="Categorys" :items="categoryList" block></v-autocomplete> -->
-    </v-layout>
-    
-
-    
-    <v-layout class="mb-4">
-      <v-textarea
-        outline
-        name="description"
-        label="Description"
-        color="pink"
-        rows="6"
-        required
-        hide-details
-        v-model="communityForm.communityDetail"
-         
-        :rules="[v => !!v || 'Description  is required']"
-      ></v-textarea>
-    </v-layout>
-    <!-- <nuxt-link :to="`/community/communityId/?`" style="text-decoration-line:none;"> -->
       <br />
-      <v-btn block  color="#341646" class="mb-2 white--text"
-      :disabled="!valid" @click="createCommunity()">Create Community</v-btn>
-    <!-- </nuxt-link> -->
-</v-form>
-  </div>
+      <h2>Create New Community</h2>
+      <v-form ref="form" v-model="valid" :lazy-validation="false">
+        <v-text-field
+          v-model="communityForm.communityName"
+          label="* Community Name"
+          required
+          :rules="[v => !!v || 'Community name is required']"
+        ></v-text-field>
+        <v-layout class="mb-4">
+          <v-layout class="mb-4">
+            <v-combobox
+              :items="categoryList"
+              item-text="categoryLabel"
+              item-value="categoryName"
+              label="Category (Limit to 3 tags only)"
+              chips
+              clearable
+              v-model="communityForm.categorySelected"
+              multiple
+              sm6
+              xs2
+              required
+            >
+              <template v-slot:selection="data">
+                <v-chip :selected="data.selected">
+                  <strong>{{ data.item.categoryName}}</strong>&nbsp;
+                </v-chip>
+              </template>
+            </v-combobox>
+          </v-layout>
+          <!-- {{communityForm.categorySelected}} -->
+          <!-- <v-autocomplete label="Categorys" :items="categoryList" block></v-autocomplete> -->
+        </v-layout>
+
+        <v-layout class="mb-4">
+          <v-textarea
+            outline
+            name="description"
+            label="Description"
+            color="pink"
+            rows="6"
+            required
+            hide-details
+            v-model="communityForm.communityDetail"
+            :rules="[v => !!v || 'Description  is required']"
+          ></v-textarea>
+        </v-layout>
+        <!-- <nuxt-link :to="`/community/communityId/?`" style="text-decoration-line:none;"> -->
+        <br />
+        <v-btn
+          block
+          color="#341646"
+          class="mb-2 white--text"
+          :disabled="!valid"
+          @click="createCommunity()"
+        >Create Community</v-btn>
+        <!-- </nuxt-link> -->
+      </v-form>
+    </div>
   </v-container>
 </template>
 
@@ -80,10 +79,10 @@ export default {
       selectedCategoryList: [],
       communityForm: {
         categorySelected: [],
-         communityName: "",
-         communityDetail: ""
+        communityName: "",
+        communityDetail: ""
       },
-      
+
       dialog1: false,
       dialog2: false
     };
@@ -94,15 +93,16 @@ export default {
   mounted() {
     this.loadCategoryList();
   },
-   watch: {
+  watch: {
     "communityForm.categorySelected"(categorySelected) {
       if (categorySelected.length > 3) {
         this.communityForm.categorySelected.shift();
       }
-    } },
+    }
+  },
   methods: {
-     ...mapActions(["autoSignIn", "setCategory"]),
-     loadCategoryList() {
+    ...mapActions(["autoSignIn", "setCategory"]),
+    loadCategoryList() {
       axios
         .get(`${process.env.EVENT_SERVICE}/category`)
         .then(categoryList => {
@@ -119,15 +119,14 @@ export default {
     onUpload: function(e) {
       // upload file, get it from this.selectedFile
     },
-    createCommunity(){
-      console.log( this.communityForm.communityName);
+    createCommunity() {
+      console.log(this.communityForm.communityName);
       console.log(this.communityForm.communityDetail);
       this.$swal({
-                type: "success",
-                title: "Create community success!!",
-                text: `Enjoy  your community`,
-                
-              });
+        type: "success",
+        title: "Create community success!!",
+        text: `Enjoy  your community`
+      });
       // console.log(this.communityForm.categorySelected);
     }
   }

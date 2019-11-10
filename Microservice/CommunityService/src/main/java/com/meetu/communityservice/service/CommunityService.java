@@ -254,4 +254,64 @@ public class CommunityService {
         }
         return null;
     }
+
+    public ResponseEntity unsubscribeToCommunity(String token, String communityId) {
+        token = token.replace("Bearer ", "");
+        try {
+            FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
+            String uid = decodedToken.getUid();
+            try {
+                Community communityInDatabase = communityRepository.findById(communityId).get();
+                ResponseEntity<User> userFromRest = restTemplate.getForEntity(USERSERVICE_URL + "/user/" + uid, User.class);
+                User userBody = userFromRest.getBody();
+                if (userBody != null) {
+                    if (communityInDatabase != null) {
+                        UserCommunity userCommunityInDatabase = userCommunityRepository.findByUidAndCommunityId(userBody.getUid(), communityInDatabase.getCommunityId());
+                        if (userCommunityInDatabase != null) {
+                            userCommunityRepository.deleteById(userCommunityInDatabase.getUserCommunityId());
+                            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+                        }
+                    } else {
+                        HashMap<String, String> response = new HashMap<>();
+                        response.put("resonse", "Not found community");
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+                    }
+                }
+            } catch (HttpStatusCodeException ex) {
+                HashMap<String, String> response = new HashMap<>();
+                response.put("resonse", "Not found this user");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+        } catch (FirebaseAuthException ex) {
+            Logger.getLogger(CommunityService.class.getName()).log(Level.SEVERE, null, ex);
+            HashMap<String, String> response = new HashMap<>();
+            response.put("resonse", "Your JWT Login Credential is Invalid");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+        return null;
+    }
+
+    public ResponseEntity verifyIfUserIsSubscribeCommunity(String token, String organizeId) {
+        System.out.println("--------- verify header ------------");
+        System.out.println(token);
+        System.out.println(organizeId);
+        HashMap<String, Object> response = new HashMap<>();
+        try {
+            token = token.replace("Bearer ", "");
+            FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
+            String uid = decodedToken.getUid();
+            UserCommunity subscribedCommunity = userCommunityRepository.findByUidAndCommunityId(uid, organizeId);
+            if (subscribedCommunity != null) {
+                response.put("isOwner", true);
+                response.put("isSubscribe", true);
+                return ResponseEntity.status(HttpStatus.OK).body(response);
+            } else if (subscribedCommunity != null) {
+                response.put("isAdmin", true);
+                return ResponseEntity.status(HttpStatus.OK).body(response);
+            }
+        } catch (FirebaseAuthException ex) {
+            java.util.logging.Logger.getLogger(CommunityService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+    }
 }

@@ -52,11 +52,25 @@ public class CommunityController {
         return communityService.findCommunityById(communityId, page, contentPerPage);
     }
 
-    @PostMapping("/community/{communityId}/join")
+    @PostMapping("/community/{communityId}/subscribe")
     public ResponseEntity subscribeToCommunity(
             @RequestHeader(name = "Authorization") String token,
             @PathVariable String communityId) {
         return communityService.subscribeToCommunity(token, communityId);
+    }
+    
+    @PostMapping("/community/{communityId}/unsubscribe")
+    public ResponseEntity unsubscribeToCommunity(
+            @RequestHeader(name = "Authorization") String token,
+            @PathVariable String communityId) {
+        return communityService.unsubscribeToCommunity(token, communityId);
+    }
+    
+     @GetMapping("/community/{organizeId}/subscribe/status")
+    public ResponseEntity verifyIfUserIsSubscribeCommunity(
+            @RequestHeader(required = true, name = "Authorization") String token,
+            @PathVariable String organizeId) {
+        return communityService.verifyIfUserIsSubscribeCommunity(token, organizeId);
     }
 
     @GetMapping("/communitys/user/{uid}")
