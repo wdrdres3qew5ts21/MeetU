@@ -43,8 +43,16 @@ public class CommunityController {
             @RequestParam(required = false, defaultValue = "25") int contentPerPage) {
         return communityService.findByCommunityNameLike(communityName, interestTags,page, contentPerPage);
     }
-
-    @GetMapping("/communitys/user/{uid}")
+    
+    @GetMapping("/community/{communityId}")
+    public ResponseEntity findCommunityById(
+            @PathVariable String communityId,
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "25") int contentPerPage) {
+        return communityService.findCommunityById(communityId, page, contentPerPage);
+    }
+    
+      @GetMapping("/communitys/user/{uid}")
     public ResponseEntity findAllCommunityThatUserSubscribe(
             @PathVariable String uid,
             @RequestParam(required = false, defaultValue = "0") int page,

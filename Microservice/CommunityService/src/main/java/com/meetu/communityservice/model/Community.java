@@ -28,7 +28,7 @@ public class Community {
     @NotNull(message = "Community Name Can't be Empty")
     private String communityName;
 
-    private String communityDescription;
+    private String communityDetail;
 
     private String communityPictureCover;
 
@@ -36,7 +36,7 @@ public class Community {
    
     private List<String> userLists;
     
-    @DBRef
+    @DBRef(lazy = true)
     private List<Post> postLists;
     
     @NotNull(message = "Community Owner can't be Null")
@@ -66,12 +66,12 @@ public class Community {
         this.communityOwner = communityOwner;
     }
     
-    public String getCommunityDescription() {
-        return communityDescription;
+    public String getCommunityDetail() {
+        return communityDetail;
     }
 
-    public void setCommunityDescription(String communityDescription) {
-        this.communityDescription = communityDescription;
+    public void setCommunityDetail(String communityDetail) {
+        this.communityDetail = communityDetail;
     }
 
     public String getCommunityPictureCover() {
@@ -120,7 +120,7 @@ public class Community {
 
     @Override
     public String toString() {
-        return "Community{" + "communityId=" + communityId + ", communityName=" + communityName + ", communityDescription=" + communityDescription + ", communityImageCover=" + communityPictureCover + ", interestTags=" + interestTags + ", userLists=" + userLists + ", postLists=" + postLists + '}';
+        return "Community{" + "communityId=" + communityId + ", communityName=" + communityName + ", communityDescription=" + communityDetail + ", communityImageCover=" + communityPictureCover + ", interestTags=" + interestTags + ", userLists=" + userLists + ", postLists=" + postLists + '}';
     }
 
 }

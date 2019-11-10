@@ -59,7 +59,7 @@
           <!-- Edit Description Admin only -->
           <v-layout row wrap>
             <v-flex class="text-xs-left">
-    <h2>Community Name</h2> 
+    <h2>{{  communityForm.communityName=='' ? 'Community Name': communityForm.communityName}}</h2> 
             </v-flex>
     <v-flex class="text-xs-right">
     <v-dialog v-model="dialogOfEdit" persistent max-width="600px">
@@ -104,7 +104,7 @@
     </v-dialog>
     </v-flex>
           </v-layout>
-    <p size="1px">description about community</p>
+    <p size="1px">{{  communityForm.communityName=='' ? 'Description about community': communityForm.communityDetail}}</p>
 
     <br />
 
@@ -394,20 +394,24 @@ export default {
     };
   },
   mounted() {
-    this.initUserProfile();
+    this.loadCommunityDetail()
   },
   computed: {
     ...mapGetters(["getUser"]),
-
     icon() {
       return this.icons[this.iconIndex];
     }
   },
   methods: {
-    initUserProfile: function() {
-      axios
-        .get(`${process.env.USER_SERVICEg}/user/${this.getUser.uid}`)
-        .catch(err => {});
+    loadCommunityDetail(){
+      axios.get(`${process.env.COMMUNITY_SERVICE}/community/${this.$route.params.communityId}`)
+      .then(communityResponse=>{
+        this.communityForm = communityResponse.data
+        console.log(this.communityForm)
+      })
+      .catch(err=>{
+
+      })
     },
     onFileChanged(event) {
       this.selectedFile = event.target.files[0];

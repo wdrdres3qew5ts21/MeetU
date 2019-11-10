@@ -37,25 +37,25 @@ import org.springframework.web.client.RestTemplate;
  */
 @Service
 public class CommunityService {
-
+    
     @Value("${event.service}")
     private String EVENTSERVICE_URL;
-
+    
     @Value("${user.service}")
     private String USERSERVICE_URL;
-
+    
     @Autowired
     private RestTemplate restTemplate;
-
+    
     @Autowired
     private CommunityRepository communityRepository;
-
+    
     public Page<Community> findAllCommunityList(int page, int contTentPerPage) {
         return communityRepository.findAll(PageRequest.of(page, contTentPerPage));
     }
-
+    
     public ResponseEntity findByCommunityNameLike(String communityName, String[] interestTags, int page, int contentPerPage) {
-        if (interestTags == null & (  communityName == null || communityName.isEmpty() ) ) {
+        if (interestTags == null & (communityName == null || communityName.isEmpty())) {
             Page<Community> allCommunity = communityRepository.findAll(PageRequest.of(page, contentPerPage, Sort.Direction.DESC, "communityId"));
             return ResponseEntity.status(HttpStatus.OK).body(allCommunity);
         } else if (interestTags != null & !communityName.isEmpty()) {
@@ -68,7 +68,7 @@ public class CommunityService {
         Page<Community> findByInterestTagsIsIn = communityRepository.findByInterestTagsIsIn(interestTags, PageRequest.of(page, contentPerPage));
         return ResponseEntity.status(HttpStatus.OK).body(findByInterestTagsIsIn);
     }
-
+    
     public ResponseEntity createCommunity(String token, Community community) {
         System.out.println("fuck in");
         try {
@@ -102,7 +102,7 @@ public class CommunityService {
         }
         return null;
     }
-
+    
     public Post createPostToCommunity(String communityId, Post newPostOfCommunity) {
         Community community = communityRepository.findById(communityId).get();
         newPostOfCommunity.setPostId(new ObjectId().toString());
@@ -111,7 +111,7 @@ public class CommunityService {
         communityRepository.save(community);
         return newPostOfCommunity;
     }
-
+    
     public Post addCommentToPostOfCommunity(String communityId, String postId, CommentOfPost commentOfPost) {
         Community community = communityRepository.findById(communityId).get();
         Post postForAddComment = findPostFromComunityByPostId(community, postId);
@@ -121,12 +121,12 @@ public class CommunityService {
         communityRepository.save(community);
         return postForAddComment;
     }
-
+    
     public Post getPostFromCommunityById(String communityId, String postId) {
         Community community = communityRepository.findById(communityId).get();
         return findPostFromComunityByPostId(community, postId);
     }
-
+    
     public Post findPostFromComunityByPostId(Community community, String postId) {
         Post postOfCommunity = null;
         for (int i = 0; i < community.getPostLists().size(); i++) {
@@ -137,8 +137,12 @@ public class CommunityService {
         }
         return postOfCommunity;
     }
-
+    
     public ResponseEntity findAllCommunityThatUserSubscribe(String uid, int page, int contentPerPage) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    public ResponseEntity findCommunityById(String communityId, int page, int contentPerPage) {
+        return ResponseEntity.status(HttpStatus.OK).body(communityRepository.findById(communityId).get());
     }
 }
