@@ -164,7 +164,27 @@ export default {
           this.categoryList = mockCategoryList;
         });
     },
-    findMatchingCommunity() {},
+    findMatchingCommunity() {
+      console.log("matching community");
+      let interestTags = "";
+      if (this.interestTags.length > 0) {
+        interestTags = "&interestTags=";
+        for (let i = 0; i < this.interestTags.length; i++) {
+          interestTags += `${this.interestTags[i]},`;
+        }
+      }
+      axios
+        .get(
+          `${process.env.COMMUNITY_SERVICE}/communitys?communityName=${this.communityName}${interestTags}`
+        )
+        .then(badgeResponse => {
+          this.badgeList = badgeResponse.data;
+          console.log(badgeResponse.data);
+        })
+        .catch(error => {});
+      this.dialog = false;
+
+    },
     remove: function(item) {
       console.log(item);
       this.chips.splice(this.chips.indexOf(item), 1);

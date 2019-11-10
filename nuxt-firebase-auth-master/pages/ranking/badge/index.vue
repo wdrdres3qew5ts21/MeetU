@@ -223,9 +223,7 @@ export default {
           console.log(badgeResponse.data);
         })
         .catch(error => {});
-      console.log(this.dialog);
       this.dialog = false;
-      console.log(this.dialog);
     },
     remove: function(item) {
       console.log(item);
