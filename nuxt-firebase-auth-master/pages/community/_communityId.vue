@@ -19,7 +19,7 @@
     <v-flex align="center">
       <div v-if="imageUrl == ''">
         <v-img
-          :src="defaultImage"
+          :src="communityForm.communityName==''?defaultImage: communityForm.communityPictureCover"
           aspect-ratio="1"
           class="grey lighten-2"
           max-width="1250"
