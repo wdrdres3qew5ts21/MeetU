@@ -180,7 +180,7 @@
     <!-- ------------posted card + small viewcomment + post picture If have :) 
     No upload in firebase yet container------------>
     <br />
-    <div v-for="(todo,postIndex ) in postList " :key="postIndex">
+    <div v-for="(post,postIndex ) in postList " :key="postIndex">
       <v-card rounded outlined>
         <br />
         <div>
@@ -204,7 +204,7 @@
           <br />
           <v-list>
             <v-list-tile-content>
-              <div class="textarea" contenteditable="false">{{todo.post}}</div>
+              <div class="textarea" contenteditable="false">{{post.postDetail}}</div>
             </v-list-tile-content>
           </v-list>
           <v-img
@@ -381,10 +381,12 @@ export default {
       communityForm: {
         communityName: "",
         communityDetail: ""
-      }
+      },
+      communityId: ""
     };
   },
   mounted() {
+    this.communityId = this.$route.params.communityId;
     this.loadCommunityDetail();
   },
   computed: {
@@ -396,9 +398,7 @@ export default {
   methods: {
     loadCommunityDetail() {
       axios
-        .get(
-          `${process.env.COMMUNITY_SERVICE}/community/${this.$route.params.communityId}`
-        )
+        .get(`${process.env.COMMUNITY_SERVICE}/community/${this.communityId}`)
         .then(communityResponse => {
           this.communityForm = communityResponse.data;
           console.log(this.communityForm);
@@ -448,27 +448,51 @@ export default {
     //     fileReader.readAsDataURL(this.postPictureLists[i]);
     //   }
     // },
-
+    loadAllPostInCommunity() {
+      axios
+        .get(
+          `${process.env.COMMUNITY_SERVICE}/community/${this.communityId}/post/{postId}`
+        )
+        .then(communityResponse => {
+          this.communityForm = communityResponse.data;
+          console.log(this.communityForm);
+        })
+        .catch(err => {});
+    },
     addPost() {
-      var value =
+      let value =
         (this.newPost && this.newPost.trim()) || this.postPictureLists;
       if (!value) {
         return;
       }
-      this.postList.push({
-        post: this.newPost,
+      let postTemplate = {
+        postDetail: this.newPost,
         done: false
-      });
-      this.newPost = "";
-      console.log(this.postList);
+      };
+
+      axios
+        .post(
+          `${process.env.COMMUNITY_SERVICE}/community/${this.communityId}/post`, postTemplate, {
+            'headers': {
+              "Authorization": `Bearer ${localStorage.getItem('jwtToken')}`
+            }
+          }
+        )
+        .then(postResponse => {
+          this.postList.push(postTemplate);
+          this.newPost = "";
+          console.log(this.postList);
+        })
+        .catch(err=>{
+          
+        });
     },
     // removePost(todo) {
     //   const postIndex = this.postList.indexOf(todo);
     //   this.postList.splice(postIndex, 1);
     // },
-
     addComment(postIndex) {
-      var value = this.comment && this.comment.trim();
+      let value = this.comment && this.comment.trim();
       if (!value) {
         return;
       }

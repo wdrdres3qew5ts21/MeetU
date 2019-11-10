@@ -13,6 +13,7 @@ import com.meetu.communityservice.model.Community;
 import com.meetu.communityservice.model.Post;
 import com.meetu.communityservice.model.User;
 import com.meetu.communityservice.repository.CommunityRepository;
+import com.meetu.communityservice.repository.PostRepository;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -37,23 +38,26 @@ import org.springframework.web.client.RestTemplate;
  */
 @Service
 public class CommunityService {
-    
+
     @Value("${event.service}")
     private String EVENTSERVICE_URL;
-    
+
     @Value("${user.service}")
     private String USERSERVICE_URL;
-    
+
     @Autowired
     private RestTemplate restTemplate;
-    
+
     @Autowired
     private CommunityRepository communityRepository;
-    
+
+    @Autowired
+    private PostRepository postRepository;
+
     public Page<Community> findAllCommunityList(int page, int contTentPerPage) {
         return communityRepository.findAll(PageRequest.of(page, contTentPerPage));
     }
-    
+
     public ResponseEntity findByCommunityNameLike(String communityName, String[] interestTags, int page, int contentPerPage) {
         if (interestTags == null & (communityName == null || communityName.isEmpty())) {
             Page<Community> allCommunity = communityRepository.findAll(PageRequest.of(page, contentPerPage, Sort.Direction.DESC, "communityId"));
@@ -68,7 +72,7 @@ public class CommunityService {
         Page<Community> findByInterestTagsIsIn = communityRepository.findByInterestTagsIsIn(interestTags, PageRequest.of(page, contentPerPage));
         return ResponseEntity.status(HttpStatus.OK).body(findByInterestTagsIsIn);
     }
-    
+
     public ResponseEntity createCommunity(String token, Community community) {
         System.out.println("fuck in");
         try {
@@ -102,16 +106,47 @@ public class CommunityService {
         }
         return null;
     }
-    
-    public Post createPostToCommunity(String communityId, Post newPostOfCommunity) {
-        Community community = communityRepository.findById(communityId).get();
-        newPostOfCommunity.setPostId(new ObjectId().toString());
-        newPostOfCommunity.setPostOfDate(new Date());
-        community.getPostLists().add(newPostOfCommunity);
-        communityRepository.save(community);
-        return newPostOfCommunity;
+
+    public ResponseEntity createPostToCommunity(String token, String communityId, Post newPostOfCommunity) {
+        token = token.replace("Bearer ", "");
+        try {
+            FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
+            String uid = decodedToken.getUid();
+            try {
+                ResponseEntity<User> userFromRest = restTemplate.getForEntity(USERSERVICE_URL + "/user/" + uid, User.class);
+                User userBody = userFromRest.getBody();
+                if (userBody != null) {
+                    Community communityInDatabase = communityRepository.findById(communityId).get();
+                    if (communityInDatabase != null) {
+                        Community community = communityRepository.findById(communityId).get();
+                        newPostOfCommunity.setPostOfDate(new Date());
+                        newPostOfCommunity.setUid(userBody.getUid());
+                        newPostOfCommunity.setDisplayName(userBody.getDisplayName());
+                        newPostOfCommunity.setPhotoURL(userBody.getPhotoURL());
+                        newPostOfCommunity.setCommunityId(communityId);
+                        community.getPostLists().add(newPostOfCommunity);
+                        Post savedPost = postRepository.save(newPostOfCommunity);
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(savedPost);
+                    } else {
+                        HashMap<String, String> response = new HashMap<>();
+                        response.put("resonse", "Not found community");
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+                    }
+                }
+            } catch (HttpStatusCodeException ex) {
+                HashMap<String, String> response = new HashMap<>();
+                response.put("resonse", "Not found this user");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+        } catch (FirebaseAuthException ex) {
+            Logger.getLogger(CommunityService.class.getName()).log(Level.SEVERE, null, ex);
+            HashMap<String, String> response = new HashMap<>();
+            response.put("resonse", "Your JWT Login Credential is Invalid");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+        return null;
     }
-    
+
     public Post addCommentToPostOfCommunity(String communityId, String postId, CommentOfPost commentOfPost) {
         Community community = communityRepository.findById(communityId).get();
         Post postForAddComment = findPostFromComunityByPostId(community, postId);
@@ -121,12 +156,12 @@ public class CommunityService {
         communityRepository.save(community);
         return postForAddComment;
     }
-    
+
     public Post getPostFromCommunityById(String communityId, String postId) {
         Community community = communityRepository.findById(communityId).get();
         return findPostFromComunityByPostId(community, postId);
     }
-    
+
     public Post findPostFromComunityByPostId(Community community, String postId) {
         Post postOfCommunity = null;
         for (int i = 0; i < community.getPostLists().size(); i++) {
@@ -137,12 +172,16 @@ public class CommunityService {
         }
         return postOfCommunity;
     }
-    
+
     public ResponseEntity findAllCommunityThatUserSubscribe(String uid, int page, int contentPerPage) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     public ResponseEntity findCommunityById(String communityId, int page, int contentPerPage) {
         return ResponseEntity.status(HttpStatus.OK).body(communityRepository.findById(communityId).get());
+    }
+
+    public ResponseEntity getAllPostFromCommunity(String communityId, int page, int contentPerPage) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

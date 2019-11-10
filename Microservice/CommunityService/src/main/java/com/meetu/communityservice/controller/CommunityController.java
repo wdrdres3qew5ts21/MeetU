@@ -64,6 +64,13 @@ public class CommunityController {
     public ResponseEntity createCommunity(@RequestHeader(name = "Authorization") String token, @RequestBody Community community) {
         return communityService.createCommunity(token,community);
     }
+    
+    @GetMapping("/community/{communityId}/posts")
+    public ResponseEntity getAllPostFromCommunity(@PathVariable String communityId,
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "25") int contentPerPage) {
+        return communityService.getAllPostFromCommunity(communityId, page, contentPerPage);
+    }
 
     @GetMapping("/community/{communityId}/post/{postId}")
     public ResponseEntity<Post> getPostFromCommunityById(@PathVariable String communityId, @PathVariable String postId) {
@@ -71,8 +78,11 @@ public class CommunityController {
     }
 
     @PostMapping("/community/{communityId}/post")
-    public ResponseEntity<Post> createPostToCommunity(@PathVariable String communityId, @RequestBody Post newPostOfCommunity) {
-        return new ResponseEntity<Post>(communityService.createPostToCommunity(communityId, newPostOfCommunity), HttpStatus.CREATED);
+    public ResponseEntity<Post> createPostToCommunity(
+            @RequestHeader(name = "Authorization") String token,
+            @PathVariable String communityId, 
+            @RequestBody Post newPostOfCommunity) {
+        return communityService.createPostToCommunity(token, communityId, newPostOfCommunity);
     }
 
     @PostMapping("/community/{communityId}/post/{postId}")
