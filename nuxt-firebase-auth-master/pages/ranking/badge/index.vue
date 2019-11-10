@@ -166,9 +166,9 @@ export default {
     badgeSelect: false
   }),
   watch: {
-    selectedCategoryList(categorySelected) {
-      if (categorySelected.length > 3) {
-        this.selectedCategoryList.shift();
+    badgeTags(badgeTags) {
+      if (badgeTags.length > 3) {
+        this.badgeTags.shift();
       }
     }
   },
