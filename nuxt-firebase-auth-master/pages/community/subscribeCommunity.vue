@@ -2,16 +2,19 @@
   <div>
     <br />
     <h2>Subscribed Community</h2>
-    <community-card
-      v-for="(community, index) in communityList"
-      :key="index"
-      :communityPictureCover="community.communityDetail.communityPictureCover"
-      :communityName="community.communityDetail.communityName"
-    ></community-card>
+    <div v-for="(community, index) in communityList" :key="index">
+      <nuxt-link :to="`/community/${community.communityDetail[0].communityId}`">
+        <community-card
+        :communityPictureCover="community.communityDetail[0].communityPictureCover"
+        :communityName="community.communityDetail[0].communityName"
+      ></community-card>
+      </nuxt-link>
+    </div>
   </div>
 </template>
 <script>
 import axios from "axios";
+import { mapGetters } from "vuex";
 import CommunityCard from "@/components/communityCard";
 import {
   mockCarouselsPhoto,
@@ -21,14 +24,26 @@ import {
 export default {
   data() {
     return {
-      communityList: []
+      communityList: [
+        {
+          communityDetail: [
+            {
+              communityPictureCover: "",
+              communityName: ""
+            }
+          ]
+        }
+      ]
     };
   },
   components: {
     CommunityCard
   },
+  computed: {
+    ...mapGetters(["getUser"])
+  },
   mounted() {
-    this.communityList = mockCommunityList;
+    //  this.communityList = mockCommunityList;
     this.loadUserSubscribeCommunity();
   },
   methods: {
@@ -36,10 +51,10 @@ export default {
       let loader = this.$loading.show();
       axios
         .get(
-          `${process.env.COMMUNITY_SERVICE}/community/${this.communityId}/subscribe/status`
+          `${process.env.COMMUNITY_SERVICE}/communitys/user/${this.getUser.uid}`
         )
         .then(subscribeCommunityResponse => {
-          this.communityList = subscribeCommunityResponse.data
+          this.communityList = subscribeCommunityResponse.data;
           loader.hide();
         })
         .catch(err => {
