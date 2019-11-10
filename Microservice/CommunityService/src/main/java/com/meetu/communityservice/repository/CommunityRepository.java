@@ -9,6 +9,7 @@ import com.meetu.communityservice.model.Community;
 import com.meetu.communityservice.model.Post;
 import java.util.List;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
@@ -18,12 +19,16 @@ import org.springframework.data.mongodb.repository.MongoRepository;
  */
 public interface CommunityRepository extends MongoRepository<Community, String>{
 
-    public Page<Community> findByCommunityNameIgnoreCaseLike(String communityName, Pageable pageable);
+    public Page<Community> findByCommunityNameIgnoreCaseLikeAndInterestTagsIsIn(String communityName, String[] interestTags,Pageable pageable);
     
     public Community findByCommunityNameIgnoreCase(String communityName);
 
 //    public Post findByCommunityIdAndPostListsPostId(String communityId, String post);
     
     public Community findByCommunityIdAndPostListsPostId(String communityId, String post);
+
+    public Page<Community> findByCommunityNameIgnoreCaseLike(String communityName, PageRequest of);
+
+    public Page<Community> findByInterestTagsIsIn(String[] interestTags, PageRequest of);
     
 }

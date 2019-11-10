@@ -36,14 +36,12 @@ public class CommunityController {
     private CommunityService communityService;
 
     @GetMapping("/communitys")
-    public Page<Community> findAllCommunityList(
-            @RequestParam(required = false) String communityName,
+    public ResponseEntity findAllCommunityList(
+            @RequestParam(required = false, defaultValue = "") String communityName,
+            @RequestParam(required = false) String[] interestTags,
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "25") int contentPerPage) {
-        if (communityName == null) {
-            return communityService.findAllCommunityList(page, contentPerPage);
-        }
-        return communityService.findByCommunityNameLike(communityName,page, contentPerPage);
+        return communityService.findByCommunityNameLike(communityName, interestTags,page, contentPerPage);
     }
 
     @GetMapping("/communitys/user/{uid}")

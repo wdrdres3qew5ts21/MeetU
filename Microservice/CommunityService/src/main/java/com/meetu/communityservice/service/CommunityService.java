@@ -54,8 +54,19 @@ public class CommunityService {
         return communityRepository.findAll(PageRequest.of(page, contTentPerPage));
     }
 
-    public Page<Community> findByCommunityNameLike(String communityName, int page, int contTentPerPage) {
-        return communityRepository.findByCommunityNameIgnoreCaseLike(communityName, PageRequest.of(page, page, Sort.Direction.DESC, "communityId"));
+    public ResponseEntity findByCommunityNameLike(String communityName, String[] interestTags, int page, int contentPerPage) {
+        if (interestTags == null & (  communityName == null || communityName.isEmpty() ) ) {
+            Page<Community> allCommunity = communityRepository.findAll(PageRequest.of(page, contentPerPage, Sort.Direction.DESC, "communityId"));
+            return ResponseEntity.status(HttpStatus.OK).body(allCommunity);
+        } else if (interestTags != null & !communityName.isEmpty()) {
+            Page<Community> communityFilterByTagsAndName = communityRepository.findByCommunityNameIgnoreCaseLikeAndInterestTagsIsIn(communityName, interestTags, PageRequest.of(page, contentPerPage));
+            return ResponseEntity.status(HttpStatus.OK).body(communityFilterByTagsAndName);
+        } else if (!communityName.isEmpty()) {
+            Page<Community> communityFilterByName = communityRepository.findByCommunityNameIgnoreCaseLike(communityName, PageRequest.of(page, contentPerPage));
+            return ResponseEntity.status(HttpStatus.OK).body(communityFilterByName);
+        }
+        Page<Community> findByInterestTagsIsIn = communityRepository.findByInterestTagsIsIn(interestTags, PageRequest.of(page, contentPerPage));
+        return ResponseEntity.status(HttpStatus.OK).body(findByInterestTagsIsIn);
     }
 
     public ResponseEntity createCommunity(String token, Community community) {
