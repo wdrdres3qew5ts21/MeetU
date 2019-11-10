@@ -46,7 +46,9 @@ public class FirebaseConfiguration {
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                     .setDatabaseUrl("https://meetu-69b29.firebaseio.com")
                     .build();
-            FirebaseApp.initializeApp(options);
+            if(FirebaseApp.getApps().isEmpty()) { //<--- check with this line
+                FirebaseApp.initializeApp(options);
+            }
 
         } catch (FileNotFoundException ex) {
             Logger.getLogger(FirebaseConfiguration.class.getName()).log(Level.SEVERE, null, ex);
