@@ -133,13 +133,12 @@
                     v-for="(admin, index) in adminList[0].userDetail"
                     :key="index"
                     avatar
-                    @click="$router.push(`/userProfile/${admin.uid}`)"
                   >
-                    <v-list-tile-avatar>
+                    <v-list-tile-avatar  @click="$router.push(`/userProfile/${admin.uid}`)">
                       <img :src="admin.photoURL" />
                     </v-list-tile-avatar>
 
-                    <v-list-tile-content>
+                    <v-list-tile-content  @click="$router.push(`/userProfile/${admin.uid}`)">
                       <v-list-tile-title>{{ admin.displayName }}</v-list-tile-title>
                       <v-list-tile-sub-title>{{ admin.email }}</v-list-tile-sub-title>
                     </v-list-tile-content>

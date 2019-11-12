@@ -489,7 +489,7 @@ export default {
       let loader = this.$loading.show();
       axios
         .get(
-          `${process.env.COMMUNITY_SERVICE}/community/${this.communityId}/subscribe/status`,
+          `${process.env.COMMUNITY_SERVICE}/community/${this.communityId}/privilege/status`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
@@ -701,7 +701,6 @@ export default {
       this.userAvatar = resp.relative_url;
     },
     infiniteScroll($state) {
-      console.log("fuq loading");
       setTimeout(() => {
         this.page++;
         axios
