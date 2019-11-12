@@ -57,7 +57,7 @@
     <v-btn v-else block color="primary" @click="followCommunity()">Follow Community</v-btn>
 
     <!-- Edit Description Admin only -->
-    <v-layout row wrap>
+    <v-layout v-if="isOwner" row wrap>
       <v-flex class="text-xs-left">
         <h2>{{ communityForm.communityName=='' ? 'Community Name': communityForm.communityName}}</h2>
       </v-flex>
@@ -436,6 +436,7 @@ export default {
       show: false,
       marker: true,
       page: 0,
+      isOwner: false,
       communityForm: {
         communityName: "",
         communityDetail: ""
@@ -498,6 +499,7 @@ export default {
         )
         .then(subscribeCommunityResponse => {
           this.isSubscribe = subscribeCommunityResponse.data.isSubscribe;
+          this.isOwner = subscribeCommunityResponse.data.isOwner;
           loader.hide();
         })
         .catch(err => {
