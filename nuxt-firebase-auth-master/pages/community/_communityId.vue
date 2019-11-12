@@ -4,7 +4,7 @@
     <v-flex align="center">
       <div v-if="imageUrl == ''">
         <v-img
-          :src="communityForm.communityName==''?defaultImage: communityForm.communityPictureCover"
+          :src="communityForm.communityPictureCover==undefined?defaultImage: communityForm.communityPictureCover"
           aspect-ratio="1"
           class="grey lighten-2"
           max-width="1250"
@@ -43,11 +43,11 @@
     <v-btn v-else block color="primary" @click="followCommunity()">Follow Community</v-btn>
 
     <!-- Edit Description Admin only -->
-    <v-layout row wrap>
+    <v-layout>
       <v-flex class="text-xs-left">
         <h2>{{ communityForm.communityName=='' ? 'Community Name': communityForm.communityName}}</h2>
       </v-flex>
-      <v-flex class="text-xs-right">
+      <v-flex v-if="isOwner" row wrap class="text-xs-right">
         <v-dialog v-model="dialogOfEdit" persistent max-width="600px">
           <template v-slot:activator="{ on }">
             <v-btn depressed flat v-on="on">
@@ -421,6 +421,7 @@ export default {
       show: false,
       marker: true,
       page: 0,
+      isOwner: false,
       communityForm: {
         communityName: "",
         communityDetail: ""
@@ -434,7 +435,9 @@ export default {
     this.communityId = this.$route.params.communityId;
     this.loadCommunityDetail();
     this.loadAllPostInCommunity();
-    this.verifyIfUserSubscribeCommunity();
+    if(localStorage.getItem("jwtToken")){
+      this.verifyIfUserSubscribeCommunity();
+    }
   },
   computed: {
     ...mapGetters(["getUser"]),
@@ -484,6 +487,7 @@ export default {
         )
         .then(subscribeCommunityResponse => {
           this.isSubscribe = subscribeCommunityResponse.data.isSubscribe;
+          this.isOwner = subscribeCommunityResponse.data.isOwner;
           loader.hide();
         })
         .catch(err => {
