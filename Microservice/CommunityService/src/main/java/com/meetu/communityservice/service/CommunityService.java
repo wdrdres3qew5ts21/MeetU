@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bson.types.ObjectId;
@@ -292,27 +293,50 @@ public class CommunityService {
         return null;
     }
 
-    public ResponseEntity verifyIfUserIsSubscribeCommunity(String token, String organizeId) {
+    public ResponseEntity verifyIfPrivilegeStatus(String token, String communityId) {
         System.out.println("--------- verify header ------------");
         System.out.println(token);
-        System.out.println(organizeId);
+        System.out.println(communityId);
         HashMap<String, Object> response = new HashMap<>();
         try {
             token = token.replace("Bearer ", "");
             FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
             String uid = decodedToken.getUid();
-            UserCommunity subscribedCommunity = userCommunityRepository.findByUidAndCommunityId(uid, organizeId);
-            if (subscribedCommunity != null) {
-                response.put("isOwner", true);
-                response.put("isSubscribe", true);
-                return ResponseEntity.status(HttpStatus.OK).body(response);
-            } else if (subscribedCommunity != null) {
+            UserCommunity subscribedCommunity = userCommunityRepository.findByUidAndCommunityId(uid, communityId);
+            Community communityInDatabase = communityRepository.findByCommunityId(communityId).get();
+            if (uid.equals(communityInDatabase.getCommunityOwner().getUid())) {
                 response.put("isAdmin", true);
-                return ResponseEntity.status(HttpStatus.OK).body(response);
             }
+            if (subscribedCommunity != null) {
+                response.put("isSubscribe", true);
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (FirebaseAuthException ex) {
             java.util.logging.Logger.getLogger(CommunityService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
+
+    public ResponseEntity updateCommunity(String token, String communityId, Community community) {
+         HashMap<String, Object> response = new HashMap<>();
+        try {
+            token = token.replace("Bearer ", "");
+            FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
+            String uid = decodedToken.getUid();
+            Community communityInDatabase = communityRepository.findByCommunityId(communityId).get();
+            if (uid.equals(communityInDatabase.getCommunityOwner().getUid())) {
+                communityInDatabase.setCommunityDetail(community.getCommunityDetail());
+                if(communityInDatabase.getCommunityPictureCover() != null || !communityInDatabase.getCommunityPictureCover().isEmpty()){
+                    communityInDatabase.setCommunityPictureCover(community.getCommunityPictureCover());
+                }
+                communityInDatabase.setCommunityName(community.getCommunityName());
+            }
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch (FirebaseAuthException ex) {
+            java.util.logging.Logger.getLogger(CommunityService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        response.put("response", "You dont have permission for Edit Community !!!");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+    }
+
 }

@@ -58,20 +58,27 @@ public class CommunityController {
             @PathVariable String communityId) {
         return communityService.subscribeToCommunity(token, communityId);
     }
-    
+
     @PostMapping("/community/{communityId}/unsubscribe")
     public ResponseEntity unsubscribeToCommunity(
             @RequestHeader(name = "Authorization") String token,
             @PathVariable String communityId) {
         return communityService.unsubscribeToCommunity(token, communityId);
     }
-    
-     @GetMapping("/community/{organizeId}/subscribe/status")
-    public ResponseEntity verifyIfUserIsSubscribeCommunity(
+
+    @GetMapping("/community/{organizeId}/privilege/status")
+    public ResponseEntity verifyIfPrivilegeStatus(
             @RequestHeader(required = true, name = "Authorization") String token,
             @PathVariable String organizeId) {
-        return communityService.verifyIfUserIsSubscribeCommunity(token, organizeId);
+        return communityService.verifyIfPrivilegeStatus(token, organizeId);
     }
+
+//    @GetMapping("/community/{organizeId}/privilege/status")
+//    public ResponseEntity verifyIfPrivilegeStatus(
+//            @RequestHeader(required = true, name = "Authorization") String token,
+//            @PathVariable String organizeId) {
+//        return communityService.verifyIfPrivilegeStatus(token, organizeId);
+//    }
 
     @GetMapping("/communitys/user/{uid}")
     public ResponseEntity findAllCommunityThatUserSubscribe(
@@ -84,6 +91,11 @@ public class CommunityController {
     @PostMapping("/community")
     public ResponseEntity createCommunity(@RequestHeader(name = "Authorization") String token, @RequestBody Community community) {
         return communityService.createCommunity(token, community);
+    }
+    
+    @PostMapping("/community/{communityId}")
+    public ResponseEntity updateCommunity(@RequestHeader(name = "Authorization") String token, @PathVariable String communityId,@RequestBody Community community) {
+        return communityService.updateCommunity(token, communityId, community);
     }
 
     @GetMapping("/community/{communityId}/posts")
