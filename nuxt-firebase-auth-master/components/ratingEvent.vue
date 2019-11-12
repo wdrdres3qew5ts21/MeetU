@@ -2,28 +2,46 @@
   <v-card class="mx-auto elevation-0">
     <v-layout justify-space-between></v-layout>
     <v-divider dark></v-divider>
-    <v-card-actions class="pa-3">
+    <v-layout class="pa-3">
       <div class="headline">Review Event</div>
-      <v-spacer></v-spacer>
-      <span class="grey--text text--lighten-2 caption mr-2">({{ reviewForm.rating }})</span>
+    </v-layout>
 
+      <v-spacer></v-spacer>
+      
+      <v-layout ml-3>
+  
+      
       <v-rating
         v-model="reviewForm.rating"
         color="yellow accent-4"
         dense
         half-increments
         hover
-        size="18"
-      ></v-rating>
-    </v-card-actions>
+        size="30"
+      ></v-rating> 
+      
+      
+      <span class="grey--text pl-2">({{ reviewForm.rating }})</span>
+      
+
+      <!-- <v-layout pa-3 my-0> -->
+        
+     
+<!-- <v-card-title> -->
+      
+      <!-- </v-layout> -->
+
+    </v-layout>
+
+<!-- </v-card-title> -->
     <v-card-title primary-title>
       <v-textarea
         v-model="reviewForm.reviewDetail"
         outline
         name="description"
         label="My Feeling for this event :)"
-        color="pink"
-        rows="15"
+        color="#004c99"
+        rows="6"
         required
         hide-details
       ></v-textarea>
@@ -92,5 +110,10 @@ export default {
   max-width: 100%;
   background-color: #eeeeee;
   font-family: Roboto;
+}
+
+.headline{
+  font-weight: bold;
+
 }
 </style>
