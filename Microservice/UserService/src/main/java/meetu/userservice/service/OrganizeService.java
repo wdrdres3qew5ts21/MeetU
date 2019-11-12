@@ -166,15 +166,15 @@ public class OrganizeService {
                 for (int i = 0; i < adminList.size(); i++) {
                     if (adminList.get(i).getEmail().equalsIgnoreCase(emailAdmin)) {
                         duplicateAdminEmail = adminList.get(i);
-                        break; 
+                        break;
                     }
                 }
-                System.out.println("Owner email : "+ownerDetail.getEmail());
-                System.out.println("admin email : "+emailAdmin);
+                System.out.println("Owner email : " + ownerDetail.getEmail());
+                System.out.println("admin email : " + emailAdmin);
                 if (ownerDetail.getEmail().equals(emailAdmin)) {
                     response.put("response", "You already Owner so you can't add your email to be admin again !");
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-                }else if (duplicateAdminEmail == null) {
+                } else if (duplicateAdminEmail == null) {
                     Admin admin = new Admin();
                     admin.setEmail(matchedUser.getEmail());
                     admin.setUid(matchedUser.getUid());
