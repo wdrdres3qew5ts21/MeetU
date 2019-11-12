@@ -165,7 +165,6 @@ export default {
   methods: {
     ...mapActions(["autoSignIn", "setCategory", "setBadgeDetail"]),
     infiniteScroll($state) {
-      this.page++;
       setTimeout(() => {
         this.page++;
         console.log(this.page);

@@ -89,7 +89,7 @@ public class CommunityController {
     @GetMapping("/community/{communityId}/posts")
     public ResponseEntity getAllPostFromCommunity(@PathVariable String communityId,
             @RequestParam(required = false, defaultValue = "0") int page,
-            @RequestParam(required = false, defaultValue = "25") int contentPerPage) {
+            @RequestParam(required = false, defaultValue = "10") int contentPerPage) {
         return communityService.getAllPostFromCommunity(communityId, page, contentPerPage);
     }
 

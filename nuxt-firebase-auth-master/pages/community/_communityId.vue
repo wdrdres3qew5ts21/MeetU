@@ -228,94 +228,103 @@
     <!-- ------------posted card + small viewcomment + post picture If have :) 
     No upload in firebase yet container------------>
     <br />
-    <div v-for="(post,postIndex ) in postList" :key="post.postId">
-      <v-card rounded outlined>
-        <br />
-        <div>
-          <v-layout>
-            <v-container grid-list-xs fluid style="padding:10px">
-              <v-flex xs12 class="text-xs-left">
-                <v-avatar size="60">
-                  <v-img :aspect-ratio="1/1" :src="post.photoURL"></v-img>
-                </v-avatar>
-                {{ post.displayName}}
-              </v-flex>
-            </v-container>
-            <v-flex xs12 class="text-xs-right">
-              <v-btn text icon>
-                <v-icon>expand_more</v-icon>
-              </v-btn>
-            </v-flex>
-          </v-layout>
-        </div>
-        <v-container grid-list-xs fluid style="padding:5px">
+    <div v-if="postList.length>0">
+      <div v-for="(post,postIndex ) in postList" :key="post.postId">
+        <v-card rounded outlined>
           <br />
-          <v-list>
-            <v-list-tile-content>
-              <div class="textarea" contenteditable="false">{{post.postDetail}}</div>
-            </v-list-tile-content>
-          </v-list>
-          <v-img
-            v-for="(image, index) in postPictureListsUrl "
-            :key="index"
-            :src="image.url"
-            aspect-ratio="1"
-            class="grey lighten-2"
-            max-width="1250"
-            max-height="250"
-          ></v-img>
-          <!-- <input
+          <div>
+            <v-layout>
+              <v-container grid-list-xs fluid style="padding:10px">
+                <v-flex xs12 class="text-xs-left">
+                  <v-avatar size="60">
+                    <v-img :aspect-ratio="1/1" :src="post.photoURL"></v-img>
+                  </v-avatar>
+                  {{ post.displayName}}
+                </v-flex>
+              </v-container>
+              <v-flex xs12 class="text-xs-right">
+                <v-btn text icon>
+                  <v-icon>expand_more</v-icon>
+                </v-btn>
+              </v-flex>
+            </v-layout>
+          </div>
+          <v-container grid-list-xs fluid style="padding:5px">
+            <br />
+            <v-list>
+              <v-list-tile-content>
+                <div class="textarea" contenteditable="false">{{post.postDetail}}</div>
+              </v-list-tile-content>
+            </v-list>
+            <v-img
+              v-for="(image, index) in postPictureListsUrl "
+              :key="index"
+              :src="image.url"
+              aspect-ratio="1"
+              class="grey lighten-2"
+              max-width="1250"
+              max-height="250"
+            ></v-img>
+            <!-- <input
             v-show="false"
            ref="pictureListUpload"
         multiple
         type="file"
         @change="onPictureListUpload"
         accept="image/*"
-          />-->
-        </v-container>
+            />-->
+          </v-container>
 
-        <v-card-text rounded outlined class="mx-auto">
-          <v-divider></v-divider>
-          <v-flex class="text-right">
-            <v-btn text block flat @click="getCommentFromPost(postIndex)">
-              <v-icon>comment</v-icon>Comment
-            </v-btn>
-          </v-flex>
-        </v-card-text>
-        <v-list>
-          <v-card
-            xs6
-            rounded
-            outlined
-            v-for="(comment,commentIndex ) in postList[postIndex].commentList "
-            :key="commentIndex"
-          >
-            <v-container grid-list-xs xs4 fluid style="padding:5px">
-              <v-list-tile xs4>
-                <v-list-tile-avatar>
-                  <v-img :aspect-ratio="1/1" :src="getUser.photoURL"></v-img>
-                </v-list-tile-avatar>
-                <v-list-tile>
-                  <div>
-                    <v-list-tile-content>
-                      <!-- max-width="240px" -->
-                      <v-card color="#F5F5F5" class="rounded-card" max-width="240px">
-                        <v-list-tile-title class="margin-name">
-                          <font size="2">{{ getUser.displayName}}</font>
-                        </v-list-tile-title>
-                        <v-list-tile-sub-title class="margin-comment">
-                          <font size="2">{{comment}}</font>
-                        </v-list-tile-sub-title>
-                      </v-card>
-                    </v-list-tile-content>
-                  </div>
+          <v-card-text rounded outlined class="mx-auto">
+            <v-divider></v-divider>
+            <v-flex class="text-right">
+              <v-btn text block flat @click="getCommentFromPost(postIndex)">
+                <v-icon>comment</v-icon>Comment
+              </v-btn>
+            </v-flex>
+          </v-card-text>
+          <v-list>
+            <v-card
+              xs6
+              rounded
+              outlined
+              v-for="(comment,commentIndex ) in postList[postIndex].commentList "
+              :key="commentIndex"
+            >
+              <v-container grid-list-xs xs4 fluid style="padding:5px">
+                <v-list-tile xs4>
+                  <v-list-tile-avatar>
+                    <v-img :aspect-ratio="1/1" :src="getUser.photoURL"></v-img>
+                  </v-list-tile-avatar>
+                  <v-list-tile>
+                    <div>
+                      <v-list-tile-content>
+                        <!-- max-width="240px" -->
+                        <v-card color="#F5F5F5" class="rounded-card" max-width="240px">
+                          <v-list-tile-title class="margin-name">
+                            <font size="2">{{ getUser.displayName}}</font>
+                          </v-list-tile-title>
+                          <v-list-tile-sub-title class="margin-comment">
+                            <font size="2">{{comment}}</font>
+                          </v-list-tile-sub-title>
+                        </v-card>
+                      </v-list-tile-content>
+                    </div>
+                  </v-list-tile>
                 </v-list-tile>
-              </v-list-tile>
-            </v-container>
-          </v-card>
-        </v-list>
-      </v-card>
-      <br />
+              </v-container>
+            </v-card>
+          </v-list>
+        </v-card>
+        <br />
+      </div>
+      <client-only>
+        <infinite-loading spinner="spiral" @infinite="infiniteScroll">
+          <!-- <div slot="no-results">
+            <v-btn color="primary" block>Go to Top</v-btn>
+          </div>-->
+        </infinite-loading>
+      </client-only>
     </div>
     <!-- ------------ Close of : post+ small viewcomment + post picture If have :) 
     No upload in firebase yet container------------>
@@ -426,6 +435,7 @@ export default {
       name: "",
       show: false,
       marker: true,
+      page: 0,
       communityForm: {
         communityName: "",
         communityDetail: ""
@@ -627,10 +637,10 @@ export default {
             }
           )
           .then(postResponse => {
-            console.log("--------------------------------")
-            console.log(postResponse.data)
+            console.log("--------------------------------");
+            console.log(postResponse.data);
             this.newPostList.push(postResponse.data);
-           this.newPostList.reverse();
+            this.newPostList.reverse();
             this.newPost = "";
             console.log(this.postList);
             loader.hide();
@@ -689,6 +699,29 @@ export default {
     },
     handleUploaded(resp) {
       this.userAvatar = resp.relative_url;
+    },
+    infiniteScroll($state) {
+      console.log("fuq loading");
+      setTimeout(() => {
+        this.page++;
+        axios
+          .get(
+            `${process.env.COMMUNITY_SERVICE}/community/${this.communityId}/posts?page=${this.page}`
+          )
+          .then(postListResponse => {
+            if (postListResponse.data.content.length > 1) {
+              postListResponse.data.content.forEach(post =>
+                this.postList.push(post)
+              );
+              $state.loaded();
+            } else {
+              $state.complete();
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }, 500);
     }
   }
 };
