@@ -12,7 +12,7 @@
         ></v-text-field>
         <v-layout class="mb-4">
           <v-layout class="mb-4">
-            <v-combobox
+            <v-autocomplete
               :items="categoryList"
               item-text="categoryLabel"
               item-value="categoryName"
@@ -21,6 +21,7 @@
               clearable
               v-model="communityForm.categorySelected"
               multiple
+              required
               sm6
               xs2
             >
@@ -29,7 +30,7 @@
                   <strong>{{ data.item.categoryName}}</strong>&nbsp;
                 </v-chip>
               </template>
-            </v-combobox>
+            </v-autocomplete>
           </v-layout>
           <!-- {{communityForm.categorySelected}} -->
           <!-- <v-autocomplete label="Categorys" :items="categoryList" block></v-autocomplete> -->
@@ -119,14 +120,28 @@ export default {
       // upload file, get it from this.selectedFile
     },
     createCommunity() {
-      console.log(this.communityForm.communityName);
-      console.log(this.communityForm.communityDetail);
-      this.$swal({
-        type: "success",
-        title: "Create community success!!",
-        text: `Enjoy  your community`
-      });
-      // console.log(this.communityForm.categorySelected);
+      let loader = this.$loading.show();
+      axios
+        .post(
+          `${process.env.COMMUNITY_SERVICE}/community`, this.communityForm,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+            }
+          }
+        )
+        .then(communityResponse => {
+          loader.hide();
+          this.$swal({
+            type: "success",
+            title: "Create community success!!",
+            text: `Enjoy  your community`
+          });
+          this.$router.push(`/community/${communityResponse.data.communityId}`)
+        })
+        .catch(err => {
+          loader.hide();
+        });
     }
   }
 };
