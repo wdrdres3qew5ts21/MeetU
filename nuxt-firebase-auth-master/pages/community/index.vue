@@ -1,5 +1,6 @@
 <template>
   <div>
+    <br>
     <center>
       <h2 id="top">Let's Find Community !</h2>
       <v-container>
