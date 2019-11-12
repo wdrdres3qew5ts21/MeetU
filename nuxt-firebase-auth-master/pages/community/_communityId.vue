@@ -176,10 +176,59 @@
       </div>
     </v-card>
 
+    <div v-for="(post,postIndex ) in newPostList" :key="postIndex">
+      <v-card rounded outlined>
+        <br />
+        <div>
+          <v-layout>
+            <v-container grid-list-xs fluid style="padding:10px">
+              <v-flex xs12 class="text-xs-left">
+                <v-avatar size="60">
+                  <v-img :aspect-ratio="1/1" :src="post.photoURL"></v-img>
+                </v-avatar>
+                {{ post.displayName}}
+              </v-flex>
+            </v-container>
+            <v-flex xs12 class="text-xs-right">
+              <v-btn text icon>
+                <v-icon>expand_more</v-icon>
+              </v-btn>
+            </v-flex>
+          </v-layout>
+        </div>
+        <v-container grid-list-xs fluid style="padding:5px">
+          <br />
+          <v-list>
+            <v-list-tile-content>
+              <div class="textarea" contenteditable="false">{{post.postDetail}}</div>
+            </v-list-tile-content>
+          </v-list>
+          <v-img
+            v-for="(image, index) in postPictureListsUrl "
+            :key="index"
+            :src="image.url"
+            aspect-ratio="1"
+            class="grey lighten-2"
+            max-width="1250"
+            max-height="250"
+          ></v-img>
+          <!-- <input
+            v-show="false"
+           ref="pictureListUpload"
+        multiple
+        type="file"
+        @change="onPictureListUpload"
+        accept="image/*"
+          />-->
+        </v-container>
+      </v-card>
+      <br />
+    </div>
+
     <!-- ------------posted card + small viewcomment + post picture If have :) 
     No upload in firebase yet container------------>
     <br />
-    <div v-for="(post,postIndex ) in postList " :key="postIndex">
+    <div v-for="(post,postIndex ) in postList" :key="postIndex">
       <v-card rounded outlined>
         <br />
         <div>
@@ -368,6 +417,7 @@ export default {
       remove: ["remove"],
       post: "",
       newPost: "",
+      newPostList: [],
       postList: [],
       commentInPost: "",
       comment: "",
@@ -550,6 +600,8 @@ export default {
       }
       let postTemplate = {
         postDetail: this.newPost,
+        photoURL: this.getUser.photoURL,
+        postOfDate: new Date().toISOString,
         done: false
       };
       if (
@@ -575,7 +627,8 @@ export default {
             }
           )
           .then(postResponse => {
-            this.postList.push(postTemplate);
+            this.newPostList.push(postTemplate);
+            this.newPostList.reverse();
             this.newPost = "";
             console.log(this.postList);
             loader.hide();

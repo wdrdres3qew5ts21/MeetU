@@ -207,7 +207,7 @@ public class CommunityService {
     }
 
     public ResponseEntity getAllPostFromCommunity(String communityId, int page, int contentPerPage) {
-        Page<Post> postListFromCommunity = postRepository.findByCommunityId(communityId, PageRequest.of(page, contentPerPage, Sort.Direction.DESC, "postDate"));
+        Page<Post> postListFromCommunity = postRepository.findByCommunityId(communityId, PageRequest.of(page, contentPerPage, Sort.Direction.DESC, "postOfDate"));
         return ResponseEntity.status(HttpStatus.OK).body(postListFromCommunity);
     }
 
