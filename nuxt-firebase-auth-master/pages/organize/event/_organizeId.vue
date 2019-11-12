@@ -27,7 +27,7 @@
       <v-flex class="text-xs-right">
         <div v-if="isOwner">
           <nuxt-link :to="`/organize/editOrganizeSetting/${$route.params.organizeId}`">
-            <v-btn fab dark small color="#341646" >
+            <v-btn fab dark small color="#341646">
               <v-icon color="#fff" medium>edit</v-icon>
             </v-btn>
           </nuxt-link>
@@ -134,11 +134,11 @@
                     :key="index"
                     avatar
                   >
-                    <v-list-tile-avatar  @click="$router.push(`/userProfile/${admin.uid}`)">
+                    <v-list-tile-avatar @click="$router.push(`/userProfile/${admin.uid}`)">
                       <img :src="admin.photoURL" />
                     </v-list-tile-avatar>
 
-                    <v-list-tile-content  @click="$router.push(`/userProfile/${admin.uid}`)">
+                    <v-list-tile-content @click="$router.push(`/userProfile/${admin.uid}`)">
                       <v-list-tile-title>{{ admin.displayName }}</v-list-tile-title>
                       <v-list-tile-sub-title>{{ admin.email }}</v-list-tile-sub-title>
                     </v-list-tile-content>
@@ -320,7 +320,7 @@ export default {
     if (this.getUser.uid) {
       this.verifyIfUserIsOrganizeMember();
       this.loadAdminDetail();
-      console.log('verify is login')
+      console.log("verify is login");
     }
   },
   methods: {
@@ -523,7 +523,7 @@ export default {
     },
     removeItem(uid) {
       this.$swal({
-        type: "Comfirm Delete Admin",
+        type: "warning",
         text: `Comfirm for delete Admin`,
         showCancelButton: true,
         cancelButtonColor: "#FD6363",
@@ -532,30 +532,30 @@ export default {
         confirmButtonText: "Delete"
       }).then(button => {
         console.log(button);
-        if (button.dismiss != "cancel")
-          this.adminList = this.adminList.filter(
-            admin => admin.userDetail[0].uid !== uid
-          );
-
-        axios
-          .delete(
-            `${process.env.USER_SERVICE}/organize/${this.organizeId}/${uid}`
-          )
-          .then(deleteResponse => {
-            this.$swal({
-              type: "success",
-              title: "Delete Admin success",
-              text: `Delete Admin success`
+        if (button.dismiss != "cancel") {
+          axios
+            .delete(
+              `${process.env.USER_SERVICE}/organize/${this.organizeId}/${uid}`
+            )
+            .then(deleteResponse => {
+              this.$swal({
+                type: "success",
+                title: "Delete Admin success",
+                text: `Delete Admin success`
+              });
+              // this.adminList = this.adminList.filter(
+              //   admin => admin.userDetail[0].uid !== uid
+              // );
+              this.loadAdminDetail();
+            })
+            .catch(err => {
+              this.$swal({
+                type: "error",
+                title: "Delete Admin error",
+                text: `Delete Admin success`
+              });
             });
-            this.loadAdminDetail();
-          })
-          .catch(err => {
-            this.$swal({
-              type: "error",
-              title: "Delete Admin error",
-              text: `Delete Admin success`
-            });
-          });
+        }
       });
     },
     initUserProfile: function() {
