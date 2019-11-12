@@ -176,7 +176,7 @@
       </div>
     </v-card>
 
-    <div v-for="(post,postIndex ) in newPostList" :key="postIndex">
+    <div v-for="(post ) in newPostList" :key="post.postId">
       <v-card rounded outlined>
         <br />
         <div>
@@ -228,7 +228,7 @@
     <!-- ------------posted card + small viewcomment + post picture If have :) 
     No upload in firebase yet container------------>
     <br />
-    <div v-for="(post,postIndex ) in postList" :key="postIndex">
+    <div v-for="(post,postIndex ) in postList" :key="post.postId">
       <v-card rounded outlined>
         <br />
         <div>
@@ -627,8 +627,10 @@ export default {
             }
           )
           .then(postResponse => {
-            this.newPostList.push(postTemplate);
-            this.newPostList.reverse();
+            console.log("--------------------------------")
+            console.log(postResponse.data)
+            this.newPostList.push(postResponse.data);
+           this.newPostList.reverse();
             this.newPost = "";
             console.log(this.postList);
             loader.hide();
