@@ -17,7 +17,7 @@ spring:
   cloud:
     config:
       request-read-timeout: 10000
-      uri: http://localhost:8585  
+      uri: ${spring_cloud_config:http://localhost:8585}
       retry:
         max-attempts: 8
         max-interval: 2000

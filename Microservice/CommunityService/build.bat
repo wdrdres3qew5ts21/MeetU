@@ -1,1 +1,1 @@
-mvn clean package &&docker build -t linxianer12/communityservice . && docker push  linxianer12/communityservice
+mvn clean package &&docker build -t linxianer12/communityservice:latest . && docker push  linxianer12/communityservice:latest

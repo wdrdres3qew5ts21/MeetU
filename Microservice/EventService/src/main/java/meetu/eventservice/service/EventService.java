@@ -176,7 +176,7 @@ public class EventService {
     @Value("${community.service}")
     private String COMMUNITYSERVICE_URL;
 
-    private final String eventsIndex = "events";
+    private final String eventsIndex = "meetu.events";
 
     public void pushNotificationToAllUserWhenEventCreate(String eventName, String eventDetail) {
         // Create a list containing up to 100 messages.

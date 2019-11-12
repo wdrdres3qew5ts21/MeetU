@@ -1,6 +1,7 @@
 FROM openjdk:11-slim
 WORKDIR /app
 ENV spring.profiles.active=production
+ENV spring_cloud_config=https://www.meetu-milktea.tk:8585
 ADD target/communityservice-0.0.1-SNAPSHOT.jar .
 ADD meetu-firebase-key.json .
 #ENV spring_cloud_config=

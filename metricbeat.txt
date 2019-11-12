@@ -10,12 +10,13 @@ docker run  -d\
   -E output.elasticsearch.hosts=["elasticsearch1:9200"] 
 
 
+
 docker run -d \
   --network=meetu_elastic\
   -p 8200:8200\
   --user=apm-server \
   --volume="$(pwd)/apm-server.docker.yml:/usr/share/apm-server/apm-server.yml:ro" \
-  docker.elastic.co/apm/apm-server:7.2.1 \
+  docker.elastic.co/apm/apm-server:7.4.0 \
   --strict.perms=false -e \
   -E output.elasticsearch.hosts=["elasticsearch1:9200"]  
   

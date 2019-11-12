@@ -23,7 +23,6 @@
               multiple
               sm6
               xs2
-              required
             >
               <template v-slot:selection="data">
                 <v-chip :selected="data.selected">

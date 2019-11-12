@@ -22,5 +22,7 @@ public interface UserCommunityRepository extends MongoRepository<UserCommunity, 
     public UserCommunity findByUidAndCommunityId(String uid, String communityId);
     
     public void deleteById(String communityId);
+
+    public void deleteByCommunityId(String userCommunityId);
     
 }
