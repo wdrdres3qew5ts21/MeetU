@@ -1,19 +1,5 @@
 <template>
   <div>
-    <!-- ห้าม format หน้านี้เด็ดขาดเพราะ text field จะหาย
-            <v-text-field
-            :append-outer-icon="comment ? 'send' : 'send'"
-            box
-            v-model="comment"
-            clear-icon="close"
-            clearable
-            label="Write comment..."
-            type="text"
-            @click:append="toggleMarker"
-            @click:append-outer="addComment(postIndex)"
-            @click:clear="clearMessage"
-          ></v-text-field>
-    -->
     <!-- Upload Cover picture Do not do any thing now -->
     <v-flex align="center">
       <div v-if="imageUrl == ''">
@@ -128,7 +114,7 @@
           <v-layout>
             <v-flex xs12>
               <br />
-              <!-- <div v-if="postPictureListsUrl.length>0">       
+              <div v-if="postPictureListsUrl.length>0">       
                  </div>  
                 <v-img
           v-for="(image, index) in postPictureListsUrl "
@@ -146,7 +132,7 @@
         type="file"
         @change="onPictureListUpload"
         accept="image/*"
-              />-->
+              />
 
               <v-text-field
                 v-model="newPost"
@@ -158,7 +144,7 @@
           </v-layout>
           <v-layout>
             <v-flex xs12 class="text-xs-left">
-              <v-btn style="margin-right: 0px" icon>
+              <v-btn style="margin-right: 0px" icon> 
                 <v-icon>photo_camera</v-icon>
               </v-btn>
               <v-btn style="margin: 0px" icon>
@@ -184,16 +170,12 @@
             <v-container grid-list-xs fluid style="padding:10px">
               <v-flex xs12 class="text-xs-left">
                 <v-avatar size="60">
-                  <v-img :aspect-ratio="1/1" :src="post.photoURL"></v-img>
+                  <v-img :aspect-ratio="1/1" :src="getUser.photoURL"></v-img>
                 </v-avatar>
-                {{ post.displayName}}
+                {{ getUser.displayName}}
               </v-flex>
             </v-container>
-            <v-flex xs12 class="text-xs-right">
-              <v-btn text icon>
-                <v-icon>expand_more</v-icon>
-              </v-btn>
-            </v-flex>
+            
           </v-layout>
         </div>
         <v-container grid-list-xs fluid style="padding:5px">
@@ -203,23 +185,26 @@
               <div class="textarea" contenteditable="false">{{post.postDetail}}</div>
             </v-list-tile-content>
           </v-list>
-          <v-img
+           <v-img
             v-for="(image, index) in postPictureListsUrl "
             :key="index"
             :src="image.url"
             aspect-ratio="1"
             class="grey lighten-2"
             max-width="1250"
-            max-height="250"
-          ></v-img>
-          <!-- <input
+            max-height="250" -->
+          ></v-img> 
+
+          <!-- -----------------post image----------- -->
+
+          <input
             v-show="false"
            ref="pictureListUpload"
         multiple
         type="file"
         @change="onPictureListUpload"
         accept="image/*"
-          />-->
+          />
         </v-container>
       </v-card>
       <br />
@@ -243,8 +228,8 @@
                 </v-flex>
               </v-container>
               <v-flex xs12 class="text-xs-right">
-                <v-btn text icon>
-                  <v-icon>expand_more</v-icon>
+                <v-btn text icon  @click="removePost(postIndex)">
+                  <v-icon>clear</v-icon>
                 </v-btn>
               </v-flex>
             </v-layout>
@@ -265,14 +250,14 @@
               max-width="1250"
               max-height="250"
             ></v-img>
-            <!-- <input
+            <input
             v-show="false"
            ref="pictureListUpload"
         multiple
         type="file"
         @change="onPictureListUpload"
         accept="image/*"
-            />-->
+            />
           </v-container>
 
           <v-card-text rounded outlined class="mx-auto">
@@ -441,7 +426,8 @@ export default {
         communityDetail: ""
       },
       communityId: "",
-      isSubscribe: false
+      isSubscribe: false,
+      postOfDate: ""
     };
   },
   mounted() {
@@ -576,21 +562,21 @@ export default {
       console.log(postIndex);
       console.log(this.postList[postIndex].commentList);
     },
-    // onPictureListUpload(event){
-    //    console.log("uplaod din");
-    //   this.postPictureLists = event.target.files;
-    //   this.postPictureListsUrl = []
-    //   for (let i = 0; i < this.postPictureLists.length; i++) {
-    //     const fileReader = new FileReader();
-    //     fileReader.addEventListener("load", () => {
-    //       this.postPictureListsUrl.push({
-    //         url: fileReader.result,
-    //         name: event.target.files[i].name
-    //       });
-    //     });
-    //     fileReader.readAsDataURL(this.postPictureLists[i]);
-    //   }
-    // },
+    onPictureListUpload(event){
+       console.log("uplaod din");
+      this.postPictureLists = event.target.files;
+      this.postPictureListsUrl = []
+      for (let i = 0; i < this.postPictureLists.length; i++) {
+        const fileReader = new FileReader();
+        fileReader.addEventListener("load", () => {
+          this.postPictureListsUrl.push({
+            url: fileReader.result,
+            name: event.target.files[i].name
+          });
+        });
+        fileReader.readAsDataURL(this.postPictureLists[i]);
+      }
+    },
     loadAllPostInCommunity() {
       axios
         .get(
@@ -655,10 +641,10 @@ export default {
           });
       }
     },
-    // removePost(todo) {
-    //   const postIndex = this.postList.indexOf(todo);
-    //   this.postList.splice(postIndex, 1);
-    // },
+    removePost(todo) {
+      const postIndex = this.postList.indexOf(todo);
+      this.postList.splice(postIndex, 1);
+    },
     addComment(postIndex) {
       let value = this.comment && this.comment.trim();
       if (!value) {
