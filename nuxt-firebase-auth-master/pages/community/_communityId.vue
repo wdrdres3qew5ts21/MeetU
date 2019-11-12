@@ -187,9 +187,9 @@
             <v-container grid-list-xs fluid style="padding:10px">
               <v-flex xs12 class="text-xs-left">
                 <v-avatar size="60">
-                  <v-img :aspect-ratio="1/1" :src="getUser.photoURL"></v-img>
+                  <v-img :aspect-ratio="1/1" :src="post.photoURL"></v-img>
                 </v-avatar>
-                {{ getUser.displayName}}
+                {{ post.displayName}}
               </v-flex>
             </v-container>
             <v-flex xs12 class="text-xs-right">
