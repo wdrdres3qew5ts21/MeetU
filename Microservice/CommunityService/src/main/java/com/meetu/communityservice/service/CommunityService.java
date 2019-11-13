@@ -163,14 +163,33 @@ public class CommunityService {
         return null;
     }
 
-    public Post addCommentToPostOfCommunity(String communityId, String postId, CommentOfPost commentOfPost) {
-        Community community = communityRepository.findByCommunityId(communityId).get();
-        Post postForAddComment = findPostFromComunityByPostId(community, postId);
-        commentOfPost.setCommentOfPostId(new ObjectId().toString());
-        commentOfPost.setCommentOfPostDate(new Date());
-        postForAddComment.getCommentOfPost().add(commentOfPost);
-        communityRepository.save(community);
-        return postForAddComment;
+    public ResponseEntity addCommentToPostOfCommunity(String token, CommentOfPost commentOfPost) {
+        HashMap<String, String> response = new HashMap<>();
+        try {
+            token = token.replace("Bearer ", "");
+            FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
+            String uid = decodedToken.getUid();
+            Post postForAddComment = postRepository.findById(commentOfPost.getPostId()).get();
+            System.out.println("----------");
+            System.out.println(postForAddComment);
+            ResponseEntity<User> userFromRest = restTemplate.getForEntity(USERSERVICE_URL + "/user/" + uid, User.class);
+            User userBody = userFromRest.getBody();
+            commentOfPost.setCommentOfPostId(new ObjectId().toString());
+            commentOfPost.setCommentOfPostDate(new Date());
+            commentOfPost.setDisplayName(userBody.getDisplayName());
+            commentOfPost.setPhotoURL(userBody.getPhotoURL());
+            postForAddComment.getCommentList().add(commentOfPost);
+            postRepository.save(postForAddComment);
+            response.put("resonse", "Comment successful !!!");
+            return ResponseEntity.status(HttpStatus.CREATED).body(commentOfPost);
+        } catch (FirebaseAuthException ex) {
+            Logger.getLogger(CommunityService.class.getName()).log(Level.SEVERE, null, ex);
+            response.put("resonse", "You dont have permission to comment !!!");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        } catch (HttpStatusCodeException ex) {
+            response.put("resonse", "Fail to comment !!!");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
     }
 
     public Post getPostFromCommunityById(String communityId, String postId) {

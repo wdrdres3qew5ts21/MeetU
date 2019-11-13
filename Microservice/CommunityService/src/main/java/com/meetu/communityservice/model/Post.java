@@ -44,8 +44,8 @@ public class Post {
 
     private PollChoices pollVoteChoices;
 
-    @DBRef
-    private List<CommentOfPost> commentOfPost;
+//    @DBRef
+    private List<CommentOfPost> commentList;
 
     private Date postOfDate;
 
@@ -89,15 +89,15 @@ public class Post {
         this.postDetail = postDetail;
     }
 
-    public List<CommentOfPost> getCommentOfPost() {
-        if(commentOfPost == null){
-            commentOfPost = new ArrayList<>();
+    public List<CommentOfPost> getCommentList() {
+        if(commentList == null){
+            commentList = new ArrayList<>();
         }
-        return commentOfPost;
+        return commentList;
     }
 
-    public void setCommentOfPost(List<CommentOfPost> commentOfPost) {
-        this.commentOfPost = commentOfPost;
+    public void setCommentList(List<CommentOfPost> commentList) {
+        this.commentList = commentList;
     }
 
     public String getUid() {
@@ -134,7 +134,7 @@ public class Post {
 
     @Override
     public String toString() {
-        return "Post{" + "postId=" + postId + ", userId=" + uid + ", userName=" + displayName + ", postDetail=" + postDetail + ", pollVoteChoices=" + pollVoteChoices + ", commentOfPost=" + commentOfPost + ", postOfDate=" + postOfDate + '}';
+        return "Post{" + "postId=" + postId + ", userId=" + uid + ", userName=" + displayName + ", postDetail=" + postDetail + ", pollVoteChoices=" + pollVoteChoices + ", commentOfPost=" + commentList + ", postOfDate=" + postOfDate + '}';
     }
 
 }

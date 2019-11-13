@@ -267,7 +267,7 @@
           <v-card-text rounded outlined class="mx-auto">
             <v-divider></v-divider>
             <v-flex class="text-right">
-              <v-btn text block flat @click="getCommentFromPost(postIndex)">
+              <v-btn text block flat @click="getCommentFromPost(postIndex, post.postId)">
                 <v-icon>comment</v-icon>Comment
               </v-btn>
             </v-flex>
@@ -294,7 +294,7 @@
                             <font size="2">{{ getUser.displayName}}</font>
                           </v-list-tile-title>
                           <v-list-tile-sub-title class="margin-comment">
-                            <font size="2">{{comment}}</font>
+                            <font size="2">{{comment.commentOfPostDetail}}</font>
                           </v-list-tile-sub-title>
                         </v-card>
                       </v-list-tile-content>
@@ -343,15 +343,15 @@
                 <v-layout row wrap justify-start>
                   <v-flex xs2>
                     <v-list-tile-avatar>
-                      <v-img :aspect-ratio="1/1" :src="getUser.photoURL" size="80"></v-img>
+                      <v-img :aspect-ratio="1/1" :src="comment.photoURL" size="80"></v-img>
                     </v-list-tile-avatar>
                   </v-flex>
                   <v-flex xs10>
                     <v-list-tile-content>
                       <div class="text-comment-area" contenteditable="false">
-                        <font class="margin-name">{{ getUser.displayName}}</font>
+                        <font class="margin-name">{{ comment.displayName}}</font>
                         <br />
-                        <font color="grey">{{comment}}</font>
+                        <font color="grey">{{comment.commentOfPostDetail}}</font>
                       </div>
                     </v-list-tile-content>
                   </v-flex>
@@ -372,7 +372,7 @@
                     label="Write comment..."
                     type="text"
                     @click:append="toggleMarker"
-                    @click:append-outer="addComment(postIndex)"
+                    @click:append-outer="addComment(postIndex )"
                     @click:clear="clearComment"
                   ></v-text-field>
                 </v-flex>
@@ -419,6 +419,7 @@ export default {
       commentInPost: "",
       comment: "",
       postIndex: 0,
+      postIdOfComment: "",
       dialogOfComment: false,
       name: "",
       show: false,
@@ -560,9 +561,10 @@ export default {
           loader.hide();
         });
     },
-    getCommentFromPost(postIndex) {
+    getCommentFromPost(postIndex, postId) {
       this.dialogOfComment = true;
       this.postIndex = postIndex;
+      this.postIdOfComment = postId;
       console.log(
         "--------------------postIndex get comment from post ----------------------"
       );
@@ -653,11 +655,13 @@ export default {
       let deletePostTemplate = {
         postId: postId
       };
-      axios.post(
-          `${process.env.COMMUNITY_SERVICE}/community/${this.communityId}/delete/post`,deletePostTemplate,
+      axios
+        .post(
+          `${process.env.COMMUNITY_SERVICE}/community/${this.communityId}/delete/post`,
+          deletePostTemplate,
           {
             headers: {
-              "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+              Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
             }
           }
         )
@@ -671,34 +675,32 @@ export default {
         });
     },
     removeNewPost(index, postId) {
-      this.newPostList.splice(index, 1);
-    },
-    removePostFromDatabase(postId) {
       let loader = this.$loading.show();
+      let deletePostTemplate = {
+        postId: postId
+      };
       axios
         .post(
-          `${process.env.COMMUNITY_SERVICE}/community/${this.communityId}/unsubscribe`,
-          null,
+          `${process.env.COMMUNITY_SERVICE}/community/${this.communityId}/delete/post`,
+          deletePostTemplate,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
             }
           }
         )
-        .then(joinCommunityResponse => {
-          this.isSubscribe = !this.isSubscribe;
+        .then(deletePostResposne => {
+          this.newPostList.splice(index, 1);
+
+          console.log("remove post work");
           loader.hide();
         })
         .catch(err => {
-          this.$swal({
-            type: "error",
-            title: "Failed to subscribe community !!!",
-            text: `${err.response.data.response}`
-          });
           loader.hide();
         });
     },
     addComment(postIndex) {
+      let loader = this.$loading.show();
       let value = this.comment && this.comment.trim();
       if (!value) {
         return;
@@ -716,12 +718,35 @@ export default {
         console.log("It's first comment");
         this.postList[postIndex].commentList = [];
       }
+      console.log("----------- psot id of comment --------");
+      console.log(this.postIdOfComment);
 
-      this.postList[postIndex].commentList.push(this.comment);
-      console.log(this.postList[postIndex].commentList);
-      this.comment = "";
-      this.dialogOfComment = false;
-      console.log(postIndex);
+      let commentBody = {
+        postId: this.postIdOfComment,
+        commentOfPostDetail: this.comment
+      };
+
+      axios
+        .post(
+          `${process.env.COMMUNITY_SERVICE}/community/comment/post`,
+          commentBody,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+            }
+          }
+        )
+        .then(commentResponse => {
+          this.postList[postIndex].commentList.push(commentResponse.data);
+          console.log(this.postList[postIndex].commentList);
+          this.comment = "";
+          this.dialogOfComment = false;
+          console.log(postIndex);
+          loader.hide();
+        })
+        .catch(err => {
+          loader.hide();
+        });
     },
     toggleMarker() {
       this.marker = !this.marker;

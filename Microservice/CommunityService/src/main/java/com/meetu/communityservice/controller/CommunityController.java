@@ -120,9 +120,11 @@ public class CommunityController {
         return communityService.createPostToCommunity(token, communityId, newPostOfCommunity);
     }
 
-    @PostMapping("/community/{communityId}/post/{postId}")
-    public ResponseEntity<Post> addCommentToPostOfCommunity(@PathVariable String communityId, @PathVariable String postId, @RequestBody CommentOfPost commentOfPost) {
-        return new ResponseEntity<Post>(communityService.addCommentToPostOfCommunity(communityId, postId, commentOfPost), HttpStatus.CREATED);
+    @PostMapping("/community/comment/post")
+    public ResponseEntity  addCommentToPostOfCommunity(
+            @RequestHeader(name = "Authorization") String token,
+            @RequestBody CommentOfPost commentOfPost) {
+        return communityService.addCommentToPostOfCommunity(token, commentOfPost);
     }
 
     @PostMapping("/community/{communityId}/delete/post")
