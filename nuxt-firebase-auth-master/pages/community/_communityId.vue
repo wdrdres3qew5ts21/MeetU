@@ -162,7 +162,7 @@
       </div>
     </v-card>
 
-    <div v-for="(post ) in newPostList" :key="post.postId">
+    <div v-for="(post,postIndex ) in newPostList" :key="post.postId">
       <v-card rounded outlined>
         <br />
         <div>
@@ -173,6 +173,11 @@
                   <v-img :aspect-ratio="1/1" :src="getUser.photoURL"></v-img>
                 </v-avatar>
                 {{ getUser.displayName}}
+              </v-flex>
+              <v-flex v-if="post.uid=== getUser.uid" xs12 class="text-xs-right">
+                <v-btn text icon  @click="removeNewPost(postIndex,  post.postId)">
+                  <v-icon>clear</v-icon>
+                </v-btn>
               </v-flex>
             </v-container>
             
@@ -227,8 +232,8 @@
                   {{ post.displayName}}
                 </v-flex>
               </v-container>
-              <v-flex xs12 class="text-xs-right">
-                <v-btn text icon  @click="removePost(postIndex)">
+              <v-flex v-if="post.uid=== getUser.uid" xs12 class="text-xs-right">
+                <v-btn text icon  @click="removePost(postIndex, post.postId)">
                   <v-icon>clear</v-icon>
                 </v-btn>
               </v-flex>
@@ -645,9 +650,12 @@ export default {
           });
       }
     },
-    removePost(todo) {
-      const postIndex = this.postList.indexOf(todo);
-      this.postList.splice(postIndex, 1);
+    removePost(index, postId) {
+      this.postList.splice(index, 1);
+      console.log("remove post work")
+    },
+    removeNewPost(index, postId) {
+      this.newPostList.splice(index, 1);
     },
     addComment(postIndex) {
       let value = this.comment && this.comment.trim();
