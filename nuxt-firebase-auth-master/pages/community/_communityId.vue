@@ -280,7 +280,6 @@
                   <v-list-tile>
                     <div>
                       <v-list-tile-content>
-                        <!-- max-width="240px" -->
                         <v-card color="#F5F5F5" class="rounded-card" max-width="240px">
                           <v-list-tile-title class="margin-name">
                             <font size="2">{{ postList[postIndex].commentList[postList[postIndex].commentList.length-1].displayName}}</font>
@@ -296,6 +295,7 @@
                 </v-list-tile>
               </v-container>
             </v-card>
+            <!-- แสดงแค่เม้นสุดท้าย -->
           </v-list>
         </v-card>
         <br />
