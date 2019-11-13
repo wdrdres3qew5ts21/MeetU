@@ -112,8 +112,9 @@
       <div v-if="communityList.length > 0">
         <div v-for="(community, index) in communityList" :key="index">
           <nuxt-link :to="`/community/${community.communityId}`">
+          <!-- communityForm.communityPictureCover==undefined?defaultImage: communityForm.communityPictureCover  -->
             <community-card
-              :communityPictureCover="community.communityPictureCover"
+              :communityPictureCover="community.communityPictureCover==undefined?defaultImage: community.communityPictureCover"
               :communityName="community.communityName"
             ></community-card>
           </nuxt-link>
@@ -148,7 +149,8 @@ export default {
       interestTags: [],
       communityName: "",
       interestTags: [],
-      categoryList: []
+      categoryList: [],
+      defaultImage: "https://www.elegantthemes.com/blog/wp-content/uploads/2017/03/Facebook-Groups-for-Bloggers-shutterstock_555845587-ProStockStudio-FT.png"
     };
   },
   watch: {
