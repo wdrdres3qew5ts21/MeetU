@@ -20,4 +20,6 @@ public interface PostRepository extends MongoRepository<Post, String> {
 
     public Page<Post> findByCommunityId(String communityId, PageRequest of);
     
+    public void deleteByPostIdAndUidAndCommunityId(String postId, String uid, String communityId);
+    
 }

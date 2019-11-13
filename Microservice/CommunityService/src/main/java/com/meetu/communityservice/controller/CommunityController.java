@@ -18,6 +18,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -93,9 +94,9 @@ public class CommunityController {
     public ResponseEntity createCommunity(@RequestHeader(name = "Authorization") String token, @RequestBody Community community) {
         return communityService.createCommunity(token, community);
     }
-    
+
     @PostMapping("/community/{communityId}")
-    public ResponseEntity updateCommunity(@RequestHeader(name = "Authorization") String token, @PathVariable String communityId,@RequestBody Community community) {
+    public ResponseEntity updateCommunity(@RequestHeader(name = "Authorization") String token, @PathVariable String communityId, @RequestBody Community community) {
         return communityService.updateCommunity(token, communityId, community);
     }
 
@@ -122,6 +123,14 @@ public class CommunityController {
     @PostMapping("/community/{communityId}/post/{postId}")
     public ResponseEntity<Post> addCommentToPostOfCommunity(@PathVariable String communityId, @PathVariable String postId, @RequestBody CommentOfPost commentOfPost) {
         return new ResponseEntity<Post>(communityService.addCommentToPostOfCommunity(communityId, postId, commentOfPost), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/community/{communityId}/delete/post")
+    public ResponseEntity deletePostFromCommunity(
+            @RequestHeader(name = "Authorization") String token,
+            @PathVariable String communityId,
+            @RequestBody Post deletePost) {
+        return communityService.deletePostFromCommunity(token, communityId, deletePost);
     }
 
 }

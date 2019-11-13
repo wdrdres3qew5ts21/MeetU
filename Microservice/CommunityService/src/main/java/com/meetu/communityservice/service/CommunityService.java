@@ -318,7 +318,7 @@ public class CommunityService {
     }
 
     public ResponseEntity updateCommunity(String token, String communityId, Community community) {
-         HashMap<String, Object> response = new HashMap<>();
+        HashMap<String, Object> response = new HashMap<>();
         try {
             token = token.replace("Bearer ", "");
             FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
@@ -326,7 +326,7 @@ public class CommunityService {
             Community communityInDatabase = communityRepository.findByCommunityId(communityId).get();
             if (uid.equals(communityInDatabase.getCommunityOwner().getUid())) {
                 communityInDatabase.setCommunityDetail(community.getCommunityDetail());
-                if(communityInDatabase.getCommunityPictureCover() != null || !communityInDatabase.getCommunityPictureCover().isEmpty()){
+                if (communityInDatabase.getCommunityPictureCover() != null || !communityInDatabase.getCommunityPictureCover().isEmpty()) {
                     communityInDatabase.setCommunityPictureCover(community.getCommunityPictureCover());
                 }
                 communityInDatabase.setCommunityName(community.getCommunityName());
@@ -340,7 +340,25 @@ public class CommunityService {
     }
 
     public ResponseEntity findAllCommunityOwnedByUser(String uid, int page, int contentPerPage) {
-         return new ResponseEntity(communityRepository.findByCommunityOwnerUid(uid, PageRequest.of(page, contentPerPage)), HttpStatus.OK);
+        return new ResponseEntity(communityRepository.findByCommunityOwnerUid(uid, PageRequest.of(page, contentPerPage)), HttpStatus.OK);
+    }
+
+    public ResponseEntity deletePostFromCommunity(String token, String communityId, Post deletePost) {
+        HashMap<String, Object> response = new HashMap<>();
+        try {
+            token = token.replace("Bearer ", "");
+            FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
+            String uid = decodedToken.getUid();
+            System.out.println(deletePost.getPostId());
+            postRepository.deleteByPostIdAndUidAndCommunityId(deletePost.getPostId(), uid, communityId);
+            response.put("response", "delete post success!!!");
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
+
+        } catch (FirebaseAuthException ex) {
+            java.util.logging.Logger.getLogger(CommunityService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        response.put("response", "You dont have permission to delete post !!!");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 
 }

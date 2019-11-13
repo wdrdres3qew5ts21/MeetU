@@ -114,24 +114,23 @@
           <v-layout>
             <v-flex xs12>
               <br />
-              <div v-if="postPictureListsUrl.length>0">       
-                 </div>  
-                <v-img
-          v-for="(image, index) in postPictureListsUrl "
-          :key="index"
-          :src="image.url"
-          aspect-ratio="1"
-          class="grey lighten-2"
-          max-width="1250"
-          max-height="200"
-        ></v-img>
-          <input
-            v-show="false"
-           ref="pictureListUpload"
-        multiple
-        type="file"
-        @change="onPictureListUpload"
-        accept="image/*"
+              <div v-if="postPictureListsUrl.length>0"></div>
+              <v-img
+                v-for="(image, index) in postPictureListsUrl "
+                :key="index"
+                :src="image.url"
+                aspect-ratio="1"
+                class="grey lighten-2"
+                max-width="1250"
+                max-height="200"
+              ></v-img>
+              <input
+                v-show="false"
+                ref="pictureListUpload"
+                multiple
+                type="file"
+                @change="onPictureListUpload"
+                accept="image/*"
               />
 
               <v-text-field
@@ -144,7 +143,7 @@
           </v-layout>
           <v-layout>
             <v-flex xs12 class="text-xs-left">
-              <v-btn style="margin-right: 0px" icon> 
+              <v-btn style="margin-right: 0px" icon>
                 <v-icon>photo_camera</v-icon>
               </v-btn>
               <v-btn style="margin: 0px" icon>
@@ -175,12 +174,11 @@
                 {{ getUser.displayName}}
               </v-flex>
               <v-flex v-if="post.uid=== getUser.uid" xs12 class="text-xs-right">
-                <v-btn text icon  @click="removeNewPost(postIndex,  post.postId)">
+                <v-btn text icon @click="removeNewPost(postIndex,  post.postId)">
                   <v-icon>clear</v-icon>
                 </v-btn>
               </v-flex>
             </v-container>
-            
           </v-layout>
         </div>
         <v-container grid-list-xs fluid style="padding:5px">
@@ -190,25 +188,26 @@
               <div class="textarea" contenteditable="false">{{post.postDetail}}</div>
             </v-list-tile-content>
           </v-list>
-           <v-img
+          <v-img
             v-for="(image, index) in postPictureListsUrl "
             :key="index"
             :src="image.url"
             aspect-ratio="1"
             class="grey lighten-2"
             max-width="1250"
-            max-height="250" -->
-          ></v-img> 
+            max-height="250"
+            --
+          >></v-img>
 
           <!-- -----------------post image----------- -->
 
           <input
             v-show="false"
-           ref="pictureListUpload"
-        multiple
-        type="file"
-        @change="onPictureListUpload"
-        accept="image/*"
+            ref="pictureListUpload"
+            multiple
+            type="file"
+            @change="onPictureListUpload"
+            accept="image/*"
           />
         </v-container>
       </v-card>
@@ -233,7 +232,7 @@
                 </v-flex>
               </v-container>
               <v-flex v-if="post.uid=== getUser.uid" xs12 class="text-xs-right">
-                <v-btn text icon  @click="removePost(postIndex, post.postId)">
+                <v-btn text icon @click="removePost(postIndex, post.postId)">
                   <v-icon>clear</v-icon>
                 </v-btn>
               </v-flex>
@@ -256,12 +255,12 @@
               max-height="250"
             ></v-img>
             <input
-            v-show="false"
-           ref="pictureListUpload"
-        multiple
-        type="file"
-        @change="onPictureListUpload"
-        accept="image/*"
+              v-show="false"
+              ref="pictureListUpload"
+              multiple
+              type="file"
+              @change="onPictureListUpload"
+              accept="image/*"
             />
           </v-container>
 
@@ -439,7 +438,7 @@ export default {
     this.communityId = this.$route.params.communityId;
     this.loadCommunityDetail();
     this.loadAllPostInCommunity();
-    if(localStorage.getItem("jwtToken")){
+    if (localStorage.getItem("jwtToken")) {
       this.verifyIfUserSubscribeCommunity();
     }
   },
@@ -570,10 +569,10 @@ export default {
       console.log(postIndex);
       console.log(this.postList[postIndex].commentList);
     },
-    onPictureListUpload(event){
-       console.log("uplaod din");
+    onPictureListUpload(event) {
+      console.log("uplaod din");
       this.postPictureLists = event.target.files;
-      this.postPictureListsUrl = []
+      this.postPictureListsUrl = [];
       for (let i = 0; i < this.postPictureLists.length; i++) {
         const fileReader = new FileReader();
         fileReader.addEventListener("load", () => {
@@ -650,13 +649,31 @@ export default {
       }
     },
     removePost(index, postId) {
-      this.postList.splice(index, 1);
-      console.log("remove post work")
+      let loader = this.$loading.show();
+      let deletePostTemplate = {
+        postId: postId
+      };
+      axios.post(
+          `${process.env.COMMUNITY_SERVICE}/community/${this.communityId}/delete/post`,deletePostTemplate,
+          {
+            headers: {
+              "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+            }
+          }
+        )
+        .then(deletePostResposne => {
+          this.postList.splice(index, 1);
+          console.log("remove post work");
+          loader.hide();
+        })
+        .catch(err => {
+          loader.hide();
+        });
     },
     removeNewPost(index, postId) {
       this.newPostList.splice(index, 1);
     },
-    removePostFromDatabase(postId){
+    removePostFromDatabase(postId) {
       let loader = this.$loading.show();
       axios
         .post(

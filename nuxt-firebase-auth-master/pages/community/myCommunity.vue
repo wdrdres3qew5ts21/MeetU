@@ -3,12 +3,14 @@
     <br />
     <h2>My Community</h2>
     <div v-if="communityList.length>0">
-      <community-card
-        v-for="(community, index) in communityList"
-        :key="index"
-        :communityPictureCover="community.communityPictureCover==undefined?defaultImage: community.communityPictureCover"
-        :communityName="community.communityName"
-      ></community-card>
+      <div v-for="(community, index) in communityList" :key="index">
+        <nuxt-link :to="`/community/${community.communityId}`">
+          <community-card
+            :communityPictureCover="community.communityPictureCover==undefined?defaultImage: community.communityPictureCover"
+            :communityName="community.communityName"
+          ></community-card>
+        </nuxt-link>
+      </div>
       <client-only>
         <infinite-loading spinner="spiral" @infinite="infiniteScroll">
           <!-- <div slot="no-results">
@@ -33,7 +35,7 @@ export default {
     return {
       communityList: [],
       page: 0,
-      defaultImage: require(`@/assets/default/community.png`) 
+      defaultImage: require(`@/assets/default/community.png`)
     };
   },
   components: {
@@ -43,8 +45,8 @@ export default {
     ...mapGetters(["getUser"])
   },
   mounted() {
-   // this.communityList = mockCommunityList;
-    this.loadMyOwnedCommunity()
+    // this.communityList = mockCommunityList;
+    this.loadMyOwnedCommunity();
   },
   methods: {
     loadMyOwnedCommunity() {
@@ -53,11 +55,10 @@ export default {
           `${process.env.COMMUNITY_SERVICE}/communitys/admin/user/${this.getUser.uid}`
         )
         .then(ownedCommunityList => {
-          this.communityList = ownedCommunityList.data.content
-          console.log(ownedCommunityList.data)
+          this.communityList = ownedCommunityList.data.content;
+          console.log(ownedCommunityList.data);
         })
-        .catch(err => {
-        });
+        .catch(err => {});
     },
     infiniteScroll($state) {
       setTimeout(() => {
