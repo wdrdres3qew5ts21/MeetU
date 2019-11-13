@@ -114,23 +114,24 @@
           <v-layout>
             <v-flex xs12>
               <br />
-              <div v-if="postPictureListsUrl.length>0"></div>
-              <v-img
-                v-for="(image, index) in postPictureListsUrl "
-                :key="index"
-                :src="image.url"
-                aspect-ratio="1"
-                class="grey lighten-2"
-                max-width="1250"
-                max-height="200"
-              ></v-img>
-              <input
-                v-show="false"
-                ref="pictureListUpload"
-                multiple
-                type="file"
-                @change="onPictureListUpload"
-                accept="image/*"
+              <div v-if="postPictureListsUrl.length>0">       
+                 </div>  
+                <v-img
+          v-for="(image, index) in postPictureListsUrl "
+          :key="index"
+          :src="image.url"
+          aspect-ratio="1"
+          class="grey lighten-2"
+          max-width="1250"
+          max-height="200"
+        ></v-img>
+          <input
+            v-show="false"
+           ref="pictureListUpload"
+        multiple
+        type="file"
+        @change="onPictureListUpload"
+        accept="image/*"
               />
 
               <v-text-field
@@ -143,7 +144,7 @@
           </v-layout>
           <v-layout>
             <v-flex xs12 class="text-xs-left">
-              <v-btn style="margin-right: 0px" icon>
+              <v-btn style="margin-right: 0px" icon> 
                 <v-icon>photo_camera</v-icon>
               </v-btn>
               <v-btn style="margin: 0px" icon>
@@ -217,7 +218,7 @@
               <v-container grid-list-xs fluid style="padding:10px">
               
               <v-layout row wrap>
-                <v-flex xs3 >
+                <v-flex xs3>
                   <v-avatar size="60">
                     <v-img :aspect-ratio="1/1" :src="post.photoURL"></v-img>
                   </v-avatar>
@@ -232,7 +233,7 @@
                
               </v-container>
               <v-flex v-if="post.uid=== getUser.uid" xs12 class="text-xs-right">
-                <v-btn text icon @click="removePost(postIndex, post.postId)">
+                <v-btn text icon  @click="removePost(postIndex, post.postId)">
                   <v-icon>clear</v-icon>
                 </v-btn>
               </v-flex>
@@ -255,15 +256,6 @@
               max-height="250"
             ></v-img>
             <input
-<<<<<<< Updated upstream
-              v-show="false"
-              ref="pictureListUpload"
-              multiple
-              type="file"
-              @change="onPictureListUpload"
-              accept="image/*"
-            />
-=======
             v-show="false"
            ref="pictureListUpload"
         multiple
@@ -276,7 +268,7 @@
           <v-card-text rounded outlined class="mx-auto">
             <v-divider></v-divider>
             <v-flex class="text-right">
-              <v-btn text block flat @click="getCommentFromPost(postIndex, post.postId)">
+              <v-btn text block flat @click="getCommentFromPost(postIndex)">
                 <v-icon>comment</v-icon>Comment
               </v-btn>
             </v-flex>
@@ -292,7 +284,7 @@
               <v-container grid-list-xs xs4 fluid style="padding:5px">
                 <v-list-tile xs4>
                   <v-list-tile-avatar>
-                    <v-img :aspect-ratio="1/1" :src="getUser.photoURL"></v-img>
+                    <v-img :aspect-ratio="1/1" :src="comment.photoURL"></v-img>
                   </v-list-tile-avatar>
                   <v-list-tile>
                     <div>
@@ -303,7 +295,7 @@
                             <font size="2">{{ getUser.displayName}}</font>
                           </v-list-tile-title>
                           <v-list-tile-sub-title class="margin-comment">
-                            <font size="2">{{comment.commentOfPostDetail}}</font>
+                            <font size="2">{{comment}}</font>
                           </v-list-tile-sub-title>
                         </v-card>
                       </v-list-tile-content>
@@ -352,15 +344,15 @@
                 <v-layout row wrap justify-start>
                   <v-flex xs2>
                     <v-list-tile-avatar>
-                      <v-img :aspect-ratio="1/1" :src="comment.photoURL" size="80"></v-img>
+                      <v-img :aspect-ratio="1/1" :src="getUser.photoURL" size="80"></v-img>
                     </v-list-tile-avatar>
                   </v-flex>
                   <v-flex xs10>
                     <v-list-tile-content>
                       <div class="text-comment-area" contenteditable="false">
-                        <font class="margin-name">{{ comment.displayName}}</font>
+                        <font class="margin-name">{{ getUser.displayName}}</font>
                         <br />
-                        <font color="grey">{{comment.commentOfPostDetail}}</font>
+                        <font color="grey">{{cgomment}}</font>
                       </div>
                     </v-list-tile-content>
                   </v-flex>
@@ -381,7 +373,7 @@
                     label="Write comment..."
                     type="text"
                     @click:append="toggleMarker"
-                    @click:append-outer="addComment(postIndex )"
+                    @click:append-outer="addComment(postIndex)"
                     @click:clear="clearComment"
                   ></v-text-field>
                 </v-flex>
@@ -428,7 +420,6 @@ export default {
       commentInPost: "",
       comment: "",
       postIndex: 0,
-      postIdOfComment: "",
       dialogOfComment: false,
       name: "",
       show: false,
@@ -448,7 +439,7 @@ export default {
     this.communityId = this.$route.params.communityId;
     this.loadCommunityDetail();
     this.loadAllPostInCommunity();
-    if (localStorage.getItem("jwtToken")) {
+    if(localStorage.getItem("jwtToken")){
       this.verifyIfUserSubscribeCommunity();
     }
   },
@@ -570,20 +561,19 @@ export default {
           loader.hide();
         });
     },
-    getCommentFromPost(postIndex, postId) {
+    getCommentFromPost(postIndex) {
       this.dialogOfComment = true;
       this.postIndex = postIndex;
-      this.postIdOfComment = postId;
       console.log(
         "--------------------postIndex get comment from post ----------------------"
       );
       console.log(postIndex);
       console.log(this.postList[postIndex].commentList);
     },
-    onPictureListUpload(event) {
-      console.log("uplaod din");
+    onPictureListUpload(event){
+       console.log("uplaod din");
       this.postPictureLists = event.target.files;
-      this.postPictureListsUrl = [];
+      this.postPictureListsUrl = []
       for (let i = 0; i < this.postPictureLists.length; i++) {
         const fileReader = new FileReader();
         fileReader.addEventListener("load", () => {
@@ -660,56 +650,38 @@ export default {
       }
     },
     removePost(index, postId) {
-      let loader = this.$loading.show();
-      let deletePostTemplate = {
-        postId: postId
-      };
-      axios
-        .post(
-          `${process.env.COMMUNITY_SERVICE}/community/${this.communityId}/delete/post`,
-          deletePostTemplate,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
-            }
-          }
-        )
-        .then(deletePostResposne => {
-          this.postList.splice(index, 1);
-          console.log("remove post work");
-          loader.hide();
-        })
-        .catch(err => {
-          loader.hide();
-        });
+      this.postList.splice(index, 1);
+      console.log("remove post work")
     },
     removeNewPost(index, postId) {
+      this.newPostList.splice(index, 1);
+    },
+    removePostFromDatabase(postId){
       let loader = this.$loading.show();
-      let deletePostTemplate = {
-        postId: postId
-      };
       axios
         .post(
-          `${process.env.COMMUNITY_SERVICE}/community/${this.communityId}/delete/post`,
-          deletePostTemplate,
+          `${process.env.COMMUNITY_SERVICE}/community/${this.communityId}/unsubscribe`,
+          null,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
             }
           }
         )
-        .then(deletePostResposne => {
-          this.newPostList.splice(index, 1);
-
-          console.log("remove post work");
+        .then(joinCommunityResponse => {
+          this.isSubscribe = !this.isSubscribe;
           loader.hide();
         })
         .catch(err => {
+          this.$swal({
+            type: "error",
+            title: "Failed to subscribe community !!!",
+            text: `${err.response.data.response}`
+          });
           loader.hide();
         });
     },
     addComment(postIndex) {
-      let loader = this.$loading.show();
       let value = this.comment && this.comment.trim();
       if (!value) {
         return;
@@ -727,35 +699,12 @@ export default {
         console.log("It's first comment");
         this.postList[postIndex].commentList = [];
       }
-      console.log("----------- psot id of comment --------");
-      console.log(this.postIdOfComment);
 
-      let commentBody = {
-        postId: this.postIdOfComment,
-        commentOfPostDetail: this.comment
-      };
-
-      axios
-        .post(
-          `${process.env.COMMUNITY_SERVICE}/community/comment/post`,
-          commentBody,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
-            }
-          }
-        )
-        .then(commentResponse => {
-          this.postList[postIndex].commentList.push(commentResponse.data);
-          console.log(this.postList[postIndex].commentList);
-          this.comment = "";
-          this.dialogOfComment = false;
-          console.log(postIndex);
-          loader.hide();
-        })
-        .catch(err => {
-          loader.hide();
-        });
+      this.postList[postIndex].commentList.push(this.comment);
+      console.log(this.postList[postIndex].commentList);
+      this.comment = "";
+      this.dialogOfComment = false;
+      console.log(postIndex);
     },
     toggleMarker() {
       this.marker = !this.marker;
