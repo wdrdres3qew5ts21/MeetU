@@ -28,6 +28,7 @@ public class User {
 
     private String role;
     
+    @Indexed
     private String uid;
 
     private String email;

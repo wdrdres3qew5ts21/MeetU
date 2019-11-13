@@ -29,9 +29,12 @@
 export default {
   name: "CommunityCard",
   props: {
-    communityPictureCover: String,
+    communityPictureCover: {
+      type: String,
+      default: require(`@/assets/default/community.png`) 
+    },
     communityName: String,
-    memberLists: Array
+    memberLists: Array,
   }
 };
 </script>

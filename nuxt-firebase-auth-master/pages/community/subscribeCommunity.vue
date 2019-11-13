@@ -28,7 +28,7 @@ export default {
         {
           communityDetail: [
             {
-              communityPictureCover: "",
+              communityPictureCover: require(`@/assets/default/community.png`),
               communityName: ""
             }
           ]
@@ -51,7 +51,7 @@ export default {
       let loader = this.$loading.show();
       axios
         .get(
-          `${process.env.COMMUNITY_SERVICE}/communitys/user/${this.getUser.uid}`
+          `${process.env.COMMUNITY_SERVICE}/communitys/subscribe/user/${this.getUser.uid}`
         )
         .then(subscribeCommunityResponse => {
           this.communityList = subscribeCommunityResponse.data;

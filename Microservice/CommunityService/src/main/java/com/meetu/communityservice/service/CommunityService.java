@@ -305,7 +305,7 @@ public class CommunityService {
             UserCommunity subscribedCommunity = userCommunityRepository.findByUidAndCommunityId(uid, communityId);
             Community communityInDatabase = communityRepository.findByCommunityId(communityId).get();
             if (uid.equals(communityInDatabase.getCommunityOwner().getUid())) {
-                response.put("isAdmin", true);
+                response.put("isOwner", true);
             }
             if (subscribedCommunity != null) {
                 response.put("isSubscribe", true);
@@ -337,6 +337,10 @@ public class CommunityService {
         }
         response.put("response", "You dont have permission for Edit Community !!!");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+    }
+
+    public ResponseEntity findAllCommunityOwnedByUser(String uid, int page, int contentPerPage) {
+         return new ResponseEntity(communityRepository.findByCommunityOwnerUid(uid, PageRequest.of(page, contentPerPage)), HttpStatus.OK);
     }
 
 }

@@ -33,5 +33,7 @@ public interface CommunityRepository extends MongoRepository<Community, String>{
     public Page<Community> findByInterestTagsIsIn(String[] interestTags, PageRequest of);
 
     public Optional<Community> findByCommunityId(String communityId);
+
+    public Page<Community>  findByCommunityOwnerUid(String uid, PageRequest of);
     
 }
