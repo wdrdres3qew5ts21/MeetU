@@ -1,71 +1,145 @@
 <template>
   <div>
-    <v-carousel height="auto" hide-delimiters>
-      <v-carousel-item :src="eventPictureCover.url"></v-carousel-item>
-      <v-carousel-item v-for="(pic,i) in eventPictureLists" :key="i" :src="pic.url"></v-carousel-item>
-    </v-carousel>
+    <client-only>
+      <carousel :perPage="1" :paginationEnabled="false">
+        <slide>
+          <img width="100%" :src="eventPictureCover" alt srcset />
+        </slide>
+        <slide v-for="(pic,i) in eventPictureLists" :key="i">
+          <img width="100%" :src="pic" alt srcset />
+        </slide>
+      </carousel>
+    </client-only>
     <br />
-    <h3>{{eventName}}</h3>
-    <v-btn
-      block
-      color="#341646"
-      style="color:white"
-      @click="$vuetify.goTo('#ticketSection')"
-    >View Ticket</v-btn>
+    <h3 class="eventName">{{getEventTemplate.eventName}}</h3>
     <br />
 
-    <p>Date</p>
-    <p>
-      <b>{{createEventDate}}</b>
-    </p>
+    <v-flex>
+      <v-chip v-for="(eventTag,index) in getEventTemplate.eventTags" :key="index" text-color="#341646">
+        <v-avatar>
+          <v-icon color="primary">local_offer</v-icon>
+        </v-avatar>
+        <nuxt-link :to="`/event?category=${eventTag}`">{{eventTag}}</nuxt-link>
+      </v-chip>
+    </v-flex>
 
-    <p>
-      <a href>Add to Calendar</a>
-    </p>
+    <v-flex>
+      <v-btn
+        block
+        color="#341646"
+        style="color:white"
+        @click="$vuetify.goTo('#ticketSection')"
+      >View Ticket</v-btn>
+    </v-flex>
+    <br />
+    <br />
+    <br />
+    <v-flex>
+      <p class="eventDate">Date & Time</p>
+    </v-flex>Start
+    <br />
 
-    <h4>Event Detail</h4>
-    <p class="text-justify">{{eventDetail}}</p>
+    <v-layout>
+      <v-flex xs12 sm5 md3 class="content">
+        <v-icon size="23">today</v-icon>
+        {{formatDateForReadable(getEventTemplate.eventStartDate)}}
+      </v-flex>
+      <v-flex xs12 sm5 md5 offset-(xs0 | lg2) class="content">
+        <v-icon size="23">alarm</v-icon>
+        {{formatAMPM(getEventTemplate.eventStartDate)}}
+      </v-flex>
+    </v-layout>
+    <p></p>End
+    <v-layout>
+      <v-flex xs12 sm5 md3 class="content">
+        <v-icon size="23">today</v-icon>
+        {{formatDateForReadable(getEventTemplate.eventEndDate)}}
+      </v-flex>
+      <v-flex xs12 sm5 md5 offset-(xs0 | lg2) class="content">
+        <v-icon size="23">alarm</v-icon>
+        {{formatAMPM(getEventTemplate.eventEndDate)}}
+      </v-flex>
+    </v-layout>
 
-    <p>Location</p>
-    <p>
-      <b>{{getEventTemplate.location.detail}}</b>
-    </p>
+    <br />
+    <br />
+
+    <div>
+      <p></p>
+      <p class="eventDate">Event Detail</p>
+      <div>
+        <span>{{readMoreActivated ? getEventTemplate.eventDetail : getEventTemplate.eventDetail.slice(0, 200) }}</span>
+        <br />
+        <br />
+        <center>
+          <a
+            @click="readMoreActivated = !readMoreActivated"
+          >{{readMoreActivated ? 'Show less' : 'Read more'}}</a>
+        </center>
+      </div>
+      <!-- <div class="a content">{{eventDetail}}</div> -->
+    </div>
+    <br />
+    <p></p>
+    <p class="eventDate">Badge</p>
+    <v-layout row>
+      <v-list-tile-avatar size="125">
+        <img :src="badge.badgePicture" />
+      </v-list-tile-avatar>
+      <v-list-tile-content>
+        <v-list-tile-title>
+          <b>{{badge.badgeName}}</b>
+        </v-list-tile-title>
+        <v-list-tile-sub-title>Exp: {{badge.exp}}</v-list-tile-sub-title>
+      </v-list-tile-content>
+
+      <br />
+    </v-layout>
+
+    <br />
+    <br />
+    <br />
+    <p class="eventDate">Location</p>
+
+    <p class="content">{{location.detail}}</p>
+
     <center>
-      <v-layout row wrap>
-        <client-only>
-          <GmapMap
-            :center="marker.position"
-            :zoom="14"
-            style="width: 500px; height: 300px"
-            map-type-id="terrain"
-            :options="{
+      <v-container>
+        <v-layout row wrap>
+          <client-only>
+            <GmapMap
+              :center="marker.position"
+              :zoom="14"
+              map-type-id="terrain"
+              style="width: 500px; height: 300px"
+              :options="{
                 scaleControl: true
             }"
-          >
-            <gmap-info-window
-              :position="infoWindowPos"
-              :opened="infoWinOpen"
-              @closeclick="infoWinOpen=false"
             >
-              <h2>{{eventName}}</h2>
-              <p>{{eventDetail}}</p>
-              <nuxt-link to="/">click</nuxt-link>
-            </gmap-info-window>
-            <GmapMarker
-              :position="marker.position"
-              :clickable="true"
-              @click="toggleInfoWindow(marker,0)"
-            />
-          </GmapMap>
-        </client-only>
-      </v-layout>
+              <gmap-info-window
+                :position="infoWindowPos"
+                :opened="infoWinOpen"
+                @closeclick="infoWinOpen=false"
+              >
+                <h2>{{eventName}}</h2>
+                <p>{{eventDetail}}</p>
+                <nuxt-link to="/">click</nuxt-link>
+              </gmap-info-window>
+              <GmapMarker
+                :position="marker.position"
+                :clickable="true"
+                @click="toggleInfoWindow(marker,0)"
+              />
+            </GmapMap>
+          </client-only>
+        </v-layout>
+      </v-container>
       <br />
     </center>
-    <p>Share with...</p>
-    <h3>Tickets</h3>
-    <p>
-      <b>{{eventName}}</b>
-    </p>
+    <br />
+    <p class="eventDate">Tickets</p>
+
+    <p>{{eventName}}</p>
     <v-layout row wrap>
       <v-flex xs7>Free</v-flex>
       <v-spacer></v-spacer>
@@ -174,10 +248,10 @@ export default {
       place: null,
       pinLocation: {},
       organize: {
-        organizeName: '',
-        website: '',
-        email: '',
-        organizeImageCover: ''
+        organizeName: "",
+        website: "",
+        email: "",
+        organizeImageCover: ""
       }
     };
   },
@@ -229,7 +303,7 @@ export default {
       console.log(this.pinLocation);
       this.place = null;
     },
-    loadOrganizeDetail(){
+    loadOrganizeDetail() {
       // axios.get(`${process.env.USER_SERVICE}/organize/${this.getEventTemplate.organize.organizeId}`)
       // .then(organizeResponse)
     },
@@ -281,3 +355,48 @@ export default {
   }
 };
 </script>
+<style lang="css">
+.v-content {
+  max-width: 100%;
+  /* background-image: url(~assets/bg.png) !important; */
+  /* background-repeat: repeat; */
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background: transparent;
+}
+.eventDate {
+  font-weight: 600;
+  font-size: 16px;
+  color: #341646;
+}
+.content {
+  font-size: 16px;
+}
+.eventName {
+  color: #341646;
+  font-size: 25px;
+}
+div.a {
+  white-space: nowrap;
+  width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 100px;
+}
+
+div.a:hover {
+  overflow: visible;
+}
+.a {
+  font-weight: 600;
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+  
+</style>
