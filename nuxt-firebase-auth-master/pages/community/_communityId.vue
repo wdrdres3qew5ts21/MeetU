@@ -184,22 +184,12 @@
                
               </v-container>
               <v-flex v-if="post.uid=== getUser.uid" xs12 class="text-xs-right">
-<<<<<<< Updated upstream
-                <v-btn text icon @click="removeNewPost(postIndex,  post.postId)">
-                  <v-icon>clear</v-icon>
-                </v-btn>
-              </v-flex>
-            </v-container>
-          </v-layout>
-        </div>
-=======
                 <v-btn text icon  @click="removePost(postIndex, post.postId)">
                   <v-icon>clear</v-icon>
                 </v-btn>
               </v-flex>
             </v-layout>
           </div>
->>>>>>> Stashed changes
         <v-container grid-list-xs fluid style="padding:5px">
           <br />
           <v-list>
@@ -207,30 +197,6 @@
               <div class="textarea" contenteditable="false">{{post.postDetail}}</div>
             </v-list-tile-content>
           </v-list>
-<<<<<<< Updated upstream
-          <v-img
-            v-for="(image, index) in postPictureListsUrl "
-            :key="index"
-            :src="image.url"
-            aspect-ratio="1"
-            class="grey lighten-2"
-            max-width="1250"
-            max-height="250"
-            --
-          >></v-img>
-
-          <!-- -----------------post image----------- -->
-
-          <input
-            v-show="false"
-            ref="pictureListUpload"
-            multiple
-            type="file"
-            @change="onPictureListUpload"
-            accept="image/*"
-          />
-=======
->>>>>>> Stashed changes
         </v-container>
       </v-card>
 
@@ -305,7 +271,6 @@
         @change="onPictureListUpload"
         accept="image/*"
             /> -->
->>>>>>> Stashed changes
           </v-container>
 
           <v-card-text rounded outlined class="mx-auto">
