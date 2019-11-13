@@ -161,19 +161,30 @@
       </div>
     </v-card>
 
-    <div v-for="(post,postIndex ) in newPostList" :key="post.postId">
+    <!-- <div v-for="(post,postIndex ) in newPostList" :key="post.postId">
       <v-card rounded outlined>
         <br />
-        <div>
-          <v-layout>
-            <v-container grid-list-xs fluid style="padding:10px">
-              <v-flex xs12 class="text-xs-left">
-                <v-avatar size="60">
-                  <v-img :aspect-ratio="1/1" :src="getUser.photoURL"></v-img>
-                </v-avatar>
-                {{ getUser.displayName}}
-              </v-flex>
+         <div>
+            <v-layout>
+              <v-container grid-list-xs fluid style="padding:10px">
+              
+              <v-layout row wrap>
+                <v-flex xs3 >
+                  <v-avatar size="60">
+                    <v-img :aspect-ratio="1/1" :src="post.photoURL"></v-img>
+                  </v-avatar>
+                </v-flex>
+                  <v-flex xs9>
+                  {{post.displayName}}
+                   <v-layout row wrap class="showDate">      
+              {{formatDateForReadable(post.postOfDate)}} {{formatAMPM(post.postOfDate)}}       
+                   </v-layout>
+                  </v-flex>
+              </v-layout>
+               
+              </v-container>
               <v-flex v-if="post.uid=== getUser.uid" xs12 class="text-xs-right">
+<<<<<<< Updated upstream
                 <v-btn text icon @click="removeNewPost(postIndex,  post.postId)">
                   <v-icon>clear</v-icon>
                 </v-btn>
@@ -181,6 +192,14 @@
             </v-container>
           </v-layout>
         </div>
+=======
+                <v-btn text icon  @click="removePost(postIndex, post.postId)">
+                  <v-icon>clear</v-icon>
+                </v-btn>
+              </v-flex>
+            </v-layout>
+          </div>
+>>>>>>> Stashed changes
         <v-container grid-list-xs fluid style="padding:5px">
           <br />
           <v-list>
@@ -188,6 +207,7 @@
               <div class="textarea" contenteditable="false">{{post.postDetail}}</div>
             </v-list-tile-content>
           </v-list>
+<<<<<<< Updated upstream
           <v-img
             v-for="(image, index) in postPictureListsUrl "
             :key="index"
@@ -209,10 +229,15 @@
             @change="onPictureListUpload"
             accept="image/*"
           />
+=======
+>>>>>>> Stashed changes
         </v-container>
       </v-card>
+
+
+
       <br />
-    </div>
+    </div> -->
 
     <!-- ------------posted card + small viewcomment + post picture If have :) 
     No upload in firebase yet container------------>
@@ -224,12 +249,21 @@
           <div>
             <v-layout>
               <v-container grid-list-xs fluid style="padding:10px">
-                <v-flex xs12 class="text-xs-left">
+              
+              <v-layout row wrap>
+                <v-flex xs3 >
                   <v-avatar size="60">
                     <v-img :aspect-ratio="1/1" :src="post.photoURL"></v-img>
                   </v-avatar>
-                  {{ post.displayName}}
                 </v-flex>
+                  <v-flex xs9>
+                  {{post.displayName}}
+                   <v-layout row wrap class="showDate">      
+              {{formatDateForReadable(post.postOfDate)}} {{formatAMPM(post.postOfDate)}}       
+                   </v-layout>
+                  </v-flex>
+              </v-layout>
+               
               </v-container>
               <v-flex v-if="post.uid=== getUser.uid" xs12 class="text-xs-right">
                 <v-btn text icon @click="removePost(postIndex, post.postId)">
@@ -245,7 +279,7 @@
                 <div class="textarea" contenteditable="false">{{post.postDetail}}</div>
               </v-list-tile-content>
             </v-list>
-            <v-img
+            <!-- <v-img
               v-for="(image, index) in postPictureListsUrl "
               :key="index"
               :src="image.url"
@@ -255,6 +289,7 @@
               max-height="250"
             ></v-img>
             <input
+<<<<<<< Updated upstream
               v-show="false"
               ref="pictureListUpload"
               multiple
@@ -262,6 +297,15 @@
               @change="onPictureListUpload"
               accept="image/*"
             />
+=======
+            v-show="false"
+           ref="pictureListUpload"
+        multiple
+        type="file"
+        @change="onPictureListUpload"
+        accept="image/*"
+            /> -->
+>>>>>>> Stashed changes
           </v-container>
 
           <v-card-text rounded outlined class="mx-auto">
@@ -764,6 +808,33 @@ export default {
     handleUploaded(resp) {
       this.userAvatar = resp.relative_url;
     },
+     formatDateForReadable: function(formatDate) {
+     
+      let date = new Date(formatDate);
+      formatDate =
+        date.getDate() +
+        "-" +
+        date.getMonth() +
+        "-" +
+        date.getFullYear();
+      console.log(formatDate);
+      return formatDate;
+    },
+    formatAMPM: function(AMPM) {
+      let date = new Date(AMPM);
+      const options = {
+        hour: "2-digit",
+        minute: "2-digit"
+      };
+      let time = date.toLocaleTimeString("en-US", options);
+      return time;
+    },
+    getTime: function(time) {
+      let date = new Date(time);
+
+      time = date.getHours() + ":" + date.getMinutes() + " ";
+      return time;
+    },
     infiniteScroll($state) {
       setTimeout(() => {
         this.page++;
@@ -843,5 +914,9 @@ export default {
 }
 h2 {
   color: #341646;
+}
+.showDate {
+  color:darkgray;;
+  font-size: 14px;
 }
 </style>

@@ -22,6 +22,8 @@
               v-model="communityForm.categorySelected"
               multiple
               required
+              
+              
               sm6
               xs2
             >
