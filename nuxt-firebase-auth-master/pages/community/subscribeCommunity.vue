@@ -28,7 +28,7 @@ export default {
         {
           communityDetail: [
             {
-              communityPictureCover: "",
+              communityPictureCover: require(`@/assets/default/community.png`),
               communityName: ""
             }
           ]

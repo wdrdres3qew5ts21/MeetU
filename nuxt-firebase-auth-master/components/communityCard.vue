@@ -31,10 +31,10 @@ export default {
   props: {
     communityPictureCover: {
       type: String,
-      default: "https://www.elegantthemes.com/blog/wp-content/uploads/2017/03/Facebook-Groups-for-Bloggers-shutterstock_555845587-ProStockStudio-FT.png"
+      default: require(`@/assets/default/community.png`) 
     },
     communityName: String,
-    memberLists: Array
+    memberLists: Array,
   }
 };
 </script>

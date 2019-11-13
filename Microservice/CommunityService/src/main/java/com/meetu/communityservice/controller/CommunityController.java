@@ -77,7 +77,7 @@ public class CommunityController {
     public ResponseEntity findAllCommunityOwnedByUser(
             @PathVariable String uid,
             @RequestParam(required = false, defaultValue = "0") int page,
-            @RequestParam(required = false, defaultValue = "20") int contentPerPage) {
+            @RequestParam(required = false, defaultValue = "10") int contentPerPage) {
         return communityService.findAllCommunityOwnedByUser(uid, page, contentPerPage);
     }
 

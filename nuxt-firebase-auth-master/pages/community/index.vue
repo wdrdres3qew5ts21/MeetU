@@ -150,7 +150,7 @@ export default {
       communityName: "",
       interestTags: [],
       categoryList: [],
-      defaultImage: "https://www.elegantthemes.com/blog/wp-content/uploads/2017/03/Facebook-Groups-for-Bloggers-shutterstock_555845587-ProStockStudio-FT.png"
+      defaultImage: require(`@/assets/default/community.png`) 
     };
   },
   watch: {
@@ -182,7 +182,7 @@ export default {
             `${process.env.COMMUNITY_SERVICE}/communitys?communityName=${this.communityName}${interestTags}&page=${this.page}`
           )
           .then(response => {
-            if (response.data.length > 1) {
+            if (response.data.length > 0) {
               response.data.forEach(community =>
                 this.communityList.push(community)
               );

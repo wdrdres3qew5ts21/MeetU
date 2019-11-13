@@ -411,8 +411,7 @@ export default {
       imagePost: null,
       postPictureListsUrl: [],
       postPictureLists: null,
-      defaultImage:
-        "https://www.elegantthemes.com/blog/wp-content/uploads/2017/03/Facebook-Groups-for-Bloggers-shutterstock_555845587-ProStockStudio-FT.png",
+      defaultImage: require(`@/assets/default/community.png`),
       remove: ["remove"],
       post: "",
       newPost: "",
@@ -731,7 +730,7 @@ export default {
             `${process.env.COMMUNITY_SERVICE}/community/${this.communityId}/posts?page=${this.page}`
           )
           .then(postListResponse => {
-            if (postListResponse.data.content.length > 1) {
+            if (postListResponse.data.content.length > 0) {
               postListResponse.data.content.forEach(post =>
                 this.postList.push(post)
               );
