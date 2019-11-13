@@ -290,7 +290,11 @@
       class="uploadPosterImg"
       @click="goToEventConditionPage()"
       >Event Conditions Setting</p>-->
-      <p style="margin:0" class="uploadPosterImg" @click="goToUploadImagePage()">{{getEventTemplate.eventPictureCoverBase == ''? 'Please Upload Cover': `Already Upload : ${1 + getEventTemplate.eventPictureListsBase.length} Picture (Click to Edit)`}}</p>
+      <p
+        style="margin:0"
+        class="uploadPosterImg"
+        @click="goToUploadImagePage()"
+      >{{getEventTemplate.eventPictureCoverBase == ''? 'Please Upload Cover': `Already Upload : ${1 + getEventTemplate.eventPictureListsBase.length} Picture (Click to Edit)`}}</p>
 
       <br />
       <br />
@@ -362,8 +366,8 @@ export default {
 
         eventStartDateTempt: "",
         eventEndDateTempt: "",
-        eventStartTimeTempt: null,
-        eventEndTimeTempt: null,
+        eventStartTimeTempt: "",
+        eventEndTimeTempt: "",
 
         selectedCategory: "",
         location: {
@@ -716,6 +720,7 @@ export default {
       this.$vuetify.goTo("#locationMap");
     },
     goToPreviewEvent() {
+      this.formatDateTimeToIsoWhenSave();
       this.saveEventTemplate();
       this.$router.push("/organize/event/previewEvent");
     },
@@ -734,7 +739,6 @@ export default {
     saveEventTemplate() {
       console.log("SAve Tempalte");
       console.log(this.eventForm);
-      this.formatDateTimeToIsoWhenSave();
       this.setEventTemplate(this.eventForm);
       this.setBadgeDetail(this.eventForm.badge);
     },
@@ -776,21 +780,11 @@ export default {
       }
     },
     formatDateTimeToIsoWhenSave() {
-      if (
-        this.eventStartDateTempt === "" &&
-        this.eventEndDateTempt === "" &&
-        (thisbundleRenderer.renderToStreameventStartTimeTempt === null &&
-          this.eventEndTimeTempt)
-      ) {
-        this.eventForm.eventStartDate = this.eventStartDateTime;
-        this.eventForm.eventEndDate = this.eventEndDateTime;
-        console.log("------Parsed date to iso8601---------");
-        console.log(this.eventForm.eventStartDate);
-        console.log(this.eventForm.eventEndDate);
-      }
-
-      // let date = new Date(eventEndDateAndTime);
-      // eventEndDateAndTime = date.getDate3
+      this.eventForm.eventStartDate = this.eventStartDateTime;
+      this.eventForm.eventEndDate = this.eventEndDateTime;
+      console.log("iso parse");
+      console.log(this.eventForm.eventStartDate);
+      console.log(this.eventForm.eventEndDate);
     }
   }
 };

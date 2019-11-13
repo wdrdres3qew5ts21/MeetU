@@ -39,48 +39,6 @@
     <br />
     <!-- Upload Cover picture  not do any thing now -->
 
-    <!-- Edit Description Admin only -->
-    <v-layout row wrap>
-      <v-flex class="text-xs-left">
-        <h2>{{event.eventName}}</h2>
-      </v-flex>
-      <v-flex class="text-xs-right">
-        <v-dialog v-model="dialogOfEdit" persistent max-width="600px">
-          <template v-slot:activator="{ on }"></template>
-          <v-card>
-            <v-card-title></v-card-title>
-            <v-card-text>
-              <v-container grid-list-md>
-                Community Name
-                <v-text-field
-                  v-model="communityForm.communityName"
-                  label="* Community Name"
-                  required
-                ></v-text-field>
-                <br />Community Description
-                <br />
-                <br />
-                <v-textarea
-                  outline
-                  name="description"
-                  label="Description"
-                  color="pink"
-                  rows="6"
-                  required
-                  hide-details
-                  v-model="communityForm.communityDetail"
-                ></v-textarea>
-              </v-container>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="#341646" flat @click="dialogOfEdit = false">Close</v-btn>
-              <v-btn color="#341646" flat @click="dialogOfEdit = false">Save</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-flex>
-    </v-layout>
     <p size="1px">User Comment</p>
     <div v-for="(review,postIndex ) in reviewList " :key="postIndex">
       <v-card>
