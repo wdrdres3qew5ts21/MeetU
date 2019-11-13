@@ -1,37 +1,21 @@
 <template>
   <div>
-    <!-- ห้าม format หน้านี้เด็ดขาดเพราะ text field จะหาย
-            <v-text-field
-            :append-outer-icon="comment ? 'send' : 'send'"
-            box
-            value
-            v-model="comment"
-            clear-icon="close"
-            clearable
-            label="Write comment..."
-            type="text"
-            @click:append="toggleMarker"
-            @click:append-outer="addComment(postIndex)"
-            @click:clear="clearMessage"
-          ></v-text-field>
-    -->
-    <!-- Upload Cover picture Do not do any thing now -->
     <v-flex align="center">
       <div v-if="imageUrl == ''">
         <v-img
-          :src="defaultImage"
+          :src="event.eventPictureCover"
           aspect-ratio="1"
           class="grey lighten-2"
           max-width="1250"
           max-height="200"
         >
-          <v-btn class="button" @click="onPickFile">
+          <!-- <v-btn class="button" @click="onPickFile">
             Upload image
             &nbsp;
             &nbsp;
             <v-icon>add_a_photo</v-icon>
             <br />
-          </v-btn>
+          </v-btn> -->
         </v-img>
       </div>
       <div v-else>
@@ -58,7 +42,7 @@
     <!-- Edit Description Admin only -->
     <v-layout row wrap>
       <v-flex class="text-xs-left">
-        <h2>Event Name</h2>
+        <h2>{{event.eventName}}</h2>
       </v-flex>
       <v-flex class="text-xs-right">
         <v-dialog v-model="dialogOfEdit" persistent max-width="600px">
@@ -172,8 +156,7 @@ export default {
       imagePost: null,
       postPictureListsUrl: [],
       postPictureLists: null,
-      defaultImage:
-        "https://www.elegantthemes.com/blog/wp-content/uploads/2017/03/Facebook-Groups-for-Bloggers-shutterstock_555845587-ProStockStudio-FT.png",
+      defaultImage: require(`@/assets/default/community.png`),
       remove: ["remove"],
       post: "",
       newPost: "",
@@ -182,6 +165,7 @@ export default {
       reviewDate: "",
       comment: "",
       postIndex: 0,
+      event: {},
       dialogOfComment: false,
       name: "",
       show: false,
@@ -190,25 +174,37 @@ export default {
       communityForm: {
         communityName: "",
         communityDetail: ""
-      }
+      },
+      elasticEventId: ""
     };
   },
   mounted() {
+    this.elasticEventId = this.$route.params.elasticEventId
     this.loadAllReviewOfEvent();
   },
   computed: {
     ...mapGetters(["getUser"]),
-
     icon() {
       return this.icons[this.iconIndex];
     }
   },
   methods: {
+    loadEventDetail(){
+      axios.get(`${process.env.EVENT_SERVICE}/event/${this.elasticEventId}`)
+      .then(eventResponse => {
+        console.log("------------ Async Data  -----------");
+         this.event = eventResponse.data;
+      })
+      .catch(err => {
+        console.log("!!!!!!!!!!!!!!!!! Boom Not found !!!!!!!!!!");
+        console.log(err);
+      });
+    },
     loadAllReviewOfEvent() {
       let loader = this.$loading.show();
       axios
         .get(
-          `${process.env.EVENT_SERVICE}/event/reviews/${this.$route.params.elasticEventId}`
+          `${process.env.EVENT_SERVICE}/event/reviews/${this.elasticEventId}`
         )
         .then(reviewResponse => {
           console.log(reviewResponse.data.reviewList);

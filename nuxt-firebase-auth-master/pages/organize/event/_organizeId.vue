@@ -91,7 +91,7 @@
                   <v-icon color="#fff" medium>delete</v-icon>
                 </v-btn>
               </v-flex>-->
-
+              
               <event-card
                 v-for="(event, index) in eventList"
                 :key="index"

@@ -54,7 +54,6 @@
               <v-icon color="white" medium>poll</v-icon>View Statistics
             </v-btn>
           </v-flex>
-
           <v-flex xs6 v-if="isOwner">
             <v-btn block small color="grey lighten-2" @click="$emit('deleteEvent', event)">
               <v-icon color="grey darken-1" medium>delete</v-icon>
