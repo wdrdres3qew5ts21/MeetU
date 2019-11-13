@@ -37,11 +37,6 @@
               <v-icon size="20">alarm</v-icon>
               {{formatAMPM(event.eventStartDate)}}
             </v-flex>
-          <v-flex v-if="isOwner" class="text-xs-right">
-            <v-btn fab dark small color="#341646" @click="$emit('editEvent', event)">
-            <v-icon color="white" medium>poll</v-icon>
-          </v-btn>
-          </v-flex>            
           </v-layout> 
         </v-layout>     
          <!-- <span
@@ -54,12 +49,29 @@
           {{ location.detail===''?'Not have  yet...' :location.detail }}
           </div>
             </v-flex>           
-            <v-flex  v-if="isOwner" class="text-xs-right">
-               <v-btn fab dark small color="red" @click="$emit('deleteEvent', event)">
-                  <v-icon color="#fff" medium>delete</v-icon>
-               </v-btn>
-            </v-flex>
           </v-layout>
+          <v-layout row wrap>
+           
+          <v-flex v-if="isOwner" xs6 >
+            <v-btn block dark  small color="#341646" @click="$emit('editEvent', event)">
+            <v-icon color="white" medium>poll</v-icon>
+             View Statistics
+          </v-btn>
+         
+
+            </v-flex>
+
+            <v-flex  xs6 v-if="isOwner" >
+               <v-btn block small   color="grey lighten-2" @click="$emit('deleteEvent', event)">
+                  <v-icon color="grey darken-1" medium>delete</v-icon>
+                  <b class="button">Delete Event </b>
+               </v-btn>
+          
+            </v-flex>
+
+          </v-layout>
+
+
         <!-- {{event.location.province?event.location.province:'Thailand'}} -->
       </v-card-text>
     </v-slide-y-transition>
@@ -184,6 +196,7 @@ export default {
 }
 .eventDate {
   color: #341646;
+  
 }
 .eventMonth {
   font-size: 15px;
@@ -197,8 +210,7 @@ div.b {
  
 }
 .button{
-  margin-right: 2%;
-  margin-top: 45%;
+  color: darkgray;
 }
 
 .size{
