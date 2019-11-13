@@ -73,6 +73,12 @@ public class UserService {
         System.out.println("----- Create User/ Update User -------");
         System.out.println(user);
         user.setUsername(user.getUid());
+        if(user.getPhotoURL() == null){
+            user.setPhotoURL("https://carlisletheacarlisletheatre.org/images/profile-icon-login-3.png");
+        }
+        if(user.getDisplayName()==null){
+            user.setDisplayName(user.getEmail());
+        }
 //        BCryptPasswordEncoder passwordEncrypt = new BCryptPasswordEncoder();
 //        user.setPassword(passwordEncrypt.encode(user.getPassword()));
         return userRepository.save(user);
