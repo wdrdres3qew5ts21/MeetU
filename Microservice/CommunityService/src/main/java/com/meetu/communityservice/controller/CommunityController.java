@@ -73,14 +73,15 @@ public class CommunityController {
         return communityService.verifyIfPrivilegeStatus(token, organizeId);
     }
 
-//    @GetMapping("/community/{organizeId}/privilege/status")
-//    public ResponseEntity verifyIfPrivilegeStatus(
-//            @RequestHeader(required = true, name = "Authorization") String token,
-//            @PathVariable String organizeId) {
-//        return communityService.verifyIfPrivilegeStatus(token, organizeId);
-//    }
+    @GetMapping("/communitys/admin/user/{uid}")
+    public ResponseEntity findAllOrganizeOfUser(
+            @PathVariable String uid,
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "20") int contentPerPage) {
+        return communityService.findAllCommunityOfUserAdministrator(uid, page, contentPerPage);
+    }
 
-    @GetMapping("/communitys/user/{uid}")
+    @GetMapping("/communitys/subscribe/user/{uid}")
     public ResponseEntity findAllCommunityThatUserSubscribe(
             @PathVariable String uid,
             @RequestParam(required = false, defaultValue = "0") int page,
