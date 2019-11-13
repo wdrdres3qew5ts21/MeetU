@@ -12,6 +12,7 @@
 </template>
 <script>
 import CommunityCard from "@/components/communityCard";
+import axios from "axios";
 import {
   mockCarouselsPhoto,
   mockCommunityList,
@@ -27,7 +28,21 @@ export default {
     CommunityCard
   },
   mounted() {
-     this.communityList = mockCommunityList;
+    this.communityList = mockCommunityList;
+  },
+  loadMyOwnedCommunity() {
+    axios
+      .get(
+        `${process.env.COMMUNITY_SERVICE}/community/${this.communityId}/privilege/status`
+      )
+      .then(subscribeCommunityResponse => {
+        this.isSubscribe = subscribeCommunityResponse.data.isSubscribe;
+        this.isOwner = subscribeCommunityResponse.data.isOwner;
+        loader.hide();
+      })
+      .catch(err => {
+        loader.hide();
+      });
   }
 };
 </script>

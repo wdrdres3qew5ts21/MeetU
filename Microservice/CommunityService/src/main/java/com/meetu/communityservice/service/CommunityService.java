@@ -339,8 +339,8 @@ public class CommunityService {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 
-    public ResponseEntity findAllCommunityOfUserAdministrator(String uid, int page, int contentPerPage) {
-        return null;
+    public ResponseEntity findAllCommunityOwnedByUser(String uid, int page, int contentPerPage) {
+         return new ResponseEntity(communityRepository.findByCommunityOwnerUid(uid, PageRequest.of(page, contentPerPage)), HttpStatus.OK);
     }
 
 }

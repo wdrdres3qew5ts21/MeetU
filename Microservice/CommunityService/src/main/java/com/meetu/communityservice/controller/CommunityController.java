@@ -74,11 +74,11 @@ public class CommunityController {
     }
 
     @GetMapping("/communitys/admin/user/{uid}")
-    public ResponseEntity findAllOrganizeOfUser(
+    public ResponseEntity findAllCommunityOwnedByUser(
             @PathVariable String uid,
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "20") int contentPerPage) {
-        return communityService.findAllCommunityOfUserAdministrator(uid, page, contentPerPage);
+        return communityService.findAllCommunityOwnedByUser(uid, page, contentPerPage);
     }
 
     @GetMapping("/communitys/subscribe/user/{uid}")

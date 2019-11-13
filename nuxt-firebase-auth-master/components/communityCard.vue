@@ -29,7 +29,10 @@
 export default {
   name: "CommunityCard",
   props: {
-    communityPictureCover: String,
+    communityPictureCover: {
+      type: String,
+      default: "https://www.elegantthemes.com/blog/wp-content/uploads/2017/03/Facebook-Groups-for-Bloggers-shutterstock_555845587-ProStockStudio-FT.png"
+    },
     communityName: String,
     memberLists: Array
   }

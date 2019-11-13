@@ -657,6 +657,31 @@ export default {
     removeNewPost(index, postId) {
       this.newPostList.splice(index, 1);
     },
+    removePostFromDatabase(postId){
+      let loader = this.$loading.show();
+      axios
+        .post(
+          `${process.env.COMMUNITY_SERVICE}/community/${this.communityId}/unsubscribe`,
+          null,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+            }
+          }
+        )
+        .then(joinCommunityResponse => {
+          this.isSubscribe = !this.isSubscribe;
+          loader.hide();
+        })
+        .catch(err => {
+          this.$swal({
+            type: "error",
+            title: "Failed to subscribe community !!!",
+            text: `${err.response.data.response}`
+          });
+          loader.hide();
+        });
+    },
     addComment(postIndex) {
       let value = this.comment && this.comment.trim();
       if (!value) {
