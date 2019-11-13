@@ -273,17 +273,18 @@
             </v-flex>
           </v-card-text>
           <v-list>
+            
+
             <v-card
               xs6
               rounded
               outlined
-              v-for="(comment,commentIndex ) in postList[postIndex].commentList "
-              :key="commentIndex"
+              v-if="postList[postIndex].commentList.length > 0"
             >
               <v-container grid-list-xs xs4 fluid style="padding:5px">
                 <v-list-tile xs4>
                   <v-list-tile-avatar>
-                    <v-img :aspect-ratio="1/1" :src="getUser.photoURL"></v-img>
+                    <v-img :aspect-ratio="1/1" :src="postList[postIndex].commentList[0].photoURL"></v-img>
                   </v-list-tile-avatar>
                   <v-list-tile>
                     <div>
@@ -291,13 +292,14 @@
                         <!-- max-width="240px" -->
                         <v-card color="#F5F5F5" class="rounded-card" max-width="240px">
                           <v-list-tile-title class="margin-name">
-                            <font size="2">{{ getUser.displayName}}</font>
+                            <font size="2">{{ postList[postIndex].commentList[0].displayName}}</font>
                           </v-list-tile-title>
                           <v-list-tile-sub-title class="margin-comment">
-                            <font size="2">{{comment.commentOfPostDetail}}</font>
+                            <font size="2">{{postList[postIndex].commentList[0].commentOfPostDetail}}</font>
                           </v-list-tile-sub-title>
                         </v-card>
                       </v-list-tile-content>
+                      
                     </div>
                   </v-list-tile>
                 </v-list-tile>
