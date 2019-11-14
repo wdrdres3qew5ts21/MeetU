@@ -156,6 +156,7 @@
             <v-flex xs class="text-xs-right">
               <v-btn text color="#341646" class="mb-2 white--text" @click="addPost()">Post</v-btn>
             </v-flex>
+            
           </v-layout>
         </v-form>
       </div>
@@ -181,10 +182,10 @@
                    ></span>
                   </b> 
                    <v-layout row wrap class="showDate">      
-      {{formatDateForReadable(post.postOfDate)}} {{formatAMPM(post.postOfDate)}}       
+                    {{formatDateForReadable(post.postOfDate)}} {{formatAMPM(post.postOfDate)}}       
                    </v-layout>
                   </v-flex>
-  </v-layout>
+                  </v-layout>
               <v-flex v-if="post.uid=== getUser.uid" xs2 class="text-xs-right">
                 <v-btn text icon @click="removeNewPost(postIndex,  post.postId)">
                   <v-icon>clear</v-icon>
@@ -341,9 +342,13 @@
                   </v-flex>
                   <v-flex xs10>
                     <v-list-tile-content>
-                      <div class="text-comment-area" contenteditable="false">
-                        <font class="margin-name">{{ comment.displayName}}</font>
+                      <div class="text-comment-area showNameComment" contenteditable="false">
+                        <font class="margin-name"><b>{{ comment.displayName}}</b></font>
                         <br />
+
+                       <font class="showDateComment">  {{formatDateForReadable(comment.commentOfPostDate)}} {{formatAMPM(comment.commentOfPostDate)}} </font>
+                        <br/>
+
                         <font color="grey">{{comment.commentOfPostDetail}}</font>
                       </div>
                     </v-list-tile-content>
@@ -881,5 +886,12 @@ h2 {
   font-size: 17px;
  
 }
-
+.showNameComment{
+   font-size: 15px;
+   color: #341646;
+}
+.showDateComment{
+   font-size: 11px;
+   color: darkgrey;
+}
 </style>
