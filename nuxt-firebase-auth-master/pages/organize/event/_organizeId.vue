@@ -91,13 +91,14 @@
                   <v-icon color="#fff" medium>delete</v-icon>
                 </v-btn>
               </v-flex>-->
-
+              
               <event-card
                 v-for="(event, index) in eventList"
                 :key="index"
                 @editEvent="editEvent"
                 @deleteEvent="deleteEvent"
                 :event="event"
+                :location="event.location"
                 :isOwner="isOwner"
                 :isAdmin="isAdmin"
               />
@@ -593,7 +594,7 @@ export default {
 
 
 
-<style lang="css">
+<style scoped lang="css">
 .v-content {
   max-width: 100%;
   background-color: #eeeeee;

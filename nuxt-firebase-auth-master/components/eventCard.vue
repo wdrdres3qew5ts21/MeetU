@@ -1,9 +1,7 @@
 <template>
   <!-- <nuxt-link :to="`/event/${event.elasticEventId}`"> -->
   <v-card>
-    <v-img :src="event.eventPictureCover" height="200px">
-     
-    </v-img>
+    <v-img :src="event.eventPictureCover" height="200px"></v-img>
     <v-container fill-height fluid pa-2>
       <v-layout fill-height>
         <v-flex xs12 align-end flexbox>
@@ -24,7 +22,7 @@
       <v-btn fab dark small color="red" @click="$emit('deleteEvent', event)">
         <v-icon color="#fff" medium>delete</v-icon>
       </v-btn>
-    </v-flex> -->
+    </v-flex>-->
     <v-slide-y-transition>
       <v-card-text>
         <v-layout row wrap>
@@ -37,40 +35,32 @@
               <v-icon size="20">alarm</v-icon>
               {{formatAMPM(event.eventStartDate)}}
             </v-flex>
-          </v-layout> 
-        </v-layout>     
-         <!-- <span
+          </v-layout>
+        </v-layout>
+        <!-- <span
             v-text="location.detail.length > 20 ? location.detail.substr(0,40)+'...' :location.detail"
-          ></span> -->
-          <v-layout>
-            <v-flex>
-          <div class="b">
-             <v-icon size="20">room</v-icon>
-          {{ location.detail===''?'Not have  yet...' :location.detail }}
-          </div>
-            </v-flex>           
-          </v-layout>
-          <v-layout row wrap>
-           
-          <v-flex v-if="isOwner" xs6 >
-            <v-btn block dark  small color="#341646" @click="$emit('editEvent', event)">
-            <v-icon color="white" medium>poll</v-icon>
-             View Statistics
-          </v-btn>
-         
-
-            </v-flex>
-
-            <v-flex  xs6 v-if="isOwner" >
-               <v-btn block small   color="grey lighten-2" @click="$emit('deleteEvent', event)">
-                  <v-icon color="grey darken-1" medium>delete</v-icon>
-                  <b class="button">Delete Event </b>
-               </v-btn>
-          
-            </v-flex>
-
-          </v-layout>
-
+        ></span>-->
+        <v-layout row wrap>
+          <v-flex>
+            <div class="b">
+              <v-icon size="20">room</v-icon>
+              {{ location.detail===''?'Not have yet...' :location.detail }}
+            </div>
+          </v-flex>
+        </v-layout>
+        <v-layout row wrap>
+          <v-flex v-if="isOwner" xs6>
+            <v-btn block dark small color="#341646" @click="$emit('editEvent', event)">
+              <v-icon color="white" medium>poll</v-icon>View Statistics
+            </v-btn>
+          </v-flex>
+          <v-flex xs6 v-if="isOwner">
+            <v-btn block small color="grey lighten-2" @click="$emit('deleteEvent', event)">
+              <v-icon color="grey darken-1" medium>delete</v-icon>
+              <div class="b">Delete Event</div>
+            </v-btn>
+          </v-flex>
+        </v-layout>
 
         <!-- {{event.location.province?event.location.province:'Thailand'}} -->
       </v-card-text>
@@ -96,14 +86,14 @@ export default {
     location: {
       type: Object,
       default: {
-        detail: 'Not have information yet...'
+        detail: "Not have information yet..."
       }
     },
     badge: {
-     type: Object,
-     default: function(){
-       return {};
-     }
+      type: Object,
+      default: function() {
+        return {};
+      }
     }
   },
   methods: {
@@ -196,25 +186,21 @@ export default {
 }
 .eventDate {
   color: #341646;
-  
 }
 .eventMonth {
   font-size: 15px;
- 
 }
 div.b {
-  white-space: nowrap; 
-  width: 250px; 
+  white-space: nowrap;
+  width: 250px;
   overflow: hidden;
-  text-overflow: ellipsis; 
- 
+  text-overflow: ellipsis;
 }
-.button{
+.button {
   color: darkgray;
 }
 
-.size{
+.size {
   size: 0px;
 }
-
 </style>
