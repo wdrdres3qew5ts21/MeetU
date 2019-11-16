@@ -26,7 +26,7 @@
           <nuxt-link :to="`/event?category=${eventTag}`">{{eventTag}}</nuxt-link>
         </v-chip>
       </v-flex>
-
+   
       <v-flex>
         <v-btn
           block
@@ -35,6 +35,7 @@
           @click="$vuetify.goTo('#ticketSection')"
         >View Ticket</v-btn>
       </v-flex>
+         
       <br />
       <br />
       <br />
@@ -86,8 +87,30 @@
       <br />
       <p></p>
       <p class="eventDate">Badge</p>
+
+      <!-- badge -->
       <v-layout row>
-        <v-list-tile-avatar size="125">
+        <v-flex xs10>
+          <v-avatar size="125">
+             <img :src="badge.badgePicture">
+          </v-avatar>
+        </v-flex>
+          <v-flex xs6>
+            <br>
+          <b>{{badge.badgeName}}</b>
+            <br>
+             Exp: {{badge.exp}}
+            </v-flex>
+    <v-flex xs9>
+        <br>
+        <br>
+        <br>
+        <br>
+      
+         <font color="grey" size="2px"> Total views : {{totalView}} </font>
+           </v-flex>
+
+        <!-- <v-list-tile-avatar size="125">
           <img :src="badge.badgePicture" />
         </v-list-tile-avatar>
         <v-list-tile-content>
@@ -95,10 +118,24 @@
             <b>{{badge.badgeName}}</b>
           </v-list-tile-title>
           <v-list-tile-sub-title>Exp: {{badge.exp}}</v-list-tile-sub-title>
-        </v-list-tile-content>
+        </v-list-tile-content> -->
 
         <br />
-      </v-layout>
+     
+        <!-- <v-flex xs1> 
+          <v-icon> remove_red_eye</v-icon>
+        </v-flex>
+        <v-flex xs5> 
+         Total views : {{totalView}}
+        </v-flex> -->
+
+    </v-layout>
+      
+
+
+
+    <!-- badge -->
+
 
       <br />
       <br />
@@ -141,6 +178,9 @@
         <br />
       </center>
       <br />
+
+    
+
       <p class="eventDate">Tickets</p>
 
       <p>{{eventName}}</p>
@@ -159,6 +199,7 @@
       >GET TICKET</v-btn>
 
       <br />
+      
       <v-divider></v-divider>
       <h3>Contract</h3>
       <p></p>
@@ -253,6 +294,7 @@ export default {
       eventStartDate: "",
       eventEndDate: "",
       createEventDate: "",
+      totalView: "",
       website: "",
       location: "",
       infoWindowPos: null,
@@ -567,9 +609,6 @@ export default {
 };
 </script>
 
- 
- 
- 
 <style lang="css">
 .v-content {
   max-width: 100%;
