@@ -2,6 +2,7 @@ const env = require('dotenv').config()
 console.log(env)
 module.exports = {
   env: env.parsed,
+  srcDir: 'src',
   head: {
     title: 'MeetU',
     meta: [
