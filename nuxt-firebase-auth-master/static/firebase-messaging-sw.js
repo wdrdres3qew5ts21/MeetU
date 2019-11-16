@@ -18,7 +18,6 @@ messaging.setBackgroundMessageHandler((payload)=> {
   const notificationTitle = 'MeetU';
   const notificationOptions = {
     body: payload,
-    icon: '/icon.png'
   };
 
   return self.registration.showNotification(notificationTitle,
