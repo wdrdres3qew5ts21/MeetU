@@ -485,7 +485,7 @@ export default {
       });
     },
     userReserveTicket: function() {
-      if (this.elasticEventId != "previewOnly" && getIsPreviewPage != true) {
+      if (this.elasticEventId != "previewOnly" && this.getIsPreviewPage != true) {
         console.log("User Reserve Ticket Event!");
         let reserveTicket = {
           uid: this.getUser.uid,
