@@ -132,7 +132,6 @@
                 @change="onPictureListUpload"
                 accept="image/*"
               />
-
               <v-text-field
                 v-model="newPost"
                 name="newPost"
@@ -143,7 +142,7 @@
           </v-layout>
           <v-layout>
             <v-flex xs12 class="text-xs-left">
-              <v-btn style="margin-right: 0px" icon>
+              <v-btn style="margin-right: 0px" icon @click="$refs.pictureListUpload.click()">
                 <v-icon>photo_camera</v-icon>
               </v-btn>
               <v-btn style="margin: 0px" icon>
@@ -197,6 +196,9 @@
         <v-container grid-list-xs fluid style="padding:5px">
           <br />
           <v-list>
+            <v-list-tile-content >
+            <!-- Show image -->
+              </v-list-tile-content>
             <v-list-tile-content>
               <div class="textarea" contenteditable="false">{{post.postDetail}}</div>
             </v-list-tile-content>
@@ -406,8 +408,10 @@ export default {
       image: null,
       imageInPost: "",
       imagePost: null,
+
       postPictureListsUrl: [],
       postPictureLists: null,
+
       defaultImage: require(`@/assets/default/community.png`),
       remove: ["remove"],
       post: "",
@@ -578,11 +582,12 @@ export default {
         fileReader.addEventListener("load", () => {
           this.postPictureListsUrl.push({
             url: fileReader.result,
-            name: event.target.files[i].name
+           name: event.target.files[i].name
           });
         });
         fileReader.readAsDataURL(this.postPictureLists[i]);
       }
+      this
     },
     loadAllPostInCommunity() {
       axios
@@ -596,6 +601,7 @@ export default {
     },
     addPost() {
       let loader = this.$loading.show();
+    
       let value =
         (this.newPost && this.newPost.trim()) || this.postPictureLists;
       if (!value) {
@@ -818,6 +824,10 @@ export default {
           });
       }, 500);
     }
+
+
+      
+    
   }
 };
 </script> 

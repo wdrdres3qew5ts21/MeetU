@@ -40,19 +40,22 @@
             <v-layout v-else>
               <v-flex xs8>
                 <center>
+                  <b>Out Of Service </b>
+                  <br>
+                  Cause
                   <p width="170px">{{eventTicket.deleteMessageDetail}}</p>
                 </center>
               </v-flex>
-              <v-flex xs7>
-                <v-card-title primary-title>
-                  <div>
+              <v-flex xs7 >
+                <v-card-title primary-title >
+                  <div >
                     <div
                       class="headline"
                     >{{eventTicket.eventName.length > 10 ? eventTicket.eventName.substr(0,10)+"..." : eventTicket.eventName }}</div>
-                    <div>{{new Date().toISOString() || eventTicket.eventStartDate.substr(0,10) }}</div>
+               
                     <br />
-                    <b color="deep-purple darken-3">View Detail</b>
-                    <div>Used: {{eventTicket.isParticipate}}</div>
+                    <b color="deep-purple darken-3">View Detail</b>                   
+                      <div v-if="eventTicket.isParticipate == false">Used: unavailable</div>
                   </div>
                 </v-card-title>
               </v-flex>
