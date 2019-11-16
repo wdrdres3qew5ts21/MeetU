@@ -309,7 +309,6 @@
           height="50"
           @click="goToPreviewEvent()"
         >Preview Event</v-btn>
-
         <v-btn
           block
           color="#AEAEAE"
@@ -504,7 +503,8 @@ export default {
       "setEventTemplate",
       "setEventLocation",
       "setGeopoint",
-      "setBadgeDetail"
+      "setBadgeDetail",
+      "setIsPreviewPage",
     ]),
     setDescription(description) {
       this.description = description;
@@ -722,7 +722,9 @@ export default {
     goToPreviewEvent() {
       this.formatDateTimeToIsoWhenSave();
       this.saveEventTemplate();
-      this.$router.push("/organize/event/previewEvent");
+      this.setIsPreviewPage(true);
+      this.$router.push(`/event/previewOnly`);
+      // this.$router.push("/organize/event/previewEvent");
     },
     goToUploadImagePage() {
       this.saveEventTemplate();

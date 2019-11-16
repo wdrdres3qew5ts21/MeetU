@@ -149,13 +149,7 @@
         <v-flex xs7>Free</v-flex>
         <v-spacer></v-spacer>
         <v-flex xs5>{{numberOfTicket}} Ticket Left(s)</v-flex>
-        <!-- <v-flex xs6>
-        <v-select :items="numberOfTicket" label="numberOfTicket"></v-select>
-        </v-flex>-->
       </v-layout>
-
-      <!-- <nuxt-link :to="`/ticket?`" > -->
-      <!-- @click="userReserveTicket()" -->
       <v-btn
         @click="userReserveTicket()"
         block
@@ -163,10 +157,6 @@
         color="primary"
         id="ticketSection"
       >GET TICKET</v-btn>
-      <!-- </nuxt-link> -->
-      <!-- <center>
-      <qrcode :value="qrCodeSrc" :options="{ width: 200 }"></qrcode>
-      </center>-->
 
       <br />
       <v-divider></v-divider>
@@ -199,6 +189,25 @@
           <v-btn block color="#341646" style="color:white">Organize Information</v-btn>
         </nuxt-link>
       </center>
+      <v-btn
+        v-if="elasticEventId ==='previewOnly' && getIsPreviewPage"
+        block
+        class="saveButton white--text"
+        color="#341646"
+        depressed
+        large
+        height="50"
+        @click="createEventAndUploadData()"
+      >Publish Event</v-btn>
+      <v-btn
+        block
+        color="#AEAEAE"
+        class="white--text"
+        depressed
+        large
+        height="50"
+        @click="$router.back()"
+      >Cancle</v-btn>
     </div>
 
     <div v-else>
@@ -215,7 +224,9 @@ import confirmTicket from "@/components/confirmTicket";
 import axios from "axios";
 import { mapMutations, mapActions, mapGetters } from "vuex";
 import { error, log } from "util";
+import { loadEventTemplate } from "~/utils/loadEventTemplate.js";
 export default {
+  name: "eventDetail",
   components: {
     confirmTicket,
     Carousel,
@@ -223,7 +234,8 @@ export default {
   },
   data() {
     return {
-       show: true,
+      elasticEventId: "",
+      show: true,
       readMoreActivated: false,
       reserveTicket: {},
       readMore: false,
@@ -232,6 +244,7 @@ export default {
       isViewTicketDetail: true,
       organizeImageCover: "",
       organizeId: "",
+      email: "",
       organizeName: "",
       eventTags: [],
       eventName: "",
@@ -272,58 +285,148 @@ export default {
   asyncData({ params, error }) {
     let elasticEventId = params.elasticEventId;
     console.log(elasticEventId);
-    return axios
-      .get(`${process.env.EVENT_SERVICE}/event/${elasticEventId}`)
-      .then(response => {
-        console.log("------------ Async Data  -----------");
-        let data = response.data;
-        console.log(data);
-
-        return {
-          elasticEventId: data.elasticEventId,
-          numberOfTicket: data.numberOfTicket,
-          eventName: data.eventName,
-          eventDetail: data.eventDetail,
-          eventPictureCover: data.eventPictureCover,
-          eventPictureLists: data.eventPictureLists,
-          eventStartDate: data.eventStartDate,
-          eventEndDate: data.eventEndDate,
-          createEventDate: data.createEventDate,
-          location: data.location,
-          badge: data.badge,
-          organizeId: data.organize.organizeId,
-          organizeName: data.organize.organizeName,
-          eventTags: data.eventTags,
-          marker: {
-            title: data.eventName,
-            detail: data.eventDetail,
-            position: {
-              lat: data.location.geopoint.lat,
-              lng: data.location.geopoint.lon
+    if (elasticEventId != "previewOnly") {
+      console.log("------------ Async Data  -----------");
+      return axios
+        .get(`${process.env.EVENT_SERVICE}/event/${elasticEventId}`)
+        .then(response => {
+          let data = response.data;
+          return {
+            elasticEventId: data.elasticEventId,
+            numberOfTicket: data.numberOfTicket,
+            eventName: data.eventName,
+            eventDetail: data.eventDetail,
+            eventPictureCover: data.eventPictureCover,
+            eventPictureLists: data.eventPictureLists,
+            eventStartDate: data.eventStartDate,
+            eventEndDate: data.eventEndDate,
+            createEventDate: data.createEventDate,
+            location: data.location,
+            badge: data.badge,
+            organizeId: data.organize.organizeId,
+            organizeName: data.organize.organizeName,
+            eventTags: data.eventTags,
+            marker: {
+              title: data.eventName,
+              detail: data.eventDetail,
+              position: {
+                lat: data.location.geopoint.lat,
+                lng: data.location.geopoint.lon
+              }
             }
-          }
-        };
-      })
-      .catch(err => {
-        console.log("!!!!!!!!!!!!!!!!! Boom Not found !!!!!!!!!!");
-        console.log(err);
-        return error({ statusCode: 404, message: eventNotFound(err) });
-      });
+          };
+        })
+        .catch(err => {
+          console.log("!!!!!!!!!!!!!!!!! Boom Not found !!!!!!!!!!");
+          console.log(err);
+          return error({ statusCode: 404, message: eventNotFound(err) });
+        });
+    }
   },
   mounted() {
+    this.elasticEventId = this.$route.params.elasticEventId;
     console.log(this.$route.params.elasticEventId);
     console.log(this.getUser.uid);
-    this.userViewEvent();
-    this.loadOrganizeDetail();
+    if (this.elasticEventId === "previewOnly" && this.getIsPreviewPage) {
+      console.log("--- preview only mode ---");
+      this.loadPreviewEventTemplate();
+      this.loadOrganizeDetail(this.getEventTemplate.organize.organizeId);
+      this.loadBadgeDetail(this.getEventTemplate.badge.badgeId);
+    } else {
+      this.userViewEvent();
+      this.loadOrganizeDetail(this.organizeId);
+    }
   },
   computed: {
-    ...mapGetters(["getCurrentLocation", "getUser"])
+    ...mapGetters([
+      "getCurrentLocation",
+      "getUser",
+      "getIsPreviewPage",
+      "getEventTemplate"
+    ])
+  },
+  watch: {
+    "$route.params.elasticEventId"() {
+      axios
+        .get(`${process.env.EVENT_SERVICE}/event/${elasticEventId}`)
+        .then(response => {
+          let data = response.data;
+          return {
+            elasticEventId: data.elasticEventId,
+            numberOfTicket: data.numberOfTicket,
+            eventName: data.eventName,
+            eventDetail: data.eventDetail,
+            eventPictureCover: data.eventPictureCover,
+            eventPictureLists: data.eventPictureLists,
+            eventStartDate: data.eventStartDate,
+            eventEndDate: data.eventEndDate,
+            createEventDate: data.createEventDate,
+            location: data.location,
+            badge: data.badge,
+            organizeId: data.organize.organizeId,
+            organizeName: data.organize.organizeName,
+            eventTags: data.eventTags,
+            marker: {
+              title: data.eventName,
+              detail: data.eventDetail,
+              position: {
+                lat: data.location.geopoint.lat,
+                lng: data.location.geopoint.lon
+              }
+            }
+          };
+        })
+        .catch(err => {
+          console.log("!!!!!!!!!!!!!!!!! Boom Not found !!!!!!!!!!");
+          console.log(err);
+          return error({ statusCode: 404, message: eventNotFound(err) });
+        });
+    }
   },
   methods: {
-    ...mapActions(["updateCurrentLocation"]),
-    loadOrganizeDetail() {
+    ...mapActions(["updateCurrentLocation", "saveEventAndUpload"]),
+    createEventAndUploadData() {
+      console.log(this.getEventTemplate);
+      this.saveEventAndUpload();
+    },
+    loadPreviewEventTemplate() {
+      this.numberOfTicket = this.getEventTemplate.numberOfTicket;
+      this.eventName = this.getEventTemplate.eventName;
+      this.eventDetail = this.getEventTemplate.eventDetail;
+      this.eventPictureCover = this.getEventTemplate.eventPictureCoverBase.url;
+      this.eventPictureLists = []
+      this.getEventTemplate.eventPictureListsBase.forEach(eventPictureBase => {
+        this.eventPictureLists.push(eventPictureBase.url);
+      });
+      this.eventStartDate = this.getEventTemplate.eventStartDate;
+      this.eventEndDate = this.getEventTemplate.eventEndDate;
+      this.createEventDate = this.getEventTemplate.createEventDate;
+      this.location = this.getEventTemplate.location;
+      this.badge = this.getEventTemplate.badge;
+      this.organizeId = this.getEventTemplate.organize.organizeId;
+      this.organizeName = this.getEventTemplate.organize.organizeName;
+      this.eventTags = this.getEventTemplate.eventTags;
+      this.marker = {
+        title: this.getEventTemplate.eventName,
+        detail: this.getEventTemplate.eventDetail,
+        position: {
+          lat: this.getEventTemplate.location.geopoint.lat,
+          lng: this.getEventTemplate.location.geopoint.lon
+        }
+      };
+    },
+    loadBadgeDetail(badgeId) {
       axios
-        .get(`${process.env.USER_SERVICE}/organize/${this.organizeId}`)
+        .get(`${process.env.USER_SERVICE}/badge/${badgeId}`)
+        .then(badgeResponse => {
+          badgeResponse = badgeResponse.data;
+          this.badge = badgeResponse;
+          this.badge.exp = this.getEventTemplate.badge.exp;
+        });
+    },
+    loadOrganizeDetail(organizeId) {
+      axios
+        .get(`${process.env.USER_SERVICE}/organize/${organizeId}`)
         .then(organizeResponse => {
           organizeResponse = organizeResponse.data;
           console.log(organizeResponse);
@@ -340,38 +443,45 @@ export default {
       });
     },
     userReserveTicket: function() {
-      console.log("User Reserve Ticket Event!");
-      let reserveTicket = {
-        uid: this.getUser.uid,
-        elasticEventId: this.$route.params.elasticEventId
-      };
-      this.qrCodeSrc = JSON.stringify(reserveTicket);
-      console.log(reserveTicket);
-      axios
-        .post(`${process.env.EVENT_SERVICE}/event/reserve`, reserveTicket, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("jwtToken") || ""}`
-          }
-        })
-        .then(reserveTicket => {
-          console.log(reserveTicket.data);
-          this.reserveTicket = reserveTicket.data;
-          this.isViewTicketDetail = !this.isViewTicketDetail;
-        })
-        .catch(error => {
-          console.log("fsdfsdf");
-          console.log(error.response);
-          this.$swal({
-            type: "error",
-            title: "Fail to reserve ticket !",
-            text: `${
-              error.response === undefined
-                ? "Please Login first!"
-                : error.response
-            }`
+      if (this.elasticEventId != "previewOnly" && getIsPreviewPage != true) {
+        console.log("User Reserve Ticket Event!");
+        let reserveTicket = {
+          uid: this.getUser.uid,
+          elasticEventId: this.$route.params.elasticEventId
+        };
+        this.qrCodeSrc = JSON.stringify(reserveTicket);
+        console.log(reserveTicket);
+        axios
+          .post(`${process.env.EVENT_SERVICE}/event/reserve`, reserveTicket, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("jwtToken") || ""}`
+            }
+          })
+          .then(reserveTicket => {
+            console.log(reserveTicket.data);
+            this.reserveTicket = reserveTicket.data;
+            this.isViewTicketDetail = !this.isViewTicketDetail;
+          })
+          .catch(error => {
+            console.log(error.response);
+            this.$swal({
+              type: "error",
+              title: "Fail to reserve ticket !",
+              text: `${
+                error.response === undefined
+                  ? "Please Login first!"
+                  : error.response
+              }`
+            });
+            this.$router.push("/login");
           });
-          this.$router.push("/login");
+      } else {
+        this.$swal({
+          type: "success",
+          title: "Reserve Ticket Success !",
+          text: `For testing preview purpose only !`
         });
+      }
     },
     findEventInArea: async function() {
       let geolocation = {
@@ -497,8 +607,9 @@ div.a:hover {
 .a {
   font-weight: 600;
 }
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;

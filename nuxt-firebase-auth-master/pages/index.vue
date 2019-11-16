@@ -27,7 +27,7 @@
               </nuxt-link>
             </slide>
             <slide>
-              <v-flex 3 xs12 sm6 offset-sm>
+              <v-flex  xs12 sm6 offset-sm>
                 <!-- <v-img :src="testImg"></v-img> -->
                 <nuxt-link :to="`/event?`">
                   <v-card class="BackgroundImg" width="350px" height="320px">

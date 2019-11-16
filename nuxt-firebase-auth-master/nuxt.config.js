@@ -64,7 +64,7 @@ module.exports = {
   plugins: [
     { src: '~/plugins/vuetify.js' },
     { src: '~/plugins/fireinit.js', mode: 'client' },
-    { src: '~/plugins/fireauth.js', mode: 'client' },
+    { src: '~/plugins/loadEventTemplate.js'},
     { src: '~/plugins/vue-carousel.js', ssr: false },
     { src: '~/plugins/axios.js',  mode: 'client'},
     { src: '~/plugins/infinite-loading.js',  mode: 'client'},

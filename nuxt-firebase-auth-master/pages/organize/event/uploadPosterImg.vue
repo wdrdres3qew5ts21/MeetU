@@ -51,7 +51,10 @@
         accept="image/*"
       />
       <p v-if="eventPictureListsUrl.length>0">
-        <span v-for="(eventPicture, index) in eventPictureListsUrl" :key="index">{{eventPicture.name}},</span>
+        <span
+          v-for="(eventPicture, index) in eventPictureListsUrl"
+          :key="index"
+        >{{eventPicture.name}},</span>
       </p>
       <div v-if="eventPictureListsUrl.length>0">
         <v-img
@@ -118,22 +121,22 @@ export default {
       console.log("----- preview image ----");
       let eventPictureCoverBase = this.getEventTemplate.eventPictureCoverBase;
       let eventPictureListsBase = this.getEventTemplate.eventPictureListsBase;
-      console.log(eventPictureListsBase)
+      console.log(eventPictureListsBase);
       if (eventPictureCoverBase != "") {
         this.eventPictureCoverUrl = eventPictureCoverBase;
         console.log(this.eventPictureCoverUrl);
       }
       if (eventPictureListsBase.length > 0) {
         this.eventPictureListsUrl = eventPictureListsBase;
-        console.log(this.eventPictureListsUrl)
+        console.log(this.eventPictureListsUrl);
       }
     },
     onCoverPictureUpload(event) {
       console.log("uplaod din");
       this.eventPictureCover = event.target.files[0];
-      console.log("!!!!!!!!!!!!!!!!!!!!!!")
-      console.log(this.eventPictureCover)
-      this.eventPictureCoverUrl = {}
+      console.log("!!!!!!!!!!!!!!!!!!!!!!");
+      console.log(this.eventPictureCover);
+      this.eventPictureCoverUrl = {};
       const fileReader = new FileReader();
       fileReader.addEventListener("load", () => {
         this.eventPictureCoverUrl = {
@@ -146,7 +149,7 @@ export default {
     onPictureListUpload(event) {
       console.log("uplaod din");
       this.eventPictureLists = event.target.files;
-      this.eventPictureListsUrl = []
+      this.eventPictureListsUrl = [];
       for (let i = 0; i < this.eventPictureLists.length; i++) {
         const fileReader = new FileReader();
         fileReader.addEventListener("load", () => {
@@ -158,7 +161,6 @@ export default {
         fileReader.readAsDataURL(this.eventPictureLists[i]);
       }
     },
-
     async uploadPictureListToFirebase() {
       let pictureFiles = this.eventPictureLists;
       for (let i = 0; i < pictureFiles.length; i++) {

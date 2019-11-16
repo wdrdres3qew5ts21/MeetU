@@ -1,8 +1,8 @@
 import * as firebase from "firebase/app";
 import "firebase/storage";
 import axios from "axios"
-const state = () => ({
-    eventTemplate: {
+function initialState() {
+    return {
         eventName: '',
         eventDetail: '',
         eventTags: [],
@@ -41,15 +41,34 @@ const state = () => ({
             }
         }
     }
+}
+
+
+const state = () => ({
+    eventTemplate: initialState(),
+    isPreviewPage: false
 });
 
 const getters = {
     getEventTemplate: function (state) {
         return state.eventTemplate;
+    },
+    getIsPreviewPage: function (state) {
+        return state.isPreviewPage;
     }
 };
 
 const mutations = {
+    resetEventTemplate(state) {
+        // acquire initial state
+        const s = initialState()
+        Object.keys(s).forEach(key => {
+            state.eventTemplate[key] = s[key]
+        })
+    },
+    setIsPreviewPage: function (state, isPreviewPage) {
+        state.isPreviewPage = isPreviewPage;
+    },
     setEventTemplate: function (state, eventTemplate) {
         state.eventTemplate.organize = eventTemplate.organize;
         state.eventTemplate.eventName = eventTemplate.eventName;
@@ -79,7 +98,7 @@ const mutations = {
         state.eventTemplate.location.detail = location.detail
         state.eventTemplate.location.streetNumber = location.streetNumber
         state.eventTemplate.location.road = location.road
-      //  state.eventTemplate.location.subDistrict = location.subDistrict
+        //  state.eventTemplate.location.subDistrict = location.subDistrict
         state.eventTemplate.location.distrct = location.distrct
         state.eventTemplate.location.province = location.province
         state.eventTemplate.location.country = location.country
@@ -93,6 +112,12 @@ const mutations = {
 };
 
 const actions = {
+    resetEventTemplate({ commit }){
+        commit('resetEventTemplate');
+    },
+    setIsPreviewPage: function ({ commit }, isPreviewPage) {
+        commit('setIsPreviewPage', isPreviewPage);
+    },
     setEventTemplate: function ({ commit }, eventTemplate) {
         console.log("action work for eventTemplate");
         console.log(eventTemplate)
@@ -119,7 +144,6 @@ const actions = {
         console.log(eventTemplate)
         // upload cover
 
-
         try {
             let pictureFile = eventTemplate.eventPictureCoverBase;
             let pictureFiles = eventTemplate.eventPictureListsBase;
@@ -132,7 +156,7 @@ const actions = {
                 snapshot.ref.getDownloadURL().then(eventPictureCover => {
                     console.log(`Picture : `, eventPictureCover);
                     try {
-                        let eventPictureList = [] 
+                        let eventPictureList = []
                         for (let i = 0; i < pictureFiles.length; i++) {
                             pictureFile = pictureFiles[i];
                             dateobj = new Date();
@@ -143,12 +167,12 @@ const actions = {
                             setupFile.putString(pictureFile.url, 'data_url', { contentType: 'image/jpeg' }).then(snapshot => {
                                 snapshot.ref.getDownloadURL().then(eventPicture => {
                                     eventPictureList.push(eventPicture)
-                                    if(eventPictureList.length === pictureFiles.length){
+                                    if (eventPictureList.length === pictureFiles.length) {
                                         console.log("-------- Event Picture List -----------")
                                         console.log(`Picture list : `, eventPictureList);
                                         eventTemplate.eventPictureCover = eventPictureCover
                                         eventTemplate.eventPictureLists = eventPictureList
-                                        
+
                                         axios.post(`${process.env.EVENT_SERVICE}/event`, eventTemplate, {
                                             headers: {
                                                 'Authorization': `Bearer ${localStorage.getItem('jwtToken') || ''}`
@@ -160,7 +184,10 @@ const actions = {
                                                 title: "Upload Event success!!",
                                                 text: `Upload Event success!!`
                                             });
-                                           
+                                            commit('setIsPreviewPage', false)
+                                            commit('resetEventTemplate')
+                                            $nuxt._router.push(`/event/${eventTemplate.data.elasticEventId}`)
+
                                         }).catch(error => {
                                             this._vm.$swal({
                                                 type: "error",
@@ -168,7 +195,7 @@ const actions = {
                                                 text: `Fail to Create Event!!!`
                                             });
 
-                                        }).finally(()=>{
+                                        }).finally(() => {
                                             loader.hide()
                                         });
                                     }
@@ -176,7 +203,7 @@ const actions = {
                                 });
                             });
                         }
-                      
+
 
                     } catch (err) {
                         loader.hide()
@@ -189,12 +216,6 @@ const actions = {
             loader.hide()
             console.log(err);
         }
-
-
-
-
-
-
     }
 };
 
