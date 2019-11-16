@@ -26,7 +26,7 @@
           <nuxt-link :to="`/event?category=${eventTag}`">{{eventTag}}</nuxt-link>
         </v-chip>
       </v-flex>
-   
+
       <v-flex>
         <v-btn
           block
@@ -35,7 +35,7 @@
           @click="$vuetify.goTo('#ticketSection')"
         >View Ticket</v-btn>
       </v-flex>
-         
+
       <br />
       <br />
       <br />
@@ -92,23 +92,23 @@
       <v-layout row>
         <v-flex xs10>
           <v-avatar size="125">
-             <img :src="badge.badgePicture">
+            <img :src="badge.badgePicture" />
           </v-avatar>
         </v-flex>
-          <v-flex xs6>
-            <br>
+        <v-flex xs6>
+          <br />
           <b>{{badge.badgeName}}</b>
-            <br>
-             Exp: {{badge.exp}}
-            </v-flex>
-    <v-flex xs9>
-        <br>
-        <br>
-        <br>
-        <br>
-      
-         <font color="grey" size="2px"> Total views : {{totalView}} </font>
-           </v-flex>
+          <br />
+          Exp: {{badge.exp}}
+        </v-flex>
+        <v-flex xs9>
+          <br />
+          <br />
+          <br />
+          <br />
+
+          <font color="grey" size="2px">Total views : {{totalView}}</font>
+        </v-flex>
 
         <!-- <v-list-tile-avatar size="125">
           <img :src="badge.badgePicture" />
@@ -118,24 +118,19 @@
             <b>{{badge.badgeName}}</b>
           </v-list-tile-title>
           <v-list-tile-sub-title>Exp: {{badge.exp}}</v-list-tile-sub-title>
-        </v-list-tile-content> -->
+        </v-list-tile-content>-->
 
         <br />
-     
+
         <!-- <v-flex xs1> 
           <v-icon> remove_red_eye</v-icon>
         </v-flex>
         <v-flex xs5> 
          Total views : {{totalView}}
-        </v-flex> -->
+        </v-flex>-->
+      </v-layout>
 
-    </v-layout>
-      
-
-
-
-    <!-- badge -->
-
+      <!-- badge -->
 
       <br />
       <br />
@@ -179,8 +174,6 @@
       </center>
       <br />
 
-    
-
       <p class="eventDate">Tickets</p>
 
       <p>{{eventName}}</p>
@@ -199,7 +192,7 @@
       >GET TICKET</v-btn>
 
       <br />
-      
+
       <v-divider></v-divider>
       <h3>Contract</h3>
       <p></p>
@@ -436,7 +429,7 @@ export default {
       this.eventName = this.getEventTemplate.eventName;
       this.eventDetail = this.getEventTemplate.eventDetail;
       this.eventPictureCover = this.getEventTemplate.eventPictureCoverBase.url;
-      this.eventPictureLists = []
+      this.eventPictureLists = [];
       this.getEventTemplate.eventPictureListsBase.forEach(eventPictureBase => {
         this.eventPictureLists.push(eventPictureBase.url);
       });
@@ -485,8 +478,12 @@ export default {
       });
     },
     userReserveTicket: function() {
-      if (this.elasticEventId != "previewOnly" && this.getIsPreviewPage != true) {
+      if (
+        this.elasticEventId != "previewOnly" &&
+        this.getIsPreviewPage != true
+      ) {
         console.log("User Reserve Ticket Event!");
+        let loader = this.$loading.show();
         let reserveTicket = {
           uid: this.getUser.uid,
           elasticEventId: this.$route.params.elasticEventId
@@ -516,6 +513,9 @@ export default {
               }`
             });
             this.$router.push("/login");
+          })
+          .finally(() => {
+            loader.hide();
           });
       } else {
         this.$swal({
