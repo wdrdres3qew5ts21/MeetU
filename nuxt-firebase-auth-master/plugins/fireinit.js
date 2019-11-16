@@ -29,8 +29,29 @@ export default (context) => {
   if (process.client) {
     console.log("Client Side !!!")
     authen = firebase.auth()
-    if (firebase.messaging.isSupported()){
+    if (firebase.messaging.isSupported()) {
       messaging = firebase.messaging()
+      // Request Permission Will work only user login Success
+      messaging.usePublicVapidKey("BJsK20EGvD7TRip8YI_DP-sxYxeNK65jwuK6v_Mek8birN_doChyesgPAmAuXMiu81TJOkejoypqvz9Pl7TWhe0");
+      // Request Permission of Notifications
+      messaging.requestPermission().then(() => {
+        console.log('Notification permission granted.');
+        // Get Token
+        messaging.getToken().then((notificationToken) => {
+          let notificationBody = {
+            notificationToken,
+            uid: store.getters.getUser.uid,
+          }
+          let topic = "new-event"
+          axios.post(`${process.env.EVENT_SERVICE}/notification/subscribe/${topic}`, notificationBody)
+          // axios.post(`${process.env.EVENT_SERVICE}/notification/token`, notificationBody)
+          console.log(notificationToken)
+        }).catch(err => {
+          console.log(err)
+        })
+      }).catch((err) => {
+        console.log('Unable to get permission to notify.', err);
+      });
     }
   }
 
@@ -85,27 +106,6 @@ export default (context) => {
           uid: user.uid,
           jwtToken: jwtToken
         })
-        // Request Permission Will work only user login Success
-
-        messaging.usePublicVapidKey("BJsK20EGvD7TRip8YI_DP-sxYxeNK65jwuK6v_Mek8birN_doChyesgPAmAuXMiu81TJOkejoypqvz9Pl7TWhe0");
-        // Request Permission of Notifications
-        messaging.requestPermission().then(() => {
-          console.log('Notification permission granted.');
-          // Get Token
-          messaging.getToken().then((notificationToken) => {
-            let notificationBody = {
-              notificationToken,
-              uid: store.getters.getUser.uid,
-            }
-            axios.post(`${process.env.EVENT_SERVICE}/notification/token`, notificationBody)
-            console.log(notificationToken)
-          }).catch(err => {
-            console.log(err)
-          })
-        }).catch((err) => {
-          console.log('Unable to get permission to notify.', err);
-        });
-
       }).catch((error) => {
         // login failed
         console.log(error)

@@ -2,7 +2,7 @@
   <div>
     <br />
     <h2>My Community</h2>
-    <div v-if="communityList.length>0">
+    <div >
       <div v-for="(community, index) in communityList" :key="index">
         <nuxt-link :to="`/community/${community.communityId}`">
           <community-card
@@ -13,9 +13,9 @@
       </div>
       <client-only>
         <infinite-loading spinner="spiral" @infinite="infiniteScroll">
-          <!-- <div slot="no-results">
+          <div slot="no-results">
             <v-btn color="primary" block>Go to Top</v-btn>
-          </div>-->
+          </div>
         </infinite-loading>
       </client-only>
     </div>

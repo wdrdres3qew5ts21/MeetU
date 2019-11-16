@@ -60,7 +60,32 @@
             </v-card-title>
             <v-card-text>
               <v-container grid-list-md>
-                Community Name
+                <div v-if="imageUrl == ''">
+                  <v-img
+                    :src="communityForm.communityPictureCover==undefined?defaultImage: communityForm.communityPictureCover"
+                    aspect-ratio="1"
+                    class="grey lighten-2"
+                    max-width="1250"
+                    max-height="200"
+                  >
+                    <v-btn class="button" @click="onPickFile">
+                      Upload image
+                      &nbsp;
+                      &nbsp;
+                      <v-icon>add_a_photo</v-icon>
+                      <br />
+                    </v-btn>
+                  </v-img>
+                </div>
+                <div v-else>
+                  <v-img
+                    :src="imageUrl"
+                    aspect-ratio="1"
+                    class="grey lighten-2"
+                    max-width="1250"
+                    max-height="200"
+                  ></v-img>
+                </div>Community Name
                 <v-text-field
                   v-model="communityForm.communityName"
                   label="* Community Name"
@@ -156,7 +181,6 @@
             <v-flex xs class="text-xs-right">
               <v-btn text color="#341646" class="mb-2 white--text" @click="addPost()">Post</v-btn>
             </v-flex>
-            
           </v-layout>
         </v-form>
       </div>
@@ -168,24 +192,25 @@
         <div>
           <v-layout>
             <v-container grid-list-xs fluid style="padding:10px">
-             <v-layout row wrap>
+              <v-layout row wrap>
                 <v-flex xs3>
                   <v-avatar size="60">
                     <v-img :aspect-ratio="1/1" :src="post.photoURL"></v-img>
                   </v-avatar>
                 </v-flex>
-                  <v-flex xs9>
-                   
-                 <b class="showName"> 
-                      <span
-                     v-text="post.displayName.length > 10 ? post.displayName.substr(0,23)+'..' :post.displayName"
-                   ></span>
-                  </b> 
-                   <v-layout row wrap class="showDate">      
-                    {{formatDateForReadable(post.postOfDate)}} {{formatAMPM(post.postOfDate)}}       
-                   </v-layout>
-                  </v-flex>
-                  </v-layout>
+                <v-flex xs9>
+                  <b class="showName">
+                    <span
+                      v-text="post.displayName.length > 10 ? post.displayName.substr(0,23)+'..' :post.displayName"
+                    ></span>
+                  </b>
+                  <v-layout
+                    row
+                    wrap
+                    class="showDate"
+                  >{{formatDateForReadable(post.postOfDate)}} {{formatAMPM(post.postOfDate)}}</v-layout>
+                </v-flex>
+              </v-layout>
               <v-flex v-if="post.uid=== getUser.uid" xs2 class="text-xs-right">
                 <v-btn text icon @click="removeNewPost(postIndex,  post.postId)">
                   <v-icon>clear</v-icon>
@@ -217,27 +242,25 @@
             <v-layout>
               <v-container grid-list-xs fluid style="padding:10px">
                 <v-layout row wrap>
-                <v-flex xs3>
-                  <v-avatar size="60">
-                    <v-img :aspect-ratio="1/1" :src="post.photoURL"></v-img>
-                  </v-avatar>
-                </v-flex>
-                  <v-flex xs9>
-
-                 <b class="showName"> 
-                      <span
-                     v-text="post.displayName.length > 10 ? post.displayName.substr(0,23)+'..' :post.displayName"
-                   ></span>
-                  </b> 
-
-
-
-                   <v-layout row wrap class="showDate">      
-                     {{formatDateForReadable(post.postOfDate)}} {{formatAMPM(post.postOfDate)}}       
-                   </v-layout>
+                  <v-flex xs3>
+                    <v-avatar size="60">
+                      <v-img :aspect-ratio="1/1" :src="post.photoURL"></v-img>
+                    </v-avatar>
                   </v-flex>
-  </v-layout>
+                  <v-flex xs9>
+                    <b class="showName">
+                      <span
+                        v-text="post.displayName.length > 10 ? post.displayName.substr(0,23)+'..' :post.displayName"
+                      ></span>
+                    </b>
 
+                    <v-layout
+                      row
+                      wrap
+                      class="showDate"
+                    >{{formatDateForReadable(post.postOfDate)}} {{formatAMPM(post.postOfDate)}}</v-layout>
+                  </v-flex>
+                </v-layout>
               </v-container>
               <v-flex v-if="post.uid=== getUser.uid" xs2 class="text-xs-right">
                 <v-btn text icon @click="removePost(postIndex, post.postId)">
@@ -253,7 +276,6 @@
                 <div class="textarea" contenteditable="false">{{post.postDetail}}</div>
               </v-list-tile-content>
             </v-list>
-           
           </v-container>
 
           <v-card-text rounded outlined class="mx-auto">
@@ -265,32 +287,31 @@
             </v-flex>
           </v-card-text>
           <v-list>
-            
-
-            <v-card
-              xs6
-              rounded
-              outlined
-              v-if="postList[postIndex].commentList.length > 0"
-            >
+            <v-card xs6 rounded outlined v-if="postList[postIndex].commentList.length > 0">
               <v-container grid-list-xs xs4 fluid style="padding:5px">
                 <v-list-tile xs4>
                   <v-list-tile-avatar>
-                    <v-img :aspect-ratio="1/1" :src="postList[postIndex].commentList[postList[postIndex].commentList.length-1].photoURL"></v-img>
+                    <v-img
+                      :aspect-ratio="1/1"
+                      :src="postList[postIndex].commentList[postList[postIndex].commentList.length-1].photoURL"
+                    ></v-img>
                   </v-list-tile-avatar>
                   <v-list-tile>
                     <div>
                       <v-list-tile-content>
                         <v-card color="#F5F5F5" class="rounded-card" max-width="240px">
                           <v-list-tile-title class="margin-name">
-                            <font size="2">{{ postList[postIndex].commentList[postList[postIndex].commentList.length-1].displayName}}</font>
+                            <font
+                              size="2"
+                            >{{ postList[postIndex].commentList[postList[postIndex].commentList.length-1].displayName}}</font>
                           </v-list-tile-title>
                           <v-list-tile-sub-title class="margin-comment">
-                            <font size="2">{{postList[postIndex].commentList[postList[postIndex].commentList.length-1].commentOfPostDetail}}</font>
+                            <font
+                              size="2"
+                            >{{postList[postIndex].commentList[postList[postIndex].commentList.length-1].commentOfPostDetail}}</font>
                           </v-list-tile-sub-title>
                         </v-card>
                       </v-list-tile-content>
-                      
                     </div>
                   </v-list-tile>
                 </v-list-tile>
@@ -343,11 +364,15 @@
                   <v-flex xs10>
                     <v-list-tile-content>
                       <div class="text-comment-area showNameComment" contenteditable="false">
-                        <font class="margin-name"><b>{{ comment.displayName}}</b></font>
+                        <font class="margin-name">
+                          <b>{{ comment.displayName}}</b>
+                        </font>
                         <br />
 
-                       <font class="showDateComment">  {{formatDateForReadable(comment.commentOfPostDate)}} {{formatAMPM(comment.commentOfPostDate)}} </font>
-                        <br/>
+                        <font
+                          class="showDateComment"
+                        >{{formatDateForReadable(comment.commentOfPostDate)}} {{formatAMPM(comment.commentOfPostDate)}}</font>
+                        <br />
 
                         <font color="grey">{{comment.commentOfPostDetail}}</font>
                       </div>
@@ -877,21 +902,20 @@ h2 {
   color: #341646;
 }
 
-.showDate{
+.showDate {
   font-size: 14px;
 }
 
-.showName{
+.showName {
   color: #341646;
   font-size: 17px;
- 
 }
-.showNameComment{
-   font-size: 15px;
-   color: #341646;
+.showNameComment {
+  font-size: 15px;
+  color: #341646;
 }
-.showDateComment{
-   font-size: 11px;
-   color: darkgrey;
+.showDateComment {
+  font-size: 11px;
+  color: darkgrey;
 }
 </style>

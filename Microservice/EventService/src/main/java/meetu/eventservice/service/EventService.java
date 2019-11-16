@@ -6,15 +6,10 @@
 package meetu.eventservice.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
-import com.google.firebase.messaging.AndroidConfig;
-import com.google.firebase.messaging.BatchResponse;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -29,7 +24,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import meetu.eventservice.config.ElasticUtil;
 import meetu.eventservice.model.Event;
-import meetu.eventservice.model.EventTicket;
 import meetu.eventservice.model.InterestGenreBehavior;
 import meetu.eventservice.model.Persona;
 import meetu.eventservice.model.User;
@@ -54,12 +48,13 @@ import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.FuzzyQueryBuilder;
 import com.google.firebase.messaging.BatchResponse;
-import com.google.firebase.messaging.FcmOptions;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Notification;
 import com.google.firebase.messaging.TopicManagementResponse;
 import com.google.firebase.messaging.WebpushConfig;
+import com.google.firebase.messaging.WebpushFcmOptions;
+import com.google.firebase.messaging.WebpushNotification;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.model.Aggregates;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
@@ -907,11 +902,11 @@ public class EventService {
         return;
     }
 
-    public ResponseEntity subscribeEventTopic(String notificationToken, String subscribeElasticEventId) throws FirebaseMessagingException {
+    public ResponseEntity subscribeEventTopic(String notificationToken, String topic) throws FirebaseMessagingException {
         List<String> registrationTokens = Arrays.asList(
                 notificationToken
         );
-        TopicManagementResponse response = FirebaseMessaging.getInstance().subscribeToTopic(registrationTokens, subscribeElasticEventId);
+        TopicManagementResponse response = FirebaseMessaging.getInstance().subscribeToTopic(registrationTokens, topic);
         System.out.println(response.getSuccessCount() + " tokens were subscribed successfully");
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -967,6 +962,26 @@ public class EventService {
             response.put("response", "Not found Event");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
+    }
+
+    public ResponseEntity pushNotificationTopic(UserNotification notificationToken, String topic) {
+        String image = "https://firebasestorage.googleapis.com/v0/b/meetu-69b29.appspot.com/o/eventPicture%2FAnnotation%202019-11-16%20123942.png_2019-11-16T07%3A34%3A40.195Z?alt=media&token=ee2c1942-ec53-4431-af93-e3e921e8c35b";
+        Message build = Message.builder().setWebpushConfig(
+                WebpushConfig.builder()
+                        .setFcmOptions(WebpushFcmOptions.withLink("event"))
+                        .setNotification(
+                                WebpushNotification.builder().setTitle("MeetU").setBody("Test Link go to Event page").setImage(image).setIcon("/icon.png").build())
+                        .build()).setTopic(topic).build();
+
+        String response =null;
+        try {
+            response = FirebaseMessaging.getInstance().send(build);
+        } catch (FirebaseMessagingException ex) {
+            Logger.getLogger(EventService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+// Response is a message ID string.
+        System.out.println("Successfully sent message: " + response);
+        return null;
     }
 
 }

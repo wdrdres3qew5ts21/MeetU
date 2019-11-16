@@ -5,11 +5,11 @@
  */
 package meetu.eventservice.controller;
 
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.FirebaseToken;
 import com.google.firebase.messaging.FirebaseMessagingException;
+import com.google.firebase.messaging.Message;
+import com.google.firebase.messaging.WebpushConfig;
+import com.google.firebase.messaging.WebpushFcmOptions;
+import com.google.firebase.messaging.WebpushNotification;
 import meetu.eventservice.model.Category;
 import java.io.IOException;
 import java.util.HashMap;
@@ -59,25 +59,25 @@ public class EventController {
 
     @Autowired
     private EventService eventService;
-    
+
     @PostMapping("/event")
     public ResponseEntity createEvent(@RequestBody Event event) {
         return eventService.createEvent(event);
     }
-    
+
     @PostMapping("/event/subscribe/{elasticEventId}")
-    public ResponseEntity subscribeEventTopic(@RequestBody UserNotification userNotification, @PathVariable String subscribeElasticEventId) throws FirebaseMessagingException{
+    public ResponseEntity subscribeEventTopic(@RequestBody UserNotification userNotification, @PathVariable String subscribeElasticEventId) throws FirebaseMessagingException {
         return eventService.subscribeEventTopic(userNotification.getNotificationToken(), subscribeElasticEventId);
     }
-    
+
     @PostMapping("/event/force/push/{elasticEventId}")
     public ResponseEntity forcePushNotificationFromAdmin(
-            @PathVariable String elasticEventId, 
-            @RequestBody UserNotification notification) throws FirebaseMessagingException{
-        String token= "";
+            @PathVariable String elasticEventId,
+            @RequestBody UserNotification notification) throws FirebaseMessagingException {
+        String token = "";
         return eventService.forcePushNotificationFromAdmin(token, elasticEventId, notification.getMessageDetail());
     }
-    
+
     @GetMapping("/events/organize/{organizeId}")
     public ResponseEntity findAllEventOfOrganize(@PathVariable String organizeId) {
         return eventService.findAllEventOfOrganize(organizeId);
@@ -88,11 +88,23 @@ public class EventController {
         return new ResponseEntity(eventService.saveuserNotification(userNotification), HttpStatus.CREATED);
     }
 
+    @PostMapping("/notification/subscribe/{topic}")
+    public ResponseEntity subscribeTopic(@PathVariable String topic, @RequestBody UserNotification userNotification) throws FirebaseMessagingException {
+        return eventService.subscribeEventTopic(userNotification.getNotificationToken(), topic);
+    }
+
+    @PostMapping("/notification/push/{topic}")
+    public ResponseEntity pushNotificationTopic(@PathVariable String topic, @RequestBody UserNotification userNotification) throws FirebaseMessagingException {
+//        Message build = Message.builder().setWebpushConfig(WebpushFcmOptions.withLink("event").);
+        return eventService.pushNotificationTopic(userNotification, topic);
+        //  return eventService.pushNotificationTopic(userNotification, topic);
+    }
+
     @GetMapping("/events/tickets/{uid}")
     public ResponseEntity findUserTicketHistory(@PathVariable String uid) {
         return eventService.findUserTicketHistory(uid);
     }
-    
+
     @GetMapping("/events/tickets/{uid}/{elasticEventId}")
     public ResponseEntity findUserTicketHistory(@PathVariable String uid, @PathVariable String elasticEventId) {
         return eventService.findUserTicketHistoryByElasticEventId(uid, elasticEventId);
@@ -100,15 +112,15 @@ public class EventController {
 
     @PostMapping("/event/join")
     public ResponseEntity userJoinEvent(
-            @RequestHeader(name = "Authorization", required = true)String token,
+            @RequestHeader(name = "Authorization", required = true) String token,
             @RequestBody UserEventTicket userJoinEvent) {
         System.out.println("WTF this helll !!!!!!!!!!!!");
-        return eventService.userJoinEvent(token,userJoinEvent);
+        return eventService.userJoinEvent(token, userJoinEvent);
     }
 
     @PostMapping("/event/reserve")
     public ResponseEntity userReserveTicket(
-            @RequestBody UserEventTicket userJoinEvent, 
+            @RequestBody UserEventTicket userJoinEvent,
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "20") int contentPerPage) {
         System.out.println("---- Reserve -----");
@@ -122,12 +134,12 @@ public class EventController {
     }
 
     @PostMapping("/event/delete")
-    public ResponseEntity deleteEventByElasticId(@RequestBody  UserEventTicket deletedEvent) {
+    public ResponseEntity deleteEventByElasticId(@RequestBody UserEventTicket deletedEvent) {
         return eventService.deleteEventByElasticId(deletedEvent);
     }
-    
+
     @GetMapping("/test/{elasticEventId}")
-    public ResponseEntity deleteEventByElasticIdTest(@PathVariable  String elasticEventId) {
+    public ResponseEntity deleteEventByElasticIdTest(@PathVariable String elasticEventId) {
         eventService.pushNotificationForRemindEvent();
         return eventService.pushNotificationForRemindEvent();
     }
@@ -138,17 +150,17 @@ public class EventController {
             @RequestParam(required = false, defaultValue = "20") int contentPerPage) {
         return eventService.findAllPopularEvent();
     }
-    
+
     @PostMapping("/event/review")
-    public ResponseEntity reviewEvent(@RequestHeader(name = "Authorization", required = true) String token,@RequestBody Review userReview) {
-   
-        return eventService.userReviewEvent(token,userReview);
+    public ResponseEntity reviewEvent(@RequestHeader(name = "Authorization", required = true) String token, @RequestBody Review userReview) {
+
+        return eventService.userReviewEvent(token, userReview);
     }
-    
+
     @GetMapping("/event/reviews/{elasticEventId}")
     public ResponseEntity findAllReviewOfEvent(@PathVariable String elasticEventId) {
-        
-                return eventService.findAllReviewOfEvent(elasticEventId);
+
+        return eventService.findAllReviewOfEvent(elasticEventId);
 
     }
 
@@ -175,7 +187,7 @@ public class EventController {
         }
         return new ResponseEntity<List<Event>>(
                 eventService.findEventByUsingFilter(
-                        eventTags, isRecently, sortDate,isPopularEvent, eventDetail,
+                        eventTags, isRecently, sortDate, isPopularEvent, eventDetail,
                         longitude, latitude, areaOfEvent,
                         page, contentPerPage), HttpStatus.OK
         );
@@ -199,7 +211,7 @@ public class EventController {
     public ResponseEntity getAllEventCatagory() {
         return eventService.getAllEventCategory();
     }
-    
+
     @DeleteMapping("/category/{categoryId}")
     public ResponseEntity deleteCategoryById(@PathVariable String categoryId) {
         System.out.println("---- User View Event -----");
