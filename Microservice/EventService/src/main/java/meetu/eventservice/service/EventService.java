@@ -171,7 +171,9 @@ public class EventService {
     @Value("${community.service}")
     private String COMMUNITYSERVICE_URL;
 
-    private final String eventsIndex = "meetu.events";
+    private String eventsIndex = "meetu.events";
+
+    private String newEventTopic = "new-event";
 
     public void pushNotificationToAllUserWhenEventCreate(String eventName, String eventDetail) {
         // Create a list containing up to 100 messages.
@@ -253,6 +255,12 @@ public class EventService {
             savedEventMongoDB = eventRepository.save(event);
             System.out.println("fuq !!!");
             System.out.println(savedEventMongoDB);
+            // push notification for created event
+            UserNotification userNotification = new UserNotification();
+            userNotification.setMessageDetail("Recently event : " + savedEventMongoDB.getEventName());
+            userNotification.setLinkUrl("/event/" + elasticEventid);
+            userNotification.setPictureUrl(savedEventMongoDB.getEventPictureCover());
+            this.pushNotificationTopic(userNotification, this.newEventTopic);
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             savedEventMongoDB = eventRepository.save(event);
@@ -266,7 +274,7 @@ public class EventService {
                 }
             }
         }
-        this.pushNotificationToAllUserWhenEventCreate(event.getEventName(), event.getEventDetail());
+
         return ResponseEntity.status(HttpStatus.CREATED).body(savedEventMongoDB);
     }
 
@@ -902,12 +910,17 @@ public class EventService {
         return;
     }
 
-    public ResponseEntity subscribeEventTopic(String notificationToken, String topic) throws FirebaseMessagingException {
+    public ResponseEntity subscribeEventTopic(String notificationToken, String topic) {
         List<String> registrationTokens = Arrays.asList(
                 notificationToken
         );
-        TopicManagementResponse response = FirebaseMessaging.getInstance().subscribeToTopic(registrationTokens, topic);
-        System.out.println(response.getSuccessCount() + " tokens were subscribed successfully");
+        TopicManagementResponse response;
+        try {
+            response = FirebaseMessaging.getInstance().subscribeToTopic(registrationTokens, topic);
+            System.out.println(response.getSuccessCount() + " tokens were subscribed successfully");
+        } catch (FirebaseMessagingException ex) {
+            Logger.getLogger(EventService.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -964,24 +977,48 @@ public class EventService {
         }
     }
 
-    public ResponseEntity pushNotificationTopic(UserNotification notificationToken, String topic) {
-        String image = "https://firebasestorage.googleapis.com/v0/b/meetu-69b29.appspot.com/o/eventPicture%2FAnnotation%202019-11-16%20123942.png_2019-11-16T07%3A34%3A40.195Z?alt=media&token=ee2c1942-ec53-4431-af93-e3e921e8c35b";
+        public ResponseEntity pushNotificationTopic(UserNotification notification, String topic) {
+//        String image = "https://firebasestorage.googleapis.com/v0/b/meetu-69b29.appspot.com/o/eventPicture%2FAnnotation%202019-11-16%20123942.png_2019-11-16T07%3A34%3A40.195Z?alt=media&token=ee2c1942-ec53-4431-af93-e3e921e8c35b";
+//        Message build = Message.builder().setWebpushConfig(
+//                WebpushConfig.builder()
+//                        .setFcmOptions(WebpushFcmOptions.withLink("event"))
+//                        .setNotification(
+//                                WebpushNotification.builder().setTitle("MeetU").setBody("Test Link go to Event page").setImage(image).setIcon("/icon.png").build())
+//                        .build()).setTopic(topic).build();
         Message build = Message.builder().setWebpushConfig(
                 WebpushConfig.builder()
-                        .setFcmOptions(WebpushFcmOptions.withLink("event"))
+                        .setFcmOptions(WebpushFcmOptions.withLink(notification.getLinkUrl()))
                         .setNotification(
-                                WebpushNotification.builder().setTitle("MeetU").setBody("Test Link go to Event page").setImage(image).setIcon("/icon.png").build())
+                                WebpushNotification.builder()
+                                        .setTitle(notification.getTitle())
+                                        .setImage(notification.getPictureUrl())
+                                        .setBody(notification.getMessageDetail())
+                                        .setIcon("/icon.png").build())
                         .build()).setTopic(topic).build();
 
-        String response =null;
+        String response = null;
         try {
             response = FirebaseMessaging.getInstance().send(build);
         } catch (FirebaseMessagingException ex) {
             Logger.getLogger(EventService.class.getName()).log(Level.SEVERE, null, ex);
         }
-// Response is a message ID string.
         System.out.println("Successfully sent message: " + response);
         return null;
+    }
+
+    public ResponseEntity subscribeAllEventThatUserHaveTicket(String userNotification, String uid) {
+        try {
+            ResponseEntity<User> userResponse = restTemplate.getForEntity(USERSERVICE_URL + "/user" + uid, User.class);
+            User userBody = userResponse.getBody();
+            List<UserEventTicket> userEventTicketForSubscribeList = userEventTicketRespository.findByUid(uid);
+            userEventTicketForSubscribeList.forEach((subscribeEvent) -> {
+                System.out.println("Subscribe loop : " + uid + " | ElasticEventID : " + subscribeEvent.getElasticEventId());
+                this.subscribeEventTopic(userNotification, subscribeEvent.getElasticEventId());
+            });
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (HttpStatusCodeException ex) {
+            return ResponseEntity.status(ex.getStatusCode()).build();
+        }
     }
 
 }

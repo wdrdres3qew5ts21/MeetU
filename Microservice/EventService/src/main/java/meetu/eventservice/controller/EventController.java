@@ -87,6 +87,11 @@ public class EventController {
     public ResponseEntity saveUserNotificationToken(@RequestBody UserNotification userNotification) {
         return new ResponseEntity(eventService.saveuserNotification(userNotification), HttpStatus.CREATED);
     }
+    
+    @PostMapping("/notification/subscribe/events/user/{uid}")
+    public ResponseEntity subscribeAllEventThatUserHaveTicket(@RequestBody UserNotification userNotification, @PathVariable String uid) throws FirebaseMessagingException {
+        return eventService.subscribeAllEventThatUserHaveTicket(userNotification.getNotificationToken(), uid);
+    }
 
     @PostMapping("/notification/subscribe/{topic}")
     public ResponseEntity subscribeTopic(@PathVariable String topic, @RequestBody UserNotification userNotification) throws FirebaseMessagingException {
