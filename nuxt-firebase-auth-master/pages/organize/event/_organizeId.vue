@@ -49,7 +49,15 @@
         <!-- Organize Detail-->
         <v-tab-item>
           <v-card flat>
-            <v-card-text>{{ organize.organizeDetail ||'Organize Description ...'}}</v-card-text>
+            <v-card-text>{{ organize.organizeDetail ||'Organize Description ...'}}
+            <br><br>
+            {{organize.email}}
+            <br>
+            {{organize.phone}}
+            
+
+
+            </v-card-text>
           </v-card>
         </v-tab-item>
         <!-- Event Of Organize List -->
