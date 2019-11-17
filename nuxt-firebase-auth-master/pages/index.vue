@@ -8,7 +8,12 @@
         v-for="(recentlyEvent,i) in recentlyEventList"
         :key="i"
       >
-        <v-carousel-item :src="recentlyEvent.eventPictureCover"></v-carousel-item>
+        <v-carousel-item :src="recentlyEvent.eventPictureCover" style="width:350px;height:250px;"></v-carousel-item>
+
+        <!-- <v-carousel-item>
+          <img :src="popularEvent.eventPictureCover" style="width:350px;height:250px;" />
+        </v-carousel-item> -->
+        
       </nuxt-link>
     </v-carousel>
     <v-container class="bg">
@@ -28,13 +33,22 @@
             </slide>
             <slide>
               <v-flex xs12 sm6 offset-sm>
-                <nuxt-link :to="`/search?`">
+                <!-- <v-img :src="testImg"></v-img> -->
+
+                <nuxt-link :to="`/event?`">
                   <v-card class="BackgroundImg" width="400px" height="295px">
                     <br />
                     <br />
                     <br />
                     <br />
                     <br />
+                    <!-- <center>
+                      <v-icon style="color:#fff" large>add_circle_outline</v-icon>
+                    </center>
+                    <b></b>
+                    <center>
+                      <h2 style="color:#fff">View More</h2>
+                    </center>-->
                   </v-card>
                 </nuxt-link>
               </v-flex>

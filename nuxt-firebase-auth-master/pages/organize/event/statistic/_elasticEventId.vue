@@ -94,13 +94,13 @@
       </v-tab-item>
 
       <v-tab-item>
-        <br>
         <v-flex xs12>
           <v-img
             :src="pushMessage"
             aspect-ratio="1"
+            class="grey lighten-2"
             max-width="1250"
-            max-height="470"
+            max-height="275"
           />
         </v-flex>
         <v-flex xs12>
@@ -144,7 +144,7 @@ export default {
       imagePost: null,
       postPictureListsUrl: [],
       postPictureLists: null,
-      pushMessage: require(`@/assets/default/notification1_2.png`),
+      pushMessage: require(`@/assets/default/push-message.png`),
       defaultImage: require(`@/assets/default/community.png`),
       remove: ["remove"],
       post: "",
