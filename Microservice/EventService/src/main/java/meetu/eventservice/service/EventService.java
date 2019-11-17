@@ -1013,8 +1013,7 @@ public class EventService {
             return ResponseEntity.status(ex.getStatusCode()).build();
         }
     }
-
-    public ResponseEntity pushNotificationToEventTopic(UserNotification userNotification, String elasticEventId) {
+ public ResponseEntity pushNotificationToEventTopic(UserNotification userNotification, String elasticEventId) {
         Event eventForPushNotification = eventRepository.findByElasticEventId(elasticEventId);
         if (eventForPushNotification != null) {
             userNotification.setPictureUrl(eventForPushNotification.getEventPictureCover());
@@ -1022,5 +1021,6 @@ public class EventService {
         }
         return ResponseEntity.status(HttpStatus.OK).build();
     }
+   
 
 }

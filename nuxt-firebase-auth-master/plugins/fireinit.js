@@ -44,7 +44,7 @@ export default (context) => {
           }
           // Initial Subscribe New Feed Event & Ticket
           axios.post(`${process.env.EVENT_SERVICE}/notification/subscribe/new-event`, notificationBody)
-          axios.post(`${process.env.EVENT_SERVICE}/notification/subscribe/events/user/${uid}`, notificationBody)
+          axios.post(`${process.env.EVENT_SERVICE}/notification/subscribe/events/user/${store.getters.getUser.uid}`, notificationBody)
           console.log(notificationToken)
         }).catch(err => {
           console.log(err)

@@ -101,6 +101,7 @@ public class EventController {
 
     @PostMapping("/notification/push/event/{topic}")
     public ResponseEntity pushNotificationToEventTopic(@PathVariable String topic, @RequestBody UserNotification userNotification) throws FirebaseMessagingException {
+        System.out.println("Push notification from admin !!!!");
         return eventService.pushNotificationToEventTopic(userNotification, topic);
     }
 
