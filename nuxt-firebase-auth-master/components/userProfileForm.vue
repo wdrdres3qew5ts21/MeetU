@@ -7,11 +7,13 @@
     <br />
 
     <v-layout justify-center row wrap>
+
       <v-flex xs12>
         <v-card class="elevation-0 mx-auto" color="white" max-width="150" style="border-radius:50%">
           <v-img :aspect-ratio="1/1" :src="getUser.photoURL"></v-img>
         </v-card>
       </v-flex>
+
     </v-layout>
     <br />
 
@@ -37,10 +39,14 @@
           <v-flex xs5>
             <h3>Your Badges</h3>
           </v-flex>
-          <v-flex xs7 v-for="(item,index) in badges" :key="index" xs2>
+          <v-flex xs7 v-for="(item,index) in badges.slice(0, 2)" :key="index" xs2>
+ 
+ <nuxt-link :to="'/ranking/badge/myBadge'">
+ 
             <v-avatar size="40">
               <v-img :src="item.badgePicture"></v-img>
             </v-avatar>
+</nuxt-link>
           </v-flex>
         </v-layout>
 
