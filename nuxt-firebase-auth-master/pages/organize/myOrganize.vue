@@ -27,7 +27,7 @@
 
       <div v-if="organizeList == 0">
         <!-- <h3>Name: {{userForm.firstName}} {{userForm.lastName}}</h3> -->
-        <p style="color:grey">( You are not the organize. )</p>
+        <center><p style="color:grey">( You are not the organize. )</p></center>
         
      
     
