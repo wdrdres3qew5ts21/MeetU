@@ -500,6 +500,16 @@ export default {
             console.log(reserveTicket.data);
             this.reserveTicket = reserveTicket.data;
             this.isViewTicketDetail = !this.isViewTicketDetail;
+            // force subscribe event after join
+            let notificationToken = localStorage.getItem(
+              "notificationToken",
+              notificationToken
+            );
+            let notificationBody = { notificationToken };
+            axios.post(
+              `${process.env.EVENT_SERVICE}/notification/subscribe/events/user/${store.getters.getUser.uid}`,
+              notificationBody
+            );
           })
           .catch(error => {
             console.log(error.response);
