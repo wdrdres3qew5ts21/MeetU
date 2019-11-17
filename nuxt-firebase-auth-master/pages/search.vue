@@ -238,7 +238,7 @@
               title="View More"
             >View More</a>
           </div>
-        </div> -->
+        </div>-->
       </div>
     </center>
   </div>
@@ -267,8 +267,8 @@ export default {
       widgets: false,
       search: "",
       sortDate: [
-        { label: "Recently", value: "desc" },
-        { label: "Old date", value: "asc" }
+        { label: "Descending", value: "desc" },
+        { label: "Ascending", value: "asc" }
       ],
       popular: ["Most popular", ""],
       unit: [
@@ -310,6 +310,14 @@ export default {
   },
   mounted() {
     this.loadCategoryList();
+    let filter = this.$route.query.filter;
+    if (filter === "isPopular") {
+      this.isPopular = true;
+      this.searchEventByFilter();
+    } else if (filter === "isRecently") {
+      this.isRecently = true;
+      this.searchEventByFilter();
+    }
   },
   methods: {
     ...mapActions(["autoSignIn", "setCategory"]),
@@ -359,7 +367,7 @@ export default {
       query += `&isPopularEvent=${this.isPopular}`;
 
       query += `&sortDate=${this.filterForm.sortByDate}`;
-      console.log("--------------------- Search ----------------------------")
+      console.log("--------------------- Search ----------------------------");
       console.log(query);
       let searchedEventList = await axios.get(query);
       searchedEventList = searchedEventList.data;
@@ -377,7 +385,6 @@ export default {
 </script>
 
 <style lang="css">
-
 /* 
 .page {
   position: fixed;
@@ -481,7 +488,6 @@ export default {
       opacity: 1;
     }
   } */
-
 </style>
 
 

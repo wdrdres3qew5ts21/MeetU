@@ -1,6 +1,6 @@
 <template>
   <div>
-    <br>
+    <br />
     <center>
       <h2 id="top">Let's Find Community !</h2>
       <v-container>
@@ -112,7 +112,7 @@
       <div v-if="communityList.length > 0">
         <div v-for="(community, index) in communityList" :key="index">
           <nuxt-link :to="`/community/${community.communityId}`">
-          <!-- communityForm.communityPictureCover==undefined?defaultImage: communityForm.communityPictureCover  -->
+            <!-- communityForm.communityPictureCover==undefined?defaultImage: communityForm.communityPictureCover  -->
             <community-card
               :communityPictureCover="community.communityPictureCover==undefined?defaultImage: community.communityPictureCover"
               :communityName="community.communityName"
@@ -151,7 +151,7 @@ export default {
       communityName: "",
       interestTags: [],
       categoryList: [],
-      defaultImage: require(`@/assets/default/community.png`) 
+      defaultImage: require(`@/assets/default/community.png`)
     };
   },
   watch: {
@@ -163,7 +163,11 @@ export default {
   },
   mounted() {
     this.loadCategoryList();
-    //  this.communityList = mockCommunityList;
+    let allQuery = this.$route.query.all;
+    console.log(this.$route.query)
+    if (allQuery == "true") {
+      this.findMatchingCommunity();
+    }
   },
   methods: {
     ...mapActions(["autoSignIn", "setCategory", "setBadgeDetail"]),

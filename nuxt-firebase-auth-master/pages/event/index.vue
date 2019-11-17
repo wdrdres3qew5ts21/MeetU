@@ -1,12 +1,13 @@
 <template>
-  <div> 
-    <br>
+  <div>
+    <br />
     <h1>{{categoryLabel}}</h1>
     <event-list v-if="eventList.length>0" :eventList="eventList"></event-list>
     <center v-else>
-      <br><br>
+      <br />
+      <br />
       <v-img class="notFoundImg" v-if="showTest" :src="notFoundImg"></v-img>
-</center>
+    </center>
     <!-- <v-layout row wrap>
       <v-text-field
         class="questrial no-top-padding"
@@ -17,17 +18,16 @@
       <v-flex class="text-xs-right">
         <v-btn class="white--text" depressed small color="#341646" ref="searchButton">Search</v-btn>
       </v-flex>
-    </v-layout> -->
+    </v-layout>-->
     <!-- <input type="text" v-model="areaOfEvent" placeholder="input area" /> -->
     <center>
       <!-- <h2>Search an event</h2> -->
       <!-- <p>or</p> -->
 
-
       <!-- <v-btn
         color="primary"
         @click="findEventInArea()"
-      >Click to search nearby event for {{areaOfEvent}}</v-btn> -->
+      >Click to search nearby event for {{areaOfEvent}}</v-btn>-->
 
       <!-- <v-flex class="text-xs-right">
               <v-btn
@@ -38,18 +38,10 @@
                 ref="searchButton"
                 @click="searchEventByFilter()"
               >Search</v-btn>
-            </v-flex> -->
-
-
-
-
+      </v-flex>-->
     </center>
   </div>
 </template>
-
-
-
-
 
 <script>
 import axios from "axios";
@@ -104,7 +96,6 @@ export default {
       icons: ["mdi-emoticon"],
       showTest: true,
       notFoundImg: require("@/assets/default/e1.png")
-    
     };
   },
   mounted() {
@@ -202,7 +193,7 @@ export default {
       } else {
         console.log("not support fuq");
       }
-    },
+    }
 
     //     searchByFilter() {
     //   console.log(this.filterForm.sortByDate);

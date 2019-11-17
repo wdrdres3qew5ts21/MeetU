@@ -29,31 +29,19 @@
             </slide>
             <slide>
               <v-flex  xs12 sm6 offset-sm>
-                <!-- <v-img :src="testImg"></v-img> -->
-
-                <nuxt-link :to="`/event?`">
+                <nuxt-link :to="`/search?`">
                   <v-card class="BackgroundImg" width="400px" height="295px">
                     <br />
                     <br />
                     <br />
                     <br />
                     <br />
-                    <!-- <center>
-                      <v-icon style="color:#fff" large>add_circle_outline</v-icon>
-                    </center>
-                    <b></b>
-                    <center>
-                      <h2 style="color:#fff">View More</h2>
-                    </center> -->
                   </v-card>
                 </nuxt-link>
-
-
               </v-flex>
             </slide>
           </carousel>
         </client-only>
-        <!-- <event-list :eventList="recentlyEventList" link="/event"></event-list> -->
         <br />
       </div>
 
@@ -67,7 +55,7 @@
           </slide>
           <slide>
             <v-flex 3 xs12 sm6 offset-sm>
-              <nuxt-link :to="`/event?`">
+              <nuxt-link :to="`/search?filter=isPopular`">
                 <v-card class="BackgroundImg" width="400px" height="295px">
                   <br />
                   <br />
@@ -99,7 +87,7 @@
           </slide>
           <slide>
             <v-flex 3 xs12 sm6 offset-sm>
-              <nuxt-link :to="`/event?`">
+              <nuxt-link :to="`/search?filter=isRecently`">
                 <v-card class="BackgroundImg" width="400px" height="295px">
                   <br />
                   <br />
@@ -122,8 +110,7 @@
       <br />
       <!-- Community -->
       <h2>Community</h2>
-      <nuxt-link :to="`/community/hhjn`">
-        <!-- <nuxt-link :to="`/community/${community.communityId}`"> -->
+      <nuxt-link :to="`/community`">
         <community-card
           v-for="(community, index) in communityList"
           :key="index"
@@ -134,7 +121,7 @@
       <br />
       <br />
       <center>
-        <nuxt-link :to="``" style="text-decoration-line:none;">
+        <nuxt-link :to="`/community?all=true`" style="text-decoration-line:none;">
           <v-btn class="black--text" outline color="#341646" depressed large>View more</v-btn>
         </nuxt-link>
       </center>
@@ -143,7 +130,7 @@
       <center>
         <h2 class="upgradeToOrganizer">
           Use MeetU for your
-          <br />next events & activities.
+          <br />next events &amp; activities.
         </h2>
         <br />
         <nuxt-link to="/organize/becomeOrganizer" style="text-decoration-line:none;">
