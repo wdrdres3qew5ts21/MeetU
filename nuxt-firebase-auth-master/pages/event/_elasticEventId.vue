@@ -191,12 +191,14 @@
         color="primary"
         id="ticketSection"
       >GET TICKET</v-btn>
-      <v-btn v-else
+      <v-btn
+        v-else
         @click="$router.push(`/ticket/${elasticEventId}`)"
         block
         :disabled="!isTicketSelected"
         color="primary"
-        id="ticketSection">View My Ticket</v-btn>
+        id="ticketSection"
+      >View My Ticket</v-btn>
 
       <br />
 
@@ -326,47 +328,48 @@ export default {
         "https://www.blognone.com/sites/default/files/externals/41bbf3e3153999d8d2111d753cf1d5f2.jpg"
     };
   },
-  asyncData({ params, error }) {
-    let elasticEventId = params.elasticEventId;
-    console.log(elasticEventId);
-    if (elasticEventId != "previewOnly") {
-      console.log("------------ Async Data  -----------");
-      return axios
-        .get(`${process.env.EVENT_SERVICE}/event/${elasticEventId}`)
-        .then(response => {
-          let data = response.data;
-          return {
-            elasticEventId: data.elasticEventId,
-            numberOfTicket: data.numberOfTicket,
-            eventName: data.eventName,
-            eventDetail: data.eventDetail,
-            eventPictureCover: data.eventPictureCover,
-            eventPictureLists: data.eventPictureLists,
-            eventStartDate: data.eventStartDate,
-            eventEndDate: data.eventEndDate,
-            createEventDate: data.createEventDate,
-            location: data.location,
-            badge: data.badge,
-            organizeId: data.organize.organizeId,
-            organizeName: data.organize.organizeName,
-            eventTags: data.eventTags,
-            marker: {
-              title: data.eventName,
-              detail: data.eventDetail,
-              position: {
-                lat: data.location.geopoint.lat,
-                lng: data.location.geopoint.lon
-              }
-            }
-          };
-        })
-        .catch(err => {
-          console.log("!!!!!!!!!!!!!!!!! Boom Not found !!!!!!!!!!");
-          console.log(err);
-          return error({ statusCode: 404, message: eventNotFound(err) });
-        });
-    }
-  },
+  // asyncData({ params, error }) {
+  //   let elasticEventId = params.elasticEventId;
+  //   console.log(elasticEventId);
+  //   if (elasticEventId != "previewOnly") {
+  //     console.log("------------ Async Data  -----------");
+  //     return axios
+  //       .get(`${process.env.EVENT_SERVICE}/event/${elasticEventId}`)
+  //       .then(response => {
+  //         let data = response.data;
+  //         return {
+  //           elasticEventId: data.elasticEventId,
+  //           numberOfTicket: data.numberOfTicket,
+  //           eventName: data.eventName,
+  //           eventDetail: data.eventDetail,
+  //           eventPictureCover: data.eventPictureCover,
+  //           eventPictureLists: data.eventPictureLists,
+  //           eventStartDate: data.eventStartDate,
+  //           eventEndDate: data.eventEndDate,
+  //           createEventDate: data.createEventDate,
+  //           location: data.location,
+  //           badge: data.badge,
+  //           organizeId: data.organize.organizeId,
+  //           organizeName: data.organize.organizeName,
+  //           eventTags: data.eventTags,
+  //           totalView: data.totalView,
+  //           marker: {
+  //             title: data.eventName,
+  //             detail: data.eventDetail,
+  //             position: {
+  //               lat: data.location.geopoint.lat,
+  //               lng: data.location.geopoint.lon
+  //             }
+  //           }
+  //         };
+  //       })
+  //       .catch(err => {
+  //         console.log("!!!!!!!!!!!!!!!!! Boom Not found !!!!!!!!!!");
+  //         console.log(err);
+  //         return error({ statusCode: 404, message: eventNotFound(err) });
+  //       });
+  //   }
+  // },
   mounted() {
     this.elasticEventId = this.$route.params.elasticEventId;
     console.log(this.$route.params.elasticEventId);
@@ -377,9 +380,9 @@ export default {
       this.loadOrganizeDetail(this.getEventTemplate.organize.organizeId);
       this.loadBadgeDetail(this.getEventTemplate.badge.badgeId);
     } else {
+      this.loadEvent();
       this.verifyIsUserHaveTicket();
       this.userViewEvent();
-      this.loadOrganizeDetail(this.organizeId);
     }
   },
   computed: {
@@ -392,58 +395,60 @@ export default {
   },
   watch: {
     "$route.params.elasticEventId"() {
+      this.loadEvent();
+    }
+  },
+  methods: {
+    ...mapActions(["updateCurrentLocation", "saveEventAndUpload"]),
+    loadEvent() {
       axios
-        .get(`${process.env.EVENT_SERVICE}/event/${elasticEventId}`)
+        .get(`${process.env.EVENT_SERVICE}/event/${this.elasticEventId}`)
         .then(response => {
           let data = response.data;
-          return {
-            elasticEventId: data.elasticEventId,
-            numberOfTicket: data.numberOfTicket,
-            eventName: data.eventName,
-            eventDetail: data.eventDetail,
-            eventPictureCover: data.eventPictureCover,
-            eventPictureLists: data.eventPictureLists,
-            eventStartDate: data.eventStartDate,
-            eventEndDate: data.eventEndDate,
-            createEventDate: data.createEventDate,
-            location: data.location,
-            badge: data.badge,
-            organizeId: data.organize.organizeId,
-            organizeName: data.organize.organizeName,
-            eventTags: data.eventTags,
-            marker: {
+          (this.numberOfTicket = data.numberOfTicket),
+            (this.eventName = data.eventName),
+            (this.eventDetail = data.eventDetail),
+            (this.eventPictureCover = data.eventPictureCover),
+            (this.eventPictureLists = data.eventPictureLists),
+            (this.eventStartDate = data.eventStartDate),
+            (this.eventEndDate = data.eventEndDate),
+            (this.createEventDate = data.createEventDate),
+            (this.location = data.location),
+            (this.badge = data.badge),
+            (this.organizeId = data.organize.organizeId),
+            (this.organizeName = data.organize.organizeName),
+            (this.eventTags = data.eventTags),
+            (this.totalView = data.totalView),
+            (this.marker = {
               title: data.eventName,
               detail: data.eventDetail,
               position: {
                 lat: data.location.geopoint.lat,
                 lng: data.location.geopoint.lon
               }
-            }
-          };
+            });
+          this.loadOrganizeDetail(data.organize.organizeId);
         })
         .catch(err => {
           console.log("!!!!!!!!!!!!!!!!! Boom Not found !!!!!!!!!!");
           console.log(err);
-          return error({ statusCode: 404, message: eventNotFound(err) });
         });
-    }
-  },
-  methods: {
-    ...mapActions(["updateCurrentLocation", "saveEventAndUpload"]),
+    },
     verifyIsUserHaveTicket() {
       if (localStorage.getItem("jwtToken")) {
         console.log("--- is user have ticket --");
-        axios.get(
-          `${process.env.EVENT_SERVICE}/events/tickets/${this.getUser.uid}/${this.elasticEventId}`
-        )
-        .then(ownedTicketResponse =>{
-          console.log("fuckkkkkkkkkkkkkkkkkkkk")
-          if(ownedTicketResponse.data[0].elasticEventId){
-            console.log("ownt icket already")
-            this.isOwnTicket = true
-            this.ticket = ownedTicketResponse.data[0]
-          }
-        });
+        axios
+          .get(
+            `${process.env.EVENT_SERVICE}/events/tickets/${this.getUser.uid}/${this.elasticEventId}`
+          )
+          .then(ownedTicketResponse => {
+            console.log("fuckkkkkkkkkkkkkkkkkkkk");
+            if (ownedTicketResponse.data[0].elasticEventId) {
+              console.log("ownt icket already");
+              this.isOwnTicket = true;
+              this.ticket = ownedTicketResponse.data[0];
+            }
+          });
       }
     },
     createEventAndUploadData() {
@@ -563,7 +568,7 @@ export default {
             title: "Fail to reserve ticket !",
             text: "Please Login first!"
           });
-          this.$router.push('/login')
+          this.$router.push("/login");
         }
       } else {
         this.$swal({

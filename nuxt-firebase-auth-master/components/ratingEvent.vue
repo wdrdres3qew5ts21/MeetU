@@ -135,6 +135,7 @@ export default {
             title: "Review Success !",
             text: "Review Success"
           });
+          this.reviewContent.isReview = true
         })
         .catch(err => {
           this.$swal({
