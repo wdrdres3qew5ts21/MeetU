@@ -117,7 +117,7 @@ public class EventController {
     }
 
     @GetMapping("/events/tickets/{uid}/{elasticEventId}")
-    public ResponseEntity findUserTicketHistory(@PathVariable String uid, @PathVariable String elasticEventId) {
+    public ResponseEntity findUserTicketHistoryByElasticEventId(@PathVariable String uid, @PathVariable String elasticEventId) {
         return eventService.findUserTicketHistoryByElasticEventId(uid, elasticEventId);
     }
 
@@ -160,6 +160,12 @@ public class EventController {
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "20") int contentPerPage) {
         return eventService.findAllPopularEvent();
+    }
+    
+    @GetMapping("/event/review/user/{uid}/review/{elasticEventId}")
+    public ResponseEntity getUserReviewOfEvent(@PathVariable String uid, @PathVariable String elasticEventId ) {
+        System.out.println("find review event of user !!!");
+        return eventService.getUserReviewOfEvent(uid, elasticEventId);
     }
 
     @PostMapping("/event/review")

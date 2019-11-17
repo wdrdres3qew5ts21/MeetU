@@ -13,5 +13,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
  * @author Test
  */
 public interface ReviewRepository extends MongoRepository<Review, String>{
+
+    public Review findByUidAndElasticEventId(String uid, String elasticEventId);
     
 }

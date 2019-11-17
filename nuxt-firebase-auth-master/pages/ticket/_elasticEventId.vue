@@ -4,7 +4,7 @@
     <!-- <h1>Ticket(s)</h1> -->
     <!-- <ticketDetail :ticketEvent="ticketEvent"></ticketDetail> -->
     <div v-if="isParticipate">
-      <rating-event :ticketEvent="ticketEvent" />
+      <rating-event :ticketEvent="ticketEvent" :reviewContent="reviewContent" />
     </div>
     <div class="text-center">
       <br />
@@ -16,7 +16,9 @@
       <br />
       <br />
       <center>
-        <qrcode :value="qrCodeSrc" :options="{ width: 230 }"></qrcode>
+        <client-only>
+          <qrcode :value="qrCodeSrc" :options="{ width: 230 }"></qrcode>
+        </client-only>
       </center>
 
       <div class="text-center">
@@ -73,6 +75,8 @@ export default {
   data() {
     return {
       isCameraOpen: false,
+      reviewContent: {},
+      elasticEventId: "",
       ticketEvent: {
         ticketDetail: [
           { eventName: "E-Ticket", organize: { organizeName: "" } }
@@ -86,16 +90,17 @@ export default {
     ...mapGetters(["getUser"])
   },
   mounted() {
+    this.elasticEventId = this.$route.params.elasticEventId;
     this.loadTicketDetail();
-    console.log(this.$route.params.ticketId);
+    this.loadUserReview();
+    console.log(this.$route.params.elasticEventId);
   },
   methods: {
     loadTicketDetail() {
-      let ticketId = this.$route.params.ticketId;
       console.log(this.getUser.uid);
       axios
         .get(
-          `${process.env.EVENT_SERVICE}/events/tickets/${this.getUser.uid}/${ticketId}`
+          `${process.env.EVENT_SERVICE}/events/tickets/${this.getUser.uid}/${this.elasticEventId}`
         )
         .then(ticketResponse => {
           this.ticketEvent = ticketResponse.data[0];
@@ -110,6 +115,16 @@ export default {
             ticketKey: ticketEvent.ticketKey,
             uid: this.getUser.uid
           });
+        });
+    },
+    loadUserReview() {
+      axios
+        .get(
+          `${process.env.EVENT_SERVICE}/event/review/user/${this.getUser.uid}/review/${this.elasticEventId}`
+        )
+        .then(reviewResponse => {
+          this.reviewContent = reviewResponse.data
+          console.log(this.reviewContent)
         });
     },
     onDecode(decodedString) {
