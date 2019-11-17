@@ -21,7 +21,6 @@
               clearable
               v-model="communityForm.categorySelected"
               multiple
-              required
               sm6
               xs2
             >
@@ -41,7 +40,6 @@
             outline
             name="description"
             label="Description"
-            color="pink"
             rows="6"
             required
             hide-details
@@ -53,11 +51,16 @@
         <br />
         <v-btn
           block
+          v-if="!valid | communityForm.categorySelected==0"
+          color="grey"
+          disabled="true"
+          class="mb-2 white--text"
+        >Create Community</v-btn>
+        <v-btn block
+          v-else
           color="#341646"
           class="mb-2 white--text"
-          :disabled="!valid"
-          @click="createCommunity()"
-        >Create Community</v-btn>
+          @click="createCommunity">Create Community</v-btn>
         <!-- </nuxt-link> -->
       </v-form>
     </div>
@@ -123,7 +126,8 @@ export default {
       let loader = this.$loading.show();
       axios
         .post(
-          `${process.env.COMMUNITY_SERVICE}/community`, this.communityForm,
+          `${process.env.COMMUNITY_SERVICE}/community`,
+          this.communityForm,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
@@ -137,7 +141,7 @@ export default {
             title: "Create community success!!",
             text: `Enjoy  your community`
           });
-          this.$router.push(`/community/${communityResponse.data.communityId}`)
+          this.$router.push(`/community/${communityResponse.data.communityId}`);
         })
         .catch(err => {
           loader.hide();

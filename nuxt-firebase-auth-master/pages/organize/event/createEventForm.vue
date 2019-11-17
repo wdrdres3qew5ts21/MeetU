@@ -188,9 +188,7 @@
       <v-layout v-show="isShowLocation" row wrap>
         <client-only>
           <label>
-            AutoComplete
-            <GmapAutocomplete @place_changed="setPlace"></GmapAutocomplete>
-            <button @click="usePlace">Add</button>
+            สถานที่จัดกิจกรรม: <GmapAutocomplete style="width:auto" @place_changed="setPlace"></GmapAutocomplete>
           </label>
           <br />
           <GmapMap
@@ -504,7 +502,7 @@ export default {
       "setEventLocation",
       "setGeopoint",
       "setBadgeDetail",
-      "setIsPreviewPage",
+      "setIsPreviewPage"
     ]),
     setDescription(description) {
       this.description = description;
