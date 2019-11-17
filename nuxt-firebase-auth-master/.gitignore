@@ -11,6 +11,7 @@ npm-debug.log
 
 # Nuxt generate
 dist
+public
 plugins/firebase-auth.js
 middleware/check-auth.js
 backups

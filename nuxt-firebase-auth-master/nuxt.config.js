@@ -1,6 +1,7 @@
 const env = require('dotenv').config()
 console.log(env)
 module.exports = {
+  buildDir: 'functions/.nuxt',
   env: env.parsed,
   head: {
     title: 'MeetU',

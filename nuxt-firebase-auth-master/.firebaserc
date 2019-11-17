@@ -1,6 +1,5 @@
 {
   "projects": {
-    "default": "nuxt-firebase-auth",
-    "meetu": "meetu-69b29"
+    "default": "meetu-69b29"
   }
 }
