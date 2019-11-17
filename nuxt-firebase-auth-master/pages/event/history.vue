@@ -69,13 +69,20 @@
 
     <div v-if="userEventTicketList.length == 0">
       <center>
-        <br />
-        <v-icon medium>mdi-emoticon-cry-outline</v-icon>
-        <br />
+        <v-img class="noTicketImg" :src="noTicketImg"></v-img>
 
-        <p style="color:grey">No ticket, let's start to join an event!</p>
-        <nuxt-link :to="`/`" class="linkToHomepage">Click here</nuxt-link>
 
+
+
+
+
+        <br />
+        <!-- <v-icon medium>mdi-emoticon-cry-outline</v-icon> -->
+        <!-- <br /> -->
+
+        <p style="color:grey">Let's start to join an event!
+        <nuxt-link :to="`/`" class="linkToHomepage"> Click here</nuxt-link>
+</p>
         <!-- <p style="color:grey">You can create new event.</p> -->
       </center>
     </div>
@@ -89,7 +96,8 @@ export default {
   data() {
     return {
       location: "BKK, Thailand",
-      userEventTicketList: []
+      userEventTicketList: [],
+      noTicketImg: require("@/assets/default/noticket.png")
     };
   },
   mounted() {
