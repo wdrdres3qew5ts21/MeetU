@@ -53,7 +53,6 @@ public class EventScheduler {
         Date now = new Date();
         String strDate = sdf.format(now);
         System.out.println("Java cron job expression:: " + strDate);
-        eventService.pushNotificationForRemindEvent();
     }
 
 }

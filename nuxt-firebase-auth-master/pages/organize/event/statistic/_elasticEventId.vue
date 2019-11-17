@@ -92,7 +92,7 @@
         </div>
         <br />
       </v-tab-item>
-
+      <!-- Notification Tabs -->
       <v-tab-item>
         <v-flex xs12>
           <v-img
@@ -110,6 +110,11 @@
             :placeholder="`หัวข้อของการแจ้งเตือน (Default คือ ${event.eventName})`"
             v-model="messageTitle"
           ></v-text-field>
+          <v-select
+            :items="notificationModes"
+            v-model="selectNotificationMode"
+            label="เลือกประเภทของการแจ้งเตือน (Default คือ Notify)"
+          ></v-select>
           <v-textarea
             name="description"
             v-model="messageDetail"
@@ -135,6 +140,8 @@ export default {
   name: "communityDetail",
   data() {
     return {
+      notificationModes: ['notifify','review'],
+      selectNotificationMode: "notifify",
       dialogOfEdit: false,
       readMoreActivated: false,
       join: false,
@@ -184,11 +191,15 @@ export default {
   methods: {
     pushNotificationToEventTopic() {
       let loader = this.$loading.show();
+      let linkUrl= `/event/${this.elasticEventId}`
+      if(this.selectNotificationMode === 'review'){
+        linkUrl = `/ticket/${this.elasticEventId}`
+      }
       let notificationBody = {
         title:
           this.messageTitle === "" ? this.event.eventName : this.messageTitle,
         messageDetail: this.messageDetail,
-        linkUrl: `/event/${this.elasticEventId}`
+        linkUrl
       };
       axios
         .post(
