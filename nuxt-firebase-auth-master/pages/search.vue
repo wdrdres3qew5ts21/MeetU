@@ -359,7 +359,7 @@ export default {
       query += `&isPopularEvent=${this.isPopular}`;
 
       query += `&sortDate=${this.filterForm.sortByDate}`;
-
+      console.log("--------------------- Search ----------------------------")
       console.log(query);
       let searchedEventList = await axios.get(query);
       searchedEventList = searchedEventList.data;

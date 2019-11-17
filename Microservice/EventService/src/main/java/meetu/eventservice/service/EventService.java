@@ -172,7 +172,7 @@ public class EventService {
     private String COMMUNITYSERVICE_URL;
 
     private String eventsIndex = "meetu.events";
-
+    
     private String newEventTopic = "new-event";
 
     public void pushNotificationToAllUserWhenEventCreate(String eventName, String eventDetail) {
@@ -341,7 +341,7 @@ public class EventService {
             queryFilter = filterByEventTags(queryFilter, eventTags);
         }
         if (!eventDetail.isEmpty()) {
-            System.out.println("Event DetailvFilter");
+            System.out.println("Event Detail Filter");
             queryFilter.must(filterByEventDetail(eventDetail));
         }
         if (isRecently == true) {
@@ -349,6 +349,7 @@ public class EventService {
             searchSourceBuilder = filterByRecently(searchSourceBuilder, "createEventDate");
         }
         if (!sortDate.isEmpty()) {
+            System.out.println("--- date osrt filter ----");
             if (sortDate.equals("asc")) {
                 searchSourceBuilder.sort(new FieldSortBuilder("eventStartDate").order(SortOrder.ASC));
                 //  searchSourceBuilder.sorts().add(new FieldSortBuilder("eventStartDate").order(SortOrder.ASC));
@@ -384,7 +385,9 @@ public class EventService {
                 .from(page)
                 .size(contentPerPage);
         searchRequest.source(searchSourceBuilder);
+        System.out.println(searchRequest.indices());
         searchResponse = elasticClient.search(searchRequest, RequestOptions.DEFAULT);
+        System.out.println(searchResponse.getHits());
 
         return ElasticUtil.searchHitsToList(searchResponse.getHits(), Event.class);
     }
@@ -506,8 +509,7 @@ public class EventService {
     public QueryStringQueryBuilder filterByEventDetail(String eventDetail) {
         QueryStringQueryBuilder alreadyFilterByEventDetail = QueryBuilders.queryStringQuery(eventDetail + "~")
                 .field("eventName").boost(3.0f)
-                .field("eventDetail").boost(4.0f)
-                .field("badgeTags").boost(2.0f)
+                .field("eventDetail").boost(3.0f)
                 .field("location.*").boost(2.0f)
                 .fuzzyTranspositions(true);
         return alreadyFilterByEventDetail;
@@ -1030,7 +1032,7 @@ public class EventService {
             return ResponseEntity.status(HttpStatus.OK).body(userEventReview);
         }
         userEventReview = new Review();
-         return ResponseEntity.status(HttpStatus.OK).body(userEventReview);
+        return ResponseEntity.status(HttpStatus.OK).body(userEventReview);
     }
 
 }
