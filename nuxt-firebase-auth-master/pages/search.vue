@@ -159,8 +159,21 @@
       </v-flex>
       <br />
 
-      <event-list v-if="searchedEventList.length>0" :eventList="searchedEventList"></event-list>
-      <center v-else></center>
+      <v-layout v-if="searchedEventList.length>0" row wrap>
+        <v-flex xs12 v-for="(event, index) in searchedEventList" :key="index">
+          <nuxt-link :to="`/event/${event.elasticEventId}`">
+            <event-card :event="event" :location="event.location"></event-card>
+          </nuxt-link>
+          <br />
+        </v-flex>
+        <client-only>
+          <infinite-loading spinner="spiral" @infinite="infiniteScroll"></infinite-loading>
+        </client-only>
+      </v-layout>
+
+      <!-- <event-list v-if="searchedEventList.length>0" :eventList="searchedEventList"></event-list>
+      <center v-else></center>-->
+
       <!-- <v-flex xs12 v-else>
           <h3>
             <center>You can search event ;)</center>
@@ -247,6 +260,7 @@
 
 
 <script>
+import EventCard from "@/components/eventCard";
 import EventList from "@/components/eventList";
 import { mapActions, mapGetters } from "vuex";
 import axios from "axios";
@@ -256,7 +270,7 @@ import "@mdi/font/css/materialdesignicons.css";
 
 export default {
   name: "search",
-  components: { EventList },
+  components: { EventList, EventCard },
   data() {
     return {
       checkbox: true,
@@ -295,7 +309,8 @@ export default {
         unit: ""
       },
       showTest: true,
-      searchImg: require("@/assets/default/s2.png")
+      searchImg: require("@/assets/default/s2.png"),
+      page: 0
     };
   },
   watch: {
@@ -321,6 +336,12 @@ export default {
   },
   methods: {
     ...mapActions(["autoSignIn", "setCategory"]),
+    infiniteScroll($state) {
+      setTimeout(() => {
+        this.page++;
+        this.searchEventByFilter($state);
+      }, 500);
+    },
     loadCategoryList() {
       axios
         .get(`${process.env.EVENT_SERVICE}/category`)
@@ -352,8 +373,10 @@ export default {
       console.log(JSON.parse(JSON.stringify(category)));
       // this.filterForm.categorySelected.push(categoryO)
     },
-    searchEventByFilter: async function() {
-      let query = `${process.env.EVENT_SERVICE}/events?isRecently=${
+    searchEventByFilter: function($state) {
+      let query = `${process.env.EVENT_SERVICE}/events?page=${
+        this.page
+      }&contentPerPage=8&isRecently=${
         this.isRecently
       }&eventDetail=${this.search.toLowerCase()}`;
 
@@ -369,11 +392,20 @@ export default {
       query += `&sortDate=${this.filterForm.sortByDate}`;
       console.log("--------------------- Search ----------------------------");
       console.log(query);
-      let searchedEventList = await axios.get(query);
-      searchedEventList = searchedEventList.data;
-      this.searchedEventList = searchedEventList;
-      console.log(this.searchedEventList);
-      this.dialog = false;
+      axios.get(query).then(searchedEventListResponse => {
+        let searchedEventList = searchedEventListResponse.data;
+        if (searchedEventList.length > 0) {
+          console.log(this.searchedEventList);
+          searchedEventList.forEach(searchedEvent => {
+            this.searchedEventList.push(searchedEvent);
+          });
+          $state.loaded();
+        } else {
+          $state.complete();
+        }
+
+        this.dialog = false;
+      });
     },
     searchByFilter() {
       console.log(this.filterForm.sortByDate);
