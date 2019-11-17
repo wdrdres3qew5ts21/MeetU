@@ -1,8 +1,8 @@
 <template>
   <div>
-    <br />
+    <!-- <br /> -->
     <center>
-      <h2 id="top">Let's Find Community !</h2>
+      <!-- <h2 id="top">Let's Find Community !</h2> -->
       <v-container>
         <v-layout row wrap>
           <v-flex xs12>
@@ -94,7 +94,15 @@
                     @click="findMatchingCommunity()"
                   >Search</v-btn>
                 </v-flex>
+
+
+
+                
               </v-layout>
+              <br>
+                  <div v-if="communityList.length==0">
+                    <v-img class="findCommunityImg" :src="findCommunityImg"></v-img>
+                  </div>
               <v-layout row wrap>
                 <v-chip
                   v-for="(categoryChip, index) in interestTags"
@@ -103,6 +111,7 @@
                 >
                   <strong>{{ categoryChip}}</strong>&nbsp;
                 </v-chip>
+
               </v-layout>
             </div>
           </v-flex>
@@ -151,7 +160,8 @@ export default {
       communityName: "",
       interestTags: [],
       categoryList: [],
-      defaultImage: require(`@/assets/default/community.png`)
+      defaultImage: require(`@/assets/default/community.png`),
+      findCommunityImg: require(`@/assets/default/findCommunity.png`)
     };
   },
   watch: {
@@ -164,7 +174,7 @@ export default {
   mounted() {
     this.loadCategoryList();
     let allQuery = this.$route.query.all;
-    console.log(this.$route.query)
+    console.log(this.$route.query);
     if (allQuery == "true") {
       this.findMatchingCommunity();
     }
