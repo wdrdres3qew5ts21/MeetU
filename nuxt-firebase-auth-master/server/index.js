@@ -1,3 +1,4 @@
+const functions = require('firebase/firebase-functions')
 const express = require('express')
 const consola = require('consola')
 const { Nuxt, Builder } = require('nuxt')
@@ -33,3 +34,4 @@ async function start () {
   })
 }
 start()
+exports.nuxtssr = functions.https.onRequest(app)

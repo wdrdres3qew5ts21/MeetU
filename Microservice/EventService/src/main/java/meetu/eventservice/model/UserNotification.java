@@ -19,13 +19,46 @@ public class UserNotification {
     @Id
     private String id;
     
+    @Transient
+    private String pictureUrl;
+    
     private String notificationToken;
     
     private String uid;
     
     @Transient
+    private String title ="MeetU";
+    
+    @Transient
     private String messageDetail;
+    
+    @Transient
+    private String linkUrl;
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    
+    public String getLinkUrl() {
+        return linkUrl;
+    }
+
+    public void setLinkUrl(String linkUrl) {
+        this.linkUrl = linkUrl;
+    }
+    
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
+    }
+    
     public String getMessageDetail() {
         return messageDetail;
     }
@@ -34,8 +67,6 @@ public class UserNotification {
         this.messageDetail = messageDetail;
     }
     
-    
-
     public String getNotificationToken() {
         return notificationToken;
     }

@@ -184,12 +184,19 @@
         <v-flex xs5>{{numberOfTicket}} Ticket Left(s)</v-flex>
       </v-layout>
       <v-btn
+        v-if="!isOwnTicket"
         @click="userReserveTicket()"
         block
         :disabled="!isTicketSelected"
         color="primary"
         id="ticketSection"
       >GET TICKET</v-btn>
+      <v-btn v-else
+        @click="$router.push(`/ticket/${elasticEventId}`)"
+        block
+        :disabled="!isTicketSelected"
+        color="primary"
+        id="ticketSection">View My Ticket</v-btn>
 
       <br />
 
@@ -268,6 +275,8 @@ export default {
   },
   data() {
     return {
+      ticket: {},
+      isOwnTicket: false,
       elasticEventId: "",
       show: true,
       readMoreActivated: false,
@@ -368,6 +377,7 @@ export default {
       this.loadOrganizeDetail(this.getEventTemplate.organize.organizeId);
       this.loadBadgeDetail(this.getEventTemplate.badge.badgeId);
     } else {
+      this.verifyIsUserHaveTicket();
       this.userViewEvent();
       this.loadOrganizeDetail(this.organizeId);
     }
@@ -420,6 +430,22 @@ export default {
   },
   methods: {
     ...mapActions(["updateCurrentLocation", "saveEventAndUpload"]),
+    verifyIsUserHaveTicket() {
+      if (localStorage.getItem("jwtToken")) {
+        console.log("--- is user have ticket --");
+        axios.get(
+          `${process.env.EVENT_SERVICE}/events/tickets/${this.getUser.uid}/${this.elasticEventId}`
+        )
+        .then(ownedTicketResponse =>{
+          console.log("fuckkkkkkkkkkkkkkkkkkkk")
+          if(ownedTicketResponse.data[0].elasticEventId){
+            console.log("ownt icket already")
+            this.isOwnTicket = true
+            this.ticket = ownedTicketResponse.data[0]
+          }
+        });
+      }
+    },
     createEventAndUploadData() {
       console.log(this.getEventTemplate);
       this.saveEventAndUpload();
@@ -482,41 +508,63 @@ export default {
         this.elasticEventId != "previewOnly" &&
         this.getIsPreviewPage != true
       ) {
-        console.log("User Reserve Ticket Event!");
-        let loader = this.$loading.show();
-        let reserveTicket = {
-          uid: this.getUser.uid,
-          elasticEventId: this.$route.params.elasticEventId
-        };
-        this.qrCodeSrc = JSON.stringify(reserveTicket);
-        console.log(reserveTicket);
-        axios
-          .post(`${process.env.EVENT_SERVICE}/event/reserve`, reserveTicket, {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("jwtToken") || ""}`
-            }
-          })
-          .then(reserveTicket => {
-            console.log(reserveTicket.data);
-            this.reserveTicket = reserveTicket.data;
-            this.isViewTicketDetail = !this.isViewTicketDetail;
-          })
-          .catch(error => {
-            console.log(error.response);
-            this.$swal({
-              type: "error",
-              title: "Fail to reserve ticket !",
-              text: `${
-                error.response === undefined
-                  ? "Please Login first!"
-                  : error.response
-              }`
+        if (
+          (localStorage.getItem("jwtToken") != null) |
+          (localStorage.getItem("jwtToken") != undefined)
+        ) {
+          console.log("User Reserve Ticket Event!");
+          let loader = this.$loading.show();
+          let reserveTicket = {
+            uid: this.getUser.uid,
+            elasticEventId: this.$route.params.elasticEventId
+          };
+          this.qrCodeSrc = JSON.stringify(reserveTicket);
+          console.log(reserveTicket);
+          axios
+            .post(`${process.env.EVENT_SERVICE}/event/reserve`, reserveTicket, {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("jwtToken") ||
+                  ""}`
+              }
+            })
+            .then(reserveTicket => {
+              console.log(reserveTicket.data);
+              this.reserveTicket = reserveTicket.data;
+              this.isViewTicketDetail = !this.isViewTicketDetail;
+              // force subscribe event after join
+              let notificationToken = localStorage.getItem(
+                "notificationToken",
+                notificationToken
+              );
+              let notificationBody = { notificationToken };
+              axios.post(
+                `${process.env.EVENT_SERVICE}/notification/subscribe/events/user/${this.getUser.uid}`,
+                notificationBody
+              );
+            })
+            .catch(error => {
+              console.log(error.response);
+              this.$swal({
+                type: "error",
+                title: "Fail to reserve ticket !",
+                text: `${
+                  error.response === undefined
+                    ? "Please Login first!"
+                    : error.response.data.response
+                }`
+              });
+            })
+            .finally(() => {
+              loader.hide();
             });
-            this.$router.push("/login");
-          })
-          .finally(() => {
-            loader.hide();
+        } else {
+          this.$swal({
+            type: "error",
+            title: "Fail to reserve ticket !",
+            text: "Please Login first!"
           });
+          this.$router.push('/login')
+        }
       } else {
         this.$swal({
           type: "success",

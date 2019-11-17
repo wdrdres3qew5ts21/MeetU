@@ -42,9 +42,10 @@ export default (context) => {
             notificationToken,
             uid: store.getters.getUser.uid,
           }
-          let topic = "new-event"
-          axios.post(`${process.env.EVENT_SERVICE}/notification/subscribe/${topic}`, notificationBody)
-          // axios.post(`${process.env.EVENT_SERVICE}/notification/token`, notificationBody)
+          // Initial Subscribe New Feed Event & Ticket
+          localStorage.setItem("notificationToken", notificationToken)
+          axios.post(`${process.env.EVENT_SERVICE}/notification/subscribe/new-event`, notificationBody)
+          axios.post(`${process.env.EVENT_SERVICE}/notification/subscribe/events/user/${store.getters.getUser.uid}`, notificationBody)
           console.log(notificationToken)
         }).catch(err => {
           console.log(err)

@@ -1,11 +1,56 @@
 <template>
-  <div>
+  <div> 
+    <br>
     <h1>{{categoryLabel}}</h1>
-    <event-list :eventList="eventList"></event-list>
-    <input type="text" v-model="areaOfEvent" placeholder="input area" />
-    <v-btn color="info" @click="findEventInArea()">Click to search nearby event for {{areaOfEvent}}</v-btn>
+    <event-list v-if="eventList.length>0" :eventList="eventList"></event-list>
+    <center v-else>
+      <br><br>
+      <v-img class="notFoundImg" v-if="showTest" :src="notFoundImg"></v-img>
+</center>
+    <!-- <v-layout row wrap>
+      <v-text-field
+        class="questrial no-top-padding"
+        height="20px"
+        placeholder="Search an event"
+        v-model="search"
+      ></v-text-field>
+      <v-flex class="text-xs-right">
+        <v-btn class="white--text" depressed small color="#341646" ref="searchButton">Search</v-btn>
+      </v-flex>
+    </v-layout> -->
+    <!-- <input type="text" v-model="areaOfEvent" placeholder="input area" /> -->
+    <center>
+      <!-- <h2>Search an event</h2> -->
+      <!-- <p>or</p> -->
+
+
+      <!-- <v-btn
+        color="primary"
+        @click="findEventInArea()"
+      >Click to search nearby event for {{areaOfEvent}}</v-btn> -->
+
+      <!-- <v-flex class="text-xs-right">
+              <v-btn
+                class="white--text"
+                depressed
+                small
+                color="#341646"
+                ref="searchButton"
+                @click="searchEventByFilter()"
+              >Search</v-btn>
+            </v-flex> -->
+
+
+
+
+    </center>
   </div>
 </template>
+
+
+
+
+
 <script>
 import axios from "axios";
 import EventList from "@/components/eventList";
@@ -15,14 +60,14 @@ export default {
     EventList
   },
   watch: {
-    "$route.query.category"(){
-      this.loadCategory()
-      this.findAllEvent()
+    "$route.query.category"() {
+      this.loadCategory();
+      this.findAllEvent();
     }
   },
   data() {
     return {
-      categoryLabel: '',
+      categoryLabel: "",
       eventList: [],
       position: {},
       infoTitle: "",
@@ -49,27 +94,59 @@ export default {
             lng: 100.4937549
           }
         }
-      ]
+      ],
+
+      // password: 'Password',
+      show: false,
+      // message: 'Search ..',
+      marker: true,
+      iconIndex: 0,
+      icons: ["mdi-emoticon"],
+      showTest: true,
+      notFoundImg: require("@/assets/default/e1.png")
+    
     };
   },
   mounted() {
     this.getLocation();
   },
   computed: {
-    ...mapGetters(["getCurrentLocation","getUser","getCategory"])
+    ...mapGetters(["getCurrentLocation", "getUser", "getCategory"]),
+    icon() {
+      return this.icons[this.iconIndex];
+    }
   },
   mounted() {
     this.findAllEvent();
-    this.loadCategory()
+    this.loadCategory();
   },
   methods: {
+    toggleMarker() {
+      this.marker = !this.marker;
+    },
+    sendMessage() {
+      this.resetIcon();
+      this.clearMessage();
+    },
+    clearMessage() {
+      this.message = "";
+    },
+    resetIcon() {
+      this.iconIndex = 0;
+    },
+    changeIcon() {
+      this.iconIndex === this.icons.length - 1
+        ? (this.iconIndex = 0)
+        : this.iconIndex++;
+    },
+
     ...mapActions(["updateCurrentLocation"]),
-    loadCategory: function(){
-      console.log(this.getCategory)
-      for(let i=0; i<this.getCategory.length;i++){
-        if(this.$route.query.category ===  this.getCategory[i].categoryName){
-          this.categoryLabel = this.getCategory[i].categoryLabel
-          return
+    loadCategory: function() {
+      console.log(this.getCategory);
+      for (let i = 0; i < this.getCategory.length; i++) {
+        if (this.$route.query.category === this.getCategory[i].categoryName) {
+          this.categoryLabel = this.getCategory[i].categoryLabel;
+          return;
         }
       }
     },
@@ -125,7 +202,13 @@ export default {
       } else {
         console.log("not support fuq");
       }
-    }
+    },
+
+    //     searchByFilter() {
+    //   console.log(this.filterForm.sortByDate);
+    //   console.log(this.filterForm.distance);
+    //   console.log(this.filterForm.categorySelected);
+    // }
   }
 };
 </script>
@@ -134,6 +217,19 @@ export default {
 .container.fluid {
   max-width: 100%;
   /* background-image: url(~assets/bg.png) !important; */
+  /* background-repeat: repeat; */
+  /* background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background: transparent; */
+}
+
+.v-content {
+  max-width: 100%;
+  background-color: #eeeeee;
+  font-family: Roboto;
+  /* background-image: url(../assets/bg.png) !important; */
   /* background-repeat: repeat; */
   /* background-attachment: fixed;
   background-position: center;

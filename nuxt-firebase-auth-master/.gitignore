@@ -10,6 +10,7 @@ npm-debug.log
 .nuxt
 
 # Nuxt generate
+public
 dist
 plugins/firebase-auth.js
 middleware/check-auth.js
