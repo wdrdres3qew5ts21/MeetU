@@ -5,20 +5,26 @@
       <h2>My Organize</h2>
       <br />
     </v-layout>
+
     <br />
-    <v-layout row wrap>
-      <v-flex xs6>
-        <v-card color="white" max-width="120" style="border-radius:50%">
+   <v-layout justify-center row wrap>
+      <v-flex xs12>
+        <v-card class="elevation-0 mx-auto" color="white" max-width="150" style="border-radius:50%">
           <v-img :aspect-ratio="1/1" :src="getUser.photoURL"></v-img>
         </v-card>
       </v-flex>
-      <v-flex xs6 text-right>
-        <br />
-        <div>
-        <h3 >Name: {{userForm.firstName}} {{userForm.lastName}}</h3>
+       </v-layout>
 
-        </div>
- </v-flex>
+      <v-layout justify-center row wrap>
+        <!-- <v-flex xs8> -->
+          
+        
+        <br />
+        <h3>{{userForm.firstName}} {{userForm.lastName}}</h3>
+      <!-- </v-flex> -->
+      </v-layout>
+
+
       <div v-if="organizeList == 0">
         <!-- <h3>Name: {{userForm.firstName}} {{userForm.lastName}}</h3> -->
         <p style="color:grey">( You are not the organize. )</p>
@@ -47,7 +53,7 @@
 
       </div>
 
-      </v-layout>
+     
 
     <br />
 
