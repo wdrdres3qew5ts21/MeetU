@@ -185,11 +185,19 @@
       <span class="location" id="locationMap">Location</span>
       <p>{{getEventTemplate.location.detail}}</p>
       <v-btn class="addLocationButton" color="white" @click="addLocation()">Add Location</v-btn>
+      <br><br>
       <v-layout v-show="isShowLocation" row wrap>
         <client-only>
-          <label>
-            สถานที่จัดกิจกรรม: <GmapAutocomplete style="width:auto" @place_changed="setPlace"></GmapAutocomplete>
-          </label>
+          <!-- <v-text-field
+            label="Location"
+            prepend-icon="place"
+          >สถานที่จัดกิจกรรม: <GmapAutocomplete style="width:auto" @place_changed="setPlace"></GmapAutocomplete>
+          </v-text-field> -->
+
+          <label style="font-size:20px;">สถานที่จัดกิจกรรม: 
+            <GmapAutocomplete style="width:auto" @place_changed="setPlace">
+              </GmapAutocomplete>
+              </label>
           <br />
           <GmapMap
             :center="marker.position"
