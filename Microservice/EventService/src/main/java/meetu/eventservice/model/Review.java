@@ -7,6 +7,7 @@ package meetu.eventservice.model;
 
 import java.util.Date;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -34,7 +35,18 @@ public class Review {
     private String reviewDetail;
     
     private Date reviewDate; 
+    
+    @Transient
+    private boolean isReview = false;
 
+    public boolean isIsReview() {
+        return isReview;
+    }
+
+    public void setIsReview(boolean isReview) {
+        this.isReview = isReview;
+    }
+    
     public String getDisplayName() {
         return displayName;
     }
