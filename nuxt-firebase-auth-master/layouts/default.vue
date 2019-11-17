@@ -237,7 +237,7 @@ export default {
       menu: false,
       linksFooter: [
         { label: "Home", link: "/" },
-        { label: "Event", link: "/event" },
+        { label: "Event", link: "/search" },
         { label: "Community", link: "/community" },
         { label: "Organize", link: "/organize/organizerForm" },
         { label: "Contact Us", link: "/contactUs" }

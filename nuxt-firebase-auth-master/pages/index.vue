@@ -18,7 +18,7 @@
           <h3>Setting Recommedation</h3>
         </nuxt-link>-->
         <br />
-        <h2>Recomended Event</h2>
+        <h2>Recommended Event</h2>
         <client-only>
           <carousel :perPage="1" :paginationEnabled="false">
             <slide v-for="(event, index) in recommendedEventList" :key="index">

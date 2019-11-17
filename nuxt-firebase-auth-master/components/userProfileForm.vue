@@ -57,7 +57,7 @@
           </v-flex>
 
           <nuxt-link to="/selectGenres" class="linkToGenres">
-            Edit genes
+            Edit gerens
             <!-- <v-icon color="primary">edit</v-icon> -->
           </nuxt-link>
           <!-- <v-flex class="text-xs-right">
