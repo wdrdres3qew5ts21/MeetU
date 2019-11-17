@@ -23,7 +23,8 @@
           <carousel :perPage="1" :paginationEnabled="false">
             <slide v-for="(event, index) in recommendedEventList" :key="index">
               <nuxt-link :to="`/event/${event.elasticEventId}`">
-                <event-card :event="event" :location="event.location" :badge="event.badge"></event-card>
+                <event-card :event="event" :location="event.location" :badge="event.badge">
+                </event-card>
               </nuxt-link>
             </slide>
             <slide>
@@ -31,19 +32,19 @@
                 <!-- <v-img :src="testImg"></v-img> -->
 
                 <nuxt-link :to="`/event?`">
-                  <v-card class="BackgroundImg" width="309px" height="294px">
+                  <v-card class="BackgroundImg" width="400px" height="295px">
                     <br />
                     <br />
                     <br />
                     <br />
                     <br />
-                    <center>
+                    <!-- <center>
                       <v-icon style="color:#fff" large>add_circle_outline</v-icon>
                     </center>
                     <b></b>
                     <center>
                       <h2 style="color:#fff">View More</h2>
-                    </center>
+                    </center> -->
                   </v-card>
                 </nuxt-link>
 
@@ -67,18 +68,18 @@
           <slide>
             <v-flex 3 xs12 sm6 offset-sm>
               <nuxt-link :to="`/event?`">
-                <v-card class="BackgroundImg" width="309px" height="294px">
+                <v-card class="BackgroundImg" width="400px" height="295px">
                   <br />
                   <br />
                   <br />
                   <br />
                   <br />
-                  <center>
+                  <!-- <center>
                     <v-icon style="color:#fff" large>add_circle_outline</v-icon>
                   </center>
                   <center>
                     <h2 style="color:#fff">View More</h2>
-                  </center>
+                  </center> -->
                 </v-card>
               </nuxt-link>
             </v-flex>
@@ -99,18 +100,18 @@
           <slide>
             <v-flex 3 xs12 sm6 offset-sm>
               <nuxt-link :to="`/event?`">
-                <v-card class="BackgroundImg" width="309px" height="294px">
+                <v-card class="BackgroundImg" width="400px" height="295px">
                   <br />
                   <br />
                   <br />
                   <br />
                   <br />
-                  <center>
+                  <!-- <center>
                     <v-icon style="color:#fff" large>add_circle_outline</v-icon>
                   </center>
                   <center>
                     <h2 style="color:#fff">View More</h2>
-                  </center>
+                  </center> -->
                 </v-card>
               </nuxt-link>
             </v-flex>
@@ -399,12 +400,19 @@ export default {
 } */
 
 .BackgroundImg {
+  background-color: #eeeeee !important;
   /* filter: blur(8px);
   -webkit-filter: blur(8px); */
   /* background-image: linear-gradient(#ffecd2, #fcb69f); */
-  background-image: url("https://media1.tenor.com/images/dbc9327947163406625e71f4af114f3b/tenor.gif?itemid=13113745");
-  opacity: 0.5;
-  filter: alpha(opacity=50);
+  /* border: none !important; */
+  background-image: url(../assets/default/vm1.png);
+  background-size: 350px;
+  background-repeat:no-repeat;
+  background-position:center top;
+  opacity: 0.7;
+  background-position-y: -100%;
+  background-position-x: -20%;
+  filter: alpha(opacity=20);
 }
 
 /* .slide-fade-enter-active {
@@ -418,27 +426,8 @@ export default {
   opacity: 0;
 } */
 
-.v-carousel-control-prev-icon,
-.v-carousel-control-next-icon {
-  height: 100px;
-  width: 100px;
-  color: black;
-  background-size: 100%, 100%;
-  border-radius: 50%;
-  border: 1px solid black;
-  background-image: none;
-}
-
-.v-carousel-control-next-icon:after {
-  content: ">";
-  font-size: 55px;
-  color: #341646;
-}
-
-.v-carousel-control-prev-icon:after {
-  content: "<";
-  font-size: 55px;
-  color: #341646;
+.v-carousel:prev-icon{
+  color: yellow;
 }
 </style>
 
