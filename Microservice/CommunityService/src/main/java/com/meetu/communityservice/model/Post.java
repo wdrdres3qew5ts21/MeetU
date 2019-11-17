@@ -38,7 +38,7 @@ public class Post {
     
     private String photoURL;
     
-    private String picture;
+    private String postPicture;
 
     private String postDetail;
 
@@ -65,12 +65,12 @@ public class Post {
         this.photoURL = photoURL;
     }
     
-    public String getPicture() {
-        return picture;
+    public String getPostPicture() {
+        return postPicture;
     }
 
-    public void setPicture(String picture) {
-        this.picture = picture;
+    public void setPostPicture(String postPicture) {
+        this.postPicture = postPicture;
     }
     
     public String getPostId() {

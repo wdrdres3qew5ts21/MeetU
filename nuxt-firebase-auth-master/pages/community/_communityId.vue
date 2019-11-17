@@ -85,8 +85,7 @@
                     max-width="1250"
                     max-height="200"
                   ></v-img>
-                </div>
-                Community Description
+                </div>Community Description
                 <br />
                 <br />
                 <v-textarea
@@ -125,9 +124,7 @@
 
     <br />
 
-    <!-- Edit Description Admin only -->
-
-    <!-- ------Button for Joined community and un Joined-------  -->
+    <!-- Text Card & photo Writing post of user  -->
 
     <v-card rounded outlined class="mx-auto">
       <div class="px-3">
@@ -143,14 +140,13 @@
                 aspect-ratio="1"
                 class="grey lighten-2"
                 max-width="1250"
-                max-height="200"
               ></v-img>
               <input
                 v-show="false"
-                ref="pictureListUpload"
+                ref="postPicture"
                 multiple
                 type="file"
-                @change="onPictureListUpload"
+                @change="onPostPictureUpload"
                 accept="image/*"
               />
               <v-text-field
@@ -163,14 +159,8 @@
           </v-layout>
           <v-layout>
             <v-flex xs12 class="text-xs-left">
-              <v-btn style="margin-right: 0px" icon @click="$refs.pictureListUpload.click()">
+              <v-btn style="margin-right: 0px" icon @click="$refs.postPicture.click()">
                 <v-icon>photo_camera</v-icon>
-              </v-btn>
-              <v-btn style="margin: 0px" icon>
-                <v-icon>assessment</v-icon>
-              </v-btn>
-              <v-btn style="margin: 0px" icon>
-                <v-icon>event</v-icon>
               </v-btn>
             </v-flex>
             <v-flex xs class="text-xs-right">
@@ -193,7 +183,7 @@
                     <v-img :aspect-ratio="1/1" :src="post.photoURL"></v-img>
                   </v-avatar>
                 </v-flex>
-                <v-flex xs9>
+                <v-flex xs6>
                   <b class="showName">
                     <span
                       v-text="post.displayName.length > 10 ? post.displayName.substr(0,23)+'..' :post.displayName"
@@ -205,21 +195,25 @@
                     class="showDate"
                   >{{formatDateForReadable(post.postOfDate)}} {{formatAMPM(post.postOfDate)}}</v-layout>
                 </v-flex>
+                <v-flex v-if="post.uid=== getUser.uid" xs3 class="text-xs-right">
+                  <v-btn text icon @click="removeNewPost(postIndex,  post.postId)">
+                    <v-icon>clear</v-icon>
+                  </v-btn>
+                </v-flex>
               </v-layout>
-              <v-flex v-if="post.uid=== getUser.uid" xs2 class="text-xs-right">
-                <v-btn text icon @click="removeNewPost(postIndex,  post.postId)">
-                  <v-icon>clear</v-icon>
-                </v-btn>
-              </v-flex>
             </v-container>
           </v-layout>
         </div>
         <v-container grid-list-xs fluid style="padding:5px">
           <br />
           <v-list>
-            <v-list-tile-content>
-              <!-- Show image -->
-            </v-list-tile-content>
+            <v-img
+              v-if="post.postPicture"
+              :src="post.postPicture"
+              aspect-ratio="1"
+              class="grey lighten-2"
+              max-width="1250"
+            ></v-img>
             <v-list-tile-content>
               <div class="textarea" contenteditable="false">{{post.postDetail}}</div>
             </v-list-tile-content>
@@ -270,6 +264,13 @@
           <v-container grid-list-xs fluid style="padding:5px">
             <br />
             <v-list>
+              <v-img
+                v-if="post.postPicture"
+                :src="post.postPicture"
+                aspect-ratio="1"
+                class="grey lighten-2"
+                max-width="1250"
+              ></v-img>
               <v-list-tile-content>
                 <div class="textarea" contenteditable="false">{{post.postDetail}}</div>
               </v-list-tile-content>
@@ -665,7 +666,7 @@ export default {
       console.log(postIndex);
       console.log(this.postList[postIndex].commentList);
     },
-    onPictureListUpload(event) {
+    onPostPictureUpload(event) {
       console.log("uplaod din");
       this.postPictureLists = event.target.files;
       this.postPictureListsUrl = [];
@@ -692,8 +693,6 @@ export default {
         .catch(err => {});
     },
     addPost() {
-      let loader = this.$loading.show();
-
       let value =
         (this.newPost && this.newPost.trim()) || this.postPictureLists;
       if (!value) {
@@ -715,35 +714,93 @@ export default {
           text: `Please login first !!!`
         });
         this.$router.push("/login");
-        loader.hide();
       } else {
-        axios
-          .post(
-            `${process.env.COMMUNITY_SERVICE}/community/${this.communityId}/post`,
-            postTemplate,
-            {
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+        let loader = this.$loading.show();
+
+        // เวลาทำการโพสเช็คว่ามีรูปมั้ย
+        console.log(this.postPictureListsUrl[0]);
+        if (this.postPictureListsUrl[0] == null) {
+          console.log("not have picture for post");
+          axios
+            .post(
+              `${process.env.COMMUNITY_SERVICE}/community/${this.communityId}/post`,
+              postTemplate,
+              {
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                }
               }
-            }
-          )
-          .then(postResponse => {
-            console.log("--------------------------------");
-            console.log(postResponse.data);
-            this.newPostList.push(postResponse.data);
-            this.newPostList.reverse();
-            this.newPost = "";
-            console.log(this.postList);
-            loader.hide();
-          })
-          .catch(err => {
-            this.$swal({
-              type: "error",
-              title: "Fail to post !!!",
-              text: `${err.response.data.response}`
+            )
+            .then(postResponse => {
+              console.log("--------------------------------");
+              console.log(postResponse.data);
+              this.newPostList.push(postResponse.data);
+              this.newPostList.reverse();
+              this.newPost = "";
+              console.log(this.postList);
+              loader.hide();
+            })
+            .catch(err => {
+              this.$swal({
+                type: "error",
+                title: "Fail to post !!!",
+                text: `${err.response.data.response}`
+              });
+              loader.hide();
             });
-            loader.hide();
-          });
+        } else {
+          console.log("picture and post");
+          // มีการอัพรูป
+          let pictureFile = this.postPictureListsUrl[0].url;
+          let dateobj = new Date();
+          let fileName =
+            this.postPictureListsUrl[0].name + "_" + dateobj.toISOString();
+          let storage = firebase.storage();
+          let storageRef = storage.ref("/postPicture");
+          let setupFile = storageRef.child(fileName);
+          setupFile
+            .putString(pictureFile, "data_url", { contentType: "image/jpeg" })
+            .then(snapshot => {
+              snapshot.ref.getDownloadURL().then(postPicture => {
+                postTemplate.postPicture = postPicture;
+                console.log(
+                  "-------------------------------- picturre post url"
+                );
+                console.log(postTemplate);
+                axios
+                  .post(
+                    `${process.env.COMMUNITY_SERVICE}/community/${this.communityId}/post`,
+                    postTemplate,
+                    {
+                      headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                          "jwtToken"
+                        )}`
+                      }
+                    }
+                  )
+                  .then(postResponse => {
+                    this.postPictureListsUrl = [];
+                    this.postPictureLists = null;
+                    console.log("--------------------------------");
+                    console.log(postResponse.data);
+                    this.newPostList.push(postResponse.data);
+                    this.newPostList.reverse();
+                    this.newPost = "";
+                    console.log(this.postList);
+                    loader.hide();
+                  })
+                  .catch(err => {
+                    this.$swal({
+                      type: "error",
+                      title: "Fail to post !!!",
+                      text: `${err.response.data.response}`
+                    });
+                    loader.hide();
+                  });
+              });
+            });
+        }
       }
     },
     removePost(index, postId) {
