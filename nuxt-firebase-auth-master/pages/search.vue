@@ -139,6 +139,7 @@
                 small
                 color="#341646"
                 ref="searchButton"
+                id="top"
                 @click="searchEventByFilter()"
               >Search</v-btn>
             </v-flex>
@@ -161,6 +162,7 @@
 
       <event-list v-if="searchedEventList.length>0" :eventList="searchedEventList"></event-list>
       <center v-else></center>
+      <v-btn color="primary" block @click="$vuetify.goTo('#top')">Go to Top</v-btn>
       <!-- <v-flex xs12 v-else>
           <h3>
             <center>You can search event ;)</center>
@@ -241,6 +243,7 @@
         </div>-->
       </div>
     </center>
+    
   </div>
   <!-- </transition> -->
 </template>
