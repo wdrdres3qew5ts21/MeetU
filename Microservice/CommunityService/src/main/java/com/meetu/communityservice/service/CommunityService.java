@@ -348,9 +348,9 @@ public class CommunityService {
                 if (communityInDatabase.getCommunityPictureCover() != null || !communityInDatabase.getCommunityPictureCover().isEmpty()) {
                     communityInDatabase.setCommunityPictureCover(community.getCommunityPictureCover());
                 }
-                communityInDatabase.setCommunityName(community.getCommunityName());
+                Community saveCommunity = communityRepository.save(communityInDatabase);
+                return ResponseEntity.status(HttpStatus.CREATED).body(saveCommunity);
             }
-            return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (FirebaseAuthException ex) {
             java.util.logging.Logger.getLogger(CommunityService.class.getName()).log(Level.SEVERE, null, ex);
         }

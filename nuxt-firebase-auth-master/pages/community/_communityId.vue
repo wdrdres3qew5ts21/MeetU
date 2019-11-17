@@ -10,13 +10,13 @@
           max-width="1250"
           max-height="200"
         >
-          <v-btn class="button" @click="onPickFile">
+          <!-- <v-btn class="button" @click="onPickFile">
             Upload image
             &nbsp;
             &nbsp;
             <v-icon>add_a_photo</v-icon>
             <br />
-          </v-btn>
+          </v-btn>-->
         </v-img>
       </div>
       <div v-else>
@@ -85,12 +85,8 @@
                     max-width="1250"
                     max-height="200"
                   ></v-img>
-                </div>Community Name
-                <v-text-field
-                  v-model="communityForm.communityName"
-                  label="* Community Name"
-                  required
-                ></v-text-field>Community Description
+                </div>
+                Community Description
                 <br />
                 <br />
                 <v-textarea
@@ -108,7 +104,7 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="#341646" flat @click="dialogOfEdit = false">Close</v-btn>
-              <v-btn color="#341646" flat @click="dialogOfEdit = false">Save</v-btn>
+              <v-btn color="#341646" flat @click="saveCommunityDetail()">Save</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -221,9 +217,9 @@
         <v-container grid-list-xs fluid style="padding:5px">
           <br />
           <v-list>
-            <v-list-tile-content >
-            <!-- Show image -->
-              </v-list-tile-content>
+            <v-list-tile-content>
+              <!-- Show image -->
+            </v-list-tile-content>
             <v-list-tile-content>
               <div class="textarea" contenteditable="false">{{post.postDetail}}</div>
             </v-list-tile-content>
@@ -420,6 +416,8 @@
 </template> 
   
 <script>
+import * as firebase from "firebase/app";
+import "firebase/storage";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
@@ -498,12 +496,81 @@ export default {
       if (filename.lastIndexOf(".") <= 0) {
         return alert("Please add a valid file!");
       }
+      // imageUrl คือตัวแปรที่ใช้อัพเข้า cloud firebase
       const fileReader = new FileReader();
       fileReader.addEventListener("load", () => {
         this.imageUrl = fileReader.result;
       });
       fileReader.readAsDataURL(files[0]);
       this.image = files[0];
+      console.log(this.image);
+    },
+    saveCommunityDetail() {
+      let loader = this.$loading.show();
+      if (this.image != null) {
+        let pictureFile = this.imageUrl;
+        let dateobj = new Date();
+        let fileName = this.image.name + "_" + dateobj.toISOString();
+        let storage = firebase.storage();
+        let storageRef = storage.ref("/communityPicture");
+        let setupFile = storageRef.child(fileName);
+        setupFile
+          .putString(pictureFile, "data_url", { contentType: "image/jpeg" })
+          .then(snapshot => {
+            snapshot.ref.getDownloadURL().then(eventPictureCover => {
+              this.communityForm.communityPictureCover = eventPictureCover;
+              axios
+                .post(
+                  `${process.env.COMMUNITY_SERVICE}/community/${this.communityId}`,
+                  this.communityForm,
+                  {
+                    headers: {
+                      Authorization: `Bearer ${localStorage.getItem(
+                        "jwtToken"
+                      )}`
+                    }
+                  }
+                )
+                .then(updateCommunityResponse => {
+                  this.dialogOfEdit = false;
+                })
+                .catch(err => {
+                  this.$swal({
+                    type: "error",
+                    title: "Failed to edit community!!!",
+                    text: `${err.response.data.response}`
+                  });
+                })
+                .finally(() => {
+                  loader.hide();
+                });
+            });
+          });
+      } else {
+        axios
+          .post(
+            `${process.env.COMMUNITY_SERVICE}/community/${this.communityId}`,
+            this.communityForm,
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+              }
+            }
+          )
+          .then(updateCommunityResponse => {
+            this.dialogOfEdit = false;
+          })
+          .catch(err => {
+            this.$swal({
+              type: "error",
+              title: "Failed to edit community!!!",
+              text: `${err.response.data.response}`
+            });
+          })
+          .finally(() => {
+            loader.hide();
+          });
+      }
     },
     verifyIfUserSubscribeCommunity() {
       let loader = this.$loading.show();
@@ -607,12 +674,12 @@ export default {
         fileReader.addEventListener("load", () => {
           this.postPictureListsUrl.push({
             url: fileReader.result,
-           name: event.target.files[i].name
+            name: event.target.files[i].name
           });
         });
         fileReader.readAsDataURL(this.postPictureLists[i]);
       }
-      this
+      this;
     },
     loadAllPostInCommunity() {
       axios
@@ -626,7 +693,7 @@ export default {
     },
     addPost() {
       let loader = this.$loading.show();
-    
+
       let value =
         (this.newPost && this.newPost.trim()) || this.postPictureLists;
       if (!value) {
@@ -849,10 +916,6 @@ export default {
           });
       }, 500);
     }
-
-
-      
-    
   }
 };
 </script> 
