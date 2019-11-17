@@ -15,7 +15,7 @@
             &nbsp;
             <v-icon>add_a_photo</v-icon>
             <br />
-          </v-btn> -->
+          </v-btn>-->
         </v-img>
       </div>
       <div v-else>
@@ -28,71 +28,92 @@
         ></v-img>
       </div>
     </v-flex>
-    <input
-      type="file"
-      style="display: none"
-      ref="fileInput"
-      accept="image/*"
-      @change="onFilePicked"
-    />
-    <br />
-    <br />
-    <!-- Upload Cover picture  not do any thing now -->
+    <v-tabs color="#341646" dark slider-color="white" centered>
+      <!-- Header Tab -->
+      <v-tab ripple>Review &amp; Feedback</v-tab>
+      <v-tab ripple>Notification</v-tab>
 
-    <p size="1px">User Comment</p>
-    <div v-for="(review,postIndex ) in reviewList " :key="postIndex">
-      <v-card>
-        <v-layout row wrap align-start justify-center fill-height>
-          <v-layout row pt-2>
-            <v-flex xs1 md1 lg1 mt-3 ml-3>
-              <!-- <v-icon>today</v-icon> -->
-              <v-avatar size="40" color="grey">
-                <v-img :src="review.photoURL"></v-img>
-              </v-avatar>
-            </v-flex>
-            <v-flex xs11 md11 lg11 mt-1 ml-3 mr-1>
-              <div>{{review.displayName}}</div>
-
-              <p
-                class="date"
-              >{{formatDateForReadable(review.reviewDate)}} {{formatAMPM(review.reviewDate)}}</p>
-            </v-flex>
-          </v-layout>
-
-          <v-card-text class="px-3 pt-3 pb-0">
-            {{readMoreActivated ? review.reviewDetail : review.reviewDetail.slice(0, 200) }}
-            <center>
-              <a
-                class="textViewMore"
-                @click="readMoreActivated = !readMoreActivated"
-              >{{readMoreActivated ? 'Show less' : 'Read more'}}</a>
-            </center>
-          </v-card-text>
-
-          <v-card-text class="px-3 pt-3 pb-0">
-            <v-layout row>
-              <v-flex>Given rating :</v-flex>
-              <v-flex xs7>
-                <v-rating
-                  readonly
-                  v-model="review.rating"
-                  color="yellow accent-4"
-                  dense
-                  half-increments
-                  hover
-                  size="18"
-                ></v-rating>
-              </v-flex>
-              <v-flex xs1>({{review.rating}})</v-flex>
-            </v-layout>
-          </v-card-text>
-        </v-layout>
+      <!-- Tabs Content-->
+      <v-tab-item>
         <br />
-      </v-card>
-      <br />
-    </div>
+        <p size="1px">User Comment</p>
+        <div v-for="(review,postIndex ) in reviewList " :key="postIndex">
+          <v-card>
+            <v-layout row wrap align-start justify-center fill-height>
+              <v-layout row pt-2>
+                <v-flex xs1 md1 lg1 mt-3 ml-3>
+                  <!-- <v-icon>today</v-icon> -->
+                  <v-avatar size="40" color="grey">
+                    <v-img :src="review.photoURL"></v-img>
+                  </v-avatar>
+                </v-flex>
+                <v-flex xs11 md11 lg11 mt-1 ml-3 mr-1>
+                  <div>{{review.displayName}}</div>
 
-    <br />
+                  <p
+                    class="date"
+                  >{{formatDateForReadable(review.reviewDate)}} {{formatAMPM(review.reviewDate)}}</p>
+                </v-flex>
+              </v-layout>
+
+              <v-card-text class="px-3 pt-3 pb-0">
+                {{readMoreActivated ? review.reviewDetail : review.reviewDetail.slice(0, 200) }}
+                <center>
+                  <a
+                    class="textViewMore"
+                    @click="readMoreActivated = !readMoreActivated"
+                  >{{readMoreActivated ? 'Show less' : 'Read more'}}</a>
+                </center>
+              </v-card-text>
+
+              <v-card-text class="px-3 pt-3 pb-0">
+                <v-layout row>
+                  <v-flex>Given rating :</v-flex>
+                  <v-flex xs7>
+                    <v-rating
+                      readonly
+                      v-model="review.rating"
+                      color="yellow accent-4"
+                      dense
+                      half-increments
+                      hover
+                      size="18"
+                    ></v-rating>
+                  </v-flex>
+                  <v-flex xs1>({{review.rating}})</v-flex>
+                </v-layout>
+              </v-card-text>
+            </v-layout>
+            <br />
+          </v-card>
+          <br />
+        </div>
+        <br />
+      </v-tab-item>
+
+      <v-tab-item>
+        <v-flex xs12>
+          <v-img
+            :src="pushMessage"
+            aspect-ratio="1"
+            class="grey lighten-2"
+            max-width="1250"
+            max-height="275"
+          />
+        </v-flex>
+        <v-flex xs12>
+          <v-textarea
+            name="description"
+            label="Notification Description"
+            rows="3"
+            placeholder="แจ้งเตือนข่าวสารไปยังผู้ใช้ที่ได้รับตั๋วกิจกรรมไปแล้ว"
+          ></v-textarea>
+          <center>
+            <v-btn color="primary" @click="pushNotificationToEventTopic()">Push Notification</v-btn>
+          </center>
+        </v-flex>
+      </v-tab-item>
+    </v-tabs>
   </div>
 </template> 
   
@@ -114,6 +135,7 @@ export default {
       imagePost: null,
       postPictureListsUrl: [],
       postPictureLists: null,
+      pushMessage: require(`@/assets/default/push-message.png`),
       defaultImage: require(`@/assets/default/community.png`),
       remove: ["remove"],
       post: "",
@@ -137,7 +159,7 @@ export default {
     };
   },
   mounted() {
-    this.elasticEventId = this.$route.params.elasticEventId
+    this.elasticEventId = this.$route.params.elasticEventId;
     this.loadAllReviewOfEvent();
   },
   computed: {
@@ -147,16 +169,20 @@ export default {
     }
   },
   methods: {
-    loadEventDetail(){
-      axios.get(`${process.env.EVENT_SERVICE}/event/${this.elasticEventId}`)
-      .then(eventResponse => {
-        console.log("------------ Async Data  -----------");
-         this.event = eventResponse.data;
-      })
-      .catch(err => {
-        console.log("!!!!!!!!!!!!!!!!! Boom Not found !!!!!!!!!!");
-        console.log(err);
-      });
+    pushNotificationToEventTopic(){
+
+    },
+    loadEventDetail() {
+      axios
+        .get(`${process.env.EVENT_SERVICE}/event/${this.elasticEventId}`)
+        .then(eventResponse => {
+          console.log("------------ Async Data  -----------");
+          this.event = eventResponse.data;
+        })
+        .catch(err => {
+          console.log("!!!!!!!!!!!!!!!!! Boom Not found !!!!!!!!!!");
+          console.log(err);
+        });
     },
     loadAllReviewOfEvent() {
       let loader = this.$loading.show();
