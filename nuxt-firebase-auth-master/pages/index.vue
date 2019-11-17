@@ -29,8 +29,9 @@
             <slide>
               <v-flex  xs12 sm6 offset-sm>
                 <!-- <v-img :src="testImg"></v-img> -->
+
                 <nuxt-link :to="`/event?`">
-                  <v-card class="BackgroundImg" width="350px" height="320px">
+                  <v-card class="BackgroundImg" width="309px" height="294px">
                     <br />
                     <br />
                     <br />
@@ -45,6 +46,8 @@
                     </center>
                   </v-card>
                 </nuxt-link>
+
+
               </v-flex>
             </slide>
           </carousel>
@@ -64,7 +67,7 @@
           <slide>
             <v-flex 3 xs12 sm6 offset-sm>
               <nuxt-link :to="`/event?`">
-                <v-card class="BackgroundImg" width="350px" height="320px">
+                <v-card class="BackgroundImg" width="309px" height="294px">
                   <br />
                   <br />
                   <br />
@@ -96,7 +99,7 @@
           <slide>
             <v-flex 3 xs12 sm6 offset-sm>
               <nuxt-link :to="`/event?`">
-                <v-card class="BackgroundImg" width="350px" height="320px">
+                <v-card class="BackgroundImg" width="309px" height="294px">
                   <br />
                   <br />
                   <br />
