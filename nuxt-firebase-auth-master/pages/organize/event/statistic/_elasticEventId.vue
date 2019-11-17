@@ -38,7 +38,16 @@
         <br>
         <center><h3>{{event.eventName}}</h3></center>
         <br />
-        <p size="1px">User Comment</p>
+        <!-- <p size="1px">User Comment</p> -->
+        <div v-if="reviewList.length == 0">
+         <v-flex xs12>
+          <v-img 
+          :src="feedbackImg"
+          max-width="1250"
+            max-height="470"
+          
+          />
+        </v-flex></div>
         <div v-for="(review,postIndex ) in reviewList " :key="postIndex">
           <v-card>
             <v-layout row wrap align-start justify-center fill-height>
@@ -144,6 +153,7 @@ export default {
       imagePost: null,
       postPictureListsUrl: [],
       postPictureLists: null,
+      feedbackImg: require(`@/assets/default/feedback.png`),
       pushMessage: require(`@/assets/default/push-message.png`),
       defaultImage: require(`@/assets/default/community.png`),
       remove: ["remove"],
