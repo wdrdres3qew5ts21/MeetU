@@ -4,11 +4,11 @@
     <!-- <transition name="router-anim"  leave-active-class="animated slideOutLeft"> -->
     <v-carousel class="mycarousel" prev-icon="mdi-arrow-left" next-icon="mdi-arrow-right">
       <nuxt-link
-        :to="`/event/${popularEvent.elasticEventId}`"
-        v-for="(popularEvent,i) in popularEventList"
+        :to="`/event/${recentlyEvent.elasticEventId}`"
+        v-for="(recentlyEvent,i) in recentlyEventList"
         :key="i"
       >
-        <v-carousel-item :src="popularEvent.eventPictureCover"></v-carousel-item>
+        <v-carousel-item :src="recentlyEvent.eventPictureCover"></v-carousel-item>
       </nuxt-link>
     </v-carousel>
     <v-container class="bg">

@@ -345,7 +345,7 @@ public class CommunityService {
             Community communityInDatabase = communityRepository.findByCommunityId(communityId).get();
             if (uid.equals(communityInDatabase.getCommunityOwner().getUid())) {
                 communityInDatabase.setCommunityDetail(community.getCommunityDetail());
-                if (communityInDatabase.getCommunityPictureCover() != null || !communityInDatabase.getCommunityPictureCover().isEmpty()) {
+                if (community.getCommunityPictureCover() != null || !community.getCommunityPictureCover().isEmpty()) {
                     communityInDatabase.setCommunityPictureCover(community.getCommunityPictureCover());
                 }
                 Community saveCommunity = communityRepository.save(communityInDatabase);
