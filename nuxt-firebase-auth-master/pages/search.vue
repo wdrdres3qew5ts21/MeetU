@@ -207,6 +207,38 @@
 
 
         </v-flex>-->
+
+        <!-- <div class="content-block__effect">
+          <h2>Effect #1</h2>
+
+          <div class="btn-block">
+            <a
+              href="#"
+              class="btn-hover-effect btn-hover-effect--effect-1"
+              title="View More"
+            >View More</a>
+            <a
+              href="#"
+              class="btn-hover-effect btn-hover-effect--effect-1"
+              title="View More"
+            >View More</a>
+            <a
+              href="#"
+              class="btn-hover-effect btn-hover-effect--effect-1"
+              title="View More"
+            >View More</a>
+            <a
+              href="#"
+              class="btn-hover-effect btn-hover-effect--effect-1"
+              title="View More"
+            >View More</a>
+            <a
+              href="#"
+              class="btn-hover-effect btn-hover-effect--effect-1"
+              title="View More"
+            >View More</a>
+          </div>
+        </div> -->
       </div>
     </center>
   </div>
@@ -263,7 +295,7 @@ export default {
         unit: ""
       },
       showTest: true,
-      searchImg: require("@/assets/searchImg.png")
+      searchImg: require("@/assets/s1.png")
     };
   },
   watch: {
@@ -345,7 +377,7 @@ export default {
 </script>
 
 <style lang="css">
-@import "https://cdn.jsdelivr.net/npm/animate.css@3.5.1";
+
 /* 
 .page {
   position: fixed;
@@ -390,6 +422,66 @@ export default {
   transform: translateX(10px);
   opacity: 0;
 } */
+
+/* .btn-hover-effect--effect-1 {
+  &:before {
+    @include position-absolute($top: 0, $left: 0);
+    @include transition-mix($property: transform);
+    display: block;
+    width: 100%;
+    height: 100%;
+
+    content: "";
+
+    background-color: rgba(255, 255, 255, 0.2);
+
+    transform: scale(0, 1);
+    transform-origin: right top;
+
+    z-index: -1;
+  }
+}
+
+&:after {
+    @include position-absolute($top: 1px, $right: (- $icon-block-width));
+    @include transition-mix();
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: $icon-block-width;
+    
+    content: '\f105';
+    
+    font: {
+      family: "Font Awesome 5 Free";
+      size: 25px;
+      weight: 900;
+    }
+    line-height: inherit;
+    
+    opacity: 0;
+  }
+  
+
+&:hover {
+    padding-left: $btn-hover-effect-padding-horz - 10;
+    padding-right: $btn-hover-effect-padding-horz + 10;
+    
+    &:before {
+      transform: scale(1, 1);
+      
+      transform-origin: left top;
+    }
+    
+    &:after {
+      right: 0;
+      
+      opacity: 1;
+    }
+  } */
+
 </style>
 
 
