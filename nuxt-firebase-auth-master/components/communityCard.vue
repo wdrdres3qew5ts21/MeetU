@@ -7,22 +7,25 @@
     <v-card-text>
       <span class="text--primary">
         <span class="name">{{communityName}}</span>
-        <br />
-        <span>Members :</span>
-       
+        <v-layout row wrap>
+          <v-chip
+            v-for="(categoryChip, index) in interestTags"
+            @click="$router.push(`/event?category=${categoryChip}`)"
+            :key="index"
+          >
+            <strong>{{ categoryChip}}</strong>&nbsp;
+          </v-chip>
+        </v-layout>
       </span>
     </v-card-text>
-
+    <!-- 
     <br />
     <v-card-actions>
       <v-flex class="text-xs-right">
-       <v-btn color="#341646" class="b">VIEW</v-btn>
-      
- <!-- color="#341646" -->
+        <v-btn color="#341646" class="b">VIEW</v-btn>
       </v-flex>
-    </v-card-actions>
+    </v-card-actions>-->
   </v-card>
-  
 </template>
 
 <script>
@@ -31,10 +34,14 @@ export default {
   props: {
     communityPictureCover: {
       type: String,
-      default: require(`@/assets/default/community.png`) 
+      default: require(`@/assets/default/community.png`)
+    },
+    interestTags: {
+      type: Array,
+      default: []
     },
     communityName: String,
-    memberLists: Array,
+    memberLists: Array
   }
 };
 </script>
@@ -42,7 +49,7 @@ export default {
 .b {
   color: white;
 }
-.name{
+.name {
   font-size: 18px;
   font-weight: bold;
 }

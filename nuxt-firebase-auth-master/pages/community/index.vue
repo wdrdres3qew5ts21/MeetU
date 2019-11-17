@@ -116,6 +116,7 @@
             <community-card
               :communityPictureCover="community.communityPictureCover==undefined?defaultImage: community.communityPictureCover"
               :communityName="community.communityName"
+              :interestTags="community.interestTags"
             ></community-card>
           </nuxt-link>
         </div>
