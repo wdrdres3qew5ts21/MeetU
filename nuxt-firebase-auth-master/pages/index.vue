@@ -23,12 +23,11 @@
           <carousel :perPage="1" :paginationEnabled="false">
             <slide v-for="(event, index) in recommendedEventList" :key="index">
               <nuxt-link :to="`/event/${event.elasticEventId}`">
-                <event-card :event="event" :location="event.location" :badge="event.badge">
-                </event-card>
+                <event-card :event="event" :location="event.location" :badge="event.badge"></event-card>
               </nuxt-link>
             </slide>
             <slide>
-              <v-flex  xs12 sm6 offset-sm>
+              <v-flex xs12 sm6 offset-sm>
                 <nuxt-link :to="`/search?`">
                   <v-card class="BackgroundImg" width="400px" height="295px">
                     <br />
@@ -67,7 +66,7 @@
                   </center>
                   <center>
                     <h2 style="color:#fff">View More</h2>
-                  </center> -->
+                  </center>-->
                 </v-card>
               </nuxt-link>
             </v-flex>
@@ -99,7 +98,7 @@
                   </center>
                   <center>
                     <h2 style="color:#fff">View More</h2>
-                  </center> -->
+                  </center>-->
                 </v-card>
               </nuxt-link>
             </v-flex>
@@ -110,14 +109,15 @@
       <br />
       <!-- Community -->
       <h2>Community</h2>
-      <nuxt-link :to="`/community`">
-        <community-card
-          v-for="(community, index) in communityList"
-          :key="index"
-          :communityPictureCover="community.communityPictureCover"
-          :communityName="community.communityName"
-        ></community-card>
-      </nuxt-link>
+      <div v-for="(community, index) in communityList" :key="index">
+        <nuxt-link :to="`/community/${community.communityId}`">
+          <community-card
+            :communityPictureCover="community.communityPictureCover"
+            :communityName="community.communityName"
+            :interestTags="community.interestTags"
+          ></community-card>
+        </nuxt-link>
+      </div>
       <br />
       <br />
       <center>
@@ -200,6 +200,7 @@ export default {
     this.isLogin = isLogin();
     this.getRecentlyEvent();
     this.getPopularEvent();
+    this.getCommunityList();
     if (this.isLogin) {
       this.getRecommendEvent();
     }
@@ -249,8 +250,15 @@ export default {
         .catch(error => {
           this.recentlyEventList = mockPopularEventList;
         });
-
-      //      console.log(this.recentlyEventList)
+    },
+    getCommunityList() {
+      axios
+        .get(`${process.env.COMMUNITY_SERVICE}/communitys?contentPerPage=2`)
+        .then(communityListResponse => {
+          this.communityList = communityListResponse.data.content;
+          console.log(communityList.data);
+        })
+        .catch(error => {});
     }
   }
 };
@@ -394,8 +402,8 @@ export default {
   /* border: none !important; */
   background-image: url(../assets/default/vm1.png);
   background-size: 350px;
-  background-repeat:no-repeat;
-  background-position:center top;
+  background-repeat: no-repeat;
+  background-position: center top;
   opacity: 0.7;
   background-position-y: -100%;
   background-position-x: -20%;
@@ -413,7 +421,7 @@ export default {
   opacity: 0;
 } */
 
-.v-carousel:prev-icon{
+.v-carousel:prev-icon {
   color: yellow;
 }
 </style>
