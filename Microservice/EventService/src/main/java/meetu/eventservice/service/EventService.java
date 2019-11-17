@@ -1001,7 +1001,7 @@ public class EventService {
 
     public ResponseEntity subscribeAllEventThatUserHaveTicket(String userNotification, String uid) {
         try {
-            ResponseEntity<User> userResponse = restTemplate.getForEntity(USERSERVICE_URL + "/user" + uid, User.class);
+            ResponseEntity<User> userResponse = restTemplate.getForEntity(USERSERVICE_URL + "/user/" + uid, User.class);
             User userBody = userResponse.getBody();
             List<UserEventTicket> userEventTicketForSubscribeList = userEventTicketRespository.findByUid(userBody.getUid());
             userEventTicketForSubscribeList.forEach((subscribeEvent) -> {
