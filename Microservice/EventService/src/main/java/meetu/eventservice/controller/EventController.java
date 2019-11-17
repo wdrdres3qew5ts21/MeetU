@@ -87,9 +87,10 @@ public class EventController {
     public ResponseEntity saveUserNotificationToken(@RequestBody UserNotification userNotification) {
         return new ResponseEntity(eventService.saveuserNotification(userNotification), HttpStatus.CREATED);
     }
-    
+
     @PostMapping("/notification/subscribe/events/user/{uid}")
     public ResponseEntity subscribeAllEventThatUserHaveTicket(@RequestBody UserNotification userNotification, @PathVariable String uid) throws FirebaseMessagingException {
+        System.out.println("subscribe all of my ticket !");
         return eventService.subscribeAllEventThatUserHaveTicket(userNotification.getNotificationToken(), uid);
     }
 
@@ -98,11 +99,15 @@ public class EventController {
         return eventService.subscribeEventTopic(userNotification.getNotificationToken(), topic);
     }
 
+    @PostMapping("/notification/push/event/{topic}")
+    public ResponseEntity pushNotificationToEventTopic(@PathVariable String topic, @RequestBody UserNotification userNotification) throws FirebaseMessagingException {
+        return eventService.pushNotificationToEventTopic(userNotification, topic);
+    }
+
+    // เป็น template เทสหลักการ push subscribe ว่าสามารถใช้ได้โดยการป้อน topic กับ paylaod ของ push noti เข้าไป
     @PostMapping("/notification/push/{topic}")
     public ResponseEntity pushNotificationTopic(@PathVariable String topic, @RequestBody UserNotification userNotification) throws FirebaseMessagingException {
-//        Message build = Message.builder().setWebpushConfig(WebpushFcmOptions.withLink("event").);
         return eventService.pushNotificationTopic(userNotification, topic);
-        //  return eventService.pushNotificationTopic(userNotification, topic);
     }
 
     @GetMapping("/events/tickets/{uid}")

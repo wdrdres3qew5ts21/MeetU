@@ -35,6 +35,8 @@
 
       <!-- Tabs Content-->
       <v-tab-item>
+        <br>
+        <center><h3>{{event.eventName}}</h3></center>
         <br />
         <p size="1px">User Comment</p>
         <div v-for="(review,postIndex ) in reviewList " :key="postIndex">
@@ -102,8 +104,15 @@
           />
         </v-flex>
         <v-flex xs12>
+          <v-text-field
+            name="name"
+            label="Notification Title"
+            :placeholder="`หัวข้อของการแจ้งเตือน (Default คือ ${event.eventName})`"
+            v-model="messageTitle"
+          ></v-text-field>
           <v-textarea
             name="description"
+            v-model="messageDetail"
             label="Notification Description"
             rows="3"
             placeholder="แจ้งเตือนข่าวสารไปยังผู้ใช้ที่ได้รับตั๋วกิจกรรมไปแล้ว"
@@ -145,7 +154,9 @@ export default {
       reviewDate: "",
       comment: "",
       postIndex: 0,
-      event: {},
+      event: {
+        eventName: ""
+      },
       dialogOfComment: false,
       name: "",
       show: false,
@@ -155,7 +166,9 @@ export default {
         communityName: "",
         communityDetail: ""
       },
-      elasticEventId: ""
+      elasticEventId: "",
+      messageTitle: "",
+      messageDetail: ""
     };
   },
   mounted() {
@@ -169,8 +182,36 @@ export default {
     }
   },
   methods: {
-    pushNotificationToEventTopic(){
-
+    pushNotificationToEventTopic() {
+      let loader = this.$loading.show();
+      let notificationBody = {
+        title:
+          this.messageTitle === "" ? this.event.eventName : this.messageTitle,
+        messageDetail: this.messageDetail,
+        linkUrl: `/event/${this.elasticEventId}`
+      };
+      axios
+        .post(
+          `${process.env.EVENT_SERVICE}/notification/push/event/${this.elasticEventId}`,
+          notificationBody
+        )
+        .then(pushNotificationResponse => {
+          this.$swal({
+            type: "success",
+            title: "Push Notification Success !!!",
+            text: "Push Notification Success !!!"
+          });
+        })
+        .catch(err => {
+          this.$swal({
+            type: "error",
+            title: "Fail To push notification !",
+            text: "Fail To push notification"
+          });
+        })
+        .finally(() => {
+          loader.hide();
+        });
     },
     loadEventDetail() {
       axios

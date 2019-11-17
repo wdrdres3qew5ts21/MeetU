@@ -977,14 +977,7 @@ public class EventService {
         }
     }
 
-        public ResponseEntity pushNotificationTopic(UserNotification notification, String topic) {
-//        String image = "https://firebasestorage.googleapis.com/v0/b/meetu-69b29.appspot.com/o/eventPicture%2FAnnotation%202019-11-16%20123942.png_2019-11-16T07%3A34%3A40.195Z?alt=media&token=ee2c1942-ec53-4431-af93-e3e921e8c35b";
-//        Message build = Message.builder().setWebpushConfig(
-//                WebpushConfig.builder()
-//                        .setFcmOptions(WebpushFcmOptions.withLink("event"))
-//                        .setNotification(
-//                                WebpushNotification.builder().setTitle("MeetU").setBody("Test Link go to Event page").setImage(image).setIcon("/icon.png").build())
-//                        .build()).setTopic(topic).build();
+    public ResponseEntity pushNotificationTopic(UserNotification notification, String topic) {
         Message build = Message.builder().setWebpushConfig(
                 WebpushConfig.builder()
                         .setFcmOptions(WebpushFcmOptions.withLink(notification.getLinkUrl()))
@@ -1010,7 +1003,7 @@ public class EventService {
         try {
             ResponseEntity<User> userResponse = restTemplate.getForEntity(USERSERVICE_URL + "/user" + uid, User.class);
             User userBody = userResponse.getBody();
-            List<UserEventTicket> userEventTicketForSubscribeList = userEventTicketRespository.findByUid(uid);
+            List<UserEventTicket> userEventTicketForSubscribeList = userEventTicketRespository.findByUid(userBody.getUid());
             userEventTicketForSubscribeList.forEach((subscribeEvent) -> {
                 System.out.println("Subscribe loop : " + uid + " | ElasticEventID : " + subscribeEvent.getElasticEventId());
                 this.subscribeEventTopic(userNotification, subscribeEvent.getElasticEventId());
@@ -1019,6 +1012,15 @@ public class EventService {
         } catch (HttpStatusCodeException ex) {
             return ResponseEntity.status(ex.getStatusCode()).build();
         }
+    }
+
+    public ResponseEntity pushNotificationToEventTopic(UserNotification userNotification, String elasticEventId) {
+        Event eventForPushNotification = eventRepository.findByElasticEventId(elasticEventId);
+        if (eventForPushNotification != null) {
+            userNotification.setPictureUrl(eventForPushNotification.getEventPictureCover());
+            this.pushNotificationTopic(userNotification, elasticEventId);
+        }
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 }
