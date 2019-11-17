@@ -103,7 +103,7 @@ export default {
       iconIndex: 0,
       icons: ["mdi-emoticon"],
       showTest: true,
-      notFoundImg: require("@/assets/e1.png")
+      notFoundImg: require("@/assets/default/e1.png")
     
     };
   },

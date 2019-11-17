@@ -295,7 +295,7 @@ export default {
         unit: ""
       },
       showTest: true,
-      searchImg: require("@/assets/s1.png")
+      searchImg: require("@/assets/default/s1.png")
     };
   },
   watch: {
