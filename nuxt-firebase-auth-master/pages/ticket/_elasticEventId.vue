@@ -4,7 +4,7 @@
     <!-- <h1>Ticket(s)</h1> -->
     <!-- <ticketDetail :ticketEvent="ticketEvent"></ticketDetail> -->
     <div v-if="isParticipate & !ticketEvent.isEventDelete">
-      <rating-event :ticketEvent="ticketEvent" :reviewContent="reviewContent" />
+      <rating-event @refreshReview="loadUserReview" :ticketEvent="ticketEvent" :reviewContent="reviewContent" />
     </div>
     <div class="text-center">
       <br />

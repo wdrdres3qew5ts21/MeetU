@@ -135,7 +135,7 @@ export default {
             title: "Review Success !",
             text: "Review Success"
           });
-          this.reviewContent.isReview = true
+          this.$emit('refreshReview')
         })
         .catch(err => {
           this.$swal({
