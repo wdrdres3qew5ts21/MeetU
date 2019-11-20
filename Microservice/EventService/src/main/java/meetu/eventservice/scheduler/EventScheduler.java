@@ -7,7 +7,6 @@ package meetu.eventservice.scheduler;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import meetu.eventservice.repository.BadgeRepository;
 import meetu.eventservice.repository.CategoryRepository;
 import meetu.eventservice.repository.EventBadgeRepository;
 import meetu.eventservice.repository.EventRepository;

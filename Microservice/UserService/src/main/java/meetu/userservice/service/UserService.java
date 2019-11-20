@@ -61,9 +61,6 @@ public class UserService {
     private UserNotificationRepository userNotificationRepository;
 
     @Autowired
-    private UserOrganizeRoleRepository userOrganizeRoleRepository;
-
-    @Autowired
     private UserBadgeRepository userBadgeRepository;
 
     @Autowired

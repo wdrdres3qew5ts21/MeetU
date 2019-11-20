@@ -73,7 +73,6 @@ import meetu.eventservice.model.Review;
 import meetu.eventservice.model.UserEventTicket;
 import meetu.eventservice.model.UserJoinEvent;
 import meetu.eventservice.model.UserViewEvent;
-import meetu.eventservice.repository.BadgeRepository;
 import meetu.eventservice.repository.UserEventTicketRepository;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
 import org.elasticsearch.index.query.MatchAllQueryBuilder;
@@ -143,9 +142,6 @@ public class EventService {
 
     @Autowired
     private CategoryRepository categoryRepository;
-
-    @Autowired
-    private BadgeRepository badgeRepository;
 
     @Autowired
     private EventBadgeRepository eventBadgeRepository;
@@ -712,10 +708,6 @@ public class EventService {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
-    public ResponseEntity fuckYouFallback(UserViewEvent test) {
-        System.out.println("Doom day hystrix!!!");
-        return ResponseEntity.status(HttpStatus.OK).body("fuq");
-    }
 
     // join เพื่อหา Detail ของ Event ที่ตั๋วนั้นถูกกดมาใช้งาน
     public ResponseEntity findUserTicketHistory(String uid) {
@@ -785,30 +777,6 @@ public class EventService {
         System.out.println("find all event ");
         System.out.println(allEventOfOrganize);
         return new ResponseEntity(allEventOfOrganize, HttpStatus.OK);
-    }
-
-    public ResponseEntity createBadge(Badge badge) {
-        Badge badgeInDatabase = badgeRepository.findByBadgeNameEquals(badge.getBadgeName());
-        if (badgeInDatabase == null) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(badgeRepository.save(badge));
-        }
-        HashMap<String, String> response = new HashMap();
-        response.put("response", "Badge Name Duplicate !!!");
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-    }
-
-    public ResponseEntity findEventThatMatchingBadge(List<String> badgeTags, String badgeName, int page, int contentPerPage) {
-        if (badgeTags == null & (badgeName.isEmpty() | badgeName == null)) {
-            List<Badge> allBadge = badgeRepository.findAll();
-            return ResponseEntity.status(HttpStatus.OK).body(allBadge);
-        } else if (badgeTags != null & !badgeName.isEmpty()) {
-            List<Badge> badgeFilterByTagsAndName = badgeRepository.findByBadgeTagsIsInAndBadgeNameLike(badgeTags, badgeName, PageRequest.of(page, contentPerPage));
-            return ResponseEntity.status(HttpStatus.OK).body(badgeFilterByTagsAndName);
-        }
-        System.out.println("Filter some bade");
-        System.out.println(badgeTags);
-        List<Badge> matchingBadge = badgeRepository.findByBadgeTagsIsIn(badgeTags, PageRequest.of(page, contentPerPage));
-        return ResponseEntity.status(HttpStatus.OK).body(matchingBadge);
     }
 
     public ResponseEntity deleteEventByElasticIdTest(UserEventTicket deletedEvent) {
