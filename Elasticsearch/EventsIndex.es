@@ -1,7 +1,7 @@
 GET _cluster/health
 GET /events
 DELETE /events
-1) สรา้งตัว Analyzer ไว้เป้นฐานก่อนและจากนั้นก็นำตัว Analyzer ไปใช้งานกับ Index นั่นเอง
+1) สร้างตัว Analyzer ไว้เป้นฐานก่อนและจากนั้นก็นำตัว Analyzer ไปใช้งานกับ Index นั่นเอง
 PUT /events
 {
   "settings": {
