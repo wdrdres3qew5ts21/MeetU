@@ -4,8 +4,11 @@
 
 MeetU: Platform Event Management  ที่เข้ามามีส่วนช่วยเหล่าวัยรุ่นไฟแรงที่มีพลังสร้างสรรค์เป็นช่วงเวลาแห่งการทำกิจกรรมได้มาสร้างกิจกรรมและทำกิจกรรมดีๆร่วมกัน โดย MeetU มีจุดเด่นในเรื่องของการค้นหากิจกรรมตามที่พวกคุณชื่นชอบได้ด้วยระบบแนะนำกิจกรรม หรือจะเป็นการไปค้นพบกิจกรรมแนวใหม่ยอดนิยมที่ทำให้คุณได้หลุดออกมาจาก comfort zone เรียนรู้กิจกรรมใหม่ๆก็ได้ และสิ่งที่มาช่วยเป็นตัวขับเคลื่อนให้กิจกรรมสนุกขึ้นนั้นก็คือระบบ Leader Board ที่สามารถให้คุณแสดงคะแนนกิจกรรมจากกิจกรรมที่คุณเคยไปเข้าร่วมได้ พร้อมกับพบปะผู้คนที่มีความสนใจเหมือนกัน ! สำหรับในด้าน Technology เอง MeetU มาพร้อมกับสถาปัตยกรรม Application แบบ Microservices ซึ่งมามีส่วนช่วยในการออกแบบอย่าง Module ในอนาคตนั้นสามารถทำได้ง่ายได้ ซึ่งสำหรับ Core Feature ที่เราเลือก Technology มาใช้นั่นก็คือ Elasticsearch Stack ที่ทำหน้าที่ทั้งในส่วนร่วมกับ Backend คือระบบการค้นหาแบบ Full Text Search ช่วยให้เราค้นหากิจกรรมต่างๆได้ง่ายขึ้น และการ Monitoring Infeastructure ของระบบ Microservices และสำหรับภาษาที่เลิอกใช้ก็คือ Java Spring boot ที่เป็น Framework การพัฒนา Backend ซึ่งมาควบคู่กับหลัก 12 Factors อันนำไปสู่การเป็น Cloud Native Application ให้สามารถ Scaling ได้ในรูปแบบ Horizontal รวมไปถึงการรองรับ Fault Torelant ได้ในระดับนึงเพราะ Application เราถูกแบ่งออกเป็น Services หลักๆ ต่อให้มี Services ใดเกิดการล่มลงไป Application ก็ยังคงมีบาง Service ที่รองรับและทำงานได้ต่อไป
 
+## Diagram System Flow
+![alt text](https://i.ibb.co/y5cr7sC/image.png)
+
 ## วิธีการติดตั้ง project
-Import MongoDB Database
+###### ติดตั้ง MongoDB Database เชื่อมเข้ากับ Elasticsearch
 1. Restore ข้อมูลกลับเข้า MongoDB
 ทำการ import ไฟล์จาก meetu-mongodb-dump ด้วยการใช้คำสั่ง mongorestore https://docs.mongodb.com/manual/tutorial/backup-and-restore-tools/ เพื่อนำข้อมูลที่ถูก dump ออกมาเป้น bson กลับเข้าไปใน mongodb
 
@@ -220,7 +223,31 @@ output {
 }
 ```
 
- 
+###### วิธีการติดตั้ง Microservices ของ Spring boot
+1. Config Server จัดการ Credential
+ด้วยแนวคิดของ Microservice ซึ่งโปรเจคนี้ใช้ Spring Cloud Config เข้ามาจัดการ Credential ของระบบ
+https://www.baeldung.com/spring-cloud-configuration
+![alt text](https://i0.wp.com/blog.leekyoungil.com/wp-content/uploads/2017/04/1.png)
+ซึ่ง Service ทุกตัวได้แก่ API Gateway, User Service, Event Service และ Community Service จะต้องเรียกใช้ config ผ่าน
+Config Server ดั่งภาพเท่านั้นซึ่งเราจะต้องทำการสร้าง Private Repo เอาไว้สำหรับการเก็บ Credential ซึ่งเราจะเลือกใช้หรือไม่เลืออกใช้ก็ได้ถ้าหากไม่ต้องการเลือกใช้
+ให้ทำการ comment code ในส่วนของ spring cloud
+``````
+pom.xml
+ให้ทำการ comment dependency นี้ออกไปถ้าหากเราไม่ต้องการใช้ config server
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-config</artifactId>
+        </dependency>
+```````
+แต่ถ้าต้องการใช้ก็ให้ทำการสร้าง private git repository ขึ้นมาก่อนแล้วใช้การ config เชื่อมไปยัง private repository ดั่งภาพหรือจะทำเป็น private key แทนเพื่อความปลอดภัยก็ได้เช่นกัน
+![alt text](https://i.ibb.co/c1cBSF1/image.png)
+
+2. ลำดับการทำงานจะต้องสั่งให้ Config Server ทำงานก่อนจากนั้นตามด้วย Eureka Server ซึ่งทำหน้าที่เป็น Service Register และหลังจากนั้นจะสามารถสั่งให้ 
+API Gateway, User Service, Event Service และ Community Service ตัวใดตัวหนึ่งทำงานก่อนกันก็ได้เพราะว่าทั้ง 4 Service นี้นั้นไม่เกี่ยวข้องกัน  สิ่งที่จำเป็น
+มีแค่การเริ่มทำงานของ Config Server เป็นอันดับแรกเพราะว่าเป็นตัวบันทึก Credential ถ้าหากไม่ทำงานก่อนแล้ว Service อื่นเข้ามาต่อใช้งานก็จะไม่มี Credential 
+ให้ใช้งานนั่นเอง  ส่วน Service Register เป็นลำดับที่สองเพราะว่าการที่แต่ล่ะ Service จะรู้จักกันได้นั้นจำเป็นต้องมี Service Register แต่ว่า Service ที่เหลือมี Service Discovery ประจำตัวเองอยู๋แล้วดังนั้นการ Register จะเกิดขึ้นอัตโนมัติ
+![alt text](https://i.ibb.co/MfBy0dy/image.png)
+ซึ่งการ Config ทุกอย่างนั้นจะอยู่ใน  bootstap.yml, application.properties และ elasticapm.properties  
 
 ## Tools & Services
 
