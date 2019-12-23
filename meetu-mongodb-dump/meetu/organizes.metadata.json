@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"meetu.organizes"},{"v":2,"unique":true,"key":{"adminList.username":1},"name":"adminList.username","ns":"meetu.organizes"}],"uuid":"6a2f9f7430ff4e37b86a8ebd38aad9de"}
