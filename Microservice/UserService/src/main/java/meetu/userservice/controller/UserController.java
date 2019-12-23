@@ -67,7 +67,7 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    public ResponseEntity<User> createUserFromFirebaase(@RequestBody User user) {
+    public ResponseEntity<User>  createUserFromFirebase(@RequestBody User user) {
         return new ResponseEntity<User>(userService.createUserFromFirebaase(user), HttpStatus.CREATED);
     }
 

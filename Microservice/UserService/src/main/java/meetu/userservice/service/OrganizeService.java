@@ -236,12 +236,6 @@ public class OrganizeService {
             String uid = decodedToken.getUid();
             Organize adminOrganize = organizeRepository.findByAdminListUidIsInAndOrganizeId(uid, organizeId);
             Organize ownerOrganize = organizeRepository.findByOrganizeOwnerUidAndOrganizeId(uid, organizeId);
-//            System.out.println("-- organizeId ---");
-//            System.out.println(organizeId);
-//            System.out.println("--- owner ---");
-//            System.out.println(ownerOrganize);
-//            System.out.println("-- admin ---");
-//            System.out.println(adminOrganize);
             if (ownerOrganize != null) {
                 response.put("isOwner", true);
                 response.put("isAdmin", true);

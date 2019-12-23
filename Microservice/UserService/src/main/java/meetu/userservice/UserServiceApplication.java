@@ -12,7 +12,6 @@ import org.springframework.cloud.netflix.ribbon.RibbonClient;
 @SpringBootApplication
 public class UserServiceApplication {
 
-            
     public static void main(String[] args) {
         ElasticApmAttacher.attach();
         SpringApplication.run(UserServiceApplication.class, args);

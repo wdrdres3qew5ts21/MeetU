@@ -249,7 +249,6 @@ public class EventService {
         Event savedEventMongoDB = null;
         try {
             savedEventMongoDB = eventRepository.save(event);
-            System.out.println("fuq !!!");
             System.out.println(savedEventMongoDB);
             // push notification for created event
             UserNotification userNotification = new UserNotification();
@@ -364,11 +363,6 @@ public class EventService {
         if (longitude != 0.0 & latitude != 0.0) {
             System.out.println("Geo Filter");
             queryFilter.filter(filterByGeolocation(latitude, longitude, areaOfEvent));
-//            searchSourceBuilder.sorts().add(new GeoDistanceSortBuilder("location.geopoint", latitude, longitude)
-//                            .unit(DistanceUnit.KILOMETERS)
-//                            .order(SortOrder.ASC));
-//                    
-
             searchSourceBuilder.sort(
                     new GeoDistanceSortBuilder("location.geopoint", latitude, longitude)
                             .unit(DistanceUnit.KILOMETERS)

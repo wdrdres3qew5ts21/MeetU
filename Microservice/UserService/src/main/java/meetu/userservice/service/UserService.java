@@ -212,7 +212,6 @@ public class UserService {
             // ทำการเพิ่ม EXP ให้กับ Badge นั้นๆและถ้ายังไม่เคยมี Badge ให้ทำการสร้าง Badge ใหม่เข้าไป
             Badge eventBadge = badgeRepository.findById(userJoinEvent.getBadgeId()).get();
             List<UserBadge> userBadgeList = userInDatabase.getBadgeList();
-            System.out.println("DSFDSFSDF");
 
             if (userBadgeList.size() == 0) {
                 // ไม่เคยมี Badge เลยให้ทำการ push ลงไปเลย
@@ -231,7 +230,6 @@ public class UserService {
             } else {
                 // เคยมี Badge อยู่แล้วแสดงว่าต้องเพิ่มคะแนนราย Badge แล้วก็เช็คว่าถึงเวลาอัพเลเวลไหม
                 System.out.println("Own badge at least 1");
-                System.out.println("!!!!!!!!!!!!!!!");
                 System.out.println(userBadgeList);
                 System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                 UserBadge matchingBadgeForUpExp = userBadgeList.stream()
