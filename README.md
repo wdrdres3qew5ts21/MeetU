@@ -4,6 +4,16 @@
 
 MeetU: Platform Event Management  ที่เข้ามามีส่วนช่วยเหล่าวัยรุ่นไฟแรงที่มีพลังสร้างสรรค์เป็นช่วงเวลาแห่งการทำกิจกรรมได้มาสร้างกิจกรรมและทำกิจกรรมดีๆร่วมกัน โดย MeetU มีจุดเด่นในเรื่องของการค้นหากิจกรรมตามที่พวกคุณชื่นชอบได้ด้วยระบบแนะนำกิจกรรม หรือจะเป็นการไปค้นพบกิจกรรมแนวใหม่ยอดนิยมที่ทำให้คุณได้หลุดออกมาจาก comfort zone เรียนรู้กิจกรรมใหม่ๆก็ได้ และสิ่งที่มาช่วยเป็นตัวขับเคลื่อนให้กิจกรรมสนุกขึ้นนั้นก็คือระบบ Leader Board ที่สามารถให้คุณแสดงคะแนนกิจกรรมจากกิจกรรมที่คุณเคยไปเข้าร่วมได้ พร้อมกับพบปะผู้คนที่มีความสนใจเหมือนกัน ! สำหรับในด้าน Technology เอง MeetU มาพร้อมกับสถาปัตยกรรม Application แบบ Microservices ซึ่งมามีส่วนช่วยในการออกแบบอย่าง Module ในอนาคตนั้นสามารถทำได้ง่ายได้ ซึ่งสำหรับ Core Feature ที่เราเลือก Technology มาใช้นั่นก็คือ Elasticsearch Stack ที่ทำหน้าที่ทั้งในส่วนร่วมกับ Backend คือระบบการค้นหาแบบ Full Text Search ช่วยให้เราค้นหากิจกรรมต่างๆได้ง่ายขึ้น และการ Monitoring Infeastructure ของระบบ Microservices และสำหรับภาษาที่เลิอกใช้ก็คือ Java Spring boot ที่เป็น Framework การพัฒนา Backend ซึ่งมาควบคู่กับหลัก 12 Factors อันนำไปสู่การเป็น Cloud Native Application ให้สามารถ Scaling ได้ในรูปแบบ Horizontal รวมไปถึงการรองรับ Fault Torelant ได้ในระดับนึงเพราะ Application เราถูกแบ่งออกเป็น Services หลักๆ ต่อให้มี Services ใดเกิดการล่มลงไป Application ก็ยังคงมีบาง Service ที่รองรับและทำงานได้ต่อไป
 
+## วิธีการติดตั้ง project
+Import MongoDB Database
+1. ทำการ import ไฟล์จาก meetu-mongodb-dump ด้วยการใช้คำสั่ง mongorestore https://docs.mongodb.com/manual/tutorial/backup-and-restore-tools/ เพื่อนำข้อมูลที่ถูก dump ออกมาเป้น bson กลับเข้าไปใน mongodb
+2. ต้องใช้ Monstache ซึ่งเป็น Golang Library ในการ Import ข้อมูลจาก MongoDB ให้เข้าไปใน Elasticsearch ซึ่งผู้ใช้ไม่จำเป็นต้องลง Golang ที่เครื่องก็ได้เพราะว่า Monstache ได้ compile ออกมาเป็น execute file สำหรับ OS ทั้งสาม Platform คือ Darwin, Window และ Linux เรียบร้อยแล้ว 
+![alt text]( https://i.ibb.co/7VH6q8d/image.png)
+https://rwynn.github.io/monstache-site/start/ เมื่อเข้าไปที่เว็บของ Monstache แล้วให้เราโหลด execute binary มาจาก github ผ่าน https://github.com/rwynn/monstache/releases หรือจะใช้ execute bin ที่เป็นของ window จาก MeetU Repository นี้ก็ได้โดยเข้าไปที่ folder monstache-golang-window และใช้คำสั่ง  monstache.exe -f .\mongo-elastic.toml  เพื่อเป็นการสั่งให้ทำการ execute monstache bin และใช้ไฟล์ config ตาม path ที่ระบุ
+![alt text](https://i.ibb.co/TwT1jZX/image.png)
+สำหรับตัวอย่างไฟล์ config จะมีดังนี้โดยให้ปรับ url ของ MongoDB และ Elasticsearch เป็นของที่เราใช้ 
+
+
 ## Tools & Services
 
 ![alt text](https://seniorproject.sit.kmutt.ac.th/screenshot/screenshot10.IT59-BU37.jpg)
