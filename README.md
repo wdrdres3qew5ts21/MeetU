@@ -249,6 +249,37 @@ API Gateway, User Service, Event Service และ Community Service ตัว�
 ![alt text](https://i.ibb.co/MfBy0dy/image.png)
 ซึ่งการ Config ทุกอย่างนั้นจะอยู่ใน  bootstap.yml, application.properties และ elasticapm.properties  
 
+
+###### วิธีการติดตั้ง Elasticsearch APM / Metric Beat 
+สำหรับการทำ log ภายใน Microservice นั้นถือเป็นสิ่งที่สำคัญเพราะถ้าหากว่ามี Service ใดเกิดการ Failure ลงไปแล้วเราไม่มีการทำ Log จะทำให้วินิจฉัยได้ยากว่าต้องปรับปรุงอะไรในระบบ  เพราะด้วยการที่ Microservice จะมี Traffic ของ Network ภายในจำนวนมากรวมไปถึงการเรียกใช้ API ต่างๆที่กระจายออกไปผ่าน Gateway แต่เนื่องด้วย Platform ของเรานั้นใช้ Elasticsearch เป็นฐานข้อมูลดั่งที่ได้กล่าวไปในข้างต้นอยู่แล้ว
+เราจึงตัดสินใจเลือกใช้ Eco System ของ Elastic Stack นั่นก็คือการใช้ Application Performance Monitoring (APM) ควบคู่กับ Kibana ซึ่งเป็น Dashboard สำหรับใช้ในการ Visualization ข้อมูล Log ที่เกิดขึ้นในระบบได้อย่าง Realtime ทั้งการเก็บ JVM Utilization และ API Usage เช่นเดียวกัน โดยหลักการทำงานของ APM นั้นจะเป็นการนำ Agent ลงไปใส่ใน Spring Boot Application ของเราผ่าน Dependency บน Maven และสั่งให้ทำการส่ง Log ในช่วงเวลาที่ระบุไว้  จากการทดลองพบว่าการส่ง log ทุกๆช่วง 5 นาทีเป็นช่วงเวลาที่ไม่กินพื้นที่มากเกินไปและสามารถนำ log ดั่งกล่าวไปวินิจฉัยได้
+APM: https://www.elastic.co/guide/en/apm/get-started/current/index.html
+Metricbeats: https://www.elastic.co/guide/en/beats/metricbeat/current/metricbeat-module-system.html
+``````
+docker run  -d\
+  --network=meetu_elastic\
+  --user=root \
+  --volume="$(pwd)/metricbeat.docker.yml:/usr/share/metricbeat/metricbeat.yml:ro" \
+  --volume="/var/run/docker.sock:/var/run/docker.sock:ro" \
+  --volume="/sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro" \
+  --volume="/proc:/hostfs/proc:ro" \
+  --volume="/:/hostfs:ro" \
+  docker.elastic.co/beats/metricbeat:7.2.1 metricbeat -e \
+  -E output.elasticsearch.hosts=["elasticsearch1:9200"] 
+
+
+docker run -d \
+  --network=meetu_elastic\
+  -p 8200:8200\
+  --user=apm-server \
+  --volume="$(pwd)/apm-server.docker.yml:/usr/share/apm-server/apm-server.yml:ro" \
+  docker.elastic.co/apm/apm-server:7.4.0 \
+  --strict.perms=false -e \
+  -E output.elasticsearch.hosts=["elasticsearch1:9200"]  
+  
+```````
+![alt text](https://i.ibb.co/6yzGQfg/image.png)
+
 ## Tools & Services
 
 ![alt text](https://seniorproject.sit.kmutt.ac.th/screenshot/screenshot10.IT59-BU37.jpg)
