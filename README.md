@@ -138,6 +138,9 @@ POST /meetu.events/_mapping
 
 5. ทำการ Parsing ข้อมูลจาก Index Backup มาสู่ Index ที่ใช้งานจริงด้วย Logstash
 ในขั้นตอนนี้ต้องหมายความว่าเราทำการ Backup ข้อมูลไปไว้ที่ index meetu.events_backup เรียบร้อยและเรามี index meetu.events ตัวใหม่ที่มีการสร้าง analyzer เรียบร้อยแล้วเท่านั้นจึงจะสามารถใช้ logstash parsing ข้อมูลจาก index meetu.events_backup ส่งกลับเข้าไปใน index meetu.events ซึ่งจะมีการทำ mapping type เรียบร้อยแล้วทำให้หลังจากขั้นตอน logstash นี้ Elasticsearch ที่ index meetu.events จะเป้น index ที่พร้อมใช้งานนั่นเอง
+
+โดยให้เราใช้ logstash อ่านไฟล์ config นี้ที่ location logstash/meetu-geopoint.conf ตัวอย่างคำสั่งเช่น bin/logstash -f logstash/meetu-geopoint.conf
+https://www.elastic.co/guide/en/logstash/current/advanced-pipeline.html
 ```
 # โครงสร้างของ logstash จะประกอบไปด้วยสามส่วนด้ยกันนั้นคือ input, filter และ output ตามลำดับ
 # ซึ่งความหมายของ input ก็คือประเภทของการรับข้อมูลที่เรารับเข้ามาเช่นประเภท csv หรือไฟล์ใดๆเช่น txt, log ที่เป็น text base
@@ -216,6 +219,7 @@ output {
    stdout { codec => rubydebug }
 }
 ```
+
  
 
 ## Tools & Services
