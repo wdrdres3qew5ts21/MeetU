@@ -1,4 +1,4 @@
-![alt text](https://seniorproject.sit.kmutt.ac.th/projectPoster/posterIT59-BU37.jpg)
+![alt text](https://i.imgur.com/RLor0jS.jpg)
 
 ## Cloud Native Microservices: Event Management Platform (Elasticsearch Stack & Spring Cloud) 
 
