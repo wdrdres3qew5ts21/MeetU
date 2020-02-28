@@ -293,7 +293,7 @@ docker run -d \
 
 ## Tools & Services
 
-![alt text](https://seniorproject.sit.kmutt.ac.th/screenshot/screenshot10.IT59-BU37.jpg)
+![alt text](https://i.imgur.com/zPLv9ZT.jpg)
 
 Backend:
 - Microservices Design (Almost 12 Factors)
@@ -341,7 +341,7 @@ Misc:
 - Git
 
 ## Elasticstack 
-![alt text](https://seniorproject.sit.kmutt.ac.th/screenshot/screenshot10.IT59-BU37.png)
+![alt text](https://i.imgur.com/BKB38ey.jpg)
 
 ## Screenshot
 ![alt text](https://i.ibb.co/LgRXqGd/75594539-2210661509039260-2386493827788570624-o.jpg)
