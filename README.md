@@ -16,7 +16,7 @@ https://seniorproject.sit.kmutt.ac.th/showproject/IT59-BU37
 นายศุภกร ตระกูลมัยผล
 
 ## Diagram System Flow
-![alt text](https://i.ibb.co/y5cr7sC/image.png)
+![alt text](https://i.imgur.com/LLss4Os.jpg)
 
 ## วิธีการติดตั้ง project
 ###### ติดตั้ง MongoDB Database เชื่อมเข้ากับ Elasticsearch
