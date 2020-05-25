@@ -22,16 +22,17 @@ https://seniorproject.sit.kmutt.ac.th/showproject/IT59-BU37
 ###### ติดตั้ง MongoDB Database เชื่อมเข้ากับ Elasticsearch
 1. Restore ข้อมูลกลับเข้า MongoDB
 ทำการ import ไฟล์จาก meetu-mongodb-dump ด้วยการใช้คำสั่ง mongorestore https://docs.mongodb.com/manual/tutorial/backup-and-restore-tools/ เพื่อนำข้อมูลที่ถูก dump ออกมาเป้น bson กลับเข้าไปใน mongodb
-
+\
 2. Migrate ข้อมูลจาก MongoDB ไปยัง Elasticsearch
 ต้องใช้ Monstache ซึ่งเป็น Golang Library ในการ Import ข้อมูลจาก MongoDB ให้เข้าไปใน Elasticsearch ซึ่งผู้ใช้ไม่จำเป็นต้องลง Golang ที่เครื่องก็ได้เพราะว่า Monstache ได้ compile ออกมาเป็น execute file สำหรับ OS ทั้งสาม Platform คือ Darwin, Window และ Linux เรียบร้อยแล้ว 
 ![alt text]( https://i.ibb.co/7VH6q8d/image.png)
 https://rwynn.github.io/monstache-site/start/ เมื่อเข้าไปที่เว็บของ Monstache แล้วให้เราโหลด execute binary มาจาก github ผ่าน https://github.com/rwynn/monstache/releases หรือจะใช้ execute bin ที่เป็นของ window จาก MeetU Repository นี้ก็ได้โดยเข้าไปที่ folder monstache-golang-window และใช้คำสั่ง  monstache.exe -f .\mongo-elastic.toml  เพื่อเป็นการสั่งให้ทำการ execute monstache bin และใช้ไฟล์ config ตาม path ที่ระบุ
 ![alt text](https://i.ibb.co/TwT1jZX/image.png)
 สำหรับตัวอย่างไฟล์ config จะมีดังนี้โดยให้ปรับ url ของ MongoDB และ Elasticsearch เป็นของที่เราใช้ 
-
+\
 ###### ** ใช้ไฟล์ที่ Elasticsearch/EventIndex(Real Usage).es 
 3. Backup Index บน Elasticsearch และเปลี่ยนเป็นชื่อใหม่เพื่อใช้การ Remapping Index
+
 จากข้อ 2. Migrate ข้อมูลจาก MongoDB ไปยัง Elasticsearch ที่เราสามารถนำข้อมูลกลับเข้าไปใน Elasticsearch แล้วก้จริงแต่ว่าข้อมูลที่ Migrate จาก MongoDB เข้าไปใน Elasticsearch นั้นจะมี format หลายจุดที่ผิดเพราะบาง fields เก็บข้อมูลไม่ถูกต้องนั่นก็คือ fields geopoint รวมไปถึง fields elasticEventId ซึ่งเป็น key ที่ใช้ในการ reference ข้อมูลระหว่าง MongoDB กับ Elasticsearch ก็ขาดไปดังนั้นเราจึงต้องทำการ Remapping Index บน Elasticsearch ให้เพิ่ม fields เหล่านั้นและเพิ่ม  Analyzer ของ Elasticsearch เข้าไปเพราะถ้าเราไม่ทำ Analyzer ประจำ fields แล้วคุณสมบัติของการทำ Full Text Search ก็จะไม่สามารถทำได้อย่างเต็มประสิทธิภาพ
 ![alt text](https://i.ibb.co/kgSgZ5j/image.png)
 ```
@@ -54,7 +55,7 @@ POST _reindex
 ```
 DELETE /meetu.events
 ```
-
+\
 4.สร้าง Analyzer และ Mapping Type สำหรับ Elasticsearch index 
 หลังจากที่ทำมีข้อมูลที่ Sync จาก MongoDB เข้าไปใน Elasticsearch เรียบร้อยแล้วเราจะพบว่ามีบาง fields เก็บข้อมูลไม่ถูกต้องนั่นก็คือ fields geopoint 
 และเราก็ยังขาด Analyzer ของ Elasticsearch เพราะถ้าเราไม่ทำ Analyzer ประจำ fields แล้วคุณสมบัติของการทำ Full Text Search ก็จะไม่สามารถถูกใช้งานได้อย่างมีประสิทธิภาพ
