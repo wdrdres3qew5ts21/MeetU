@@ -292,6 +292,11 @@ docker run -d \
 ```````
 ![alt text](https://i.ibb.co/6yzGQfg/image.png)
 
+
+## Use Case
+![alt text](https://i.imgur.com/46qe4bX.png)
+![alt text](https://i.imgur.com/SXo9Xs3.png)
+
 ## Tools & Services
 
 ![alt text](https://i.imgur.com/zPLv9ZT.jpg)
@@ -345,6 +350,8 @@ Misc:
 ![alt text](https://i.imgur.com/RRJ71ht.png)
 
 ## Elasticstack 
+![alt text](https://i.imgur.com/xn6TyLl.png)
+
 ![alt text](https://i.imgur.com/BKB38ey.jpg)
 
 ## Screenshot
@@ -355,6 +362,8 @@ Misc:
 ![alt text](https://i.ibb.co/71rVTym/74979724-2210662302372514-364822910193369088-o.jpg)
 
 ![alt text](https://i.ibb.co/fG7T57q/77056028-2210663005705777-7345824506427998208-o.jpg)
+
+![alt text](https://i.imgur.com/57ZUHR3.jpg)
 
 ![alt text](https://i.imgur.com/dPc78FS.png)
 
