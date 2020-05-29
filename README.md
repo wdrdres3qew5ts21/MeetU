@@ -356,3 +356,15 @@ Misc:
 
 ![alt text](https://i.ibb.co/fG7T57q/77056028-2210663005705777-7345824506427998208-o.jpg)
 
+![alt text](https://i.imgur.com/dPc78FS.png)
+
+![alt text](https://i.imgur.com/ybnyEKR.png)
+
+![alt text](https://imgur.com/a/bLQGUaf)
+
+![alt text](https://i.imgur.com/U6R4GHQ.png)
+
+![alt text](https://i.imgur.com/6vtSSwU.png)
+
+![alt text](https://i.imgur.com/fhQxV80.png)
+
