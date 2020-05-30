@@ -3,6 +3,13 @@
 # ถ้าไม่ระบุ host จะเข้าไม่ได้ถึงแม้ default จะระบุเป็น localhost ก็ตาม
 server.host: 0.0.0.0
 # hostname ที่อยู่ของ elasticsearch
+# สังเกตดูว่าเรามี Cluster Elasticsearch ก็จริงแต่จะเกิดอะไรขึ้นถ้า Kibana ที่ต้องอยุ่ซึ่ง ต้องบังคับ fix url
+# เอาไว้ว่าต่อไป ES ตัวไหน ? แล้วตัวนั้นล่มมา Kibana ก็จะพังล่ะ วิธีแก้คือยัด host url ไปหลายๆตัว แต่สุดท้ายมันก็เจ๊งอยู่ดี
+# เพราะถ้า list ใน url นี้มันพังหมด 3 ตัว แต่ยังเหลืออีกตัวนึงซึ่งพึ่งเพิ่มมาใหม่จะทำยังไง ? เพราะจริงๆยังมีตัวใหม่แต่ต่อไปไม่ได้
+# เพราะใน config ไมไ่ด้มี URL ของตัวใหม่ ดังนั้นวิธีแก้คือเอา Load Balancer มาครอบ ES ไว้ให้เป้น Group Domain เดียว
+# แทนที่จะเป็น ชื่อ Container ซึ่งการแก้ก็คือนำ Kubernetes มาสร้าง Network Overlay ไว้นั่นเอง !!! เพราะ K8s จะรวม
+# Pods หลายๆตัวให้เป้น Service และใช้ URL Domain นั้นแทนได้ !!!
+# elasticsearch.hosts: [ "http://elasticsearch1:9200"]
 elasticsearch.hosts: [ "http://elasticsearch1:9200","http://elasticsearch2:9200" ,"http://elasticsearch3:9200"  ]
 # user ต้องเป้น user ชื่อ kibana เท่านั้นเพราะเงื่อนไขการติดต่อคือ 
 # user ต้องตรงกับ app เช่น apm ต้องใช้ apm ไม่งั้นจะเข้าไมไ่ด้ !!! 

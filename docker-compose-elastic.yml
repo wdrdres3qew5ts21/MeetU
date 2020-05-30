@@ -78,6 +78,11 @@ services:
       - http.cors.enabled=true
       - http.cors.allow-origin=*
       - network.host=_eth0_
+      # ด้วยสาม parameter นี้จะทำให้ Elasticsearch Node นี้เป็นแค่ Coordinate ใช้ประสานคำสั่งเฉยๆ
+      # จะไม่มีการเก้บข้อมูลใดๆที่ตัวมันดังนั้น Volume จึงไม่ทำงานและห้ามใช้ด้วยนั่นเอง ถ้าใช้ก็จะบึ้มเพราะเป็น Coordinate Node
+      - node.master=false
+      - node.data=false
+      - node.ingest=false
       # หลังติดตั้งเสร็จแล้วต้องรันคำสั่ง bin/elasticsearch-setup-passwords interactive
       # เพื่อให้ xpack module ที่ลงไว้ทำการตั้ง password ตามที่เราตั้งด้วยนั่นเอง
       # ถ้าใช้ xpack บน cluster mode จะโดน bootstrap สั่งให้ทำ TLS ด้วยทันทีไม่งั้นจะ bootstrap ไม่ผ่าน
@@ -87,8 +92,8 @@ services:
       memlock:
         soft: -1
         hard: -1
-    volumes:
-        - data03:/usr/share/elasticsearch/data
+    # volumes:
+    #     - data03:/usr/share/elasticsearch/data
     networks:
       - elastic
 
