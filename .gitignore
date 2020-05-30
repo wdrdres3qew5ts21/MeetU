@@ -17,6 +17,8 @@ HELP.md
 *.iml
 *.ipr
 
+/nodes
+
 ## firebase
 /Microservice/UserService/meetu-firebase-key.json
 /Microservice/**/meetu-firebase-key.json

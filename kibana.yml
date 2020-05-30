@@ -1,0 +1,11 @@
+# โดยปกติ Kibana จะ Compliance ตาม Elasticsearch อยู่แล้วแต่เขียนเอาไว้อุ่นใจกว่าให้แน่ใจ
+# xpack.security.audit.enabled: true
+# ถ้าไม่ระบุ host จะเข้าไม่ได้ถึงแม้ default จะระบุเป็น localhost ก็ตาม
+server.host: 0.0.0.0
+# hostname ที่อยู่ของ elasticsearch
+elasticsearch.hosts: [ "http://elasticsearch1:9200","http://elasticsearch2:9200" ,"http://elasticsearch3:9200"  ]
+# user ต้องเป้น user ชื่อ kibana เท่านั้นเพราะเงื่อนไขการติดต่อคือ 
+# user ต้องตรงกับ app เช่น apm ต้องใช้ apm ไม่งั้นจะเข้าไมไ่ด้ !!! 
+# ส่วน user elastic มีไว้ใช้ login กับ elastic ไม่เกีย่วกับ user ของ kibana !!!
+elasticsearch.username: "kibana"
+elasticsearch.password: "hellomyproduction"
