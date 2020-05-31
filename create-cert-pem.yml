@@ -1,0 +1,34 @@
+version: '3.3'
+
+services:
+  create_certs:
+    container_name: create_certs
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.7.0
+    # bash -c คือการสั่งรัน command ที่อยู่ใน string single quote ทั้งหมด
+    # เขียน command หลายบรรทัด้วย fold > symbol ซึ่งใน step แรกคือการเช็คว่าถ้ายังไม่เคย gen cert มาก่อน
+    # จะทำการสั่ง gen cert ทั้ง pack ให้ใหม่โดยตำแหน่งที่เก็บ cert นั้นอยู่ที่ /certs/bundle.zip
+    # bin/elasticsearch-certutil cert --silent --pem --in config/certificates/instances.yml -out /certs/bundle.zip;
+    # สั่งทำการ gen cert แบบ silent mode ไม่มี interactive ใดๆทั้งนั้นทำให้สามารถทำเป้น script ได้เเพียงแต่ต้องกรอกข้อมูลให้ครบ
+    # โดยเลือกการ gen แบบเป็น pem ไฟล์และนำ --in คือ input file script มาจาก config/certificates/instances.yml ซึ่่งการเจนแบบ cert
+    # จะทำการสร้าง CA ให้อัตโนมัติด้วยถ้าหากระบุเอาไว้ตั้งแต่ตอนแรก และ output  cert + ca ที่ gen ไปวางที่ /certs/bundle.zip
+    # ดังนั้นเมื่อ Gen เสร็จแล้วครั้งหน้าก้จะไม่ gen อีกเพราะเราเขียน logic 
+    # --in ถ้าไม่มีก็จะได้ default templte ใช้ได้กับทุกอย่าง
+    command: >
+      bash -c '
+        if [[ ! -f /certs/bundle.zip ]]; then
+          bin/elasticsearch-certutil cert --silent --pem -out /certs/bundle.zip;
+          unzip /certs/bundle.zip -d /certs; 
+        fi;
+        chown -R 1000:0 /certs
+      '
+    user: "0"
+    working_dir: /usr/share/elasticsearch
+    # สังเกตดุว่า volume นั้นถูก mount เอาไว้ทำให้เราสามารถนำไฟล์ cert + ca ที่ gen ออกมาไปวางที่ container อื่นที่ share volume ได้
+    # และตำแหน่งที่สองคือตำแหน่งของ instance.yml จาก local ถูกส่งเข้าไปวางที่ config/certificates/instances.yml นั่นเองจาก bind volume !
+    volumes: 
+      - certs:/certs
+      - .:/usr/share/elasticsearch/config/certificates
+
+volumes:
+  certs:
+    driver: local

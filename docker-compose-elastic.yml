@@ -22,7 +22,17 @@ services:
       # หลังติดตั้งเสร็จแล้วต้องรันคำสั่ง bin/elasticsearch-setup-passwords interactive
       # เพื่อให้ xpack module ที่ลงไว้ทำการตั้ง password ตามที่เราตั้งด้วยนั่นเอง
       # ถ้าใช้ xpack บน cluster mode จะโดน bootstrap สั่งให้ทำ TLS ด้วยทันทีไม่งั้นจะ bootstrap ไม่ผ่าน
-      # - xpack.security.enabled=true
+      - ELASTIC_PASSWORD=$ELASTIC_PASSWORD
+      - xpack.security.enabled=true
+      - xpack.security.http.ssl.enabled=true
+      - xpack.security.http.ssl.key=$CERTS_DIR/instance/instance.key
+      - xpack.security.http.ssl.certificate_authorities=$CERTS_DIR/ca/ca.crt
+      - xpack.security.http.ssl.certificate=$CERTS_DIR/instance/instance.crt
+      - xpack.security.transport.ssl.enabled=true
+      - xpack.security.transport.ssl.verification_mode=certificate 
+      - xpack.security.transport.ssl.certificate_authorities=$CERTS_DIR/ca/ca.crt
+      - xpack.security.transport.ssl.certificate=$CERTS_DIR/instance/instance.crt
+      - xpack.security.transport.ssl.key=$CERTS_DIR/instance/instance.key
     # จำเป็นต้องปิดการ swap memory เมื่อทำ cluster node เพราะว่า
     ulimits:
       memlock:
@@ -30,6 +40,9 @@ services:
         hard: -1
     volumes:
         - data01:/usr/share/elasticsearch/data
+        # volume certs นี้ยังแชร์กับ create-cert.yml service อีกด้วยเพราะว่า namespace ชื่อเดียวกัน
+        # ทำให้ทำการ mount cert เข้าไปหาทุกๆ node ได้อีกด้วย !!!
+        - certs:$CERTS_DIR
     networks:
       - elastic
     ports:
@@ -52,7 +65,17 @@ services:
       # หลังติดตั้งเสร็จแล้วต้องรันคำสั่ง bin/elasticsearch-setup-passwords interactive
       # เพื่อให้ xpack module ที่ลงไว้ทำการตั้ง password ตามที่เราตั้งด้วยนั่นเอง
       # ถ้าใช้ xpack บน cluster mode จะโดน bootstrap สั่งให้ทำ TLS ด้วยทันทีไม่งั้นจะ bootstrap ไม่ผ่าน
-      # - xpack.security.enabled=true
+      - ELASTIC_PASSWORD=$ELASTIC_PASSWORD
+      - xpack.security.enabled=true
+      - xpack.security.http.ssl.enabled=true
+      - xpack.security.http.ssl.key=$CERTS_DIR/instance/instance.key
+      - xpack.security.http.ssl.certificate_authorities=$CERTS_DIR/ca/ca.crt
+      - xpack.security.http.ssl.certificate=$CERTS_DIR/instance/instance.crt
+      - xpack.security.transport.ssl.enabled=true
+      - xpack.security.transport.ssl.verification_mode=certificate 
+      - xpack.security.transport.ssl.certificate_authorities=$CERTS_DIR/ca/ca.crt
+      - xpack.security.transport.ssl.certificate=$CERTS_DIR/instance/instance.crt
+      - xpack.security.transport.ssl.key=$CERTS_DIR/instance/instance.key
     # จำเป็นต้องปิดการ swap memory เมื่อทำ cluster node เพราะว่า
     ulimits:
       memlock:
@@ -60,6 +83,7 @@ services:
         hard: -1
     volumes:
         - data02:/usr/share/elasticsearch/data
+        - certs:$CERTS_DIR
     networks:
       - elastic
 
@@ -86,13 +110,24 @@ services:
       # หลังติดตั้งเสร็จแล้วต้องรันคำสั่ง bin/elasticsearch-setup-passwords interactive
       # เพื่อให้ xpack module ที่ลงไว้ทำการตั้ง password ตามที่เราตั้งด้วยนั่นเอง
       # ถ้าใช้ xpack บน cluster mode จะโดน bootstrap สั่งให้ทำ TLS ด้วยทันทีไม่งั้นจะ bootstrap ไม่ผ่าน
-      # - xpack.security.enabled=true
+      - ELASTIC_PASSWORD=$ELASTIC_PASSWORD
+      - xpack.security.enabled=true
+      - xpack.security.http.ssl.enabled=true
+      - xpack.security.http.ssl.key=$CERTS_DIR/instance/instance.key
+      - xpack.security.http.ssl.certificate_authorities=$CERTS_DIR/ca/ca.crt
+      - xpack.security.http.ssl.certificate=$CERTS_DIR/instance/instance.crt
+      - xpack.security.transport.ssl.enabled=true
+      - xpack.security.transport.ssl.verification_mode=certificate 
+      - xpack.security.transport.ssl.certificate_authorities=$CERTS_DIR/ca/ca.crt
+      - xpack.security.transport.ssl.certificate=$CERTS_DIR/instance/instance.crt
+      - xpack.security.transport.ssl.key=$CERTS_DIR/instance/instance.key
     # จำเป็นต้องปิดการ swap memory เมื่อทำ cluster node เพราะว่า
     ulimits:
       memlock:
         soft: -1
         hard: -1
-    # volumes:
+    volumes:
+      - certs:$CERTS_DIR
     #     - data03:/usr/share/elasticsearch/data
     networks:
       - elastic
@@ -121,5 +156,5 @@ volumes: # volume แบบใช้ในตัว dcoker machine ให้จ�
     driver: local
   data02:
     driver: local
-  data03:
+  certs:
     driver: local
