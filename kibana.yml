@@ -10,9 +10,14 @@ server.host: 0.0.0.0
 # แทนที่จะเป็น ชื่อ Container ซึ่งการแก้ก็คือนำ Kubernetes มาสร้าง Network Overlay ไว้นั่นเอง !!! เพราะ K8s จะรวม
 # Pods หลายๆตัวให้เป้น Service และใช้ URL Domain นั้นแทนได้ !!!
 # elasticsearch.hosts: [ "http://elasticsearch1:9200"]
-elasticsearch.hosts: [ "http://elasticsearch1:9200","http://elasticsearch2:9200" ,"http://elasticsearch3:9200"  ]
+elasticsearch.hosts: ["https://elasticsearch1:9200" ]
 # user ต้องเป้น user ชื่อ kibana เท่านั้นเพราะเงื่อนไขการติดต่อคือ 
 # user ต้องตรงกับ app เช่น apm ต้องใช้ apm ไม่งั้นจะเข้าไมไ่ด้ !!! 
 # ส่วน user elastic มีไว้ใช้ login กับ elastic ไม่เกีย่วกับ user ของ kibana !!!
 elasticsearch.username: "kibana"
-elasticsearch.password: "hellomyproduction"
+elasticsearch.password: "PleaseChangeMe"
+server.ssl.enabled: true
+server.ssl.key: /usr/share/elasticsearch/config/certificates/instance/instance.key
+server.ssl.certificate: /usr/share/elasticsearch/config/certificates/instance/instance.crt
+elasticsearch.ssl.certificateAuthorities: /usr/share/elasticsearch/config/certificates/ca/ca.crt
+elasticsearch.ssl.verificationMode: certificate

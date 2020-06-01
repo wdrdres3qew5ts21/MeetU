@@ -136,15 +136,17 @@ services:
     image: docker.elastic.co/kibana/kibana:7.7.0
     container_name: kibana
     restart: always
-    # environment:
+    environment:
     #   env ที่อยู่ตรงนี้คือตัวเดียวกับใน kibana.yml แต่จะเขียนด้วย format KEY_PROPERTY: value
     #   ซึ่งถ้าเป้นใน kibana.yml จะเขียนด้วย key.property: value  แทนนั่นเอง มีค่าเท่ากัน
     #   SERVER_NAME: localhost
     #   ELASTICSEARCH_URL: http://elasticsearch:9200
+      - ELASTICSEARCH_PASSWORD=$ELASTIC_PASSWORD
     ports:
       - 5601:5601
     volumes:
         - ./kibana.yml:/usr/share/kibana/config/kibana.yml
+        - certs:$CERTS_DIR
     networks:
       - elastic
 
