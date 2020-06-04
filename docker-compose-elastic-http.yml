@@ -28,6 +28,7 @@ services:
       # - xpack.security.http.ssl.key=$CERTS_DIR/instance/instance.key
       # - xpack.security.http.ssl.certificate_authorities=$CERTS_DIR/ca/ca.crt
       # - xpack.security.http.ssl.certificate=$CERTS_DIR/instance/instance.crt
+      # ทำ TLS เฉพาะ Internal Cluster ระหว่าง Node คุยกันอย่างเดียว
       - xpack.security.transport.ssl.enabled=true
       - xpack.security.transport.ssl.verification_mode=certificate 
       - xpack.security.transport.ssl.certificate_authorities=$CERTS_DIR/ca/ca.crt
