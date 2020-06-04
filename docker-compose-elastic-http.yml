@@ -24,10 +24,10 @@ services:
       # ถ้าใช้ xpack บน cluster mode จะโดน bootstrap สั่งให้ทำ TLS ด้วยทันทีไม่งั้นจะ bootstrap ไม่ผ่าน
       - ELASTIC_PASSWORD=$ELASTIC_PASSWORD
       - xpack.security.enabled=true
-      - xpack.security.http.ssl.enabled=true
-      - xpack.security.http.ssl.key=$CERTS_DIR/instance/instance.key
-      - xpack.security.http.ssl.certificate_authorities=$CERTS_DIR/ca/ca.crt
-      - xpack.security.http.ssl.certificate=$CERTS_DIR/instance/instance.crt
+      - xpack.security.http.ssl.enabled=false
+      # - xpack.security.http.ssl.key=$CERTS_DIR/instance/instance.key
+      # - xpack.security.http.ssl.certificate_authorities=$CERTS_DIR/ca/ca.crt
+      # - xpack.security.http.ssl.certificate=$CERTS_DIR/instance/instance.crt
       - xpack.security.transport.ssl.enabled=true
       - xpack.security.transport.ssl.verification_mode=certificate 
       - xpack.security.transport.ssl.certificate_authorities=$CERTS_DIR/ca/ca.crt
@@ -47,6 +47,11 @@ services:
       - elastic
     ports:
       - 9200:9200
+    # healthcheck:
+    #   test: curl -k https://elasticsearch1:9200; if [[ $? == 0 ]]; then echo 0; else echo 1; fi
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 5
 
   elasticsearch2:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.7.0
@@ -67,10 +72,10 @@ services:
       # ถ้าใช้ xpack บน cluster mode จะโดน bootstrap สั่งให้ทำ TLS ด้วยทันทีไม่งั้นจะ bootstrap ไม่ผ่าน
       - ELASTIC_PASSWORD=$ELASTIC_PASSWORD
       - xpack.security.enabled=true
-      - xpack.security.http.ssl.enabled=true
-      - xpack.security.http.ssl.key=$CERTS_DIR/instance/instance.key
-      - xpack.security.http.ssl.certificate_authorities=$CERTS_DIR/ca/ca.crt
-      - xpack.security.http.ssl.certificate=$CERTS_DIR/instance/instance.crt
+      - xpack.security.http.ssl.enabled=false
+      # - xpack.security.http.ssl.key=$CERTS_DIR/instance/instance.key
+      # - xpack.security.http.ssl.certificate_authorities=$CERTS_DIR/ca/ca.crt
+      # - xpack.security.http.ssl.certificate=$CERTS_DIR/instance/instance.crt
       - xpack.security.transport.ssl.enabled=true
       - xpack.security.transport.ssl.verification_mode=certificate 
       - xpack.security.transport.ssl.certificate_authorities=$CERTS_DIR/ca/ca.crt
@@ -112,10 +117,10 @@ services:
       # ถ้าใช้ xpack บน cluster mode จะโดน bootstrap สั่งให้ทำ TLS ด้วยทันทีไม่งั้นจะ bootstrap ไม่ผ่าน
       - ELASTIC_PASSWORD=$ELASTIC_PASSWORD
       - xpack.security.enabled=true
-      - xpack.security.http.ssl.enabled=true
-      - xpack.security.http.ssl.key=$CERTS_DIR/instance/instance.key
-      - xpack.security.http.ssl.certificate_authorities=$CERTS_DIR/ca/ca.crt
-      - xpack.security.http.ssl.certificate=$CERTS_DIR/instance/instance.crt
+      - xpack.security.http.ssl.enabled=false
+      # - xpack.security.http.ssl.key=$CERTS_DIR/instance/instance.key
+      # - xpack.security.http.ssl.certificate_authorities=$CERTS_DIR/ca/ca.crt
+      # - xpack.security.http.ssl.certificate=$CERTS_DIR/instance/instance.crt
       - xpack.security.transport.ssl.enabled=true
       - xpack.security.transport.ssl.verification_mode=certificate 
       - xpack.security.transport.ssl.certificate_authorities=$CERTS_DIR/ca/ca.crt
@@ -149,7 +154,19 @@ services:
         - certs:$CERTS_DIR
     networks:
       - elastic
+    # command: >
+    #   bash -c '
+    #     curl -X POST -v -k --cacert /usr/share/elasticsearch/config/certificates/ca/ca.crt "https://elasticsearch1:9200/_security/user/kibana/_password?pretty"  -u elastic:PleaseChangeMe   -H 'Content-Type: application/json' -d' { "password" : "PleaseChangeMe" } '
 
+    #     if [[ $? == 51 ]]
+    #     then
+    #       echo "Connect but it not secure So fail to change Password"
+    #     else
+    #       echo "Skip SSL Secure Connection by -k argument so Change password Success"
+    #     fi
+    #   '
+    # depends_on: {"elasticsearch1": {"condition": "service_healthy"}}
+    
 networks:
   elastic:
 
