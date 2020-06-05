@@ -8,12 +8,16 @@
 
 - name: "Start docker-compose Generate SSL & X.509"
   docker_compose:
-    files: "~/meetu/create-cert-pem.yml"
+    project_src: "~/meetu"
+    files: 
+      - create-cert-pem.yml
     state: present
 
 - name: "start docker-compose ELK stack ;)"
   docker_compose:
-    files: "~/meetu/docker-compose-elastic-single-ssl.yml"
+    project_src: "~/meetu"
+    files: 
+      - docker-compose-elastic-single-ssl.yml
     state: present
     remove_orphans: true 
 
