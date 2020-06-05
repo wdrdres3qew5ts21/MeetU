@@ -13,7 +13,7 @@
 
 - name: "start docker-compose ELK stack ;)"
   docker_compose:
-    project_src: "~/meetu/docker-compose-elastic-single-ssl.yml"
+    files: "~/meetu/docker-compose-elastic-single-ssl.yml"
     state: present
     remove_orphans: true 
 
