@@ -1,0 +1,5 @@
+[elk_server]
+0.0.0.0  ansible_user="login_user_here"
+
+[laptop]
+127.0.0.1
