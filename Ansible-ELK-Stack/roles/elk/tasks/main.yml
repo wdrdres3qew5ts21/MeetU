@@ -1,0 +1,8 @@
+---
+# tasks file for elk
+- name: "git clone project MeetU"
+  git:
+    repo: "https://github.com/wdrdres3qew5ts21/MeetU.git"
+    dest: "~/meetu"
+
+     
