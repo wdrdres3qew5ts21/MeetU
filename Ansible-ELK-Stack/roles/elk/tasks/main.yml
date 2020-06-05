@@ -5,7 +5,16 @@
     repo: "https://github.com/wdrdres3qew5ts21/MeetU.git"
     dest: "~/meetu"
 
-# - name: "start docker-compose ELK stack ;)"
-#   docker_compose:
+
+- name: "Start docker-compose Generate SSL & X.509"
+  docker_compose:
+    project_src: "~/meetu/create-cert-pem.yml"
+    state: present
+
+- name: "start docker-compose ELK stack ;)"
+  docker_compose:
+    project_src: "~/meetu/docker-compose-elastic-single-ssl.yml"
+    state: present
+    remove_orphans: true 
 
      
