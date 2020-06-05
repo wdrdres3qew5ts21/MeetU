@@ -1,0 +1,8 @@
+--- #centos8 edition
+- hosts: elk_server
+  become: yes
+  become_method: sudo
+  tasks:
+  - name: VIEW ALL ANSIBLE FACT KEYS
+    debug:
+      msg: "{{ ansible_facts }}"

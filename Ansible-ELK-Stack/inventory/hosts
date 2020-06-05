@@ -1,5 +1,5 @@
 [elk_server]
-0.0.0.0  ansible_user="login_user_here"
+20.184.27.168  ansible_user="AzureUser"
 
 [laptop]
 127.0.0.1
