@@ -2,6 +2,7 @@ HELP.md
 /target/
 !.mvn/wrapper/maven-wrapper.jar
 /Ansible-ELK-Stack/inventory/hosts
+/Ansible-ELK-Stack/inventory/.env
 
 ### STS ###
 .apt_generated
