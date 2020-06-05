@@ -17,7 +17,7 @@ services:
       - http.cors.enabled=true
       - http.cors.allow-origin=*
       # ผูกเข้ากับ interface คอมเราผ่าน ifconfig
-      - network.host=_eth0_
+      - network.host=0.0.0.0
       # หลังติดตั้งเสร็จแล้วต้องรันคำสั่ง bin/elasticsearch-setup-passwords interactive
       # เพื่อให้ xpack module ที่ลงไว้ทำการตั้ง password ตามที่เราตั้งด้วยนั่นเอง
       # ถ้าใช้ xpack บน cluster mode จะโดน bootstrap สั่งให้ทำ TLS ด้วยทันทีไม่งั้นจะ bootstrap ไม่ผ่าน
