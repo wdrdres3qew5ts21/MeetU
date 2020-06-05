@@ -70,6 +70,11 @@
       state: link
       src: /usr/local/bin/docker-compose
       dest: /usr/bin/docker-compose
+
+  - name: "Install Git"
+    yum:
+      name: git
+      state: present
     
 
 

@@ -1,5 +1,0 @@
-[elk_server]
-0.0.0.0   ansible_user="your_user"
-
-[laptop]
-127.0.0.1
