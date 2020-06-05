@@ -83,3 +83,5 @@ networks:
 volumes: # volume แบบใช้ในตัว dcoker machine ให้จัดการเอง
   data01:
     driver: local
+  certs:
+    driver: local
