@@ -1,6 +1,6 @@
 version: '3.3'
 services:
-  env_file: Ansible-ELK-Stack/elk.config
+  # env_file: Ansible-ELK-Stack/elk.config
   elasticsearch1:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.7.0
     container_name: elasticsearch1
@@ -58,11 +58,14 @@ services:
     #   ซึ่งถ้าเป้นใน kibana.yml จะเขียนด้วย key.property: value  แทนนั่นเอง มีค่าเท่ากัน
     #   SERVER_NAME: localhost
     #   ELASTICSEARCH_URL: http://elasticsearch:9200
+      - SERVER_HOST=0.0.0.0
+      - ELASTICSEARCH_HOSTS=http://elasticsearch1:9200
+      - ELASTICSEARCH_USERNAME=kibana
       - ELASTICSEARCH_PASSWORD=$ELASTIC_PASSWORD
     ports:
       - 5601:5601
     volumes:
-        - ./kibana.yml:/usr/share/kibana/config/kibana.yml
+        # - ./kibana.yml:/usr/share/kibana/config/kibana.yml
         - certs:$CERTS_DIR
     networks:
       - elastic
