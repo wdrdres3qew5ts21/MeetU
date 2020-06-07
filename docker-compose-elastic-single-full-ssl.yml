@@ -65,7 +65,7 @@ services:
       - ELASTICSEARCH_PASSWORD=$ELASTIC_PASSWORD
       - SERVER_SSL_ENABLED=true
       - SERVER_SSL_KEY=$CERTS_DIR/instance/instance.key
-      - SERVER_SSL_CERTIFICATE=/usr/share$CERTS_DIR/instance/instance.crt
+      - SERVER_SSL_CERTIFICATE=$CERTS_DIR/instance/instance.crt
       - ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=$CERTS_DIR/ca/ca.crt
       - ELASTICSEARCH_SSL_VERIFICATIONMODE=certificate
     ports:
