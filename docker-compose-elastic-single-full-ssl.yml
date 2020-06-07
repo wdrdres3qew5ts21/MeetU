@@ -1,0 +1,98 @@
+version: '3.3'
+services:
+  # env_file: Ansible-ELK-Stack/elk.config
+  elasticsearch1:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.7.0
+    container_name: elasticsearch1
+    restart: always
+    environment:
+      - node.name=elasticsearch1
+      # จะทำให้มันไม่ยอมเข้าไปอยู่ใน cluster และเอาตัวเองเป้น master เสมอเลย 
+      # - discovery.type=single-node
+      # เวลา scan Elasticsearch จะเช็ค Auto internal Transport Layer บน Port 9300-9305 ทันทีและรวบเข้า Cluster
+      # ระหว่างทางสามารถเพิ่มลดได้ตามใจชอบระบบจะ Detect เองอัตโนมัติ
+      # sudo sysctl -w vm.max_map_count=262144 ถ้าทำ cluster ต้องขยาย memmory ด้วยไม่งั้นจะ fail
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
+      - http.cors.enabled=true
+      - http.cors.allow-origin=*
+      # ผูกเข้ากับ interface คอมเราผ่าน ifconfig
+      - network.host=0.0.0.0
+      # หลังติดตั้งเสร็จแล้วต้องรันคำสั่ง bin/elasticsearch-setup-passwords interactive
+      # เพื่อให้ xpack module ที่ลงไว้ทำการตั้ง password ตามที่เราตั้งด้วยนั่นเอง
+      # ถ้าใช้ xpack บน cluster mode จะโดน bootstrap สั่งให้ทำ TLS ด้วยทันทีไม่งั้นจะ bootstrap ไม่ผ่าน
+      - ELASTIC_PASSWORD=$ELASTIC_PASSWORD
+      - xpack.security.enabled=true
+      - xpack.security.http.ssl.enabled=true
+      - xpack.security.http.ssl.key=$CERTS_DIR/instance/instance.key
+      - xpack.security.http.ssl.certificate_authorities=$CERTS_DIR/ca/ca.crt
+      - xpack.security.http.ssl.certificate=$CERTS_DIR/instance/instance.crt
+      - xpack.security.transport.ssl.enabled=true
+      - xpack.security.transport.ssl.verification_mode=certificate 
+      - xpack.security.transport.ssl.certificate_authorities=$CERTS_DIR/ca/ca.crt
+      - xpack.security.transport.ssl.certificate=$CERTS_DIR/instance/instance.crt
+      - xpack.security.transport.ssl.key=$CERTS_DIR/instance/instance.key
+
+    # จำเป็นต้องปิดการ swap memory เมื่อทำ cluster node เพราะว่า
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+        - data01:/usr/share/elasticsearch/data
+        # volume certs นี้ยังแชร์กับ create-cert.yml service อีกด้วยเพราะว่า namespace ชื่อเดียวกัน
+        # ทำให้ทำการ mount cert เข้าไปหาทุกๆ node ได้อีกด้วย !!!
+        - certs:$CERTS_DIR
+    networks:
+      - elastic
+    ports:
+      - 9200:9200
+
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.7.0
+    container_name: kibana
+    restart: always
+    environment:
+    #   env ที่อยู่ตรงนี้คือตัวเดียวกับใน kibana.yml แต่จะเขียนด้วย format KEY_PROPERTY: value
+    #   ซึ่งถ้าเป้นใน kibana.yml จะเขียนด้วย key.property: value  แทนนั่นเอง มีค่าเท่ากัน
+    #   SERVER_NAME: localhost
+    #   ELASTICSEARCH_URL: http://elasticsearch:9200
+      - SERVER_HOST=0.0.0.0
+      - ELASTICSEARCH_HOSTS=http://elasticsearch1:9200
+      - ELASTICSEARCH_USERNAME=kibana
+      - ELASTICSEARCH_PASSWORD=$ELASTIC_PASSWORD
+      - server.ssl.enabled=true
+      - server.ssl.key=/usr/share/elasticsearch/config/certificates/instance/instance.key
+      - server.ssl.certificate=/usr/share/elasticsearch/config/certificates/instance/instance.crt
+      - elasticsearch.ssl.certificateAuthorities=/usr/share/elasticsearch/config/certificates/ca/ca.crt
+      - elasticsearch.ssl.verificationMode=certificate
+    ports:
+      - 5601:5601
+    volumes:
+        # - ./kibana.yml:/usr/share/kibana/config/kibana.yml
+        - certs:$CERTS_DIR
+    networks:
+      - elastic
+    # command: >
+    #   bash -c '
+    #     curl -X POST -v -k --cacert /usr/share/elasticsearch/config/certificates/ca/ca.crt "https://elasticsearch1:9200/_security/user/kibana/_password?pretty"  -u elastic:PleaseChangeMe   -H 'Content-Type: application/json' -d' { "password" : "PleaseChangeMe" } '
+
+    #     if [[ $? == 51 ]]
+    #     then
+    #       echo "Connect but it not secure So fail to change Password"
+    #     else
+    #       echo "Skip SSL Secure Connection by -k argument so Change password Success"
+    #     fi
+    #   '
+    # depends_on: {"elasticsearch1": {"condition": "service_healthy"}}
+    
+networks:
+  elastic:
+
+volumes: # volume แบบใช้ในตัว dcoker machine ให้จัดการเอง
+  data01:
+    driver: local
+  certs:
+    driver: local
