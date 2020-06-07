@@ -29,4 +29,10 @@
     state: present
     remove_orphans: true 
 
+- name: "Change password for Kibana"
+  script: ../setupKibanaPassword.sh
+
+  
+
+
      

@@ -83,7 +83,7 @@ nbdist/
 # gitignore template for Nuxt.js projects
 #
 # Recommended template: Node.gitignore
-
+.env
 # Nuxt build
 .nuxt
 

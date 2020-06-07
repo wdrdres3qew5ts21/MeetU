@@ -1,5 +1,6 @@
 version: '3.3'
 services:
+  env_file: Ansible-ELK-Stack/elk.config
   elasticsearch1:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.7.0
     container_name: elasticsearch1
@@ -46,6 +47,7 @@ services:
       - elastic
     ports:
       - 9200:9200
+
 
   kibana:
     image: docker.elastic.co/kibana/kibana:7.7.0

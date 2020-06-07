@@ -1,5 +1,5 @@
 #!/bin/bash
-curl -X POST -v -k --cacert /usr/share/elasticsearch/config/certificates/ca/ca.crt "https://elasticsearch1:9200/_security/user/kibana/_password?pretty"  -u elastic:PleaseChangeMe   -H 'Content-Type: application/json' -d' { "password" : "PleaseChangeMe" } '
+curl -X POST -v -k --cacert /usr/share/elasticsearch/config/certificates/ca/ca.crt "https://elasticsearch1:9200/_security/user/kibana/_password?pretty"  -u elastic:   -H 'Content-Type: application/json' -d' { "password" : "" } '
 
 if [[ $? == 51 ]]
 then
