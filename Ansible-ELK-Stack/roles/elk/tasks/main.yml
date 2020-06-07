@@ -3,19 +3,20 @@
 - name: "git clone project MeetU"
   git:
     repo: "https://github.com/wdrdres3qew5ts21/MeetU.git"
-    dest: "~/meetu"
+    dest: "/home/AzureUser/meetu"
+    update: yes 
 
 
 - name: "Start docker-compose Generate SSL & X.509"
   docker_compose:
-    project_src: "~/meetu"
+    project_src: "/home/AzureUser/meetu"
     files: 
       - create-cert-pem.yml
     state: present
 
 - name: "Teardown all ELK Stack"
   docker_compose:
-    project_src: "~/meetu"
+    project_src: "/home/AzureUser/meetu"
     files: 
       - docker-compose-elastic-single-ssl.yml
     state: absent
@@ -23,14 +24,28 @@
 
 - name: "Start docker-compose ELK stack ;)"
   docker_compose:
-    project_src: "~/meetu"
+    project_src: "/home/AzureUser/meetu"
     files: 
       - docker-compose-elastic-single-ssl.yml
     state: present
     remove_orphans: true 
 
 - name: "Change password for Kibana"
-  script: ../setupKibanaPassword.sh
+  shell:
+    cmd: >
+      bash -c "
+        while true
+        do
+          curl  --fail -u elastic:PleaseChangeMe \
+            'http://localhost:9200/_cluster/health?wait_for_status=yellow' \
+            && break
+          sleep 5
+        done
+
+        curl -X POST -v -k 'http://localhost:9200/_security/user/kibana/_password?pretty' \
+        -u elastic:PleaseChangeMe   -H 'Content-Type: application/json' \
+        -d ' { \"password\" : \"PleaseChangeMe\" } '  && echo 'success change password success'
+      "
 
   
 
