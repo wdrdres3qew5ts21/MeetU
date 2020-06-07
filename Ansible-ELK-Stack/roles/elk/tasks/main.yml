@@ -19,7 +19,7 @@
   docker_compose:
     project_src: "~/meetu"
     files: 
-      - docker-compose-elastic-single-ssl.yml
+      - docker-compose-elastic-single-full-ssl.yml
     state: absent
     remove_orphans: true 
 
@@ -27,7 +27,7 @@
   docker_compose:
     project_src: "~/meetu"
     files: 
-      - docker-compose-elastic-single-ssl.yml
+      - docker-compose-elastic-single-full-ssl.yml
     state: present
     remove_orphans: true 
 
