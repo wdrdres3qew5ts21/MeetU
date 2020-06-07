@@ -63,10 +63,10 @@ services:
       - ELASTICSEARCH_HOSTS=http://elasticsearch1:9200
       - ELASTICSEARCH_USERNAME=kibana
       - ELASTICSEARCH_PASSWORD=$ELASTIC_PASSWORD
-      - server.ssl.enabled=true
-      - server.ssl.key=/usr/share/elasticsearch/config/certificates/instance/instance.key
-      - server.ssl.certificate=/usr/share/elasticsearch/config/certificates/instance/instance.crt
-      - elasticsearch.ssl.certificateAuthorities=/usr/share/elasticsearch/config/certificates/ca/ca.crt
+      - SERVER_SSL_ENABLED=true
+      - server.ssl.key=$CERTS_DIR/instance/instance.key
+      - server.ssl.certificate=/usr/share$CERTS_DIR/instance/instance.crt
+      - elasticsearch.ssl.certificateAuthorities=$CERTS_DIR/ca/ca.crt
       - elasticsearch.ssl.verificationMode=certificate
     ports:
       - 5601:5601
