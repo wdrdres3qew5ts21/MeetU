@@ -55,7 +55,7 @@ services:
     container_name: kibana
     restart: always
     environment:
-    #   env ที่อยู่ตรงนี้คือตัวเดียวกับใน kibana.yml แต่จะเขียนด้วย format KEY_PROPERTY: value
+    #   env ที่อยู่ตรงนี้คือตัวเดียวกับใน kibana.yml แต่จะเขียนด้วย format KEY_PROPERTY= value พิมพ์ใหญ่เท่านั้น!!!
     #   ซึ่งถ้าเป้นใน kibana.yml จะเขียนด้วย key.property: value  แทนนั่นเอง มีค่าเท่ากัน
     #   SERVER_NAME: localhost
     #   ELASTICSEARCH_URL: http://elasticsearch:9200
@@ -64,10 +64,10 @@ services:
       - ELASTICSEARCH_USERNAME=kibana
       - ELASTICSEARCH_PASSWORD=$ELASTIC_PASSWORD
       - SERVER_SSL_ENABLED=true
-      - server.ssl.key=$CERTS_DIR/instance/instance.key
-      - server.ssl.certificate=/usr/share$CERTS_DIR/instance/instance.crt
-      - elasticsearch.ssl.certificateAuthorities=$CERTS_DIR/ca/ca.crt
-      - elasticsearch.ssl.verificationMode=certificate
+      - SERVER_SSL_KEY=$CERTS_DIR/instance/instance.key
+      - SERVER_SSL_CERTIFICATE/usr/share$CERTS_DIR/instance/instance.crt
+      - ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=$CERTS_DIR/ca/ca.crt
+      - ELASTICSEARCH_SSL_VERIFICATIONMODE=certificate
     ports:
       - 5601:5601
     volumes:
