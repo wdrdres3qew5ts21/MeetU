@@ -34,26 +34,23 @@
     state: present
     remove_orphans: true 
 
-- name: "Change password for Kibana"
-  become: no
-  shell:
-    cmd: >
-      bash -c "
-        while true
-        do
-          curl  --fail -u elastic:PleaseChangeMe \
-            'https://localhost:9200/_cluster/health?wait_for_status=yellow' \
-            && break
-          sleep 5
-        done
 
-        curl -X POST -v -k  --cacert /usr/share/elasticsearch/config/certificates/ca/ca.crt \
-        'https://localhost:9200/_security/user/kibana/_password?pretty' \
-        -u elastic:PleaseChangeMe   -H 'Content-Type: application/json' \
-        -d ' { \"password\" : \"PleaseChangeMe\" } '  && echo 'success change password success'
-      "
-
-  
+- name: Pause play until a URL is reachable from this host
+  uri:
+    url: "https://localhost:9200/_security/user/kibana/_password?pretty"
+    follow_redirects: none
+    method: POST
+    user: elastic
+    password: PleaseChangeMe
+    validate_certs: no
+    force_basic_auth: yes
+    body_format: json
+    body: >
+      { "password" : "PleaseChangeMe" }   
+  register: _result
+  until: _result.status == 200
+  retries: 20 
+  delay: 5 
 
 
      
