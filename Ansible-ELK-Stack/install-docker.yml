@@ -71,21 +71,7 @@
       - git 
       - python3
     
-  # - name: "CURL docker-compose"
-  #   get_url: 
-  #     url: "https://github.com/docker/compose/releases/download/1.26.0/docker-compose-{{ansible_system}}-{{ansible_userspace_architecture}}"
-  #     dest: "/usr/local/bin/docker-compose"
 
-  # - name: "Add permission to docker-compose inorder to run execute bin command"
-  #   file:
-  #     path: /usr/local/bin/docker-compose
-  #     mode: +x
-
-  # - name: "Add Symbolik Link to docker-compose bin /usr/bin"
-  #   file: 
-  #     state: link
-  #     src: /usr/local/bin/docker-compose
-  #     dest: /usr/bin/docker-compose
 
 
     
