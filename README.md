@@ -19,6 +19,15 @@ https://seniorproject.sit.kmutt.ac.th/showproject/IT59-BU37
 ![alt text](https://i.imgur.com/LLss4Os.jpg)
 
 ## วิธีการติดตั้ง project
+![alt text](https://www.iverson.co.th/images/slideshow/Iverson-TH-SlideHome---Banner_Red-Hat.jpg)
+```
+ansible-playbook setup-ssl-stack.yml --ask-vault-pass -vvv
+```
+***  Automation กำลังอยู่ในช่วงเพิ่ม Feature
+จะทำการติดตั้ง Elasticsearch ให้อัตโนมัติ โดยการ setup XPACK + SSL + Keystore 
+ซึ่งตอนนี้ขาดการนำ Certificate ออกมาให้ Java Client ข้างนอกใช้เพราะยังอยู่ใน docker volume
+
+
 ###### ติดตั้ง MongoDB Database เชื่อมเข้ากับ Elasticsearch
 1. Restore ข้อมูลกลับเข้า MongoDB
 ทำการ import ไฟล์จาก meetu-mongodb-dump ด้วยการใช้คำสั่ง mongorestore https://docs.mongodb.com/manual/tutorial/backup-and-restore-tools/ เพื่อนำข้อมูลที่ถูก dump ออกมาเป้น bson กลับเข้าไปใน mongodb
