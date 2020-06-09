@@ -18,6 +18,28 @@
     - docker-logrotate
     - docker-engine
 
+- name: "Install yum-utils"
+  yum:
+    name: yum-utils
+    state: present
+
+- name: "Add Repository repo yum-config-manager"
+  command: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+- name: "DNF package update containerd.io"
+  yum:
+    name: "https://download.docker.com/linux/centos/7/x86_64/stable/Packages/containerd.io-1.2.6-3.3.el7.x86_64.rpm"
+    state: present
+
+- name: "Yum install Docker"
+  yum:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - docker-ce
+    - docker-ce-cli
+    - containerd.io
+
 - name: "Start Docker Service"
   systemd:
     name: docker

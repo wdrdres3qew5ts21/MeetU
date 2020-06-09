@@ -21,7 +21,7 @@
   docker_compose:
     project_src: "~/meetu"
     files: 
-      - docker-compose-elastic-single-full-ssl.yml
+      - docker-compose-elastic-single.yml
     state: absent
     remove_orphans: true 
 
@@ -30,29 +30,26 @@
   docker_compose:
     project_src: "~/meetu"
     files: 
-      - docker-compose-elastic-single-full-ssl.yml
+      - docker-compose-elastic-single.yml
     state: present
     remove_orphans: true 
 
-- name: "Change password for Kibana"
-  become: no
-  shell:
-    cmd: >
-      bash -c "
-        while true
-        do
-          curl  --fail -u elastic:PleaseChangeMe \
-            'http://localhost:9200/_cluster/health?wait_for_status=yellow' \
-            && break
-          sleep 5
-        done
+- name: Change Kibana Password API
+  uri:
+    url: "http://localhost:9200/_security/user/kibana/_password?pretty"
+    follow_redirects: none
+    method: POST
+    user: elastic
+    password: PleaseChangeMe
+    force_basic_auth: yes
+    body_format: json
+    body: >
+      { "password": "{{kibana_password}}" } 
+  register: _result
+  until: _result.status == 200
+  retries: 20 
+  delay: 5 
 
-        curl -X POST -v -k 'http://localhost:9200/_security/user/kibana/_password?pretty' \
-        -u elastic:PleaseChangeMe   -H 'Content-Type: application/json' \
-        -d ' { \"password\" : \"PleaseChangeMe\" } '  && echo 'success change password success'
-      "
-
-  
 
 
      

@@ -1,6 +1,11 @@
 ---
 # tasks file for elk
-- name: "git clone project MeetU"
+# vars ไฟล์จะโดนดูดเข้ามาอัตโนมัติทันทีชื่อต้องตาม format yml แท้ๆ ห้ามมีจุด ต้องใช้แบบ key pair indent :
+# - name: fdsfsd
+#   debug:
+#     msg: "{{kibana_password}}"
+
+- name: "git clone project MeetU {{kibana.password}}"
   become: no
   git:
     repo: "https://github.com/wdrdres3qew5ts21/MeetU.git"
@@ -35,7 +40,7 @@
     remove_orphans: true 
 
 
-- name: Pause play until a URL is reachable from this host
+- name: Change Kibana Password API
   uri:
     url: "https://localhost:9200/_security/user/kibana/_password?pretty"
     follow_redirects: none
@@ -46,11 +51,11 @@
     force_basic_auth: yes
     body_format: json
     body: >
-      { "password" : "PleaseChangeMe" }   
+      { "password": "{{kibana_password}}" } 
   register: _result
   until: _result.status == 200
   retries: 20 
   delay: 5 
 
-
+# "{ \"password\": \"{{ kibana_password }}\" }" 
      
