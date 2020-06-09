@@ -1,0 +1,55 @@
+---
+# tasks file for elk
+- name: "git clone project MeetU"
+  become: no
+  git:
+    repo: "https://github.com/wdrdres3qew5ts21/MeetU.git"
+    dest: "~/meetu"
+    update: yes 
+
+
+- name: "Start docker-compose Generate SSL & X.509"
+  become: no
+  docker_compose:
+    project_src: "~/meetu"
+    files: 
+      - create-cert-pem.yml
+    state: present
+
+- name: "Teardown all ELK Stack"
+  become: no
+  docker_compose:
+    project_src: "~/meetu"
+    files: 
+      - docker-compose-elastic-single.yml
+    state: absent
+    remove_orphans: true 
+
+- name: "Start docker-compose ELK stack ;)"
+  become: no
+  docker_compose:
+    project_src: "~/meetu"
+    files: 
+      - docker-compose-elastic-single.yml
+    state: present
+    remove_orphans: true 
+
+- name: Change Kibana Password API
+  uri:
+    url: "http://localhost:9200/_security/user/kibana/_password?pretty"
+    follow_redirects: none
+    method: POST
+    user: elastic
+    password: PleaseChangeMe
+    force_basic_auth: yes
+    body_format: json
+    body: >
+      { "password": "{{kibana_password}}" } 
+  register: _result
+  until: _result.status == 200
+  retries: 20 
+  delay: 5 
+
+
+
+     

@@ -1,0 +1,4 @@
+--- #centos8 edition
+- hosts: elk_server
+  roles:
+    - elk

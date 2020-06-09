@@ -13,5 +13,4 @@ do
   sleep 5
 done
 
-echo "fuckkkkkkkkkkkkkkkkkkk"
 curl -X POST -v -k  "https://localhost:9200/_security/user/kibana/_password?pretty"  -u elastic:PleaseChangeMe   -H 'Content-Type: application/json' -d ' { "password" : "PleaseChangeMe" } '

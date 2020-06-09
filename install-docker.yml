@@ -1,0 +1,85 @@
+--- #centos8 edition
+- hosts: elk_server
+  become: yes
+  become_method: sudo
+  tasks:
+  - name: VIEW ALL ANSIBLE FACT KEYS
+    debug:
+      msg: "{{ ansible_facts }}"
+
+  - name: "Remove All Deprecated/ Install Docker"
+    yum:
+      name: "{{ item }}"
+      state: absent
+    loop:
+      - docker 
+      - docker-client
+      - docker-client-latest
+      - docker-common
+      - docker-latest
+      - docker-latest-logrotate
+      - docker-logrotate
+      - docker-engine
+
+  - name: "Install yum-utils"
+    yum:
+      name: yum-utils
+      state: present
+
+  - name: "Add Repository repo yum-config-manager"
+    command: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+  - name: "DNF package update containerd.io"
+    yum:
+      name: "https://download.docker.com/linux/centos/7/x86_64/stable/Packages/containerd.io-1.2.6-3.3.el7.x86_64.rpm"
+      state: present
+
+  - name: "Yum install Docker"
+    yum:
+      name: "{{ item }}"
+      state: present
+    loop:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+
+  - name: "Start Docker Service"
+    service:
+      name: docker
+      state: reloaded
+
+  - name: "Add ansible_user (login user) to docker group"
+    user:
+      name: "{{ ansible_user }}"
+      shell: /bin/bash
+      groups: docker
+      append: yes
+
+  - name: "Install Git & Python"
+    yum:
+      name: "{{ item }}"
+      state: present
+    loop:
+      - git 
+      - python3
+
+  - name: "Install docker-compose"
+    yum:
+      name: "{{ item }}"
+      state: present
+    loop:
+      - git 
+      - python3
+    
+
+
+
+    
+
+
+    
+      
+      
+    
+    
+
