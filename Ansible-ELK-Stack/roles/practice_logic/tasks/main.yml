@@ -15,8 +15,6 @@
   loop:
     - docker-compose-elastic-single-full-ssl.yml
 
-    
-
 - name: "result"
   become: no
   debug:
