@@ -1,5 +1,10 @@
 ---
 # tasks file for nginx_native_ssl
+- name: Install Epel-Release
+  yum:
+    name: epel-release
+    state: present
+
 - name: Install Nginx
   yum:
     name: nginx
