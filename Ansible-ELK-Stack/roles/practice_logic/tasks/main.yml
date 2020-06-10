@@ -1,13 +1,21 @@
 ---
 # tasks file for practice_logic
-- name: Listing File
-  become: no
-  command: ls ~/logicFile.yml
-
 - name: Reading File
   become: no
   command: cat ~/logicFile.yml
   register: reading_file_output
+
+- name: Creating Docker File Template
+  become: no
+  vars:
+    - "node_name": "elasticsearch1"
+  template:
+    src: "{{ item }}"
+    dest: "~/{{ item }}"
+  loop:
+    - docker-compose-elastic-single-full-ssl.yml
+
+    
 
 - name: "result"
   become: no
