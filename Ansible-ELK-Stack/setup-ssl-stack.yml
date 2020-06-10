@@ -4,3 +4,4 @@
   roles: # ทำให้ ansible รันเฉพาะ tag ได้ถ้าไม่ระบุแท๊กก็จะรันทั้งมด ansible-playbook setup.yml -t docker 
     - {role: docker, tags: "docker"} 
     - {role: elk_ssl, tags: "elk_ssl"} 
+    - {role: elk_ssl, tags: "practice_logic"} 
