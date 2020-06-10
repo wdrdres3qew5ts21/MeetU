@@ -1,2 +1,15 @@
 ---
 # tasks file for nginx_native_ssl
+- name: Install Nginx
+  yum:
+    name: nginx
+    state: present
+
+- name: Start Nginx Daemon and boot on start
+  systemd:
+    name: nginx
+    state: started
+    enabled: yes
+
+
+
