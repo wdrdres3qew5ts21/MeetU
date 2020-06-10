@@ -1,9 +1,15 @@
 ---
 # tasks file for practice_logic
-- name: Reading File 
+- name: Listing File
+  become: no
+  command: ls ~/logicFile.yml
+
+- name: Reading File
+  become: no
   command: cat ~/logicFile.yml
   register: reading_file_output
 
 - name: "result"
+  become: no
   debug:
-    var: "{{reading_file_output}}"
+    msg: "{{reading_file_output}}"
