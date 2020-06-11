@@ -45,7 +45,7 @@
 # ต้องใช้ Certificate จาก Let's Encrypt มาเชื่อมกับ container ของเราผ่าน volume
 - name: "Start Elasticsearch Docker"
   vars:
-    # ตำแหน่งของ cert_dir directory certificate / elastic_password รหัสตอนเริ่มต้นต้องใส่ด้วย
+    # ตำแหน่งของ cert_dir ที่อยู่ใน "container" แล้ว ว่าไฟล์อยู่ในที่ไหนของ "container"
     - cert_dir: "/usr/share/elasticsearch/config"
   docker_container:
     name: elasticsearch1
@@ -60,7 +60,7 @@
       - name: meetu_elastic
     volumes:
       - meetu_data01:/usr/share/elasticsearch/data
-      - "/etc/{{ansible_user}}/ssl-certificate:/usr/share/elasticsearch/config"
+      - "/etc/{{ansible_user}}/ssl-certificate:{{ cert_dir }}"
       # - "meetu_cert:/usr/share/elasticsearch/config/certificates"
     ulimits:
       - "memlock:-1:-1"
