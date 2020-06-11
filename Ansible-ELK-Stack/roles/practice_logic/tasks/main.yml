@@ -26,7 +26,7 @@
     # ถ้าเจอต้นฉบับ symbolic link จะตามไปหาของจริงแล้ว copy ของจริงมาด้วย
     follow: yes
     remote_src: yes
-    dest: /home/AzureUser/ssl-certificate
+    dest: /home/{{ansible_user}}/ssl-certificate
     owner: "{{ansible_user}}"
     group: "{{ansible_user}}"
     mode: '0744'
