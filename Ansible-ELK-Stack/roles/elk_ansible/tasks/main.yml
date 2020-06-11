@@ -19,7 +19,7 @@
 # ต้องใช้ Certificate จาก Let's Encrypt มาเชื่อมกับ container ของเราผ่าน volume
 - name: "Start Elasticsearch Docker"
   vars:
-    # ตำแหน่งของ directory certificate 
+    # ตำแหน่งของ cert_dir directory certificate / elastic_password รหัสตอนเริ่มต้นต้องใส่ด้วย
     - cert_dir: /etc/letsencrypt/live/elastic.devopsculture.tk
   docker_container:
     name: elasticsearch1
@@ -52,7 +52,7 @@
       # หลังติดตั้งเสร็จแล้วต้องรันคำสั่ง bin/elasticsearch-setup-passwords interactive
       # เพื่อให้ xpack module ที่ลงไว้ทำการตั้ง password ตามที่เราตั้งด้วยนั่นเอง
       # ถ้าใช้ xpack บน cluster mode จะโดน bootstrap สั่งให้ทำ TLS ด้วยทันทีไม่งั้นจะ bootstrap ไม่ผ่าน
-      ELASTIC_PASSWORD: "{{ELASTIC_PASSWORD}}"
+      ELASTIC_PASSWORD: "{{elastic_password}}"
       xpack.security.enabled: true
       xpack.security.http.ssl.enabled: true
       xpack.security.http.ssl.key: "{{cert_dir}}/privkey.pem"
