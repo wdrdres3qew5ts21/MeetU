@@ -85,10 +85,11 @@
   become: no
   template:
     src: kibana.yml
-    dest: ~/kibana.yml
+    dest: ~/kibana/kibana.yml
     force: yes
 
 - name: "Start Kibana Docker"
+  become: no
   vars:
     # ตำแหน่งของ cert_dir ที่อยู่ใน "container" แล้ว ว่าไฟล์อยู่ในที่ไหนของ "container"
     - cert_dir: "/usr/share/elasticsearch/config/certificates"
@@ -114,8 +115,7 @@
       ELASTICSEARCH_SSL_VERIFICATIONMODE: certificate
     volumes:
       - "/home/{{ansible_user}}/ssl-certificate:{{cert_dir}}"
-      - "./kibana.yml:/usr/share/kibana/config/kibana.yml"
-
+      - "~/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml"
 
 - name: Change Kibana Password API
   uri:
