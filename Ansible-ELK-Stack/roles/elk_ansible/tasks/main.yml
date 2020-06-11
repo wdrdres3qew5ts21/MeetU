@@ -12,6 +12,10 @@
     dest: "~/meetu"
     update: yes
 
+- name: Create network
+  docker_network:
+    name: meetu_elastic
+
 # ต้องใช้ Certificate จาก Let's Encrypt มาเชื่อมกับ container ของเราผ่าน volume
 - name: "Start Elasticsearch Docker"
   docker_container:
@@ -21,7 +25,6 @@
     restart: yes
     published_ports:
       - "9200:9200"
-    networks_cli_compatible: yes
     networks: 
       - name: meetu_elastic
     volumes:
