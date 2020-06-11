@@ -22,13 +22,10 @@
     # ตำแหน่งของ cert_dir directory certificate / elastic_password รหัสตอนเริ่มต้นต้องใส่ด้วย
     - cert_dir: "/etc/{{ansible_user}}/ssl-certificate"
   docker_container:
-    name: elasticsearch1
+    name: "elastic-certificate"
     image: docker.elastic.co/elasticsearch/elasticsearch:7.7.0
     state: present
-    restart: yes
     purge_networks: yes
-    published_ports:
-      - "9200:9200"
     networks_cli_compatible: yes
     networks:
       - name: meetu_elastic
