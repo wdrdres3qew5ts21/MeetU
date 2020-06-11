@@ -10,14 +10,13 @@
   git:
     repo: "https://github.com/wdrdres3qew5ts21/MeetU.git"
     dest: "~/meetu"
-    update: yes 
-
+    update: yes
 
 - name: "Start docker-compose Generate SSL & X.509"
   become: no
   docker_compose:
     project_src: "~/meetu"
-    files: 
+    files:
       - create-cert-pem.yml
     state: present
 
@@ -25,20 +24,19 @@
   become: no
   docker_compose:
     project_src: "~/meetu"
-    files: 
+    files:
       - docker-compose-elastic-single-full-ssl.yml
     state: absent
-    remove_orphans: true 
+    remove_orphans: true
 
 - name: "Start docker-compose ELK stack ;)"
   become: no
   docker_compose:
     project_src: "~/meetu"
-    files: 
+    files:
       - docker-compose-elastic-single-full-ssl.yml
     state: present
-    remove_orphans: true 
-
+    remove_orphans: true
 
 - name: Change Kibana Password API
   uri:
@@ -51,13 +49,9 @@
     force_basic_auth: yes
     body_format: json
     body: >
-      { "password": "{{kibana_password}}" } 
+      { "password": "{{kibana_password}}" }
   register: _result
   until: _result.status == 200
-  retries: 20 
-  delay: 5 
-
-
-
-# "{ \"password\": \"{{ kibana_password }}\" }" 
-     
+  retries: 20
+  delay: 5
+# "{ \"password\": \"{{ kibana_password }}\" }"

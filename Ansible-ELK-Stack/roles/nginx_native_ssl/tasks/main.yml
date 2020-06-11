@@ -24,12 +24,19 @@
     - certbot
     - python3-certbot-nginx
 
+
+- name: Setup Nginx SSL Template
+  template:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+    force: yes
+
 - name: Automate Generate Certificate and install it for Nginx
-  command: certbot certonly --nginx
+  command: "certbot --non-interactive -d {{server_name}}   -m username@example.com  --agree-tos"  
 
 
-- name: Generate Certificate only for Nginx
-  command: certbot certonly --nginx
+# - name: Generate Certificate only for Nginx
+#   command: certbot certonly --nginx
 
 # - name: Automatic Renewal Certificate
 #   command: echo "0 0,12 * * * root python -c 'import random; import time; time.sleep(random.random() * 3600)' && certbot renew -q" | sudo tee -a /etc/crontab > /dev/null
