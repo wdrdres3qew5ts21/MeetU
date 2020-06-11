@@ -46,7 +46,7 @@
 - name: "Start Elasticsearch Docker"
   vars:
     # ตำแหน่งของ cert_dir ที่อยู่ใน "container" แล้ว ว่าไฟล์อยู่ในที่ไหนของ "container"
-    - cert_dir: "/usr/share/elasticsearch/config"
+    - cert_dir: "/usr/share/elasticsearch/config/certificate"
   docker_container:
     name: elasticsearch1
     image: docker.elastic.co/elasticsearch/elasticsearch:7.7.0
