@@ -20,7 +20,7 @@
 - name: "Start Elasticsearch Docker"
   vars:
     # ตำแหน่งของ cert_dir directory certificate / elastic_password รหัสตอนเริ่มต้นต้องใส่ด้วย
-    - cert_dir: /etc/letsencrypt/live/elastic.devopsculture.tk
+    - cert_dir: "/etc/{{ansible_user}}/ssl-certificate"
   docker_container:
     name: elasticsearch1
     image: docker.elastic.co/elasticsearch/elasticsearch:7.7.0
