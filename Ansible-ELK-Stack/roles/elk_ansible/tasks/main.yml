@@ -21,6 +21,7 @@
     restart: yes
     published_ports:
       - "9200:9200"
+    networks_cli_compatible: yes
     networks: 
       - name: meetu_elastic
     volumes:
