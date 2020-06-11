@@ -1,0 +1,5 @@
+- hosts: elk_server
+  become: yes
+  become_method: sudo
+  roles: # ทำให้ ansible รันเฉพาะ tag ได้ถ้าไม่ระบุแท๊กก็จะรันทั้งมด ansible-playbook setup.yml -t docker 
+    - {role: elk_ansible, tags: "elk_ansible"} 
