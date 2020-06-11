@@ -4,12 +4,12 @@
   # ** บังคับใส่ tag เท่านั้นถึงจะทำงาน
 - name: "[Staging] Revoke Certificate: {{ certificate_server_name }}"
   # command: echo "staging" 
-  command: certbot revoke --staging --cert-path /etc/letsencrypt/live/{{ certificate_server_name }}/cert.pem 
+  command: certbot revoke --staging --non-interactive --cert-path /etc/letsencrypt/live/{{ certificate_server_name }}/cert.pem 
   when: deployment_plan == "staging"
 
 - name: "[Production] Revoke Certificate: {{ certificate_server_name }}"
   # command: echo "production"
-  command: certbot revoke --cert-path /etc/letsencrypt/live/{{ certificate_server_name }}/cert.pem 
+  command: certbot revoke --non-interactive --cert-path /etc/letsencrypt/live/{{ certificate_server_name }}/cert.pem 
   when: deployment_plan == "production"
 
   
