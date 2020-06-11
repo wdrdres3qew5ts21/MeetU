@@ -1,0 +1,19 @@
+---
+# tasks file for generate_certificate
+- name: Install certbot & python3-certbot-nginx
+  yum:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - certbot
+    - python3-certbot-nginx
+
+
+- name: Setup Nginx SSL Template
+  template:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf_mock
+    force: yes
+
+- name: Automate Generate Certificate and install it for Nginx
+  command: "certbot --non-interactive -d {{ssl_server_name}}   -m {{ssl_email_owner}}  --agree-tos"  

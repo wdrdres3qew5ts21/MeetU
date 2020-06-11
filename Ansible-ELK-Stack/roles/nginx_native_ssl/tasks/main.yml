@@ -16,23 +16,6 @@
     state: started
     enabled: yes
 
-- name: Install certbot & python3-certbot-nginx
-  yum:
-    name: "{{ item }}"
-    state: present
-  loop:
-    - certbot
-    - python3-certbot-nginx
-
-
-- name: Setup Nginx SSL Template
-  template:
-    src: nginx.conf
-    dest: /etc/nginx/nginx.conf_mock
-    force: yes
-
-- name: Automate Generate Certificate and install it for Nginx
-  command: "certbot --non-interactive -d {{server_name}}   -m username@example.com  --agree-tos"  
 
 
 # - name: Generate Certificate only for Nginx
