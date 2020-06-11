@@ -24,11 +24,12 @@
   docker_container:
     name: elasticsearch1
     image: docker.elastic.co/elasticsearch/elasticsearch:7.7.0
-    state: present
+    state: started
     restart: yes
     purge_networks: yes
     published_ports:
       - "9200:9200"
+    networks_cli_compatible: yes
     networks:
       - name: meetu_elastic
     volumes:
@@ -36,6 +37,7 @@
       - "{{cert_dir}}:{{cert_dir}}"
     ulimits:
       - "memlock:-1:-1"
+    # env ทุกตัวของ ansible ต้องใส่ quotes ไว้ด้วยสำคัญมากๆเพราะมไ่งั้นจะ compile ไม่ผ่านเฉพาะส่วน env
     env:
       node.name: "elasticsearch1"
       # จะทำให้มันไม่ยอมเข้าไปอยู่ใน cluster และเอาตัวเองเป้น master เสมอเลย
