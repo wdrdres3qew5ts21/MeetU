@@ -5,7 +5,7 @@
 #   debug:
 #     msg: "{{kibana_password}}"
 
-- name: "git clone project MeetU {{kibana.password}}"
+- name: "git clone project MeetU"
   become: no
   git:
     repo: "https://github.com/wdrdres3qew5ts21/MeetU.git"
@@ -19,7 +19,8 @@
 # ต้องใช้ Certificate จาก Let's Encrypt มาเชื่อมกับ container ของเราผ่าน volume
 - name: "Start Elasticsearch Docker"
   vars:
-    - CERTS_DIR: 
+    # ตำแหน่งของ directory certificate 
+    - cert_dir: /etc/letsencrypt/live/elastic.devopsculture.tk
   docker_container:
     name: elasticsearch1
     image: docker.elastic.co/elasticsearch/elasticsearch:7.7.0
@@ -27,16 +28,16 @@
     restart: yes
     published_ports:
       - "9200:9200"
-    networks: 
+    networks:
       - name: meetu_elastic
     volumes:
       - meetu_data01:/usr/share/elasticsearch/data
-      - certs:"{{CERTS_DIR}}"
+      - certs:"{{cert_dir}}"
     ulimits:
       - "memlock:-1:-1"
     env:
       node.name: elasticsearch1
-      # จะทำให้มันไม่ยอมเข้าไปอยู่ใน cluster และเอาตัวเองเป้น master เสมอเลย 
+      # จะทำให้มันไม่ยอมเข้าไปอยู่ใน cluster และเอาตัวเองเป้น master เสมอเลย
       # - discovery.type: single-node
       # เวลา scan Elasticsearch จะเช็ค Auto internal Transport Layer บน Port 9300-9305 ทันทีและรวบเข้า Cluster
       # ระหว่างทางสามารถเพิ่มลดได้ตามใจชอบระบบจะ Detect เองอัตโนมัติ
@@ -54,24 +55,19 @@
       ELASTIC_PASSWORD: "{{ELASTIC_PASSWORD}}"
       xpack.security.enabled: true
       xpack.security.http.ssl.enabled: true
-      xpack.security.http.ssl.key: "{{CERTS_DIR}}/instance/instance.key"
-      xpack.security.http.ssl.certificate_authorities: "{{CERTS_DIR}}/ca/ca.crt"
-      xpack.security.http.ssl.certificate: "{{CERTS_DIR}}/instance/instance.crt"
+      xpack.security.http.ssl.key: "{{cert_dir}}/privkey.pem"
+      xpack.security.http.ssl.certificate_authorities: "{{cert_dir}}/fullchain.pem"
+      xpack.security.http.ssl.certificate: "{{cert_dir}}/instance/instance.crt"
       xpack.security.transport.ssl.enabled: true
-      xpack.security.transport.ssl.verification_mode: certificate 
-      xpack.security.transport.ssl.certificate_authorities: "{{CERTS_DIR}}/ca/ca.crt"
-      xpack.security.transport.ssl.certificate: "{{CERTS_DIR}}/instance/instance.crt"
-      xpack.security.transport.ssl.key: "{{CERTS_DIR}}/instance/instance.key"
-
+      xpack.security.transport.ssl.verification_mode: certificate
+      xpack.security.transport.ssl.key: "{{cert_dir}}/privkey.pem"
+      xpack.security.transport.ssl.certificate_authorities: "{{cert_dir}}/fullchain.pem"
+      xpack.security.transport.ssl.certificate: "{{cert_dir}}/fullchain.pem"
 # - name: "Start Kibana Docker"
 #   docker_container:
 #     image: docker.elastic.co/kibana/kibana:7.7.0
 #     name: elasticsearch1
 #     state: present
-    
-
-
-
 
 # - name: Change Kibana Password API
 #   uri:
