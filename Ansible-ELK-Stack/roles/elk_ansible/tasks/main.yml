@@ -43,8 +43,8 @@
       # เวลา scan Elasticsearch จะเช็ค Auto internal Transport Layer บน Port 9300-9305 ทันทีและรวบเข้า Cluster
       # ระหว่างทางสามารถเพิ่มลดได้ตามใจชอบระบบจะ Detect เองอัตโนมัติ
       # sudo sysctl -w vm.max_map_count: 262144 ถ้าทำ cluster ต้องขยาย memmory ด้วยไม่งั้นจะ fail
-      discovery.type: single-node
-      'bootstrap.memory_lock': true
+      discovery.type: "single-node"
+      "bootstrap.memory_lock": true
       "ES_JAVA_OPTS": "-Xms256m -Xmx256m"
       http.cors.enabled: true
       http.cors.allow-origin: "*"
