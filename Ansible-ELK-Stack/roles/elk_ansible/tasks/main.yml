@@ -16,6 +16,11 @@
   docker_network:
     name: meetu_elastic
 
+- name: Create Elastic Certificate Volume for Docker
+  docker_volume:
+    name: meetu_cert
+    state: present
+
 # ต้องใช้ Certificate จาก Let's Encrypt มาเชื่อมกับ container ของเราผ่าน volume
 - name: "Move certificate to elastic volume"
   vars:
@@ -29,8 +34,11 @@
     networks_cli_compatible: yes
     networks:
       - name: meetu_elastic
-    volumes:
-      - "{{cert_dir}}:meetu_cert"
+    mounts:
+      labels: meetu_cert
+      target: /usr/share/elasticsearch/config/certificates
+      src: "{{cert_dir}}"
+      volume_driver: local
 
 
 # ต้องใช้ Certificate จาก Let's Encrypt มาเชื่อมกับ container ของเราผ่าน volume
