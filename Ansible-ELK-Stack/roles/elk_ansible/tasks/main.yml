@@ -34,7 +34,7 @@
       - name: meetu_elastic
     volumes:
       - meetu_data01:/usr/share/elasticsearch/data
-      - "{{cert_dir}}:{{cert_dir}}"
+      - "{{cert_dir}}:/usr/share/elasticsearch/config"
     ulimits:
       - "memlock:-1:-1"
     # env ทุกตัวของ ansible ต้องใส่ quotes ไว้ด้วยสำคัญมากๆเพราะมไ่งั้นจะ compile ไม่ผ่านเฉพาะส่วน env
