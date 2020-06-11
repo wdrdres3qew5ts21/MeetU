@@ -1,10 +1,5 @@
 ---
 # tasks file for elk
-# vars ไฟล์จะโดนดูดเข้ามาอัตโนมัติทันทีชื่อต้องตาม format yml แท้ๆ ห้ามมีจุด ต้องใช้แบบ key pair indent :
-# - name: fdsfsd
-#   debug:
-#     msg: "{{kibana_password}}"
-
 - name: "git clone project MeetU"
   become: no
   git:
@@ -16,16 +11,13 @@
   docker_network:
     name: meetu_elastic
 
-# - name: Create Elastic Certificate Volume for Docker
-#   docker_volume:
-#     name: meetu_cert
-#     state: present
+- name: Create Elastic Certificate Volume for Docker
+  docker_volume:
+    name: meetu_cert
+    state: present
 
-# # ต้องใช้ Certificate จาก Let's Encrypt มาเชื่อมกับ container ของเราผ่าน volume
+# ต้องใช้ Certificate จาก Let's Encrypt มาเชื่อมกับ container ของเราผ่าน volume
 # - name: "Move certificate to elastic volume"
-#   vars:
-#     # ตำแหน่งของ cert_dir directory certificate / elastic_password รหัสตอนเริ่มต้นต้องใส่ด้วย
-#     - cert_dir: "/etc/{{ansible_user}}/ssl-certificate"
 #   docker_container:
 #     name: "elastic-certificate"
 #     image: docker.elastic.co/elasticsearch/elasticsearch:7.7.0
@@ -34,19 +26,15 @@
 #     networks_cli_compatible: yes
 #     networks:
 #       - name: meetu_elastic
-#     mounts:
-#       labels:
-#         meetu_cert:
-#       target: /usr/share/elasticsearch/config/certificates
-#       src: "{{cert_dir}}"
-#       volume_driver: local
-
+#     volumes:
+#       - "/home/AzureUser/ssl-certificate:/usr/share/elasticsearch/config/certificates"
+#       - "meetu_cert:/usr/share/elasticsearch/config/certificates"
 
 # ต้องใช้ Certificate จาก Let's Encrypt มาเชื่อมกับ container ของเราผ่าน volume
 - name: "Start Elasticsearch Docker"
   vars:
     # ตำแหน่งของ cert_dir ที่อยู่ใน "container" แล้ว ว่าไฟล์อยู่ในที่ไหนของ "container"
-    - cert_dir: "/usr/share/elasticsearch/config/certificate"
+    - cert_dir: "/usr/share/elasticsearch/config/certificates"
   docker_container:
     name: elasticsearch1
     image: docker.elastic.co/elasticsearch/elasticsearch:7.7.0
@@ -60,8 +48,7 @@
       - name: meetu_elastic
     volumes:
       - meetu_data01:/usr/share/elasticsearch/data
-      - "/etc/{{ansible_user}}/ssl-certificate:{{ cert_dir }}"
-      # - "meetu_cert:/usr/share/elasticsearch/config/certificates"
+      - "/home/{{ansible_user}}/ssl-certificate:{{cert_dir}}"
     ulimits:
       - "memlock:-1:-1"
     # env ทุกตัวของ ansible ต้องใส่ quotes ไว้ด้วยสำคัญมากๆเพราะมไ่งั้นจะ compile ไม่ผ่านเฉพาะส่วน env
@@ -95,25 +82,47 @@
       xpack.security.transport.ssl.certificate_authorities: "{{cert_dir}}/fullchain.pem"
 
 
-# - name: "Start Kibana Docker"
-#   docker_container:
-#     image: docker.elastic.co/kibana/kibana:7.7.0
-#     name: elasticsearch1
-#     state: present
+- name: "Start Kibana Docker"
+  vars:
+    # ตำแหน่งของ cert_dir ที่อยู่ใน "container" แล้ว ว่าไฟล์อยู่ในที่ไหนของ "container"
+    - cert_dir: "/usr/share/elasticsearch/config/certificates"
+  docker_container:
+    image: docker.elastic.co/kibana/kibana:7.7.0
+    name: kibana
+    restart: yes
+    state: started
+    networks_cli_compatible: yes
+    networks:
+      - name: meetu_elastic
+    published_ports:
+      - "5601:5601"
+    env:
+      SERVER_HOST: "0.0.0.0"
+      ELASTICSEARCH_HOSTS: "https://elasticsearch1:9200"
+      ELASTICSEARCH_USERNAME: "kibana"
+      ELASTICSEARCH_PASSWORD: "{{elastic_password}}"
+      SERVER_SSL_ENABLED: "true"
+      SERVER_SSL_KEY: "{{cert_dir}}/privkey.pem"
+      SERVER_SSL_CERTIFICATE: "{{cert_dir}}/cert.pem"
+      ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES: "{{cert_dir}}/fullchain.pem"
+      ELASTICSEARCH_SSL_VERIFICATIONMODE: certificate
+    volumes:
+      - "/home/{{ansible_user}}/ssl-certificate:{{cert_dir}}"
 
-# - name: Change Kibana Password API
-#   uri:
-#     url: "https://localhost:9200/_security/user/kibana/_password?pretty"
-#     follow_redirects: none
-#     method: POST
-#     user: elastic
-#     password: PleaseChangeMe
-#     validate_certs: no
-#     force_basic_auth: yes
-#     body_format: json
-#     body: >
-#       { "password": "{{kibana_password}}" }
-#   register: _result
-#   until: _result.status :  200
-#   retries: 20
-#   delay: 5
+
+- name: Change Kibana Password API
+  uri:
+    url: "https://localhost:9200/_security/user/kibana/_password?pretty"
+    follow_redirects: none
+    method: POST
+    user: elastic
+    password: "{{elastic_password}}"
+    validate_certs: no
+    force_basic_auth: yes
+    body_format: json
+    body: >
+      { "password": "{{elastic_password}}" }
+  register: _result
+  until: _result.status == 200
+  retries: 20
+  delay: 5
