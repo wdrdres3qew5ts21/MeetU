@@ -36,12 +36,11 @@
 - name: Copy Certificate to safety or writable directory (for backup or reuse)
   copy:
     src: /etc/letsencrypt/live/{{ certificate_server_name }}
-    backup: yes
     remote_src: yes
     dest: /home/AzureUser/ssl-certificate
     owner: "{{ansible_user}}"
     group: "{{ansible_user}}"
-    mode: '0644'
+    mode: '0744'
 
 - name: Setup Nginx SSL Template
   template:
