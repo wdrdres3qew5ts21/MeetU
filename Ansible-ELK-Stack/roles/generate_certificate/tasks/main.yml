@@ -8,12 +8,6 @@
     - certbot
     - python3-certbot-nginx
 
-- name: "Revoke Certificate: {{ certificate_server_name }}"
-  tags: 
-    - revoke_certificate
-    - multi_tags
-  command: ls -al  
-
 - name: Setup Nginx SSL Template
   template:
     src: nginx.conf
@@ -27,6 +21,10 @@
   # วิธีการทำก็คือไปวัดที่ระดับ domain name server บน txt record เลยโดยให้เราใช้ code text พิเศษซึ่ง let encrypt 
   # เป็นคนส่งมาให้ไว้และถ้าหากเราเป้นเจ้าของ domain นั้นจริงเราก็จะสามารถคุม domain และเพิ่ม code ลับไปซึ่งเลา resolve
   # พอ let encrypt เจอ txt record พิเศษก็จะทราบว่านี่คือการบังคับสั่งลบ Certificate ก็จะโดน revoek นั่นเอง !!!
+- name: "[Staging] Automate Generate Certificate and install it for Nginx"
+  command: "certbot certonly --staging --non-interactive --standalone  --test-cert -d {{certificate_server_name}}   -m {{certificate_email_owner}}  --agree-tos"  
+  when: deployment_plan == "staging"
 
-- name: Automate Generate Certificate and install it for Nginx
+- name: "[Production] Automate Generate Certificate and install it for Nginx"
   command: "certbot certonly --non-interactive --standalone  --test-cert -d {{certificate_server_name}}   -m {{certificate_email_owner}}  --agree-tos"  
+  when: deployment_plan == "production"

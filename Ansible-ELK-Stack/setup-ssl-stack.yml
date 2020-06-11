@@ -2,7 +2,8 @@
   become: yes
   become_method: sudo
   roles: # ทำให้ ansible รันเฉพาะ tag ได้ถ้าไม่ระบุแท๊กก็จะรันทั้งมด ansible-playbook setup.yml -t docker 
-    - {role: docker, tags: "docker"} 
+    - {role: docker, tags: "docker"}
+    - {role: revoke_certificate, tags: "revoke_certificate"} 
     - {role: generate_certificate, tags: "generate_certificate"} 
     - {role: nginx_native_ssl, tags: "nginx_native_ssl"} 
     - {role: elk_ssl, tags: "elk_ssl"} 
