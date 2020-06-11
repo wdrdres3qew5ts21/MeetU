@@ -16,19 +16,16 @@
     name: meetu_cert
     state: present
 
-# ต้องใช้ Certificate จาก Let's Encrypt มาเชื่อมกับ container ของเราผ่าน volume
-# - name: "Move certificate to elastic volume"
-#   docker_container:
-#     name: "elastic-certificate"
-#     image: docker.elastic.co/elasticsearch/elasticsearch:7.7.0
+# # Generate Self Sign Certificate ถ้าตรงกับเงื่อนไข
+# - name: "[SSL] Generate self certificate"
+#   when: ssl_enabled == "true"
+#   become: no
+#   docker_compose:
+#     project_src: "~/meetu"
+#     files:
+#       - create-cert-pem.yml
 #     state: present
-#     purge_networks: yes
-#     networks_cli_compatible: yes
-#     networks:
-#       - name: meetu_elastic
-#     volumes:
-#       - "/home/AzureUser/ssl-certificate:/usr/share/elasticsearch/config/certificates"
-#       - "meetu_cert:/usr/share/elasticsearch/config/certificates"
+    
 
 # ต้องใช้ Certificate จาก Let's Encrypt มาเชื่อมกับ container ของเราผ่าน volume
 - name: "Start Elasticsearch Docker"
@@ -122,6 +119,37 @@
     volumes:
       - "/home/{{ansible_user}}/ssl-certificate:{{cert_dir}}"
       - "~/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml"
+    when: ssl_enabled == "true" 
+
+- name: "Start Kibana Docker"
+  become: no
+  vars:
+    # ตำแหน่งของ cert_dir ที่อยู่ใน "container" แล้ว ว่าไฟล์อยู่ในที่ไหนของ "container"
+    - cert_dir: "/usr/share/elasticsearch/config/certificates"
+  docker_container:
+    image: docker.elastic.co/kibana/kibana:7.7.0
+    name: kibana
+    restart: yes
+    state: started
+    networks_cli_compatible: yes
+    networks:
+      - name: meetu_elastic
+    published_ports:
+      - "5601:5601"
+    env:
+      SERVER_HOST: "0.0.0.0"
+      ELASTICSEARCH_HOSTS: "http://elasticsearch1:9200"
+      ELASTICSEARCH_USERNAME: "kibana"
+      ELASTICSEARCH_PASSWORD: "{{elastic_password}}"
+      SERVER_SSL_ENABLED: "{{ ssl_enabled | default('false') }}"
+      SERVER_SSL_KEY: "{{cert_dir}}/privkey.pem"
+      SERVER_SSL_CERTIFICATE: "{{cert_dir}}/cert.pem"
+      ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES: "{{cert_dir}}/fullchain.pem"
+      ELASTICSEARCH_SSL_VERIFICATIONMODE: "certificate"
+    volumes:
+      - "/home/{{ansible_user}}/ssl-certificate:{{cert_dir}}"
+      - "~/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml"
+    when: ssl_enabled == "false" 
 
 - name: "[HTTPS] Change Kibana Password API"
   uri:
