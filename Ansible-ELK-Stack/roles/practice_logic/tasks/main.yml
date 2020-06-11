@@ -30,3 +30,8 @@
     owner: "{{ansible_user}}"
     group: "{{ansible_user}}"
     mode: '0744'
+  loop:
+    - cert.pem
+    - chain.pem
+    - fullchain.pem
+    - privkey.pem
