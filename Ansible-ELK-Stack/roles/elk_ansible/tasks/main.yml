@@ -81,6 +81,12 @@
       xpack.security.transport.ssl.certificate: "{{cert_dir}}/cert.pem"
       xpack.security.transport.ssl.certificate_authorities: "{{cert_dir}}/fullchain.pem"
 
+- name: Config Kibana Template.yml
+  become: no
+  template:
+    src: kibana.yml
+    dest: ~/kibana.yml
+    force: yes
 
 - name: "Start Kibana Docker"
   vars:
@@ -108,6 +114,7 @@
       ELASTICSEARCH_SSL_VERIFICATIONMODE: certificate
     volumes:
       - "/home/{{ansible_user}}/ssl-certificate:{{cert_dir}}"
+      - "./kibana.yml:/usr/share/kibana/config/kibana.yml"
 
 
 - name: Change Kibana Password API
