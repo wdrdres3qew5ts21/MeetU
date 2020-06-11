@@ -69,7 +69,7 @@
       # หลังติดตั้งเสร็จแล้วต้องรันคำสั่ง bin/elasticsearch-setup-passwords interactive
       # เพื่อให้ xpack module ที่ลงไว้ทำการตั้ง password ตามที่เราตั้งด้วยนั่นเอง
       # ถ้าใช้ xpack บน cluster mode จะโดน bootstrap สั่งให้ทำ TLS ด้วยทันทีไม่งั้นจะ bootstrap ไม่ผ่าน
-      "ELASTIC_PASSWORD": "{{elastic_password}}"
+      "ELASTICSEARCH_PASSWORD": "{{elastic_password}}"
       xpack.security.enabled: "true"
       xpack.security.http.ssl.enabled: "true"
       xpack.security.http.ssl.key: "{{cert_dir}}/privkey.pem"
