@@ -35,7 +35,8 @@
     networks:
       - name: meetu_elastic
     mounts:
-      labels: meetu_cert
+      labels:
+        meetu_cert:
       target: /usr/share/elasticsearch/config/certificates
       src: "{{cert_dir}}"
       volume_driver: local
