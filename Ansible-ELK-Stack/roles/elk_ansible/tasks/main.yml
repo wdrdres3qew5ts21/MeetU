@@ -70,13 +70,13 @@
       # เพื่อให้ xpack module ที่ลงไว้ทำการตั้ง password ตามที่เราตั้งด้วยนั่นเอง
       # ถ้าใช้ xpack บน cluster mode จะโดน bootstrap สั่งให้ทำ TLS ด้วยทันทีไม่งั้นจะ bootstrap ไม่ผ่าน
       "ELASTIC_PASSWORD": "{{elastic_password}}"
-      xpack.security.enabled: "true"
+      xpack.security.enabled: "{{ ssl_enabled }}"
       xpack.security.http.ssl.enabled: "true"
       xpack.security.http.ssl.key: "{{cert_dir}}/privkey.pem"
       xpack.security.http.ssl.certificate: "{{cert_dir}}/cert.pem"
       xpack.security.http.ssl.certificate_authorities: "{{cert_dir}}/fullchain.pem"
-      xpack.security.transport.ssl.enabled: "true"
-      xpack.security.transport.ssl.verification_mode: certificate
+      xpack.security.transport.ssl.enabled: "{{ ssl_enabled }}"
+      xpack.security.transport.ssl.verification_mode: "certificate"
       xpack.security.transport.ssl.key: "{{cert_dir}}/privkey.pem"
       xpack.security.transport.ssl.certificate: "{{cert_dir}}/cert.pem"
       xpack.security.transport.ssl.certificate_authorities: "{{cert_dir}}/fullchain.pem"
@@ -114,16 +114,16 @@
       ELASTICSEARCH_HOSTS: "https://elasticsearch1:9200"
       ELASTICSEARCH_USERNAME: "kibana"
       ELASTICSEARCH_PASSWORD: "{{elastic_password}}"
-      SERVER_SSL_ENABLED: "true"
+      SERVER_SSL_ENABLED: "{{ ssl_enabled }}"
       SERVER_SSL_KEY: "{{cert_dir}}/privkey.pem"
       SERVER_SSL_CERTIFICATE: "{{cert_dir}}/cert.pem"
       ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES: "{{cert_dir}}/fullchain.pem"
-      ELASTICSEARCH_SSL_VERIFICATIONMODE: certificate
+      ELASTICSEARCH_SSL_VERIFICATIONMODE: "certificate"
     volumes:
       - "/home/{{ansible_user}}/ssl-certificate:{{cert_dir}}"
       - "~/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml"
 
-- name: Change Kibana Password API
+- name: "[HTTPS] Change Kibana Password API"
   uri:
     url: "https://localhost:9200/_security/user/kibana/_password?pretty"
     follow_redirects: none
@@ -138,5 +138,24 @@
   register: _result
   until: _result.status == 200
   retries: 20 
-  delay: 5 
+  delay: 5
+  when: ssl_enabled == "true" 
+
+- name: "[HTTP] Change Kibana Password API"
+  uri:
+    url: "http://localhost:9200/_security/user/kibana/_password?pretty"
+    follow_redirects: none
+    method: POST
+    user: elastic
+    password: "{{elastic_password}}"
+    validate_certs: no
+    force_basic_auth: yes
+    body_format: json
+    body: >
+      { "password": "{{elastic_password}}" }
+  register: _result
+  until: _result.status == 200
+  retries: 20 
+  delay: 5
+  when: ssl_enabled == "false" 
 
