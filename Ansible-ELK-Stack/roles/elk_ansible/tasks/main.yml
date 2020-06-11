@@ -82,6 +82,7 @@
       xpack.security.transport.ssl.certificate_authorities: "{{cert_dir}}/fullchain.pem"
 
 - name: Create Kibana Config Directory
+  become: no
   file:
     path: ~/kibana
     state: directory
