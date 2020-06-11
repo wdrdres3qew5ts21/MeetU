@@ -12,12 +12,14 @@
     dest: "~/meetu"
     update: yes
 
-- name: Create network
+- name: Create Docker Network for ELK Stack
   docker_network:
     name: meetu_elastic
 
 # ต้องใช้ Certificate จาก Let's Encrypt มาเชื่อมกับ container ของเราผ่าน volume
 - name: "Start Elasticsearch Docker"
+  vars:
+    - CERTS_DIR: 
   docker_container:
     name: elasticsearch1
     image: docker.elastic.co/elasticsearch/elasticsearch:7.7.0
@@ -28,17 +30,38 @@
     networks: 
       - name: meetu_elastic
     volumes:
-      - meetu_data01
+      - meetu_data01:/usr/share/elasticsearch/data
+      - certs:"{{CERTS_DIR}}"
     ulimits:
       - "memlock:-1:-1"
-
-    
-
-    
-
-
-
-
+    env:
+      node.name: elasticsearch1
+      # จะทำให้มันไม่ยอมเข้าไปอยู่ใน cluster และเอาตัวเองเป้น master เสมอเลย 
+      # - discovery.type: single-node
+      # เวลา scan Elasticsearch จะเช็ค Auto internal Transport Layer บน Port 9300-9305 ทันทีและรวบเข้า Cluster
+      # ระหว่างทางสามารถเพิ่มลดได้ตามใจชอบระบบจะ Detect เองอัตโนมัติ
+      # sudo sysctl -w vm.max_map_count: 262144 ถ้าทำ cluster ต้องขยาย memmory ด้วยไม่งั้นจะ fail
+      discovery.type: single-node
+      bootstrap.memory_lock: true
+      "ES_JAVA_OPTS": "-Xms256m -Xmx256m"
+      http.cors.enabled: true
+      http.cors.allow-origin: "*"
+      # ผูกเข้ากับ interface คอมเราผ่าน ifconfig
+      network.host: 0.0.0.0
+      # หลังติดตั้งเสร็จแล้วต้องรันคำสั่ง bin/elasticsearch-setup-passwords interactive
+      # เพื่อให้ xpack module ที่ลงไว้ทำการตั้ง password ตามที่เราตั้งด้วยนั่นเอง
+      # ถ้าใช้ xpack บน cluster mode จะโดน bootstrap สั่งให้ทำ TLS ด้วยทันทีไม่งั้นจะ bootstrap ไม่ผ่าน
+      ELASTIC_PASSWORD: "{{ELASTIC_PASSWORD}}"
+      xpack.security.enabled: true
+      xpack.security.http.ssl.enabled: true
+      xpack.security.http.ssl.key: "{{CERTS_DIR}}/instance/instance.key"
+      xpack.security.http.ssl.certificate_authorities: "{{CERTS_DIR}}/ca/ca.crt"
+      xpack.security.http.ssl.certificate: "{{CERTS_DIR}}/instance/instance.crt"
+      xpack.security.transport.ssl.enabled: true
+      xpack.security.transport.ssl.verification_mode: certificate 
+      xpack.security.transport.ssl.certificate_authorities: "{{CERTS_DIR}}/ca/ca.crt"
+      xpack.security.transport.ssl.certificate: "{{CERTS_DIR}}/instance/instance.crt"
+      xpack.security.transport.ssl.key: "{{CERTS_DIR}}/instance/instance.key"
 
 # - name: "Start Kibana Docker"
 #   docker_container:
@@ -63,6 +86,6 @@
 #     body: >
 #       { "password": "{{kibana_password}}" }
 #   register: _result
-#   until: _result.status == 200
+#   until: _result.status :  200
 #   retries: 20
 #   delay: 5
