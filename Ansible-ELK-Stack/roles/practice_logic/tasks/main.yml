@@ -1,21 +1,32 @@
 ---
 # tasks file for practice_logic
-- name: Reading File
-  become: no
-  command: cat ~/logicFile.yml
-  register: reading_file_output
+# - name: Reading File
+#   become: no
+#   command: cat ~/logicFile.yml
+#   register: reading_file_output
 
-- name: Creating Docker File Template
-  become: no
-  vars:
-    - "node_name": "elasticsearch1"
-  template:
-    src: "{{ item }}"
-    dest: "~/{{ item }}"
-  loop:
-    - docker-compose-elastic-single-full-ssl.yml
+# - name: Creating Docker File Template
+#   become: no
+#   vars:
+#     - "node_name": "elasticsearch1"
+#   template:
+#     src: "{{ item }}"
+#     dest: "~/{{ item }}"
+#   loop:
+#     - docker-compose-elastic-single-full-ssl.yml
 
-- name: "result"
-  become: no
-  debug:
-    msg: "{{reading_file_output}}"
+# - name: "result"
+#   become: no
+#   debug:
+#     msg: "{{reading_file_output}}"
+
+- name: Copy Certificate to safety or writable directory (for backup or reuse)
+  copy:
+    src: /etc/letsencrypt/live/{{ certificate_server_name }}
+    # ถ้าเจอต้นฉบับ symbolic link จะตามไปหาของจริงแล้ว copy ของจริงมาด้วย
+    follow: yes
+    remote_src: yes
+    dest: /home/AzureUser/ssl-certificate
+    owner: "{{ansible_user}}"
+    group: "{{ansible_user}}"
+    mode: '0744'
