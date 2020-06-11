@@ -32,7 +32,7 @@
       - name: meetu_elastic
     volumes:
       - meetu_data01:/usr/share/elasticsearch/data
-      - certs:"{{cert_dir}}"
+      - "{{cert_dir}}:{{cert_dir}}"
     ulimits:
       - "memlock:-1:-1"
     env:
@@ -56,13 +56,13 @@
       xpack.security.enabled: true
       xpack.security.http.ssl.enabled: true
       xpack.security.http.ssl.key: "{{cert_dir}}/privkey.pem"
+      xpack.security.http.ssl.certificate: "{{cert_dir}}/cert.pem"
       xpack.security.http.ssl.certificate_authorities: "{{cert_dir}}/fullchain.pem"
-      xpack.security.http.ssl.certificate: "{{cert_dir}}/instance/instance.crt"
       xpack.security.transport.ssl.enabled: true
       xpack.security.transport.ssl.verification_mode: certificate
       xpack.security.transport.ssl.key: "{{cert_dir}}/privkey.pem"
+      xpack.security.transport.ssl.certificate: "{{cert_dir}}/cert.pem"
       xpack.security.transport.ssl.certificate_authorities: "{{cert_dir}}/fullchain.pem"
-      xpack.security.transport.ssl.certificate: "{{cert_dir}}/fullchain.pem"
 # - name: "Start Kibana Docker"
 #   docker_container:
 #     image: docker.elastic.co/kibana/kibana:7.7.0
