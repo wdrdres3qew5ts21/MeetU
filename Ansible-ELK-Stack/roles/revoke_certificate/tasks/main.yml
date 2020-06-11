@@ -12,4 +12,14 @@
   command: certbot revoke --non-interactive --cert-path /etc/letsencrypt/live/{{ certificate_server_name }}/cert.pem 
   when: deployment_plan == "production"
 
+- name: Setup Nginx SSL Template
+  template:
+    src: nginx_remove_ssl.conf
+    dest: /etc/nginx/nginx.conf
+    force: yes
+
+- name: Reload Nginx
+  command: nginx -s reload
+
+
   

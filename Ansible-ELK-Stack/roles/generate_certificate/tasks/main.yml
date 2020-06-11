@@ -36,6 +36,10 @@
 
 - name: Setup Nginx SSL Template
   template:
-    src: nginx.conf
+    src: nginx_add_ssl.conf
     dest: /etc/nginx/nginx.conf
     force: yes
+
+- name: Reload Nginx
+  command: nginx -s reload
+
