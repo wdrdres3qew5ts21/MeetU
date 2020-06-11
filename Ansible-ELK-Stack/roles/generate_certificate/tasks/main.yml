@@ -16,4 +16,4 @@
     force: yes
 
 - name: Automate Generate Certificate and install it for Nginx
-  command: "certbot --non-interactive -d {{ssl_server_name}}   -m {{ssl_email_owner}}  --agree-tos"  
+  command: "certbot --non-interactive --standalone -d {{ssl_server_name}}   -m {{ssl_email_owner}}  --agree-tos"  
