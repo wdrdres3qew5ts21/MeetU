@@ -8,8 +8,10 @@
     - certbot
     - python3-certbot-nginx
 
-- name: "Revoke Certificate: {{ ssl_server_name }}"
-  tags: revoke_certificate
+- name: "Revoke Certificate: {{ certificate_server_name }}"
+  tags: 
+    - revoke_certificate
+    - multi_tags
   command: ls -al  
 
 - name: Setup Nginx SSL Template
