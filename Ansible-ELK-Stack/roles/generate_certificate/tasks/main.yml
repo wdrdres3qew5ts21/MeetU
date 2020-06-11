@@ -23,7 +23,7 @@
   # พอ let encrypt เจอ txt record พิเศษก็จะทราบว่านี่คือการบังคับสั่งลบ Certificate ก็จะโดน revoek นั่นเอง !!!
 
 - name: "[Staging] Automate Generate Certificate and install it for Nginx"
-  command: "certbot --nginx"  
+  command: "certbot  --staging --nginx"  
   when: deployment_plan == "staging"
 
 - name: "[Production] Automate Generate Certificate and install it for Nginx"
