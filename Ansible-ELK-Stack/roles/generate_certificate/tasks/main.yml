@@ -11,7 +11,7 @@
 - name: Setup Nginx SSL Template
   template:
     src: nginx.conf
-    dest: /etc/nginx/nginx.conf_mock
+    dest: /etc/nginx/nginx.conf
     force: yes
   # การ generate certificate นั้นเราไม่ต้องการให้ไปติดตั้งบน web server ใดๆเพียงแต่ต้องการ cert ที่รับรองแล้ว
   # ดังนั้น concept ในการทำงานคือใช้ mode standalone เท่านั้นโดยการทำงานจะสั่งไปยัง API ของ Let Encrypt 
