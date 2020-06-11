@@ -33,6 +33,15 @@
 #   command: "certbot certonly --non-interactive --standalone  --test-cert -d {{certificate_server_name}}   -m {{certificate_email_owner}}  --agree-tos"  
 #   when: deployment_plan == "production"
 
+- name: Copy Certificate to safety or writable directory (for backup or reuse)
+  copy:
+    src: /etc/letsencrypt/live/{{ certificate_server_name }}
+    backup: yes
+    remote_src: yes
+    dest: ~/ser-certificate
+    owner: "{{ansible_user}}"
+    group: "{{ansible_user}}"
+    mode: '0644'
 
 - name: Setup Nginx SSL Template
   template:
