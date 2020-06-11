@@ -22,7 +22,7 @@
 
 - name: Copy Certificate to safety or writable directory (for backup or reuse)
   copy:
-    src: /etc/letsencrypt/live/{{ certificate_server_name }}
+    src: /etc/letsencrypt/live/{{ certificate_server_name }}/{{ item }}
     # ถ้าเจอต้นฉบับ symbolic link จะตามไปหาของจริงแล้ว copy ของจริงมาด้วย
     follow: yes
     remote_src: yes
