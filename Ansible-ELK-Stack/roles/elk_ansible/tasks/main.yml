@@ -44,7 +44,7 @@
       # ระหว่างทางสามารถเพิ่มลดได้ตามใจชอบระบบจะ Detect เองอัตโนมัติ
       # sudo sysctl -w vm.max_map_count: 262144 ถ้าทำ cluster ต้องขยาย memmory ด้วยไม่งั้นจะ fail
       discovery.type: single-node
-      "bootstrap.memory_lock": true
+      'bootstrap.memory_lock': true
       "ES_JAVA_OPTS": "-Xms256m -Xmx256m"
       http.cors.enabled: true
       http.cors.allow-origin: "*"
