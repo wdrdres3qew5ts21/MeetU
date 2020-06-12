@@ -1,7 +1,7 @@
 # โดยปกติ Kibana จะ Compliance ตาม Elasticsearch อยู่แล้วแต่เขียนเอาไว้อุ่นใจกว่าให้แน่ใจ
 # xpack.security.audit.enabled: true
 # ถ้าไม่ระบุ host จะเข้าไม่ได้ถึงแม้ default จะระบุเป็น localhost ก็ตาม
-server.host: 0.0.0.0
+server.host: "0.0.0.0"
 # hostname ที่อยู่ของ elasticsearch
 # สังเกตดูว่าเรามี Cluster Elasticsearch ก็จริงแต่จะเกิดอะไรขึ้นถ้า Kibana ที่ต้องอยุ่ซึ่ง ต้องบังคับ fix url
 # เอาไว้ว่าต่อไป ES ตัวไหน ? แล้วตัวนั้นล่มมา Kibana ก็จะพังล่ะ วิธีแก้คือยัด host url ไปหลายๆตัว แต่สุดท้ายมันก็เจ๊งอยู่ดี

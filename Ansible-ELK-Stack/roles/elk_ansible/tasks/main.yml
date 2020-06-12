@@ -77,18 +77,18 @@
       xpack.security.transport.ssl.certificate: "{{cert_dir}}/cert.pem"
       xpack.security.transport.ssl.certificate_authorities: "{{cert_dir}}/fullchain.pem"
 
-- name: Create Kibana Config Directory
-  become: no
-  file:
-    path: ~/kibana
-    state: directory
+# - name: Create Kibana Config Directory
+#   become: no
+#   file:
+#     path: ~/kibana
+#     state: directory
 
-- name: Config Kibana Template.yml
-  become: no
-  template:
-    src: kibana.yml
-    dest: ~/kibana/kibana.yml
-    force: yes
+# - name: Config Kibana Template.yml
+#   become: no
+#   template:
+#     src: kibana.yml
+#     dest: ~/kibana/kibana.yml
+#     force: yes
 
 - name: "Start Kibana Docker"
   become: no
@@ -117,7 +117,7 @@
       ELASTICSEARCH_SSL_VERIFICATIONMODE: "certificate"
     volumes:
       - "/home/{{ansible_user}}/ssl-certificate:{{cert_dir}}"
-      - "~/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml"
+      # - "~/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml"
     # when: ssl_enabled == "true"
 
 # - name: "Start Kibana Docker"
