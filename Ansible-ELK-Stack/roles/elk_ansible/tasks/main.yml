@@ -66,8 +66,8 @@
       # เพื่อให้ xpack module ที่ลงไว้ทำการตั้ง password ตามที่เราตั้งด้วยนั่นเอง
       # ถ้าใช้ xpack บน cluster mode จะโดน bootstrap สั่งให้ทำ TLS ด้วยทันทีไม่งั้นจะ bootstrap ไม่ผ่าน
       "ELASTIC_PASSWORD": "{{elastic_password}}"
-      xpack.security.enabled: "{{ ssl_enabled  | default('false') }}"
-      xpack.security.http.ssl.enabled: "true"
+      xpack.security.enabled: "true"
+      xpack.security.http.ssl.enabled: "{{ ssl_enabled  | default('false') }}"
       xpack.security.http.ssl.key: "{{cert_dir}}/privkey.pem"
       xpack.security.http.ssl.certificate: "{{cert_dir}}/cert.pem"
       xpack.security.http.ssl.certificate_authorities: "{{cert_dir}}/fullchain.pem"
