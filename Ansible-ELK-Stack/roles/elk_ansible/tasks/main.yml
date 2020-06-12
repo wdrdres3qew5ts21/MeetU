@@ -113,8 +113,8 @@
       SERVER_SSL_ENABLED: "{{ ssl_enabled | default('false') }}"
       SERVER_SSL_KEY: "{{cert_dir}}/privkey.pem"
       SERVER_SSL_CERTIFICATE: "{{cert_dir}}/cert.pem"
-      ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES: "{{cert_dir}}/chain.pem"
-      ELASTICSEARCH_SSL_VERIFICATIONMODE: "certificate"
+      ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES: "{{cert_dir}}/fullchain.pem"
+      ELASTICSEARCH_SSL_VERIFICATIONMODE: "none"
     volumes:
       - "/home/{{ansible_user}}/ssl-certificate:{{cert_dir}}"
       # - "~/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml"
