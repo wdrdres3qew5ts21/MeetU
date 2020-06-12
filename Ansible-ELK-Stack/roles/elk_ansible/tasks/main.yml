@@ -75,7 +75,7 @@
       xpack.security.transport.ssl.verification_mode: "certificate"
       xpack.security.transport.ssl.key: "{{cert_dir}}/privkey.pem"
       xpack.security.transport.ssl.certificate: "{{cert_dir}}/cert.pem"
-      xpack.security.transport.ssl.certificate_authorities: "{{cert_dir}}/chain.pem"
+      xpack.security.transport.ssl.certificate_authorities: "{{cert_dir}}/fullchain.pem"
 
 # - name: Create Kibana Config Directory
 #   become: no
@@ -113,7 +113,7 @@
       SERVER_SSL_ENABLED: "{{ ssl_enabled | default('false') }}"
       SERVER_SSL_KEY: "{{cert_dir}}/privkey.pem"
       SERVER_SSL_CERTIFICATE: "{{cert_dir}}/cert.pem"
-      ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES: "{{cert_dir}}/fullchain.pem"
+      ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES: "{{cert_dir}}/chain.pem"
       ELASTICSEARCH_SSL_VERIFICATIONMODE: "certificate"
     volumes:
       - "/home/{{ansible_user}}/ssl-certificate:{{cert_dir}}"
