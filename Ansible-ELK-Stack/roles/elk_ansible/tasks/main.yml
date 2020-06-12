@@ -25,7 +25,6 @@
 #     files:
 #       - create-cert-pem.yml
 #     state: present
-    
 
 # ต้องใช้ Certificate จาก Let's Encrypt มาเชื่อมกับ container ของเราผ่าน volume
 - name: "Start Elasticsearch Docker"
@@ -108,7 +107,7 @@
       - "5601:5601"
     env:
       SERVER_HOST: "0.0.0.0"
-      ELASTICSEARCH_HOSTS: "{{ ssl_enabled == 'true' | ternary('https','http') }}://elasticsearch1:9200"
+      ELASTICSEARCH_HOSTS: "{{ (ssl_enabled == 'true')  | ternary('https','http','http') }}://elasticsearch1:9200"
       ELASTICSEARCH_USERNAME: "kibana"
       ELASTICSEARCH_PASSWORD: "{{elastic_password}}"
       SERVER_SSL_ENABLED: "{{ ssl_enabled | default('false') }}"
@@ -119,7 +118,7 @@
     volumes:
       - "/home/{{ansible_user}}/ssl-certificate:{{cert_dir}}"
       - "~/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml"
-    when: ssl_enabled == "true" 
+    # when: ssl_enabled == "true"
 
 # - name: "Start Kibana Docker"
 #   become: no
@@ -149,11 +148,11 @@
 #     volumes:
 #       - "/home/{{ansible_user}}/ssl-certificate:{{cert_dir}}"
 #       - "~/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml"
-#     when: ssl_enabled == "false" 
+#     when: ssl_enabled == "false"
 
-- name: "[{{ ssl_enabled == 'true' | ternary('https','http') }}] Change Kibana Password API"
+- name: "[{{ (ssl_enabled == 'true') | ternary('https','http') }}] Change Kibana Password API"
   uri:
-    url: "{{ ssl_enabled == 'true' | ternary('https','http') }}://localhost:9200/_security/user/kibana/_password?pretty"
+    url: "{{ (ssl_enabled == 'true') | ternary('https','http') }}://localhost:9200/_security/user/kibana/_password?pretty"
     follow_redirects: none
     method: POST
     user: elastic
@@ -165,9 +164,8 @@
       { "password": "{{elastic_password}}" }
   register: _result
   until: _result.status == 200
-  retries: 20 
+  retries: 20
   delay: 5
-
 # - name: "[HTTP] Change Kibana Password API"
 #   uri:
 #     url: "http://localhost:9200/_security/user/kibana/_password?pretty"
@@ -182,7 +180,7 @@
 #       { "password": "{{elastic_password}}" }
 #   register: _result
 #   until: _result.status == 200
-#   retries: 20 
+#   retries: 20
 #   delay: 5
-#   when: ssl_enabled == "false" 
+#   when: ssl_enabled == "false"
 

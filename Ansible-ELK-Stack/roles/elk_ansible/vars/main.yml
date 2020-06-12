@@ -1,2 +1,3 @@
 ---
 # vars file for elk_ansible
+ssl_enabled: false
