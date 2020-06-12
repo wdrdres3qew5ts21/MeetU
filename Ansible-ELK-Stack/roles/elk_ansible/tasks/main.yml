@@ -75,7 +75,7 @@
       xpack.security.transport.ssl.verification_mode: "certificate"
       xpack.security.transport.ssl.key: "{{cert_dir}}/privkey.pem"
       xpack.security.transport.ssl.certificate: "{{cert_dir}}/cert.pem"
-      xpack.security.transport.ssl.certificate_authorities: "{{cert_dir}}/fullchain.pem"
+      xpack.security.transport.ssl.certificate_authorities: "{{cert_dir}}/chain.pem"
 
 # - name: Create Kibana Config Directory
 #   become: no
