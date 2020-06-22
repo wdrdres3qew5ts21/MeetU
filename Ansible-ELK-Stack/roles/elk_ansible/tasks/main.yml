@@ -16,16 +16,6 @@
     name: meetu_cert
     state: present
 
-# # Generate Self Sign Certificate ถ้าตรงกับเงื่อนไข
-# - name: "[SSL] Generate self certificate"
-#   when: ssl_enabled == "true"
-#   become: no
-#   docker_compose:
-#     project_src: "~/meetu"
-#     files:
-#       - create-cert-pem.yml
-#     state: present
-
 # ต้องใช้ Certificate จาก Let's Encrypt มาเชื่อมกับ container ของเราผ่าน volume
 - name: "Start Elasticsearch Docker"
   vars:
@@ -78,19 +68,6 @@
       xpack.security.transport.ssl.certificate: "{{cert_dir}}/cert.pem"
       xpack.security.transport.ssl.certificate_authorities: "{{cert_dir}}/fullchain.pem"
 
-# - name: Create Kibana Config Directory
-#   become: no
-#   file:
-#     path: ~/kibana
-#     state: directory
-
-# - name: Config Kibana Template.yml
-#   become: no
-#   template:
-#     src: kibana.yml
-#     dest: ~/kibana/kibana.yml
-#     force: yes
-
 - name: "Start Kibana Docker"
   become: no
   vars:
@@ -119,38 +96,6 @@
       ELASTICSEARCH_SSL_VERIFICATIONMODE: "none"
     volumes:
       - "/home/{{ansible_user}}/ssl-certificate:{{cert_dir}}"
-      # - "~/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml"
-    # when: ssl_enabled == "true"
-
-# - name: "Start Kibana Docker"
-#   become: no
-#   vars:
-#     # ตำแหน่งของ cert_dir ที่อยู่ใน "container" แล้ว ว่าไฟล์อยู่ในที่ไหนของ "container"
-#     - cert_dir: "/usr/share/elasticsearch/config/certificates"
-#   docker_container:
-#     image: docker.elastic.co/kibana/kibana:7.7.0
-#     name: kibana
-#     restart: yes
-#     state: started
-#     networks_cli_compatible: yes
-#     networks:
-#       - name: meetu_elastic
-#     published_ports:
-#       - "5601:5601"
-#     env:
-#       SERVER_HOST: "0.0.0.0"
-#       ELASTICSEARCH_HOSTS: "http://elasticsearch1:9200"
-#       ELASTICSEARCH_USERNAME: "kibana"
-#       ELASTICSEARCH_PASSWORD: "{{elastic_password}}"
-#       SERVER_SSL_ENABLED: "{{ ssl_enabled | default('false') }}"
-#       SERVER_SSL_KEY: "{{cert_dir}}/privkey.pem"
-#       SERVER_SSL_CERTIFICATE: "{{cert_dir}}/cert.pem"
-#       ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES: "{{cert_dir}}/fullchain.pem"
-#       ELASTICSEARCH_SSL_VERIFICATIONMODE: "certificate"
-#     volumes:
-#       - "/home/{{ansible_user}}/ssl-certificate:{{cert_dir}}"
-#       - "~/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml"
-#     when: ssl_enabled == "false"
 
 - name: "[{{ (ssl_enabled == 'true') | ternary('https','http') }}] Change Kibana Password API"
   uri:
@@ -168,21 +113,3 @@
   until: _result.status == 200
   retries: 20
   delay: 5
-# - name: "[HTTP] Change Kibana Password API"
-#   uri:
-#     url: "http://localhost:9200/_security/user/kibana/_password?pretty"
-#     follow_redirects: none
-#     method: POST
-#     user: elastic
-#     password: "{{elastic_password}}"
-#     validate_certs: no
-#     force_basic_auth: yes
-#     body_format: json
-#     body: >
-#       { "password": "{{elastic_password}}" }
-#   register: _result
-#   until: _result.status == 200
-#   retries: 20
-#   delay: 5
-#   when: ssl_enabled == "false"
-
